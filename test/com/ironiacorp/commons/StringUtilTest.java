@@ -16,7 +16,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 Copyright (C) 2007 Marco Aurelio Graciotto Silva <magsilva@gmail.com>
 */
 
-package tests.net.sf.ideais.util;
+package com.ironiacorp.commons;
 
 import static org.junit.Assert.*;
 
@@ -25,10 +25,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import net.sf.ideais.util.StringUtil;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import com.ironiacorp.commons.StringUtil;
 
 
 public class StringUtilTest

@@ -17,34 +17,30 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-package tests.safe.wikire.util;
+package com.ironiacorp.commons;
 
-import safe.wikire.util.HibernateBootstrap;
-import junit.framework.TestCase;
 
-/**
- * Tests the Hibernate bootstrap.
- * 
- * @author Marco Aurélio Graciotto Silva
- */
-public class HibernateBootstrapTest extends TestCase
+import static org.junit.Assert.*;
+
+import java.util.ArrayList;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import com.ironiacorp.commons.patterns.dao.HibernateDataSource;
+
+
+public class HibernateBootstrapTest
 {
-	HibernateBootstrap bootstrap;
+	HibernateDataSource bootstrap;
 
+	@Before
 	protected void setUp() throws Exception
 	{
-		super.setUp();
-		bootstrap = new HibernateBootstrap();
+		bootstrap = new HibernateDataSource(new ArrayList<String>());
 	}
 
-	protected void tearDown() throws Exception
-	{
-		super.tearDown();
-	}
-
-	/*
-	 * Test method for 'safe.wikire.util.HibernateBootstrap.createDB()'
-	 */
+	@Test
 	public void testCreateDB1()
 	{
 		try {
@@ -55,9 +51,7 @@ public class HibernateBootstrapTest extends TestCase
 		}
 	}
 
-	/*
-	 * Test method for 'safe.wikire.util.HibernateBootstrap.createDB()'
-	 */
+	@Test
 	public void testCreateDB2()
 	{
 		try {
@@ -69,10 +63,7 @@ public class HibernateBootstrapTest extends TestCase
 		}
 	}
 
-	
-	/*
-	 * Test method for 'safe.wikire.util.HibernateBootstrap.updateDB()'
-	 */
+	@Test
 	public void testUpdateDB1()
 	{
 		try {
@@ -83,9 +74,7 @@ public class HibernateBootstrapTest extends TestCase
 		}
 	}
 
-	/*
-	 * Test method for 'safe.wikire.util.HibernateBootstrap.updateDB()'
-	 */
+	@Test
 	public void testUpdateDB2()
 	{
 		try {
@@ -97,9 +86,7 @@ public class HibernateBootstrapTest extends TestCase
 		}
 	}
 
-	/*
-	 * Test method for 'safe.wikire.util.HibernateBootstrap.dropDB()'
-	 */
+	@Test
 	public void testDropDB1()
 	{
 		try {
@@ -110,9 +97,7 @@ public class HibernateBootstrapTest extends TestCase
 		}
 	}
 
-	/*
-	 * Test method for 'safe.wikire.util.HibernateBootstrap.dropDB()'
-	 */
+	@Test
 	public void testDropDB2()
 	{
 		try {
@@ -124,27 +109,21 @@ public class HibernateBootstrapTest extends TestCase
 	}
 
 	
-	/*
-	 * Test method for 'safe.wikire.util.HibernateBootstrap.getDropDDLScript()'
-	 */
+	@Test
 	public void testGetDropDDLScript()
 	{
 		bootstrap.getDropDDLScript();
 		// TODO: Compare the result with the expected script.
 	}
 
-	/*
-	 * Test method for 'safe.wikire.util.HibernateBootstrap.getCreateDDLScript()'
-	 */
+	@Test
 	public void testGetCreateDDLScript()
 	{
 		bootstrap.getCreateDDLScript();
 		// TODO: Compare the result with the expected script.
 	}
 
-	/*
-	 * Test method for 'safe.wikire.util.HibernateBootstrap.getUpdateDDLScript()'
-	 */
+	@Test
 	public void testGetUpdateDDLScript()
 	{
 		bootstrap.getUpdateDDLScript();

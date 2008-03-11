@@ -5,7 +5,7 @@ it works with jUnit 4.
 */
 
 
-package tests.net.sf.ideais.util;
+package com.ironiacorp.commons;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -15,7 +15,8 @@ import java.util.Random;
 
 import org.junit.Test;
 
-import net.sf.ideais.util.Base64;
+import com.ironiacorp.commons.Base64;
+
 
 import static org.junit.Assert.*;
 

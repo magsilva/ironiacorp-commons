@@ -16,16 +16,17 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 Copyright (C) 2007 Marco Aurelio Graciotto Silva <magsilva@gmail.com>
 */
 
-package tests.net.sf.ideais.util;
+package com.ironiacorp.commons;
 
 import static org.junit.Assert.*;
 
 import java.util.Arrays;
 
-import net.sf.ideais.util.ArrayUtil;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import com.ironiacorp.commons.ArrayUtil;
 
 
 public class ArrayUtilTest

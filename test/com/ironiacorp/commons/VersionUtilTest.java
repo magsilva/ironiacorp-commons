@@ -1,11 +1,12 @@
-package tests.net.sf.ideais.util;
+package com.ironiacorp.commons;
 
 import static org.junit.Assert.*;
 
-import net.sf.ideais.util.VersionUtil;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import com.ironiacorp.commons.VersionUtil;
 
 public class VersionUtilTest
 {

@@ -16,14 +16,15 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 Copyright (C) 2007 Marco Aurelio Graciotto Silva <magsilva@gmail.com>
 */
 
-package tests.net.sf.ideais.util;
+package com.ironiacorp.commons;
 
-import net.sf.ideais.util.ReflectionUtil;
-import net.sf.ideais.util.SqlUtil;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+
+import com.ironiacorp.commons.ReflectionUtil;
+import com.ironiacorp.commons.SqlUtil;
 
 public class SqlUtilTest
 {

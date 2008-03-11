@@ -16,11 +16,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 Copyright (C) 2007 Marco Aurelio Graciotto Silva <magsilva@gmail.com>
 */
 
-package tests.net.sf.ideais.util;
+package com.ironiacorp.commons;
 
-import net.sf.ideais.util.ArrayUtil;
-import net.sf.ideais.util.JavaBeanUtil;
-import net.sf.ideais.util.annotations.Property;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,6 +25,10 @@ import java.util.Map;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
+
+import com.ironiacorp.commons.ArrayUtil;
+import com.ironiacorp.commons.JavaBeanUtil;
+import com.ironiacorp.commons.persistence.Property;
 
 public class JavaBeanUtilTest
 {

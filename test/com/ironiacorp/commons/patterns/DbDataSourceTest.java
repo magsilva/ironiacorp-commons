@@ -16,16 +16,18 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 Copyright (C) 2006 Marco Aurelio Graciotto Silva <magsilva@gmail.com>
 */
 
-package tests.net.sf.ideais.util.patterns;
+package com.ironiacorp.commons.patterns;
 
-import net.sf.ideais.util.conf.ConfigurationMap;
-import net.sf.ideais.util.conf.HardCodedConfiguration;
-import net.sf.ideais.util.patterns.DbDataSource;
 
 import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import com.ironiacorp.commons.configuration.ConfigurationMap;
+import com.ironiacorp.commons.configuration.HardCodedConfiguration;
+import com.ironiacorp.commons.patterns.dao.DbDataSource;
+
 
 import java.sql.Connection;
 

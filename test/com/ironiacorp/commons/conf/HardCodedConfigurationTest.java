@@ -16,29 +16,51 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 Copyright (C) 2007 Marco Aurelio Graciotto Silva <magsilva@gmail.com>
 */
 
-package tests.net.sf.ideais.util.conf;
+package com.ironiacorp.commons.conf;
 
-import net.sf.ideais.util.conf.ConfigurationMap;
 
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
+
+import org.junit.Before;
 import org.junit.Test;
 
-/**
- * Generic test cases for concrete Configuration implementations.
- */
-public abstract class ConfigurationTest
-{
-	protected ConfigurationMap conf;
+import com.ironiacorp.commons.configuration.HardCodedConfiguration;
 
-	// key, value
-	protected final String[] tuple1 = {"test", "123"};
-	protected final String[] tuple2 = {"Damn", "Rain"};
+
+public class HardCodedConfigurationTest extends ConfigurationTest
+{
+	private HardCodedConfiguration hconf;
+
+	
+	@Before
+	public void setUp() throws Exception
+	{
+		conf = new HardCodedConfiguration();
+		hconf = (HardCodedConfiguration)conf;
+	}
 
 	@Test
-	public void testGetPropertyNotSet()
+	public void testGetPropertySet()
 	{
+		hconf.setProperty(tuple1[0], tuple1[1]);
 		Object o = conf.getProperty(tuple1[0]);
+		assertEquals(o, tuple1[1]);
+	}
+
+	@Test
+	public void testSetPropertyNotSet()
+	{
+		Object o = hconf.setProperty(tuple1[0], tuple1[1]);
 		assertNull(o);
 	}
 
+	@Test
+	public void testSetPropertySet()
+	{
+		Object o = null;	
+		hconf.setProperty(tuple1[0], tuple1[1]);
+		o = hconf.setProperty(tuple1[0], tuple2[1]);
+		
+		assertEquals(o, tuple1[1]);
+	}
 }
