@@ -61,22 +61,7 @@ public final class ReflectionUtil
 	public static final String FULL_CLASS_NAME_REGEXP = "[a-zA-Z][a-zA-Z\\-_0-9]*(\\.[a-zA-Z][a-zA-Z\\-_0-9]*)*";
 
 	
-	
-	public static final class ClassFileFilter implements FileFilter
-	{
-		public boolean accept(File filename)
-		{
-			return filename.getName().endsWith(ReflectionUtil.CLASS_FILE_EXTENSION);
-		}
-	}
-	
-	public static final class DirectoryFilter implements FileFilter
-	{
-		public boolean accept(File filename)
-		{
-			return filename.isDirectory();
-		}
-	}
+
 
 	private static String[] paths;
 	static {
@@ -198,7 +183,7 @@ public final class ReflectionUtil
 			}
 			File packageDir = new File(packageDirname);
 			if (packageDir.exists()) {
-				files = packageDir.listFiles(new ClassFileFilter());
+				files = packageDir.listFiles(new Filters.ClassFileFilter());
 				for (File f : files) {
 					String className = packageName + ReflectionUtil.PACKAGE_DELIMITER + f.getName();
 					className = className.replaceAll(ReflectionUtil.CLASS_FILE_EXTENSION + "$", "");
@@ -286,7 +271,7 @@ public final class ReflectionUtil
 			currentPackageDir = packageRoot;
 		}
 		
-		files = currentPackageDir.listFiles(new ClassFileFilter());
+		files = currentPackageDir.listFiles(new Filters.ClassFileFilter());
 		if (files != null) {
 			for (File f : files) {
 				String absolutePackageRoot = packageRoot.getAbsolutePath() + File.separator;
@@ -308,7 +293,7 @@ public final class ReflectionUtil
 			}
 		}
 
-		files = currentPackageDir.listFiles(new DirectoryFilter());
+		files = currentPackageDir.listFiles(new Filters.DirectoryFilter());
 		if (files != null) {
 			for (File f : files) {
 				for (Class c : ReflectionUtil.findClasses(packageRoot, f, clazz)) {

@@ -230,6 +230,12 @@ public class ArrayUtilTest
 		assertFalse(ArrayUtil.toString(arrayWithNull, ",").equals(arrayWithoutNullasStringComma));
 	}
 
+	@Test(expected=IllegalArgumentException.class)
+	public void testToStringObjectArray5()
+	{
+		assertFalse(ArrayUtil.toString(arrayWithNull, null).equals(arrayWithoutNullasStringComma));
+	}
+	
 	@Test
 	public void testClean1()
 	{
