@@ -14,8 +14,9 @@ public final class Filters
 
 		public String getDescription()
 		{
-			return "Access Java class files only";
+			return "Java bytecode (.class) files";
 		}
+	
 	}
 
 	public static final class DirectoryFilter extends javax.swing.filechooser.FileFilter implements FileFilter
@@ -27,7 +28,7 @@ public final class Filters
 
 		public String getDescription()
 		{
-			return "Accepts a directory only.";
+			return "Directory";
 		}
 	}
 
@@ -43,7 +44,7 @@ public final class Filters
 
 		public String getDescription()
 		{
-			return "Accepts \".jar\" or \".zip\" files.";
+			return "Java package (JAR or ZIP archive or a directory)";
 		}
 
 	}
