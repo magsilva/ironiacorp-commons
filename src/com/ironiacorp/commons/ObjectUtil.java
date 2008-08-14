@@ -77,8 +77,8 @@ public final class ObjectUtil
 	 */
 	public static void sync(Object src, Object dest)
 	{
-		Class srcClass = src.getClass();
-		Class destClass = dest.getClass();
+		Class<?> srcClass = src.getClass();
+		Class<?> destClass = dest.getClass();
 		if (srcClass != destClass) {
 			throw new IllegalArgumentException("Objects are incompatible");
 		}

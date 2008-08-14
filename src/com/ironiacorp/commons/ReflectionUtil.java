@@ -20,7 +20,6 @@ Copyright (C) 2007 Marco Aurelio Graciotto Silva <magsilva@gmail.com>
 package com.ironiacorp.commons;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.io.IOException;
 import java.lang.reflect.Modifier;
 import java.net.MalformedURLException;
@@ -92,9 +91,9 @@ public final class ReflectionUtil
 	 * @return The classes loaded if the action was successfull, NULL
 	 * otherwise.
 	 */
-	public static Class loadClass(String name)
+	public static Class<?> loadClass(String name)
 	{
-		Class c = null;
+		Class<?> c = null;
 		try {
 			c = Class.forName(name);
 		} catch (ClassNotFoundException cnfe) {
@@ -108,10 +107,10 @@ public final class ReflectionUtil
 		return c;
 	}
 	
-	public static Class[] findClasses(String packageName)
+	public static Class<?>[] findClasses(String packageName)
 	{
-		ArrayList<Class> result = new ArrayList<Class>();
-		Class[] classes = null;
+		ArrayList<Class<?>> result = new ArrayList<Class<?>>();
+		Class<?>[] classes = null;
 		
 		for (String path : ReflectionUtil.paths) {
 			if (path.endsWith(ReflectionUtil.JAR_FILE_EXTENSION)) {
@@ -126,7 +125,7 @@ public final class ReflectionUtil
 				classes = ReflectionUtil.findClasses(dir, packageName);
 				
 			}
-			for (Class clazz : classes) {
+			for (Class<?> clazz : classes) {
 				result.add(clazz);
 			}
 		}
@@ -134,10 +133,10 @@ public final class ReflectionUtil
 		return result.toArray(new Class[0]);
 	}
 
-	private static Class[] findClasses(JarFile jar, String packageName)
+	private static Class<?>[] findClasses(JarFile jar, String packageName)
 	{
 		Enumeration<JarEntry> entries = jar.entries();
-		ArrayList<Class> classes = new ArrayList<Class>();
+		ArrayList<Class<?>> classes = new ArrayList<Class<?>>();
 		boolean useFastMethod = true;
 
 		if (StringUtil.isEmpty(packageName)) {
@@ -165,10 +164,10 @@ public final class ReflectionUtil
 		return classes.toArray(new Class[0]);
 	}
 
-	private static Class[] findClasses(File file, String packageName)
+	private static Class<?>[] findClasses(File file, String packageName)
 	{
 		File[] files = null;
-		ArrayList<Class> classes = new ArrayList<Class>();
+		ArrayList<Class<?>> classes = new ArrayList<Class<?>>();
 		boolean useFastMethod = true;
 		file = file.getAbsoluteFile();
 		
@@ -197,10 +196,10 @@ public final class ReflectionUtil
 		return classes.toArray(new Class[0]);
 	}
 		
-	public static Class[] findClasses(Class<?> clazz)
+	public static Class<?>[] findClasses(Class<?> clazz)
 	{
-		ArrayList<Class> result = new ArrayList<Class>();
-		Class[] classes = null;
+		ArrayList<Class<?>> result = new ArrayList<Class<?>>();
+		Class<?>[] classes = null;
 		
 		if (clazz == null) {
 			return null;
@@ -218,7 +217,7 @@ public final class ReflectionUtil
 				File dir = new File(path);
 				classes = ReflectionUtil.findClasses(dir, null, clazz);
 			}
-			for (Class c : classes) {
+			for (Class<?> c : classes) {
 				result.add(c);
 			}
 		}
@@ -259,10 +258,10 @@ public final class ReflectionUtil
 	*/
 
 	// TODO: Check why it's loading a class several times.
-	private static Class[] findClasses(File packageRoot, File currentPackageDir, Class<?> clazz)
+	private static Class<?>[] findClasses(File packageRoot, File currentPackageDir, Class<?> clazz)
 	{
 		File[] files = null;
-		ArrayList<Class> classes = new ArrayList<Class>();
+		ArrayList<Class<?>> classes = new ArrayList<Class<?>>();
 	
 		assert(packageRoot != null);
 		assert(packageRoot.isDirectory());
@@ -296,7 +295,7 @@ public final class ReflectionUtil
 		files = currentPackageDir.listFiles(new Filters.DirectoryFilter());
 		if (files != null) {
 			for (File f : files) {
-				for (Class c : ReflectionUtil.findClasses(packageRoot, f, clazz)) {
+				for (Class<?> c : ReflectionUtil.findClasses(packageRoot, f, clazz)) {
 					classes.add(c);
 				}
 			}
@@ -314,6 +313,7 @@ public final class ReflectionUtil
 	 * http://bill.burkecentral.com/2008/01/14/scanning-java-annotations-at-runtime/
 	 * Extract the JAR for a web application.
 	 */
+	@SuppressWarnings("unchecked")
 	public static List<URL> getPackages(ServletContext servletContext)
 	{ 
 		List<URL> urls = new ArrayList<URL>();

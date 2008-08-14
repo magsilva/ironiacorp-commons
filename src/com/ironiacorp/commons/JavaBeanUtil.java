@@ -47,8 +47,8 @@ public final class JavaBeanUtil
 	{
 	}
 	
-	private static Pattern SETTER_PATTERN = Pattern.compile("set([A-Z][A-Za-z0-9]*)$");
-	private static Pattern GETTER_PATTERN = Pattern.compile("(get|is|has)([A-Z][A-Za-z0-9]*)$");
+	public static final Pattern SETTER_PATTERN = Pattern.compile("set([A-Z][A-Za-z0-9]*)$");
+	public static final Pattern GETTER_PATTERN = Pattern.compile("(get|is|has)([A-Z][A-Za-z0-9]*)$");
 	/*
 	 matcher = GETTER_PATTERN.matcher(method.getName());
      if (matcher.matches() && method.getParameterTypes().length == 0) {
@@ -117,7 +117,7 @@ public final class JavaBeanUtil
 	 * 
 	 * @return The mapping.
 	 */
-	public static Map mapBean(Object bean)
+	public static Map<String, Object> mapBean(Object bean)
 	{
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		
@@ -174,7 +174,7 @@ public final class JavaBeanUtil
 			} else {
 				String fieldName = f.getName();
 				if (fieldName.endsWith(FIELD_IDENTIFIER)) {
-					Class type = f.getType();
+					Class<?> type = f.getType();
 					if (type == String.class) {
 						int mode = f.getModifiers();
 						if (Modifier.isFinal(mode) && Modifier.isStatic(mode) && Modifier.isPublic(mode)) {
@@ -214,7 +214,7 @@ public final class JavaBeanUtil
 	}
 	
 	
-	public static Map<String, Method> mapBeanPropertiesToSetMethods(Class clazz)
+	public static Map<String, Method> mapBeanPropertiesToSetMethods(Class<?> clazz)
 	{
 		HashMap<String, Method> map = new HashMap<String, Method>();
 		Field[] fields = clazz.getDeclaredFields();
@@ -233,7 +233,7 @@ public final class JavaBeanUtil
 			// Otherwise, we try to guess.
 			} else {
 				if (key.endsWith(FIELD_IDENTIFIER)) {
-					Class type = f.getType();
+					Class<?> type = f.getType();
 					if (type == String.class) {
 						int mode = f.getModifiers();
 						if (Modifier.isFinal(mode) && Modifier.isStatic(mode) && Modifier.isPublic(mode)) {
@@ -262,7 +262,7 @@ public final class JavaBeanUtil
 		return map;
 	}
 
-	public static Map<String, Method> mapBeanPropertiesToGetMethods(Class clazz)
+	public static Map<String, Method> mapBeanPropertiesToGetMethods(Class<?> clazz)
 	{
 		HashMap<String, Method> map = new HashMap<String, Method>();
 		Field[] fields = clazz.getDeclaredFields();
@@ -281,7 +281,7 @@ public final class JavaBeanUtil
 			// Otherwise, we try to guess.
 			} else {
 				if (key.endsWith(FIELD_IDENTIFIER)) {
-					Class type = f.getType();
+					Class<?> type = f.getType();
 					if (type == String.class) {
 						int mode = f.getModifiers();
 						if (Modifier.isFinal(mode) && Modifier.isStatic(mode) && Modifier.isPublic(mode)) {
@@ -361,7 +361,7 @@ public final class JavaBeanUtil
 	}
 	*/
 	
-	public static String[] getBeanProperties(Class clazz)
+	public static String[] getBeanProperties(Class<?> clazz)
 	{
 		Field[] fields = clazz.getDeclaredFields();
 		ArrayList<String> propertyFields = new ArrayList<String>();
@@ -376,7 +376,7 @@ public final class JavaBeanUtil
 			} else {
 				String fieldName = f.getName();
 				if (fieldName.endsWith(FIELD_IDENTIFIER)) {
-					Class type = f.getType();
+					Class<?> type = f.getType();
 					if (type == String.class) {
 						int mode = f.getModifiers();
 						if (Modifier.isFinal(mode) && Modifier.isStatic(mode) && Modifier.isPublic(mode)) {

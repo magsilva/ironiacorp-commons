@@ -46,25 +46,26 @@ import java.io.Serializable;
 import java.lang.reflect.Array;
 
 /**
- * Linked list implementation of the List interface. In addition to the
- * methods of the List interface, this class provides access to the first
- * and last list elements in O(1) time for easy stack, queue, or double-ended
- * queue (deque) creation. The list is doubly-linked, with traversal to a
- * given index starting from the end closest to the element.<p>
- *
+ * Linked list implementation of the List interface. In addition to the methods
+ * of the List interface, this class provides access to the first and last list
+ * elements in O(1) time for easy stack, queue, or double-ended queue (deque)
+ * creation. The list is doubly-linked, with traversal to a given index starting
+ * from the end closest to the element.
+ * <p>
+ * 
  * LinkedList is not synchronized, so if you need multi-threaded access,
  * consider using:<br>
  * <code>List l = Collections.synchronizedList(new LinkedList(...));</code>
  * <p>
- *
+ * 
  * The iterators are <i>fail-fast</i>, meaning that any structural
  * modification, except for <code>remove()</code> called on the iterator
- * itself, cause the iterator to throw a
- * {@link ConcurrentModificationException} rather than exhibit
- * non-deterministic behavior.
- *
- * @param <T> Type of the node to be stored in the list.
- *
+ * itself, cause the iterator to throw a {@link ConcurrentModificationException}
+ * rather than exhibit non-deterministic behavior.
+ * 
+ * @param <T>
+ *            Type of the node to be stored in the list.
+ * 
  * @author Original author unknown
  * @author Bryce McKinlay
  * @author Eric Blake (ebb9@email.byu.edu)
@@ -77,8 +78,7 @@ import java.lang.reflect.Array;
  * @status missing javadoc, but complete to 1.4
  */
 public class CompressedLinkedList<T> extends AbstractSequentialList<T>
-	implements List<T>, Queue<T>, Cloneable, Serializable
-{
+		implements List<T>, Queue<T>, Cloneable, Serializable {
 	/**
 	 * Compatible with JDK 1.2.
 	 */
@@ -102,8 +102,7 @@ public class CompressedLinkedList<T> extends AbstractSequentialList<T>
 	/**
 	 * Class to represent an entry in the list. Holds a single element.
 	 */
-	private static final class Entry<T>
-	{
+	private static final class Entry<T> {
 		/** The element in the list. */
 		T data;
 
@@ -113,15 +112,16 @@ public class CompressedLinkedList<T> extends AbstractSequentialList<T>
 		/** The previous list entry, null if this is first. */
 		Entry<T> previous;
 
-		/** Amount of elements "compressed" in this entry. The mininum is one.*/
+		/** Amount of elements "compressed" in this entry. The mininum is one. */
 		int count;
-	
+
 		/**
 		 * Construct an entry.
-		 * @param data the list element
+		 * 
+		 * @param data
+		 *            the list element
 		 */
-		Entry( T data )
-		{
+		Entry(T data) {
 			this.data = data;
 			this.count = 1;
 		}
@@ -130,74 +130,72 @@ public class CompressedLinkedList<T> extends AbstractSequentialList<T>
 	/**
 	 * Create an empty linked list.
 	 */
-	public CompressedLinkedList()
-	{
+	public CompressedLinkedList() {
 	}
 
-	
 	/**
 	 * Create a linked list containing the elements, in order, of a given
 	 * collection.
-	 *
-	 * @param c the collection to populate this list from
-	 * @throws NullPointerException if c is null
+	 * 
+	 * @param c
+	 *            the collection to populate this list from
+	 * @throws NullPointerException
+	 *             if c is null
 	 */
-	public CompressedLinkedList( Collection<? extends T> c )
-	{
-		addAll( c );
+	public CompressedLinkedList(Collection<? extends T> c) {
+		addAll(c);
 	}
 
-	
 	/**
 	 * Obtain the Entry at a given position in a list. This method of course
-	 * takes linear time, but it is intelligent enough to take the shorter of the
-	 * paths to get to the Entry required. This implies that the first or last
-	 * entry in the list is obtained in constant time, which is a very desirable
-	 * property.
-	 * For speed and flexibility, range checking is not done in this method:
-	 * Incorrect values will be returned if (n &lt; 0) or (n &gt;= size).
-	 *
-	 * @param n the number of the entry to get
+	 * takes linear time, but it is intelligent enough to take the shorter of
+	 * the paths to get to the Entry required. This implies that the first or
+	 * last entry in the list is obtained in constant time, which is a very
+	 * desirable property. For speed and flexibility, range checking is not done
+	 * in this method: Incorrect values will be returned if (n &lt; 0) or (n
+	 * &gt;= size).
+	 * 
+	 * @param n
+	 *            the number of the entry to get
 	 * @return the entry at position n
 	 */
-	Entry<T> getEntry( int n )
-	{
+	Entry<T> getEntry(int n) {
 		Entry<T> e;
-		if ( n < size / 2 ) {
-			  e = first;
-			  // n less than size/2, iterate from start
-			  while ( n-- > 0 ) {
-				  e = e.next;
-			  }
+		if (n < size / 2) {
+			e = first;
+			// n less than size/2, iterate from start
+			while (n-- > 0) {
+				e = e.next;
+			}
 		} else {
-			  e = last;
-			  // n greater than size/2, iterate from end
-			  while ( ++n < size ) {
-				  e = e.previous;
-			  }
+			e = last;
+			// n greater than size/2, iterate from end
+			while (++n < size) {
+				e = e.previous;
+			}
 		}
 		return e;
 	}
 
 	/**
 	 * Remove an entry from the list. This will adjust size and deal with
-	 *  `first' and  `last' appropriatly.
-	 *
-	 * @param e the entry to remove
+	 * `first' and `last' appropriatly.
+	 * 
+	 * @param e
+	 *            the entry to remove
 	 */
 	// Package visible for use in nested classes.
-	void removeEntry( Entry<T> e )
-	{
+	void removeEntry(Entry<T> e) {
 		modCount++;
 		size--;
-		if ( size == 0 ) {
+		if (size == 0) {
 			last = null;
 			first = last;
 		} else {
-			if ( e == first ) {
+			if (e == first) {
 				first = e.next;
 				e.next.previous = null;
-			} else if ( e == last ) {
+			} else if (e == last) {
 				last = e.previous;
 				e.previous.next = null;
 			} else {
@@ -209,41 +207,43 @@ public class CompressedLinkedList<T> extends AbstractSequentialList<T>
 
 	/**
 	 * Checks that the index is in the range of existing elements (exclusive).
-	 *
-	 * @param index the index to check
-	 * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt;= size
+	 * 
+	 * @param index
+	 *            the index to check
+	 * @throws IndexOutOfBoundsException
+	 *             if index &lt; 0 || index &gt;= size
 	 */
-	private void checkBoundsExclusive( int index )
-	{
-		if ( index < 0 || index >= size ) {
-			throw new IndexOutOfBoundsException( "Index: " + index + ", Size:"
-					+ size );
+	private void checkBoundsExclusive(int index) {
+		if (index < 0 || index >= size) {
+			throw new IndexOutOfBoundsException("Index: " + index + ", Size:"
+					+ size);
 		}
 	}
-	
+
 	/**
 	 * Checks that the index is in the range of possible elements (inclusive).
-	 *
-	 * @param index the index to check
-	 * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt; size
+	 * 
+	 * @param index
+	 *            the index to check
+	 * @throws IndexOutOfBoundsException
+	 *             if index &lt; 0 || index &gt; size
 	 */
-	private void checkBoundsInclusive( int index )
-	{
-		if ( index < 0 || index > size ) {
-			throw new IndexOutOfBoundsException( "Index: " + index + ", Size:"
-			                                    + size );
+	private void checkBoundsInclusive(int index) {
+		if (index < 0 || index > size) {
+			throw new IndexOutOfBoundsException("Index: " + index + ", Size:"
+					+ size);
 		}
 	}
 
 	/**
 	 * Returns the first element in the list.
-	 *
+	 * 
 	 * @return the first list element
-	 * @throws NoSuchElementException if the list is empty
+	 * @throws NoSuchElementException
+	 *             if the list is empty
 	 */
-	public T getFirst()
-	{
-		if ( size == 0 ) {
+	public T getFirst() {
+		if (size == 0) {
 			throw new NoSuchElementException();
 		}
 		return first.data;
@@ -251,13 +251,13 @@ public class CompressedLinkedList<T> extends AbstractSequentialList<T>
 
 	/**
 	 * Returns the last element in the list.
-	 *
+	 * 
 	 * @return the last list element
-	 * @throws NoSuchElementException if the list is empty
+	 * @throws NoSuchElementException
+	 *             if the list is empty
 	 */
-	public T getLast()
-	{
-		if ( size == 0 ) {
+	public T getLast() {
+		if (size == 0) {
 			throw new NoSuchElementException();
 		}
 		return last.data;
@@ -265,20 +265,20 @@ public class CompressedLinkedList<T> extends AbstractSequentialList<T>
 
 	/**
 	 * Remove and return the first element in the list.
-	 *
+	 * 
 	 * @return the former first element in the list
-	 * @throws NoSuchElementException if the list is empty
+	 * @throws NoSuchElementException
+	 *             if the list is empty
 	 */
-	public T removeFirst()
-	{
-		if ( size == 0 ) {
+	public T removeFirst() {
+		if (size == 0) {
 			throw new NoSuchElementException();
 		}
 		modCount++;
 		size--;
 		T r = first.data;
 
-		if ( first.next != null ) {
+		if (first.next != null) {
 			first.next.previous = null;
 		} else {
 			last = null;
@@ -291,20 +291,20 @@ public class CompressedLinkedList<T> extends AbstractSequentialList<T>
 
 	/**
 	 * Remove and return the last element in the list.
-	 *
+	 * 
 	 * @return the former last element in the list
-	 * @throws NoSuchElementException if the list is empty
+	 * @throws NoSuchElementException
+	 *             if the list is empty
 	 */
-	public T removeLast()
-	{
-		if ( size == 0 ) {
+	public T removeLast() {
+		if (size == 0) {
 			throw new NoSuchElementException();
 		}
 		modCount++;
 		size--;
 		T r = last.data;
 
-		if ( last.previous != null ) {
+		if (last.previous != null) {
 			last.previous.next = null;
 		} else {
 			first = null;
@@ -317,20 +317,20 @@ public class CompressedLinkedList<T> extends AbstractSequentialList<T>
 
 	/**
 	 * Insert an element at the first of the list.
-	 *
-	 * @param o the element to insert
+	 * 
+	 * @param o
+	 *            the element to insert
 	 */
-	public void addFirst( T o )
-	{
-		if ( first != null && first.data.equals( o ) ) {
-		  first.count++;
-		  return;
+	public void addFirst(T o) {
+		if (first != null && first.data.equals(o)) {
+			first.count++;
+			return;
 		}
-  
-		Entry<T> e = new Entry( o );
+
+		Entry<T> e = new Entry<T>(o);
 
 		modCount++;
-		if ( size == 0 ) {
+		if (size == 0) {
 			last = e;
 			first = last;
 		} else {
@@ -343,28 +343,27 @@ public class CompressedLinkedList<T> extends AbstractSequentialList<T>
 
 	/**
 	 * Insert an element at the last of the list.
-	 *
-	 * @param o the element to insert
+	 * 
+	 * @param o
+	 *            the element to insert
 	 */
-	public void addLast( T o )
-	{
-		if ( last != null && last.data.equals( o ) ) {
+	public void addLast(T o) {
+		if (last != null && last.data.equals(o)) {
 			last.count++;
 			return;
 		}
-		addLastEntry( new Entry<T>( o ) );
+		addLastEntry(new Entry<T>(o));
 	}
-
 
 	/**
 	 * Inserts an element at the end of the list.
-	 *
-	 * @param e the entry to add
+	 * 
+	 * @param e
+	 *            the entry to add
 	 */
-	private void addLastEntry( Entry<T> e )
-	{
+	private void addLastEntry(Entry<T> e) {
 		modCount++;
-		if ( size == 0 ) {
+		if (size == 0) {
 			last = e;
 			first = last;
 		} else {
@@ -378,15 +377,15 @@ public class CompressedLinkedList<T> extends AbstractSequentialList<T>
 	/**
 	 * Returns true if the list contains the given object. Comparison is done by
 	 * <code>o == null ? e = null : o.equals(e)</code>.
-	 *
-	 * @param o the element to look for
+	 * 
+	 * @param o
+	 *            the element to look for
 	 * @return true if it is found
 	 */
-	public boolean contains( Object o )
-	{
+	public boolean contains(Object o) {
 		Entry<T> e = first;
-		while ( e != null )	{
-			if ( equals( o, e.data ) ) {
+		while (e != null) {
+			if (equals(o, e.data)) {
 				return true;
 			}
 			e = e.next;
@@ -396,43 +395,42 @@ public class CompressedLinkedList<T> extends AbstractSequentialList<T>
 
 	/**
 	 * Returns the size of the list.
-	 *
+	 * 
 	 * @return the list size
 	 */
-	public int size()
-	{
+	public int size() {
 		return size;
 	}
 
 	/**
 	 * Adds an element to the end of the list.
-	 *
-	 * @param e the entry to add
+	 * 
+	 * @param e
+	 *            the entry to add
 	 * @return true, as it always succeeds
 	 */
-	public boolean add( T o )
-	{
-		if ( last != null && last.data.equals( o ) ) {
+	public boolean add(T o) {
+		if (last != null && last.data.equals(o)) {
 			last.count++;
 			return true;
 		}
-		addLastEntry( new Entry<T>( o ) );
+		addLastEntry(new Entry<T>(o));
 		return true;
 	}
 
 	/**
 	 * Removes the entry at the lowest index in the list that matches the given
 	 * object, comparing by <code>o == null ? e = null : o.equals(e)</code>.
-	 *
-	 * @param o the object to remove
+	 * 
+	 * @param o
+	 *            the object to remove
 	 * @return true if an instance of the object was removed
 	 */
-	public boolean remove( Object o )
-	{
+	public boolean remove(Object o) {
 		Entry<T> e = first;
-		while ( e != null )	{
-			if ( equals( o, e.data ) ) {
-				removeEntry( e );
+		while (e != null) {
+			if (equals(o, e.data)) {
+				removeEntry(e);
 				return true;
 			}
 			e = e.next;
@@ -442,46 +440,52 @@ public class CompressedLinkedList<T> extends AbstractSequentialList<T>
 
 	/**
 	 * Append the elements of the collection in iteration order to the end of
-	 * this list. If this list is modified externally (for example, if this
-	 * list is the collection), behavior is unspecified.
-	 *
-	 * @param c the collection to append
+	 * this list. If this list is modified externally (for example, if this list
+	 * is the collection), behavior is unspecified.
+	 * 
+	 * @param c
+	 *            the collection to append
 	 * @return true if the list was modified
-	 * @throws NullPointerException if c is null
+	 * @throws NullPointerException
+	 *             if c is null
 	 */
-	public boolean addAll( Collection<? extends T> c )
-	{
-		return addAll( size, c );
+	/*
+	public boolean addAll(Collection<? extends T> c) {
+		return addAll(size, c);
 	}
+	*/
 
 	/**
 	 * Insert the elements of the collection in iteration order at the given
-	 * index of this list. If this list is modified externally (for example,
-	 * if this list is the collection), behavior is unspecified.
-	 *
-	 * @param c the collection to append
+	 * index of this list. If this list is modified externally (for example, if
+	 * this list is the collection), behavior is unspecified.
+	 * 
+	 * @param c
+	 *            the collection to append
 	 * @return true if the list was modified
-	 * @throws NullPointerException if c is null
-	 * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt; size()
+	 * @throws NullPointerException
+	 *             if c is null
+	 * @throws IndexOutOfBoundsException
+	 *             if index &lt; 0 || index &gt; size()
 	 */
-	public boolean addAll( int index, Collection<? extends T> c )
-	{
-		checkBoundsInclusive( index );
+	public boolean addAll(int index, Collection<? extends T> c) {
+		checkBoundsInclusive(index);
 		int csize = c.size();
 
-		if ( csize == 0 ) {
+		if (csize == 0) {
 			return false;
 		}
 
 		Iterator<? extends T> itr = c.iterator();
 
 		// Get the entries just before and after index. If index is at the start
-		// of the list, BEFORE is null. If index is at the end of the list, AFTER
+		// of the list, BEFORE is null. If index is at the end of the list,
+		// AFTER
 		// is null. If the list is empty, both are null.
 		Entry<T> after = null;
 		Entry<T> before = null;
-		if ( index != size ) {
-			after = getEntry( index );
+		if (index != size) {
+			after = getEntry(index);
 			before = after.previous;
 		} else {
 			before = last;
@@ -491,27 +495,27 @@ public class CompressedLinkedList<T> extends AbstractSequentialList<T>
 		// to the first entry, in order to deal with the case where (c == this).
 		// [Actually, we don't have to handle this case to fufill the
 		// contract for addAll(), but Sun's implementation appears to.]
-		Object o = itr.next();
-		if ( before != null ) {
-			while ( before.data.equals( o ) ) {
+		T o = itr.next();
+		if (before != null) {
+			while (before.data.equals(o)) {
 				before.count++;
 				o = itr.next();
 			}
 		}
-	
-		Entry<T> e = new Entry( o );
+
+		Entry<T> e = new Entry(o);
 		e.previous = before;
 		Entry<T> prev = e;
 		Entry<T> firstNew = e;
 		size++;
 
 		// Create and link all the remaining entries.
-		for ( int pos = 1; pos < csize; pos++ ) {
+		for (int pos = 1; pos < csize; pos++) {
 			o = itr.next();
-			if ( e.data.equals( o ) ) {
+			if (e.data.equals(o)) {
 				e.count++;
 			} else {
-				e = new Entry( o );
+				e = new Entry(o);
 				e.previous = prev;
 				prev.next = e;
 				prev = e;
@@ -520,23 +524,23 @@ public class CompressedLinkedList<T> extends AbstractSequentialList<T>
 		}
 
 		// Check if the last element inserted is compressible.
-		if ( e.next != null && e.data.equals( e.next.data ) ) {
+		if (e.next != null && e.data.equals(e.next.data)) {
 			e.next.count++;
 			e.previous.next = e.next;
 			e.next.previous = e.previous;
 			size--;
 		}
-	
+
 		// Link the new chain of entries into the list.
 		modCount++;
 		prev.next = after;
-		if ( after != null ) {
+		if (after != null) {
 			after.previous = e;
 		} else {
 			last = e;
 		}
 
-		if ( before != null ) {
+		if (before != null) {
 			before.next = firstNew;
 		} else {
 			first = firstNew;
@@ -547,9 +551,8 @@ public class CompressedLinkedList<T> extends AbstractSequentialList<T>
 	/**
 	 * Remove all elements from this list.
 	 */
-	public void clear()
-	{
-		if ( size > 0 ) {
+	public void clear() {
+		if (size > 0) {
 			modCount++;
 			first = null;
 			last = null;
@@ -559,54 +562,57 @@ public class CompressedLinkedList<T> extends AbstractSequentialList<T>
 
 	/**
 	 * Return the element at index.
-	 *
-	 * @param index the place to look
+	 * 
+	 * @param index
+	 *            the place to look
 	 * @return the element at index
-	 * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt;= size()
+	 * @throws IndexOutOfBoundsException
+	 *             if index &lt; 0 || index &gt;= size()
 	 */
-	public T get( int index )
-	{
-		checkBoundsExclusive( index );
-		return getEntry( index ).data;
+	public T get(int index) {
+		checkBoundsExclusive(index);
+		return getEntry(index).data;
 	}
 
-	public int getCount( int index )
-	{
-	  checkBoundsExclusive( index );
-	  return getEntry( index ).count;
+	public int getCount(int index) {
+		checkBoundsExclusive(index);
+		return getEntry(index).count;
 	}
 
 	/**
 	 * Descrement the entry count. If it's 1, do a real remove.
-	 *
-	 * @param index the location of the element to remove
+	 * 
+	 * @param index
+	 *            the location of the element to remove
 	 * @return the removed element
-	 * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt; size()
+	 * @throws IndexOutOfBoundsException
+	 *             if index &lt; 0 || index &gt; size()
 	 */
-	public T weakRemove( int index )
-	{
-		checkBoundsExclusive( index );
-		Entry<T> e = getEntry( index );
-		if ( e.count == 1 ) {
-			removeEntry( e );
+	public T weakRemove(int index) {
+		checkBoundsExclusive(index);
+		Entry<T> e = getEntry(index);
+		if (e.count == 1) {
+			removeEntry(e);
 		} else {
 			e.count--;
 		}
 		return e.data;
-	 }
-	
+	}
+
 	/**
 	 * Replace the element at the given location in the list.
-	 *
-	 * @param index which index to change
-	 * @param o the new element
+	 * 
+	 * @param index
+	 *            which index to change
+	 * @param o
+	 *            the new element
 	 * @return the prior element
-	 * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt;= size()
+	 * @throws IndexOutOfBoundsException
+	 *             if index &lt; 0 || index &gt;= size()
 	 */
-	public T set( int index, T o )
-	{
-		checkBoundsExclusive( index );
-		Entry<T> e = getEntry( index );
+	public T set(int index, T o) {
+		checkBoundsExclusive(index);
+		Entry<T> e = getEntry(index);
 		T old = e.data;
 		e.data = o;
 		return old;
@@ -614,31 +620,34 @@ public class CompressedLinkedList<T> extends AbstractSequentialList<T>
 
 	/**
 	 * Inserts an element in the given position in the list.
-	 *
-	 * @param index where to insert the element
-	 * @param o the element to insert
-	 * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt; size()
+	 * 
+	 * @param index
+	 *            where to insert the element
+	 * @param o
+	 *            the element to insert
+	 * @throws IndexOutOfBoundsException
+	 *             if index &lt; 0 || index &gt; size()
 	 */
-	public void add( int index, T o )
-	{
-		checkBoundsInclusive( index );
+	public void add(int index, T o) {
+		checkBoundsInclusive(index);
 
-		if ( index < size ) {
-			Entry<T> after = getEntry( index );
-			if ( after != null && after.previous != null && after.previous.data.equals( o ) ) {
+		if (index < size) {
+			Entry<T> after = getEntry(index);
+			if (after != null && after.previous != null
+					&& after.previous.data.equals(o)) {
 				after.previous.count++;
 				return;
 			}
-			if ( after != null && after.data.equals( o ) ) {
+			if (after != null && after.data.equals(o)) {
 				after.count++;
 				return;
 			}
 
-			Entry<T> e = new Entry<T>( o );
+			Entry<T> e = new Entry<T>(o);
 			modCount++;
 			e.next = after;
 			e.previous = after.previous;
-			if ( after.previous == null ) {
+			if (after.previous == null) {
 				first = e;
 			} else {
 				after.previous.next = e;
@@ -646,41 +655,42 @@ public class CompressedLinkedList<T> extends AbstractSequentialList<T>
 			after.previous = e;
 			size++;
 		} else {
-			if ( last != null && last.data.equals( o ) ) {
+			if (last != null && last.data.equals(o)) {
 				last.count++;
 				return;
 			}
-			addLastEntry( new Entry( o ) );
+			addLastEntry(new Entry(o));
 		}
 	}
 
 	/**
 	 * Removes the element at the given position from the list.
-	 *
-	 * @param index the location of the element to remove
+	 * 
+	 * @param index
+	 *            the location of the element to remove
 	 * @return the removed element
-	 * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt; size()
+	 * @throws IndexOutOfBoundsException
+	 *             if index &lt; 0 || index &gt; size()
 	 */
-	public T remove( int index )
-	{
-		checkBoundsExclusive( index );
-		Entry<T> e = getEntry( index );
-		removeEntry( e );
+	public T remove(int index) {
+		checkBoundsExclusive(index);
+		Entry<T> e = getEntry(index);
+		removeEntry(e);
 		return e.data;
 	}
 
 	/**
 	 * Returns the first index where the element is located in the list, or -1.
-	 *
-	 * @param o the element to look for
+	 * 
+	 * @param o
+	 *            the element to look for
 	 * @return its position, or -1 if not found
 	 */
-	public int indexOf( Object o )
-	{
+	public int indexOf(Object o) {
 		int index = 0;
 		Entry<T> e = first;
-		while ( e != null ) {
-			if ( equals( o, e.data ) ) {
+		while (e != null) {
+			if (equals(o, e.data)) {
 				return index;
 			}
 			index++;
@@ -691,16 +701,16 @@ public class CompressedLinkedList<T> extends AbstractSequentialList<T>
 
 	/**
 	 * Returns the last index where the element is located in the list, or -1.
-	 *
-	 * @param o the element to look for
+	 * 
+	 * @param o
+	 *            the element to look for
 	 * @return its position, or -1 if not found
 	 */
-	public int lastIndexOf( Object o )
-	{
+	public int lastIndexOf(Object o) {
 		int index = size - 1;
 		Entry<T> e = last;
-		while ( e != null ) {
-			if ( equals( o, e.data ) ) {
+		while (e != null) {
+			if (equals(o, e.data)) {
 				return index;
 			}
 			index--;
@@ -713,47 +723,47 @@ public class CompressedLinkedList<T> extends AbstractSequentialList<T>
 	 * Obtain a ListIterator over this list, starting at a given index. The
 	 * ListIterator returned by this method supports the add, remove and set
 	 * methods.
-	 *
-	 * @param index the index of the element to be returned by the first call to
-	 *        next(), or size() to be initially positioned at the end of the list
-	 * @throws IndexOutOfBoundsException if index &lt; 0 || index &gt; size()
+	 * 
+	 * @param index
+	 *            the index of the element to be returned by the first call to
+	 *            next(), or size() to be initially positioned at the end of the
+	 *            list
+	 * @throws IndexOutOfBoundsException
+	 *             if index &lt; 0 || index &gt; size()
 	 */
-	public ListIterator<T> listIterator( int index )
-	{
-		checkBoundsInclusive( index );
-		return new LinkedListItr<T>( index );
+	public ListIterator<T> listIterator(int index) {
+		checkBoundsInclusive(index);
+		return new LinkedListItr<T>(index);
 	}
 
 	/**
 	 * Create a shallow copy of this LinkedList (the elements are not cloned).
-	 *
-	 * @return an object of the same class as this object, containing the
-	 *         same elements in the same order
+	 * 
+	 * @return an object of the same class as this object, containing the same
+	 *         elements in the same order
 	 */
-	public Object clone()
-	{
+	public Object clone() {
 		LinkedList<T> copy = null;
 		try {
-			copy = ( LinkedList<T> )super.clone();
-		} catch ( CloneNotSupportedException ex ) {
+			copy = (LinkedList<T>) super.clone();
+		} catch (CloneNotSupportedException ex) {
 		}
 		copy.clear();
-		copy.addAll( this );
-		
+		copy.addAll(this);
+
 		return copy;
 	}
 
 	/**
 	 * Returns an array which contains the elements of the list in order.
-	 *
+	 * 
 	 * @return an array containing the list elements
 	 */
-	public Object[] toArray()
-	{
-		Object[] array = new Object[ size ];
+	public Object[] toArray() {
+		Object[] array = new Object[size];
 		Entry<T> e = first;
-		for ( int i = 0; i < size; i++ ) {
-			array[ i ] = e.data;
+		for (int i = 0; i < size; i++) {
+			array[i] = e.data;
 			e = e.next;
 		}
 		return array;
@@ -761,66 +771,64 @@ public class CompressedLinkedList<T> extends AbstractSequentialList<T>
 
 	/**
 	 * Returns an Array whose component type is the runtime component type of
-	 * the passed-in Array.  The returned Array is populated with all of the
-	 * elements in this LinkedList.  If the passed-in Array is not large enough
-	 * to store all of the elements in this List, a new Array will be created 
-	 * and returned; if the passed-in Array is <i>larger</i> than the size
-	 * of this List, then size() index will be set to null.
-	 *
-	 * @param a the passed-in Array
+	 * the passed-in Array. The returned Array is populated with all of the
+	 * elements in this LinkedList. If the passed-in Array is not large enough
+	 * to store all of the elements in this List, a new Array will be created
+	 * and returned; if the passed-in Array is <i>larger</i> than the size of
+	 * this List, then size() index will be set to null.
+	 * 
+	 * @param a
+	 *            the passed-in Array
 	 * @return an array representation of this list
-	 * @throws ArrayStoreException if the runtime type of a does not allow
-	 *         an element in this list
-	 * @throws NullPointerException if a is null
+	 * @throws ArrayStoreException
+	 *             if the runtime type of a does not allow an element in this
+	 *             list
+	 * @throws NullPointerException
+	 *             if a is null
 	 */
-	public <S> S[] toArray( S[] a )
-	{
-		if ( a.length < size ) {
-			a = ( S[] )Array.newInstance( a.getClass().getComponentType(), size );
-		} else if ( a.length > size ) {
-			a[ size ] = null;
+	public <S> S[] toArray(S[] a) {
+		if (a.length < size) {
+			a = (S[]) Array.newInstance(a.getClass().getComponentType(), size);
+		} else if (a.length > size) {
+			a[size] = null;
 		}
 		Entry<T> e = first;
-		for ( int i = 0; i < size; i++ ) {
-			a[ i ] = ( S )e.data;
+		for (int i = 0; i < size; i++) {
+			a[i] = (S) e.data;
 			e = e.next;
 		}
 		return a;
 	}
 
 	/**
-	* @since 1.5
-	*/
-	public boolean offer( T value )
-	{
-		return add( value );
+	 * @since 1.5
+	 */
+	public boolean offer(T value) {
+		return add(value);
 	}
-	
+
 	/**
-	* @since 1.5
-	*/
-	public T element()
-	{
+	 * @since 1.5
+	 */
+	public T element() {
 		return getFirst();
 	}
 
 	/**
-	* @since 1.5
-	*/
-	public T peek()
-	{
-		if ( size == 0 ) {
+	 * @since 1.5
+	 */
+	public T peek() {
+		if (size == 0) {
 			return null;
 		}
 		return getFirst();
 	}
- 
+
 	/**
-	* @since 1.5
-	*/
-	public T poll()
-	{
-		if ( size == 0 ) {
+	 * @since 1.5
+	 */
+	public T poll() {
+		if (size == 0) {
 			return null;
 		}
 		return removeFirst();
@@ -829,74 +837,74 @@ public class CompressedLinkedList<T> extends AbstractSequentialList<T>
 	/**
 	 * @since 1.5
 	 */
-	public T remove()
-	{
+	public T remove() {
 		return removeFirst();
 	}
- 
-	
+
 	/**
 	 * Serializes this object to the given stream.
-	 *
-	 * @param s the stream to write to
-	 * @throws IOException if the underlying stream fails
+	 * 
+	 * @param s
+	 *            the stream to write to
+	 * @throws IOException
+	 *             if the underlying stream fails
 	 * @serialData the size of the list (int), followed by all the elements
 	 *             (Object) in proper order
 	 */
-	private void writeObject( ObjectOutputStream s ) throws IOException
-	{
+	private void writeObject(ObjectOutputStream s) throws IOException {
 		s.defaultWriteObject();
-		s.writeInt( size );
+		s.writeInt(size);
 		Entry<T> e = first;
-		while ( e != null ) {
-			s.writeObject( e.data );
+		while (e != null) {
+			s.writeObject(e.data);
 			e = e.next;
 		}
 	}
 
 	/**
 	 * Deserializes this object from the given stream.
-	 *
-	 * @param s the stream to read from
-	 * @throws ClassNotFoundException if the underlying stream fails
-	 * @throws IOException if the underlying stream fails
+	 * 
+	 * @param s
+	 *            the stream to read from
+	 * @throws ClassNotFoundException
+	 *             if the underlying stream fails
+	 * @throws IOException
+	 *             if the underlying stream fails
 	 * @serialData the size of the list (int), followed by all the elements
 	 *             (Object) in proper order
 	 */
-	private void readObject( ObjectInputStream s )
-		throws IOException, ClassNotFoundException
-	{
+	private void readObject(ObjectInputStream s) throws IOException,
+			ClassNotFoundException {
 		s.defaultReadObject();
 		int i = s.readInt();
-		while ( --i >= 0 ) {
-			addLastEntry( new Entry<T>( ( T )s.readObject() ) );
+		while (--i >= 0) {
+			addLastEntry(new Entry<T>((T) s.readObject()));
 		}
 	}
 
-	 /**
+	/**
 	 * Compare two objects according to Collection semantics.
-	 *
-	 * @param o1 the first object
-	 * @param o2 the second object
+	 * 
+	 * @param o1
+	 *            the first object
+	 * @param o2
+	 *            the second object
 	 * @return o1 == null ? o2 == null : o1.equals(o2)
 	 */
 	// Package visible for use throughout java.util.
 	// It may be inlined since it is final.
-	static final boolean equals( Object o1, Object o2 )
-	{
-		return o1 == null ? o2 == null : o1.equals( o2 );
+	static final boolean equals(Object o1, Object o2) {
+		return o1 == null ? o2 == null : o1.equals(o2);
 	}
 
 	/**
-	 * A ListIterator over the list. This class keeps track of its
-	 * position in the list and the two list entries it is between.
-	 *
+	 * A ListIterator over the list. This class keeps track of its position in
+	 * the list and the two list entries it is between.
+	 * 
 	 * @author Original author unknown
 	 * @author Eric Blake (ebb9@email.byu.edu)
 	 */
-	private final class LinkedListItr<I>
-		implements ListIterator<I>
-	{
+	private final class LinkedListItr<I> implements ListIterator<I> {
 		/** Number of modifications we know about. */
 		private int knownMod = modCount;
 
@@ -914,16 +922,16 @@ public class CompressedLinkedList<T> extends AbstractSequentialList<T>
 
 		/**
 		 * Initialize the iterator.
-		 *
-		 * @param index the initial index
+		 * 
+		 * @param index
+		 *            the initial index
 		 */
-		LinkedListItr( int index )
-		{
-			if ( index == size ) {
+		LinkedListItr(int index) {
+			if (index == size) {
 				next = null;
-				previous = ( Entry<I> )last;
+				previous = (Entry<I>) last;
 			} else {
-				next = ( Entry<I> )getEntry( index );
+				next = (Entry<I>) getEntry(index);
 				previous = next.previous;
 			}
 			position = index;
@@ -931,75 +939,76 @@ public class CompressedLinkedList<T> extends AbstractSequentialList<T>
 
 		/**
 		 * Checks for iterator consistency.
-		 *
-		 * @throws ConcurrentModificationException if the list was modified
+		 * 
+		 * @throws ConcurrentModificationException
+		 *             if the list was modified
 		 */
-		private void checkMod()
-		{
-			if ( knownMod != modCount ) {
+		private void checkMod() {
+			if (knownMod != modCount) {
 				throw new ConcurrentModificationException();
 			}
 		}
 
 		/**
 		 * Returns the index of the next element.
-		 *
+		 * 
 		 * @return the next index
-		 * @throws ConcurrentModificationException if the list was modified
+		 * @throws ConcurrentModificationException
+		 *             if the list was modified
 		 */
-		public int nextIndex()
-		{
+		public int nextIndex() {
 			checkMod();
 			return position;
 		}
 
 		/**
 		 * Returns the index of the previous element.
-		 *
+		 * 
 		 * @return the previous index
-		 * @throws ConcurrentModificationException if the list was modified
+		 * @throws ConcurrentModificationException
+		 *             if the list was modified
 		 */
-		public int previousIndex()
-		{
+		public int previousIndex() {
 			checkMod();
 			return position - 1;
 		}
 
 		/**
 		 * Returns true if more elements exist via next.
-		 *
+		 * 
 		 * @return true if next will succeed
-		 * @throws ConcurrentModificationException if the list was modified
+		 * @throws ConcurrentModificationException
+		 *             if the list was modified
 		 */
-		public boolean hasNext()
-		{
+		public boolean hasNext() {
 			checkMod();
-			return ( next != null );
+			return (next != null);
 		}
 
 		/**
 		 * Returns true if more elements exist via previous.
-		 *
+		 * 
 		 * @return true if previous will succeed
-		 * @throws ConcurrentModificationException if the list was modified
+		 * @throws ConcurrentModificationException
+		 *             if the list was modified
 		 */
-		public boolean hasPrevious()
-		{
+		public boolean hasPrevious() {
 			checkMod();
-			return ( previous != null );
+			return (previous != null);
 		}
 
 		/**
 		 * Returns the next element.
-		 *
+		 * 
 		 * @return the next element
-		 * @throws ConcurrentModificationException if the list was modified
-		 * @throws NoSuchElementException if there is no next
+		 * @throws ConcurrentModificationException
+		 *             if the list was modified
+		 * @throws NoSuchElementException
+		 *             if there is no next
 		 */
-		public I next()
-		{
+		public I next() {
 			checkMod();
-			if ( next == null ) {
+			if (next == null) {
 				throw new NoSuchElementException();
 			}
 			position++;
@@ -1011,15 +1020,16 @@ public class CompressedLinkedList<T> extends AbstractSequentialList<T>
 
 		/**
 		 * Returns the previous element.
-		 *
+		 * 
 		 * @return the previous element
-		 * @throws ConcurrentModificationException if the list was modified
-		 * @throws NoSuchElementException if there is no previous
+		 * @throws ConcurrentModificationException
+		 *             if the list was modified
+		 * @throws NoSuchElementException
+		 *             if there is no previous
 		 */
-		public I previous()
-		{
+		public I previous() {
 			checkMod();
-			if ( previous == null ) {
+			if (previous == null) {
 				throw new NoSuchElementException();
 			}
 			position--;
@@ -1031,58 +1041,61 @@ public class CompressedLinkedList<T> extends AbstractSequentialList<T>
 
 		/**
 		 * Remove the most recently returned element from the list.
-		 *
-		 * @throws ConcurrentModificationException if the list was modified
-		 * @throws IllegalStateException if there was no last element
+		 * 
+		 * @throws ConcurrentModificationException
+		 *             if the list was modified
+		 * @throws IllegalStateException
+		 *             if there was no last element
 		 */
-		public void remove()
-		{
+		public void remove() {
 			checkMod();
-			if ( lastReturned == null ) {
+			if (lastReturned == null) {
 				throw new IllegalStateException();
 			}
 
 			// Adjust the position to before the removed element, if the element
 			// being removed is behind the cursor.
-			if ( lastReturned == previous ) {
+			if (lastReturned == previous) {
 				position--;
 			}
 
 			next = lastReturned.next;
 			previous = lastReturned.previous;
-			removeEntry( ( Entry<T> )lastReturned );
+			removeEntry((Entry<T>) lastReturned);
 			knownMod++;
 
 			lastReturned = null;
 		}
 
 		/**
-		 * Adds an element between the previous and next, and advance to the next.
-		 *
-		 * @param o the element to add
-		 * @throws ConcurrentModificationException if the list was modified
+		 * Adds an element between the previous and next, and advance to the
+		 * next.
+		 * 
+		 * @param o
+		 *            the element to add
+		 * @throws ConcurrentModificationException
+		 *             if the list was modified
 		 */
-		public void add( I o )
-		{
+		public void add(I o) {
 			checkMod();
 			modCount++;
 			knownMod++;
 			size++;
 			position++;
-			Entry<I> e = new Entry<I>( o );
+			Entry<I> e = new Entry<I>(o);
 			e.previous = previous;
 			e.next = next;
 
-			if ( previous != null ) {
+			if (previous != null) {
 				previous.next = e;
 			} else {
-				first = ( Entry<T> )e;
+				first = (Entry<T>) e;
 			}
 
-			if ( next != null ) {
+			if (next != null) {
 				next.previous = e;
 			} else {
-				last = ( Entry<T> )e;
+				last = (Entry<T>) e;
 			}
 
 			previous = e;
@@ -1091,15 +1104,17 @@ public class CompressedLinkedList<T> extends AbstractSequentialList<T>
 
 		/**
 		 * Changes the contents of the element most recently returned.
-		 *
-		 * @param o the new element
-		 * @throws ConcurrentModificationException if the list was modified
-		 * @throws IllegalStateException if there was no last element
+		 * 
+		 * @param o
+		 *            the new element
+		 * @throws ConcurrentModificationException
+		 *             if the list was modified
+		 * @throws IllegalStateException
+		 *             if there was no last element
 		 */
-		public void set( I o )
-		{
+		public void set(I o) {
 			checkMod();
-			if ( lastReturned == null ) {
+			if (lastReturned == null) {
 				throw new IllegalStateException();
 			}
 			lastReturned.data = o;

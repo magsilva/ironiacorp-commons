@@ -141,7 +141,7 @@ public final class AnnotationUtil
 	 * @param clazz Class to be checked.
 	 * @return True if the class is annotated, False otherwise.
 	 */
-	public static boolean hasAnnotations(Class clazz)
+	public static boolean hasAnnotations(Class<?> clazz)
 	{
 		if (clazz.getAnnotations().length != 0) {
 			return true;
@@ -203,7 +203,7 @@ public final class AnnotationUtil
 	 * @return The fields that are annotated. If no annotated fields were found, it
 	 * returns an empty array.
 	 */
-	public static Field[] getAnnotatedFields(Class clazz)
+	public static Field[] getAnnotatedFields(Class<?> clazz)
 	{
 		return getAnnotatedFields(clazz, null);	
 	}
@@ -216,7 +216,7 @@ public final class AnnotationUtil
 	 * @return The fields that are annotated. If no annotated fields were found, it
 	 * returns an empty array.
 	 */
-	public static Field[] getAnnotatedFields(Class clazz, Class annClass)
+	public static Field[] getAnnotatedFields(Class<?> clazz, Class<?> annClass)
 	{
 		ArrayList<Field> properties = new ArrayList<Field>();
 		Field[] fields = clazz.getDeclaredFields();

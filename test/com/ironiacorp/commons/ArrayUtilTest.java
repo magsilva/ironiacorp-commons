@@ -170,7 +170,7 @@ public class ArrayUtilTest
 	@Test
 	public void testFindObjectArrayClass5()
 	{
-		assertNull(ArrayUtil.find((Object[]) null, (Class) null));
+		assertNull(ArrayUtil.find((Object[]) null, (Class<?>) null));
 	}
 
 

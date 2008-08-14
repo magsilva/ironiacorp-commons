@@ -47,6 +47,7 @@ import org.hibernate.stat.Statistics;
  * 
  * @author Marco Aurélio Graciotto Silva
  */
+@SuppressWarnings("unchecked")
 public abstract class SessionFactoryWrapper implements SessionFactory
 {
 	/**

@@ -148,7 +148,7 @@ public final class ArrayUtil
 	 * 
 	 * @return The object (if found) or null otherwise.
 	 */
-	public static Object find(Object[] array, Class targetClass)
+	public static Object find(Object[] array, Class<?> targetClass)
 	{
 		if (array == null) {
 			return null;

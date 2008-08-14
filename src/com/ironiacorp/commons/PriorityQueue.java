@@ -18,7 +18,7 @@ public class PriorityQueue<E> extends AbstractList<E> implements Serializable
 	private final static int DEFAULT_PRIORITY_COUNT = 10;
 	private final static int DEFAULT_PRIORITY = 0;
 
-	private List<E> queue[];
+	private List<E>[] queue;
 
 	public PriorityQueue()
 	{
@@ -35,6 +35,7 @@ public class PriorityQueue<E> extends AbstractList<E> implements Serializable
 		this(null, count);
 	}
 
+	@SuppressWarnings("unchecked")
 	public PriorityQueue(Collection<E> col, int count)
 	{
 		if (count <= 0) {
