@@ -193,7 +193,6 @@
 			<groupId>javax.activation</groupId>
 			<artifactId>activation</artifactId>
 			<version>[1.1,)</version>
-			<scope>runtime</scope>
 		</dependency>
 		
 		<dependency>
@@ -227,6 +226,19 @@
 			<artifactId>ant</artifactId>
 			<version>1.7.1</version>
 		</dependency>
+
+		<dependency>
+			<groupId>javax.xml.soap</groupId>
+			<artifactId>saaj-api</artifactId>
+			<version>1.3</version>
+		</dependency> 
+
+		<dependency>
+			<groupId>javax.xml.soap</groupId>
+			<artifactId>saaj-impl</artifactId>
+			<version>1.3</version>
+			<scope>runtime</scope>
+		</dependency> 
 	</dependencies>
 
 	<build>
@@ -256,8 +268,8 @@
 					<fork>true</fork>
 					<meminitial>128m</meminitial>
 					<maxmem>512m</maxmem>
-					<source>1.5</source>
-					<target>1.5</target>
+					<source>1.6</source>
+					<target>1.6</target>
 				</configuration>
 			</plugin>
 

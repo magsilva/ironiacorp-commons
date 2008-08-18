@@ -5,22 +5,6 @@
 		<format>zip</format>
 	</formats>
 	<includeBaseDirectory>false</includeBaseDirectory>
-	<fileSets>
-		<fileSet>
-			<directory>${basedir}/config</directory>
-			<outputDirectory>config/</outputDirectory>
-		</fileSet>
-		<fileSet>
-			<directory>${basedir}/domains</directory>
-			<outputDirectory>domains/</outputDirectory>
-		</fileSet>
-	</fileSets>
-	<files>
-		<file>
-			<source>${basedir}/target/sysrev.jar</source>
-			<outputDirectory>/</outputDirectory>
-		</file>
-	</files>
 	<dependencySets>
 		<dependencySet>
 			<unpack>false</unpack>
