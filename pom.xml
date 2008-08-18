@@ -28,7 +28,6 @@
 		<url>http://www.ironiacorp.com</url>
 	</organization>
 
-	<!-- 
 	<repositories>
 		<repository>
 			<id>central</id>
@@ -43,11 +42,24 @@
 			<snapshots>
 				<enabled>true</enabled>
 				<updatePolicy>always</updatePolicy>
-				<updatePolicy>interval:60</updatePolicy>
 				<checksumPolicy>warn</checksumPolicy>
 			</snapshots>
 		</repository>
 
+		<repository>
+			<id>labes-icmc-apps-release</id>
+			<url>http://www.labes.icmc.usp.br:8080/artifactory/repo</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>labes-icmc-apps-devel</id>
+			<url>http://www.labes.icmc.usp.br:8080/artifactory/repo</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+		</repository>
 	</repositories>
 
 	<pluginRepositories>
@@ -88,7 +100,6 @@
 			</snapshots>
 		</pluginRepository>
 	</pluginRepositories>
-	-->
 
 	<dependencies>
 		<dependency>
@@ -215,7 +226,7 @@
 			<groupId>org.apache.ant</groupId>
 			<artifactId>ant</artifactId>
 			<version>1.7.1</version>
-		</dependency> 
+		</dependency>
 	</dependencies>
 
 	<build>

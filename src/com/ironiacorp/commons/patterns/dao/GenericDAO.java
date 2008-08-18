@@ -60,9 +60,15 @@ public abstract class GenericDAO<T, I> implements DAO<T, I>
 	@SuppressWarnings("unchecked")
 	public List<T> findByExample(T example)
 	{
-		return findByExample(JavaBeanUtil.mapBean(example));
+		return findByExample((T) JavaBeanUtil.mapBean(example));
 	}
 	
+	public List<T> findByExample(Map<String, Serializable> mapBean)
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	/**
 	 * Remove an object from the datasource.
 	 * 
