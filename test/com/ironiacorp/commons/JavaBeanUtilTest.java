@@ -18,7 +18,6 @@ Copyright (C) 2007 Marco Aurelio Graciotto Silva <magsilva@gmail.com>
 
 package com.ironiacorp.commons;
 
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -165,6 +164,25 @@ public class JavaBeanUtilTest
 	{
 		Map mapping = JavaBeanUtil.mapBeanUsingFields(annotatedBean);
 		assertEquals(goodBeanMapping, mapping);
+	}
+	
+	/*
+	int baseNameSize = dir.getName().length();
+		String className = dir.getName().substring(baseNameSize);
+		className = className.replaceAll(File.separator, ReflectionUtil.PACKAGE_DELIMITER);
+		if (className.endsWith(ReflectionUtil.CLASS_FILE_EXTENSION)) {
+			className = className.substring(0, className.lastIndexOf(ReflectionUtil.CLASS_FILE_EXTENSION));
+		}
+		if (className.endsWith(ReflectionUtil.JAVA_FILE_EXTENSION)) {
+			className = className.substring(0, className.lastIndexOf(ReflectionUtil.JAVA_FILE_EXTENSION));
+		}
+		
+	 */
+	
+	@Test
+	public void testToString()
+	{
+		assertEquals("com.ironiacorp.Test", JavaBeanUtil.toString("/arg", "/arg/com/ironiacorp/Test.java"));
 	}
 
 }

@@ -50,7 +50,9 @@ public final class ReflectionUtil
 	}
 	
 	public static String PACKAGE_DELIMITER = ".";
-	
+
+	public static String JAVA_FILE_EXTENSION = ".java";
+
 	public static String CLASS_FILE_EXTENSION = ".class";
 
 	public static String JAR_FILE_EXTENSION = ".jar";

@@ -18,6 +18,8 @@ Copyright (C) 2007 Marco Aurelio Graciotto Silva <magsilva@gmail.com>
 
 package com.ironiacorp.commons;
 
+import java.io.File;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
@@ -389,6 +391,26 @@ public final class JavaBeanUtil
 		}
 		
 		return propertyFields.toArray(new String[0]);
+	}
+
+	public static String toString(File dir, File filename)
+	{
+		return JavaBeanUtil.toString(dir.getName(), filename.getName());
+	}
+	
+	public static String toString(String dir, String filename)
+	{
+		int baseNameSize = dir.length();
+		String className = dir.substring(baseNameSize);
+		className = className.replaceAll(File.separator, ReflectionUtil.PACKAGE_DELIMITER);
+		if (className.endsWith(ReflectionUtil.CLASS_FILE_EXTENSION)) {
+			className = className.substring(0, className.lastIndexOf(ReflectionUtil.CLASS_FILE_EXTENSION));
+		}
+		if (className.endsWith(ReflectionUtil.JAVA_FILE_EXTENSION)) {
+			className = className.substring(0, className.lastIndexOf(ReflectionUtil.JAVA_FILE_EXTENSION));
+		}
+		
+		return className;
 	}
 
 }

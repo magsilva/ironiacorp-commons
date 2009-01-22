@@ -17,5 +17,6 @@ public class StatisticalSpellEngine extends SpellingEngine
 		System.out.println(sc.correct("Cads"));
 		System.out.println(sc.correct("Dok"));
 		System.out.println(sc.correct("Speling"));
+		
 	}
 }

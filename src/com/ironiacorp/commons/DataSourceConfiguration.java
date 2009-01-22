@@ -179,7 +179,7 @@ public class DataSourceConfiguration
 			if (property.getValue() != null) {
 				Element propertyNode = config.createElement("property");
 				propertyNode.setAttribute("name", (String) property.getKey());
-				propertyNode.setTextContent((String) property.getValue());
+				// TODO: propertyNode.setTextContent((String) property.getValue());
 				parentNode.appendChild(propertyNode);
 			}
 		}
