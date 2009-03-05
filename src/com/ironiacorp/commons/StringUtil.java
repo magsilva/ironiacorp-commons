@@ -21,6 +21,8 @@ package com.ironiacorp.commons;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 import java.util.Set;
 
@@ -235,6 +237,40 @@ public final class StringUtil
 			sb.append(buf, 0, numRead);
 		}
 		in.close();
+		return sb.toString();
+	}
+	
+	public static String digestSHA1(String text)
+	{
+		return digest(text, "SHA1");
+	}
+	
+	public static String digestMD5(String text)
+	{
+		return digest(text, "MD5");
+	}
+	
+	public static String digest(String text, String algorithm)
+	{
+		MessageDigest md;
+		try {
+			md = MessageDigest.getInstance(algorithm);
+		} catch (NoSuchAlgorithmException e) {
+			throw new IllegalArgumentException(e);
+		}
+		byte[] hash = md.digest(text.getBytes());
+		StringBuilder sb = new StringBuilder();
+		
+		for (byte b : hash) {
+			String hex = Integer.toHexString(b);
+			int len = hex.length();
+			if (len == 1) {
+				sb.append("0" + hex);
+			} else {
+				sb.append(hex.substring(len - 2, len));
+			}
+		}
+		
 		return sb.toString();
 	}
 }
