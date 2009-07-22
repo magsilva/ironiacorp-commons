@@ -36,7 +36,7 @@ import org.apache.commons.httpclient.cookie.CookiePolicy;
 import org.apache.commons.httpclient.params.HttpClientParams;
 
 
-public abstract class Operation
+public abstract class Operation3
 {
 	private int maxThreadsCount = 3;
 	

@@ -39,7 +39,7 @@ import com.ironiacorp.commons.IoUtil;
  * 
  * @author Roland Weber
  */
-public class GetRequest implements Callable<File>, Method
+public class GetRequest3 implements Callable<File>, Method
 {
 	private URI uri;
 	
@@ -47,7 +47,7 @@ public class GetRequest implements Callable<File>, Method
 	
 	private NameValuePair[] data;
 	
-	public GetRequest(URI uri, NameValuePair[] data, HttpClient client)
+	public GetRequest3(URI uri, NameValuePair[] data, HttpClient client)
 	{
 		this.uri = uri;
 		this.data = data;

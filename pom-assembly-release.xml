@@ -5,7 +5,6 @@
 		<format>zip</format>
 	</formats>
 	<includeBaseDirectory>false</includeBaseDirectory>
-<<<<<<< .mine
 	<fileSets>
 		<fileSet>
 			<directory>${basedir}/config</directory>
@@ -22,8 +21,6 @@
 			<outputDirectory>/</outputDirectory>
 		</file>
 	</files>
-=======
->>>>>>> .r11
 	<dependencySets>
 		<dependencySet>
 			<unpack>false</unpack>
