@@ -25,6 +25,25 @@
 		<url>http://www.ironiacorp.com</url>
 	</organization>
 
+	<repositories>
+		<repository>
+			<id>magsilva-central</id>
+			<url>http://143.107.183.152:8080/Artifactory/repo</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		
+		<repository>
+			<id>magsilva-snapshots</id>
+			<url>http://143.107.183.152:8080/Artifactory/repo</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+		</repository>
+	</repositories>
+
+
 	<pluginRepositories>
 		<pluginRepository>
 			<id>central</id>
@@ -62,6 +81,22 @@
 				<enabled>true</enabled>
 			</snapshots>
 		</pluginRepository>
+
+		<pluginRepository>
+			<id>magsilva-central</id>
+			<url>http://143.107.183.152:8080/Artifactory/plugins-releases</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
+		<pluginRepository>
+			<id>magsilva-snapshots</id>
+			<url>http://143.107.183.152:8080/Artifactory/plugins-snapshots</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+		</pluginRepository>
+
 	</pluginRepositories>
 
 
@@ -181,7 +216,7 @@
 			<artifactId>ant</artifactId>
 			<version>1.7.1</version>
 		</dependency>
-		
+
 		<!-- HTTP Client 4.x -->
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
