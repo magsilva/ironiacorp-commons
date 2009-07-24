@@ -17,7 +17,7 @@ limitations under the License.
 Copyright (C) 2007 Marco Aurélio Graciotto Silva <magsilva@ironiacorp.com>
 */
 
-package com.ironiacorp.commons.http;
+package com.ironiacorp.commons.http.httpclient3;
 
 import java.io.File;
 import java.net.URI;
@@ -36,7 +36,7 @@ import org.apache.commons.httpclient.cookie.CookiePolicy;
 import org.apache.commons.httpclient.params.HttpClientParams;
 
 
-public abstract class Operation3
+public class HttpJobRunner3
 {
 	private int maxThreadsCount = 3;
 	
@@ -53,11 +53,14 @@ public abstract class Operation3
 		params.setParameter("http.protocol.content-charset", "UTF-8");
         params.setCookiePolicy(CookiePolicy.RFC_2109);
         
-		List<URI> uris = getURIs();
+		
+        // TODO: Update as leave as HttpJobRunner4
+        /*
+        List<URI> uris = getURIs();
 		ExecutorService executor = Executors.newFixedThreadPool(maxThreadsCount);
 		ExecutorCompletionService<File> queue = new ExecutorCompletionService<File>(executor); 
-		for (URI uri : uris) {
-			queue.submit(getMethod(uri, getParameters(), httpClient));
+		 for (URI uri : uris) {
+			 queue.submit(getMethod(uri, getParameters(), httpClient));
 		}
 		
 		for (int i = 0; i < uris.size(); i++) {
@@ -68,15 +71,7 @@ public abstract class Operation3
 			} catch (ExecutionException e) {
 			}
 		}
-		
 		executor.shutdown();
+		*/
 	}
-	
-	public abstract List<URI> getURIs();
-
-	public abstract NameValuePair[] getParameters();
-	
-	protected abstract void processResult(File result);
-
-	protected abstract Callable<File> getMethod(URI uri, NameValuePair[] data, HttpClient client);
 }

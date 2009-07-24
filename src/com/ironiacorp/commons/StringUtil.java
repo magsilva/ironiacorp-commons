@@ -48,7 +48,7 @@ public final class StringUtil
 	 * Code for the transformation option that adds a prefix to a string.
 	 */
 	public static final int SUFFIX = 2;
-
+	
 	/**
 	 * Apply the transformations defined at 'options' into a string. Unknown
 	 * options will be ignored.

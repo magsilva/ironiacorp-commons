@@ -17,7 +17,7 @@ limitations under the License.
 Copyright (C) 2007 Apache Software Foundation (ASF).
  */
 
-package com.ironiacorp.commons.http;
+package com.ironiacorp.commons.http.httpclient3;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -29,64 +29,58 @@ import java.util.concurrent.Callable;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.HttpStatus;
-import org.apache.commons.httpclient.NameValuePair;
-import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.httpclient.methods.GetMethod;
 
 import com.ironiacorp.commons.IoUtil;
+import com.ironiacorp.commons.http.HttpJob;
 
 /**
  * How to send a request via proxy using {@link HttpClient HttpClient}.
  * 
  * @author Roland Weber
  */
-public class PostRequest implements Callable<File>, Method
+public class GetRequest3 implements Callable<HttpJob>
 {
-	private URI uri;
+	private HttpJob job;
 	
 	private HttpClient client;
-	
-	private NameValuePair[] data;
-	
-	public PostRequest(URI uri, NameValuePair[] data, HttpClient client)
+		
+	public GetRequest3(HttpClient client, HttpJob job)
 	{
-		this.uri = uri;
 		this.client = client;
-		this.data = data;
 	}
 	
-	public File call()
+	public HttpJob call()
 	{
-		PostMethod postMethod = new PostMethod(uri.toString());
-		postMethod.setRequestBody(data);
-	
-		File result = null;
+		URI uri = (URI) job.getParameter(0);
+		GetMethod getMethod = new GetMethod(uri.toString());
+		File file = null;
 
 		try {
-			int statusCode = client.executeMethod(postMethod);
+			int statusCode = client.executeMethod(getMethod);
 			
 			if (statusCode != HttpStatus.SC_OK) {
-				System.err.println("Method failed: " + postMethod.getStatusLine());
+				System.err.println("Method failed: " + getMethod.getStatusLine());
 			}
 			
-			InputStream inputStream = postMethod.getResponseBodyAsStream();
-			
+			InputStream inputStream = getMethod.getResponseBodyAsStream();
 			if (inputStream != null) {
 				FileOutputStream outputStream = null;  
-
 				try {
-					result = IoUtil.createTempFile("sysrev-get-", ".html");
+					file = IoUtil.createTempFile("sysrev-get-", ".html");
 					int readBytes = 0;
 					
-					outputStream = new FileOutputStream(result);
+					outputStream = new FileOutputStream(file);
 					byte[] buffer = new byte[IoUtil.BUFFER_SIZE];
 					while ((readBytes = inputStream.read(buffer, 0, buffer.length)) != -1) {
 						outputStream.write(buffer, 0, readBytes);
 					}
+					job.setResult(file);
 				} finally {
 					try {
 						outputStream.close();
 						inputStream.close();
-						postMethod.releaseConnection();
+						getMethod.releaseConnection();
 					} catch (Exception e) {
 					}
 				}
@@ -99,9 +93,9 @@ public class PostRequest implements Callable<File>, Method
 			// In case of an unexpected exception you may want to abort
 			// the HTTP request in order to shut down the underlying
 			// connection and release it back to the connection manager.
-			postMethod.abort();
+			getMethod.abort();
 		}
 		
-		return result;
+		return job;
 	}
 }
