@@ -2,14 +2,20 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<name>IroniaCommons</name>
-	<url>http://www.ironiacorp.com/products/commons</url>
-	<inceptionYear>2007</inceptionYear>
-	<packaging>jar</packaging>
-
-	<version>1.0.0</version>
 	<groupId>ironiacorp</groupId>
 	<artifactId>ironia-commons</artifactId>
+	<version>1.0.0</version>
+	<packaging>jar</packaging>
+
+	<name>IroniaCommons</name>
+	<description>Set of utility classes</description>
+	<url>http://www.ironiacorp.com/products/commons</url>
+	<inceptionYear>2007</inceptionYear>
+
+	<organization>
+		<name>Ironia Corporation</name>
+		<url>http://www.ironiacorp.com</url>
+	</organization>
 
 	<licenses>
 		<license>
@@ -20,29 +26,96 @@
 		</license>
 	</licenses>
 
-	<organization>
-		<name>Ironia Corporation</name>
-		<url>http://www.ironiacorp.com</url>
-	</organization>
+	<developers>
+		<developer>
+			<id>magsilva</id>
+			<name>Marco Aurélio Graciotto Silva</name>
+			<email>magsilva@icmc.usp.br</email>
+			<url>http://www.icmc.usp.br/~magsilva/</url>
+			<organization>Ironia Corporation</organization>
+			<organizationUrl>http://www.ironiacorp.com</organizationUrl>
+			<timezone>+3</timezone>
+			<roles>
+				<role>Manager</role>
+				<role>Main developer</role>
+			</roles>
+		</developer>
+	</developers>
+
+	<issueManagement>
+		<system>Bugzilla</system>
+		<url>http://143.107.183.152/Admin/Bugzilla/</url>
+	</issueManagement>
+
+	<scm>
+		<connection>scm:svn:https://143.107.183.152/svn/projects/ironiacorp-commons/trunk</connection>
+		<developerConnection>scm:svn:https://143.107.183.152/svn/projects/ironiacorp-commons/trunk</developerConnection>
+		<tag>trunk</tag>
+		<url>https://143.107.183.152/Admin/ViewVC/viewvc.cgi/ironiacorp-commons/trunk</url>
+	</scm>
+
+	<ciManagement>
+		<system>Hudson</system>
+		<url>http://143.107.183.152:8080/Hudson</url>
+		<notifiers>
+			<notifier>
+				<type>mail</type>
+				<sendOnError>true</sendOnError>
+				<sendOnFailure>true</sendOnFailure>
+				<sendOnSuccess>false</sendOnSuccess>
+				<sendOnWarning>true</sendOnWarning>
+				<address>magsilva@icmc.usp.br</address>
+			</notifier>
+		</notifiers>
+	</ciManagement>
+
+        <distributionManagement>
+                <repository>
+                        <id>labes-pc-010808-releases</id>
+                        <name>labes-pc-010808-releases</name>
+                        <url>http://143.107.183.152:8080/Artifactory/libs-releases-local</url>
+                </repository>
+        </distributionManagement>
 
 	<repositories>
 		<repository>
-			<id>magsilva-central</id>
+			<id>labes-pc-010808-releases</id>
 			<url>http://143.107.183.152:8080/Artifactory/repo</url>
 			<snapshots>
 				<enabled>false</enabled>
 			</snapshots>
 		</repository>
-		
+
 		<repository>
-			<id>magsilva-snapshots</id>
+			<id>labes-pc-010808-snapshots</id>
 			<url>http://143.107.183.152:8080/Artifactory/repo</url>
 			<releases>
 				<enabled>false</enabled>
 			</releases>
 		</repository>
-	</repositories>
 
+		<repository>
+			<id>DataNucleus_Repos2</id>
+			<name>DataNucleus Repository</name>
+			<url>http://www.datanucleus.org/downloads/maven2</url>
+		</repository>
+
+		<repository>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<id>Maven 1 repository</id>
+			<name>Maven 1.x Repository</name>
+			<url>http://download.java.net/maven/1</url>
+			<layout>legacy</layout>
+		</repository>
+
+		<repository>
+			<id>ZK</id>
+			<name>ZK release</name>
+			<url>http://repo1.maven.org/maven2/org/zkoss/zk/zk/</url>
+		</repository>
+	</repositories>
 
 	<pluginRepositories>
 		<pluginRepository>
@@ -71,34 +144,20 @@
 		</pluginRepository>
 
 		<pluginRepository>
-			<id>codehaus-snapshot</id>
-			<name>CodeHaus Plugin Snapshots</name>
+			<id>DataNucleus_2</id>
+			<url>http://www.datanucleus.org/downloads/maven2/</url>
+		</pluginRepository>
+
+		<pluginRepository>
+			<id>Mojo</id>
+			<url>http://repository.codehaus.org</url>
+		</pluginRepository>
+
+		<pluginRepository>
+			<id>Mojo Snapshots</id>
 			<url>http://snapshots.repository.codehaus.org</url>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
 		</pluginRepository>
-
-		<pluginRepository>
-			<id>magsilva-central</id>
-			<url>http://143.107.183.152:8080/Artifactory/plugins-releases</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</pluginRepository>
-		<pluginRepository>
-			<id>magsilva-snapshots</id>
-			<url>http://143.107.183.152:8080/Artifactory/plugins-snapshots</url>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-		</pluginRepository>
-
 	</pluginRepositories>
-
 
 	<dependencies>
 		<dependency>
