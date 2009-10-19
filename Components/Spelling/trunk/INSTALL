@@ -1,0 +1,7 @@
+* Download the jSpellCorrect at "http://developer.gauner.org/jspellcorrect/":
+http://developer.gauner.org/jspellcorrect/jSpellCorrect-0.4.jar
+ 
+* Install the jSpellCorrect package into Maven's repository:
+# mvn install:install-file -DgroupId=org.gauner -DartifactId=jspellcorrect \
+-Dversion=0.4 -Dpackaging=jar -Dfile=<file downloaded>
+
