@@ -9,7 +9,7 @@ import org.junit.Test;
 
 
 import com.ironiacorp.http.HttpJob;
-import com.ironiacorp.http.httpclient4.HttpJobRunner4;
+import com.ironiacorp.http.impl.httpclient4.HttpJobRunner4;
 
 public class HttpJobRunner4Test
 {

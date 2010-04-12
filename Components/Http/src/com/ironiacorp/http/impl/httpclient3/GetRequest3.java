@@ -17,12 +17,14 @@ limitations under the License.
 Copyright (C) 2007 Apache Software Foundation (ASF).
  */
 
-package com.ironiacorp.http.httpclient3;
+package com.ironiacorp.http.impl.httpclient3;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URI;
 import java.util.concurrent.Callable;
 
@@ -33,6 +35,7 @@ import org.apache.commons.httpclient.methods.GetMethod;
 
 import com.ironiacorp.io.IoUtil;
 import com.ironiacorp.http.HttpJob;
+import com.ironiacorp.http.HttpMethodResult;
 
 /**
  * How to send a request via proxy using {@link HttpClient HttpClient}.
@@ -54,7 +57,7 @@ public class GetRequest3 implements Callable<HttpJob>
 	{
 		URI uri = (URI) job.getParameter(0);
 		GetMethod getMethod = new GetMethod(uri.toString());
-		File file = null;
+		HttpMethodResult result = new HttpMethodResult();
 
 		try {
 			int statusCode = client.executeMethod(getMethod);
@@ -65,17 +68,25 @@ public class GetRequest3 implements Callable<HttpJob>
 			
 			InputStream inputStream = getMethod.getResponseBodyAsStream();
 			if (inputStream != null) {
-				FileOutputStream outputStream = null;  
+				OutputStream outputStream = null;  
+				int readBytes = 0;
+
 				try {
-					file = IoUtil.createTempFile("sysrev-get-", ".html");
-					int readBytes = 0;
+					if (job.isSaveContentToFile()) {
+	    				File file = IoUtil.createTempFile("sysrev-get-", ".html");
+	    				outputStream = new FileOutputStream(file);
+	    			} else {
+	    				outputStream = new ByteArrayOutputStream();
+	    			}
 					
-					outputStream = new FileOutputStream(file);
 					byte[] buffer = new byte[IoUtil.BUFFER_SIZE];
 					while ((readBytes = inputStream.read(buffer, 0, buffer.length)) != -1) {
 						outputStream.write(buffer, 0, readBytes);
 					}
-					job.setResult(file);
+					
+					result.setContent(outputStream);
+        			result.setStatusCode(statusCode);
+        			job.setResult(result);
 				} finally {
 					try {
 						outputStream.close();

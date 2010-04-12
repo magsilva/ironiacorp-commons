@@ -34,9 +34,9 @@ public interface HttpMethod
 	boolean checkHttpJob(HttpJob job);
 
 	/**
-	 * Check if the request is supported by the implemented HTTP method.
+	 * Check if the method is supported by the implemented HTTP method.
 	 * 
-	 * @param name HTTP request name.
+	 * @param name HTTP method name.
 	 * 
 	 * @return True if supported, false otherwise.
 	 */
@@ -45,7 +45,7 @@ public interface HttpMethod
 	/**
 	 * Check if the parameters are supported by the implemented HTTP method.
 	 * 
-	 * @param name HTTP request's parameters.
+	 * @param name HTTP method's parameters.
 	 * 
 	 * @return True if supported, false otherwise.
 	 */

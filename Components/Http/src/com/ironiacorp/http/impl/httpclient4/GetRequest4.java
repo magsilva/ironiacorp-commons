@@ -17,11 +17,13 @@ limitations under the License.
 Copyright (C) 2007 Apache Software Foundation (ASF).
  */
 
-package com.ironiacorp.http.httpclient4;
+package com.ironiacorp.http.impl.httpclient4;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URI;
 import java.util.concurrent.Callable;
 
@@ -34,6 +36,7 @@ import org.apache.http.protocol.BasicHttpContext;
 
 import com.ironiacorp.io.IoUtil;
 import com.ironiacorp.http.HttpJob;
+import com.ironiacorp.http.HttpMethodResult;
 
 /**
  * How to send a request via proxy using {@link HttpClient HttpClient}.
@@ -59,40 +62,45 @@ public class GetRequest4 implements Callable<HttpJob>
 	{
 		URI uri = (URI) job.getParameter(0);
 		HttpGet getMethod = new HttpGet(uri);
-    	File file = null;
 		try {
 	        HttpResponse response = httpClient.execute(getMethod, context);
 	        HttpEntity entity = response.getEntity();
-	        
+		        
 	        if (entity != null) {
-	        	// byte[] bytes = EntityUtils.toByteArray(entity)
 	        	InputStream inputStream = entity.getContent();
-	        	
 	        	if (inputStream != null) {
-	        		FileOutputStream outputStream = null;
-					try {
-						file = IoUtil.createTempFile("sysrev-get-", ".html");
-						int readBytes = 0;
-		
-						outputStream = new FileOutputStream(file);
-						byte[] buffer = new byte[IoUtil.BUFFER_SIZE];
-						while ((readBytes = inputStream.read(buffer, 0, buffer.length)) != -1) {
-							outputStream.write(buffer, 0, readBytes);
-						}
-						job.setResult(file);
-					} finally {
-						try {
-							outputStream.close();
-							inputStream.close();
-						} catch (Exception e) {
-						}
-					}
-	        	}
+	        		HttpMethodResult result = new HttpMethodResult();
+	    			OutputStream outputStream = null;
+	    			int readBytes = 0;
+	    			byte[] buffer = new byte[IoUtil.BUFFER_SIZE];
+	
+	    			try {
+	        			if (job.isSaveContentToFile()) {
+	        				File file = IoUtil.createTempFile("sysrev-get-", ".html");
+	        				outputStream = new FileOutputStream(file);
+	        			} else {
+	        				outputStream = new ByteArrayOutputStream();
+	        			}
+						
+	        			while ((readBytes = inputStream.read(buffer, 0, buffer.length)) != -1) {
+	        				outputStream.write(buffer, 0, readBytes);
+	        			}
+	        			
+	        			result.setContent(outputStream);
+	        			result.setStatusCode(response.getStatusLine().getStatusCode());
+	        			job.setResult(result);
+	        		} finally {
+	        			try {
+	        				outputStream.close();
+	        				inputStream.close();
+	        			} catch (Exception e) {
+	        			}
+	        		}
+				}
 	        }
 		} catch (Exception e) {
 			getMethod.abort();
 		}
-        
         return job;
 	}
 }

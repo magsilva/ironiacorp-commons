@@ -17,7 +17,7 @@ limitations under the License.
 Copyright (C) 2007 Marco Aurélio Graciotto Silva <magsilva@ironiacorp.com>
 */
 
-package com.ironiacorp.http.httpclient3;
+package com.ironiacorp.http.impl.httpclient3;
 
 import java.io.File;
 import java.net.URI;

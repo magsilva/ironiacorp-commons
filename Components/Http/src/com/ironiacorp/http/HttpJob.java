@@ -39,8 +39,26 @@ public class HttpJob
 	/**
 	 * Job result.
 	 */
-	private Object result;
+	private HttpMethodResult result;
 	
+	
+	private boolean saveContentToFile = false;
+		
+	
+	public boolean isSaveContentToFile()
+	{
+		return saveContentToFile;
+	}
+
+	public void setSaveContentToFile(boolean saveContentToFile)
+	{
+		if (result != null) {
+			throw new IllegalArgumentException("Cannot save to file after running the job");
+		}
+		
+		this.saveContentToFile = saveContentToFile;
+	}
+
 	public HttpJob(String method, Object... parameters)
 	{
 		this.method = method;
@@ -61,15 +79,14 @@ public class HttpJob
 	{
 		return parameters;
 	}
-	
-	public Object getResult()
+
+	public HttpMethodResult getResult()
 	{
 		return result;
 	}
 
-	public void setResult(Object result)
+	public void setResult(HttpMethodResult response)
 	{
-		this.result = result;
+		this.result = response;
 	}
-
 }

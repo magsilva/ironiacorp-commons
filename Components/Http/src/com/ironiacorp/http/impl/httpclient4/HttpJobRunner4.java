@@ -15,9 +15,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 Copyright (C) 2007 Marco Aurélio Graciotto Silva <magsilva@ironiacorp.com>
- */
+*/
 
-package com.ironiacorp.http.httpclient4;
+package com.ironiacorp.http.impl.httpclient4;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -45,11 +45,12 @@ import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
 
 import com.ironiacorp.string.StringUtil;
-import com.ironiacorp.http.HttpGetMethod;
 import com.ironiacorp.http.HttpJob;
+import com.ironiacorp.http.HttpJobRunner;
 import com.ironiacorp.http.HttpMethod;
+import com.ironiacorp.http.methods.HttpGetMethod;
 
-public class HttpJobRunner4 
+public class HttpJobRunner4 implements HttpJobRunner
 {
 	private int maxThreadsCount = 3;
 	
@@ -89,7 +90,7 @@ public class HttpJobRunner4
 		schemeRegistry.register(schemeHTTPS);
 
 		// Create an HttpClient with the ThreadSafeClientConnManager.
-		cm = new ThreadSafeClientConnManager(params, schemeRegistry);
+		cm = new ThreadSafeClientConnManager(schemeRegistry);
 	}
 	
 	public HttpJobRunner4()

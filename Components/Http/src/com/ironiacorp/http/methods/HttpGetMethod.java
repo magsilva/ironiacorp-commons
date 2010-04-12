@@ -17,10 +17,12 @@ limitations under the License.
 Copyright (C) 2009 Marco Aurélio Graciotto Silva <magsilva@icmc.usp.br>
  */
 
-package com.ironiacorp.http;
+package com.ironiacorp.http.methods;
 
 import java.net.URI;
 
+import com.ironiacorp.http.HttpJob;
+import com.ironiacorp.http.HttpMethod;
 import com.ironiacorp.string.StringUtil;
 
 /**
