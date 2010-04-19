@@ -1,4 +1,5 @@
-package com.ironiacorp.commons.http.httpclient4;
+package com.ironiacorp.commons.http.impl.httpcachej;
+
 
 import static org.junit.Assert.*;
 
@@ -11,7 +12,7 @@ import org.junit.Test;
 import com.ironiacorp.http.HttpJob;
 import com.ironiacorp.http.impl.httpclient4.HttpJobRunner4;
 
-public class HttpJobRunner4Test
+public class HttpJobRunnerCacheJTest
 {
 	@Test
 	public void testSingle() throws URISyntaxException 
