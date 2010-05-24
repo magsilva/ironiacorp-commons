@@ -45,7 +45,7 @@
 
 	<issueManagement>
 		<system>Bugzilla</system>
-		<url>http://www.ironiacorp.com/Admin/Bugzilla/</url>
+		<url>http://www.ironiacorp.com/Apps/Bugzilla/</url>
 	</issueManagement>
 
 	<scm>
@@ -57,7 +57,7 @@
 
 	<ciManagement>
 		<system>Hudson</system>
-		<url>http://www.ironiacorp.com:8080/Hudson</url>
+		<url>http://www.ironiacorp.com/Apps/Hudson</url>
 		<notifiers>
 			<notifier>
 				<type>mail</type>
@@ -65,7 +65,7 @@
 				<sendOnFailure>true</sendOnFailure>
 				<sendOnSuccess>false</sendOnSuccess>
 				<sendOnWarning>true</sendOnWarning>
-				<address>magsilva@icmc.usp.br</address>
+				<address>magsilva@ironiacorp.com</address>
 			</notifier>
 		</notifiers>
 	</ciManagement>
@@ -74,14 +74,14 @@
 		<repository>
 			<id>labes-pc-010808-releases</id>
 			<name>labes-pc-010808-releases</name>
-			<url>http://www.ironiacorp.com:8080/artifactory/libs-releases-local</url>
+			<url>http://www.ironiacorp.com/Apps/Artifactory/libs-releases-local</url>
 		</repository>
 	</distributionManagement>
 
 	<repositories>
 		<repository>
 			<id>labes-pc-010808-releases</id>
-			<url>http://www.ironiacorp.com:8080/artifactory/repo</url>
+			<url>http://www.ironiacorp.com/Apps/Artifactory/repo</url>
 		</repository>
 	</repositories>
 
