@@ -401,16 +401,24 @@ public final class IoUtil
 	{
 		final int MAX_ATTEMPTS = 50;
 
+		if (prefix == null) {
+			throw new IllegalArgumentException(new NullPointerException());
+		}
+		
 		if (baseDirName == null) {
 			baseDirName = System.getProperty("java.io.tmpdir");
 		}
+		
 		if (StringUtil.isEmpty(baseDirName)) {
 			throw new RuntimeException("Could not create a temporary directory.");
 		}
-		if (!baseDirName.endsWith(File.separator)) {
+		if (! baseDirName.endsWith(File.separator)) {
 			baseDirName += File.separator;
 		}
 		File baseDir = new File(baseDirName);
+		if (! baseDir.exists()) {
+			throw new IllegalArgumentException("Invalid base dir");
+		}
 
 		for (int i = 0; i < MAX_ATTEMPTS; i++) {
 			try {
@@ -432,6 +440,33 @@ public final class IoUtil
 	/**
 	 * Create a temporary file.
 	 * 
+	 * @return Temporary directory.
+	 * @throws IOException
+	 */
+	public static File createTempFile()
+	{
+		String randomPrefix = new RandPass(RandPass.LOWERCASE_LETTERS_AND_NUMBERS_ALPHABET).getPass(8);
+		return IoUtil.createTempFile(randomPrefix);
+	}
+	
+	
+	/**
+	 * Create a temporary file.
+	 * 
+	 * @param prefix
+	 *            Prefix for the directory to be created.
+	 * 
+	 * @return Temporary directory.
+	 * @throws IOException
+	 */
+	public static File createTempFile(String filePrefix)
+	{
+		return IoUtil.createTempFile(filePrefix, null);
+	}
+	
+	/**
+	 * Create a temporary file.
+	 * 
 	 * @param prefix
 	 *            Prefix for the directory to be created.
 	 * @param suffix
@@ -443,6 +478,10 @@ public final class IoUtil
 	public static File createTempFile(String filePrefix, String fileSuffix)
 	{
 		final int MAX_ATTEMPTS = 50;
+		
+		if (filePrefix == null) {
+			throw new IllegalArgumentException(new NullPointerException());
+		}
 
 		for (int i = 0; i < MAX_ATTEMPTS; i++) {
 			try {
@@ -472,7 +511,14 @@ public final class IoUtil
 	{
 		final int MAX_ATTEMPTS = 50;
 
-		File baseDir = IoUtil.createTempDir("tmp", "", dirPrefix);
+		if (dirPrefix == null) {
+			throw new IllegalArgumentException(new NullPointerException("Invalid base dir"));
+		}
+		
+		File baseDir = new File(dirPrefix);
+		if (! baseDir.exists()) {
+			throw new IllegalArgumentException("Invalid base dir");
+		}
 
 		for (int i = 0; i < MAX_ATTEMPTS; i++) {
 			try {
