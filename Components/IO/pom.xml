@@ -4,8 +4,8 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>ironiacorp</groupId>
-	<artifactId>commons-string</artifactId>
-	<version>1.0.0</version>
+	<artifactId>commons-io</artifactId>
+	<version>1.0.2</version>
 	<packaging>jar</packaging>
 
 	<name>Ironia-String</name>
@@ -57,7 +57,7 @@
 
 	<ciManagement>
 		<system>Hudson</system>
-		<url>http://www.ironiacorp.com:8080/Hudson</url>
+		<url>http://www.ironiacorp.com/Apps/Hudson</url>
 		<notifiers>
 			<notifier>
 				<type>mail</type>
@@ -74,14 +74,14 @@
 		<repository>
 			<id>labes-pc-010808-releases</id>
 			<name>labes-pc-010808-releases</name>
-			<url>http://www.ironiacorp.com:8080/artifactory/libs-releases-local</url>
+			<url>http://www.ironiacorp.com/Apps/Artifactory/libs-releases-local</url>
 		</repository>
 	</distributionManagement>
 
 	<repositories>
 		<repository>
 			<id>labes-pc-010808-releases</id>
-			<url>http://www.ironiacorp.com:8080/artifactory/repo</url>
+			<url>http://www.ironiacorp.com/Apps/Artifactory/repo</url>
 		</repository>
 	</repositories>
 
@@ -90,6 +90,18 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>[4.0,)</version>
+		</dependency>
+
+		<dependency>
+			<groupId>ironiacorp</groupId>
+			<artifactId>commons-string</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.ostermiller</groupId>
+			<artifactId>utils</artifactId>
+			<version>1.07.00</version>
 		</dependency>
 	</dependencies>
 

@@ -419,7 +419,6 @@ public final class IoUtil
 				file.delete();
 				file = new File(name);
 				file.mkdirs();
-				file.deleteOnExit();
 				return file;
 			} catch (IOException e) {
 			}
@@ -469,11 +468,11 @@ public final class IoUtil
 	 * @return Temporary directory.
 	 * @throws IOException
 	 */
-	public static File createTempFile(String dirPrefix, String filePrefix, String fileSuffix)
+	public static File createTempFile(String filePrefix, String fileSuffix, String dirPrefix)
 	{
 		final int MAX_ATTEMPTS = 50;
 
-		File baseDir = IoUtil.createTempDir(dirPrefix, "");
+		File baseDir = IoUtil.createTempDir("tmp", "", dirPrefix);
 
 		for (int i = 0; i < MAX_ATTEMPTS; i++) {
 			try {
