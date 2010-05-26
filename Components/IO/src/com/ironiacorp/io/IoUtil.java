@@ -406,7 +406,7 @@ public final class IoUtil
 		}
 		
 		if (baseDirName == null) {
-			baseDirName = System.getProperty("java.io.tmpdir");
+			baseDirName = IoUtil.getDefaultTempBasedir();
 		}
 		
 		if (StringUtil.isEmpty(baseDirName)) {
@@ -638,5 +638,10 @@ public final class IoUtil
 		}
 		in.close();
 		return sb.toString();
+	}
+	
+	public static String getDefaultTempBasedir()
+	{
+		return System.getProperty("java.io.tmpdir");
 	}
 }
