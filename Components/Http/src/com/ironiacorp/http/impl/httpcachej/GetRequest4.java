@@ -35,25 +35,27 @@ import org.codehaus.httpcache4j.payload.Payload;
 import com.ironiacorp.io.IoUtil;
 import com.ironiacorp.http.HttpJob;
 import com.ironiacorp.http.HttpMethodResult;
+import com.ironiacorp.http.HttpMethodResultFormat;
 
 /**
  * How to send a request via proxy using {@link HttpClient HttpClient}.
  * 
  * @author Roland Weber
  */
-public class GetRequest4 implements Callable<HttpJob>
+public class GetRequest4<T> implements Callable<HttpJob<T>>
 {
-	private HttpJob job;
+	private HttpJob<T> job;
 	
 	private HTTPCache cache;
 
-	public GetRequest4(HTTPCache cache, HttpJob job)
+	public GetRequest4(HTTPCache cache, HttpJob<T> job)
 	{
 		this.cache = cache;
 		this.job = job;
 	}
 
-	public HttpJob call()
+	@SuppressWarnings("unchecked")
+	public HttpJob<T> call()
 	{
 		URI uri = (URI) job.getParameter(0);
 		HTTPRequest request = new HTTPRequest(uri);
@@ -64,24 +66,26 @@ public class GetRequest4 implements Callable<HttpJob>
 	        if (payload != null && payload.isAvailable()) {
 	        	InputStream inputStream = payload.getInputStream();
 	        	if (inputStream != null) {
-	        		HttpMethodResult result = new HttpMethodResult();
+	        		HttpMethodResult<T> result = new HttpMethodResult<T>();
 	    			OutputStream outputStream = null;
 	    			int readBytes = 0;
 	    			byte[] buffer = new byte[IoUtil.BUFFER_SIZE];
 	
 	    			try {
-	        			if (job.isSaveContentToFile()) {
-	        				File file = IoUtil.createTempFile("sysrev-get-", ".html");
+	    				if (job.getResultFormat() == HttpMethodResultFormat.FILE) {
+	    	    			File file = IoUtil.createTempFile("sysrev-get-", ".html");
 	        				outputStream = new FileOutputStream(file);
-	        			} else {
+	        			} else if (job.getResultFormat() == HttpMethodResultFormat.MEM) {
 	        				outputStream = new ByteArrayOutputStream();
+	        			} else {
+	        				throw new UnsupportedOperationException("Output content format not supported");
 	        			}
 						
 	        			while ((readBytes = inputStream.read(buffer, 0, buffer.length)) != -1) {
 	        				outputStream.write(buffer, 0, readBytes);
 	        			}
 	        			
-	        			result.setContent(outputStream);
+	        			result.setContent((T) outputStream);
 	        			result.setStatusCode(response.getStatus().getCode());
 	        			job.setResult(result);
 	        		} finally {

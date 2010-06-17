@@ -24,7 +24,7 @@ package com.ironiacorp.http;
  * request type and its parameters.
  */
 
-public class HttpJob
+public class HttpJob<T>
 {
 	/**
 	 * HTTP method name.
@@ -39,25 +39,10 @@ public class HttpJob
 	/**
 	 * Job result.
 	 */
-	private HttpMethodResult result;
+	private HttpMethodResult<T> result;
 	
+	private HttpMethodResultFormat resultFormat = HttpMethodResultFormat.MEM;
 	
-	private boolean saveContentToFile = false;
-		
-	
-	public boolean isSaveContentToFile()
-	{
-		return saveContentToFile;
-	}
-
-	public void setSaveContentToFile(boolean saveContentToFile)
-	{
-		if (result != null) {
-			throw new IllegalArgumentException("Cannot save to file after running the job");
-		}
-		
-		this.saveContentToFile = saveContentToFile;
-	}
 
 	public HttpJob(String method, Object... parameters)
 	{
@@ -80,13 +65,27 @@ public class HttpJob
 		return parameters;
 	}
 
-	public HttpMethodResult getResult()
+	public HttpMethodResult<T> getResult()
 	{
 		return result;
 	}
 
-	public void setResult(HttpMethodResult response)
+	public void setResult(HttpMethodResult<T> response)
 	{
 		this.result = response;
+	}
+	
+	public HttpMethodResultFormat getResultFormat()
+	{
+		return resultFormat;
+	}
+
+	public void setResultFormat(HttpMethodResultFormat resultFormat)
+	{
+		if (result != null) {
+			throw new IllegalArgumentException("Job has already finished, cannot change the result format.");
+		}
+		
+		this.resultFormat = resultFormat;
 	}
 }

@@ -36,6 +36,7 @@ import org.apache.commons.httpclient.methods.GetMethod;
 import com.ironiacorp.io.IoUtil;
 import com.ironiacorp.http.HttpJob;
 import com.ironiacorp.http.HttpMethodResult;
+import com.ironiacorp.http.HttpMethodResultFormat;
 
 /**
  * How to send a request via proxy using {@link HttpClient HttpClient}.
@@ -72,12 +73,14 @@ public class GetRequest3 implements Callable<HttpJob>
 				int readBytes = 0;
 
 				try {
-					if (job.isSaveContentToFile()) {
-	    				File file = IoUtil.createTempFile("sysrev-get-", ".html");
-	    				outputStream = new FileOutputStream(file);
-	    			} else {
-	    				outputStream = new ByteArrayOutputStream();
-	    			}
+					if (job.getResultFormat() == HttpMethodResultFormat.FILE) {
+    	    			File file = IoUtil.createTempFile("sysrev-get-", ".html");
+        				outputStream = new FileOutputStream(file);
+        			} else if (job.getResultFormat() == HttpMethodResultFormat.MEM) {
+        				outputStream = new ByteArrayOutputStream();
+        			} else {
+        				throw new UnsupportedOperationException("Output content format not supported");
+        			}
 					
 					byte[] buffer = new byte[IoUtil.BUFFER_SIZE];
 					while ((readBytes = inputStream.read(buffer, 0, buffer.length)) != -1) {

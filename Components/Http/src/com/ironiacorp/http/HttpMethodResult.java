@@ -19,13 +19,11 @@ Copyright (C) 2010 Marco Aurélio Graciotto Silva <magsilva@icmc.usp.br>
 
 package com.ironiacorp.http;
 
-import java.io.OutputStream;
-
-public class HttpMethodResult
+public class HttpMethodResult<T>
 {
 	private int statusCode;
 	
-	private OutputStream content;
+	private T content;
 
 	public int getStatusCode()
 	{
@@ -37,16 +35,13 @@ public class HttpMethodResult
 		this.statusCode = statusCode;
 	}
 
-	public OutputStream getContent()
+	public T getContent()
 	{
 		return content;
 	}
 
-	public void setContent(OutputStream content)
+	public void setContent(T content)
 	{
 		this.content = content;
-	}
-
-	
-	
+	}	
 }

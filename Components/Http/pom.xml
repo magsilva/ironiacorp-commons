@@ -49,15 +49,14 @@
 	</issueManagement>
 
 	<scm>
-		<connection>scm:svn:https://www.ironiacorp.com/svn/projects/ironiacorp-commons/Components/Http/trunk</connection>
-		<developerConnection>scm:svn:https://www.ironiacorp.com/svn/projects/ironiacorp-commons/Components/Http/trunk</developerConnection>
-		<tag>trunk</tag>
-		<url>https://www.ironiacorp.com/Admin/ViewVC/viewvc.cgi/ironiacorp-commons/Components/Http/trunk</url>
+		<connection>scm:svn:https://www.ironiacorp.com/svn/projects/ironiacorp-commons/trunk/Components/Http</connection>
+		<developerConnection>scm:svn:https://www.ironiacorp.com/svn/projects/ironiacorp-commons/trunk/Components/Http</developerConnection>
+		<url>http://www.ironiacorp.com/Apps/WebSVN/wsvn/Active%20projects.ironiacorp-commons/trunk/Components/Http</url>
 	</scm>
 
 	<ciManagement>
 		<system>Hudson</system>
-		<url>http://www.ironiacorp.com/Apps/Hudson</url>
+		<url>http://www.ironiacorp.com/Apps/Hudson/job/Ironia-Http/</url>
 		<notifiers>
 			<notifier>
 				<type>mail</type>
@@ -84,6 +83,13 @@
 			<url>http://www.ironiacorp.com/Apps/Artifactory/repo</url>
 		</repository>
 	</repositories>
+
+	<properties>
+		<sonar.host.url>http://www.ironiacorp.com/Apps/Sonar/</sonar.host.url>
+		<!--
+			<sonar.core.codeCoveragePlugin>emma</sonar.core.codeCoveragePlugin>
+		-->
+	</properties>
 
 	<dependencies>
 		<dependency>
@@ -192,5 +198,12 @@
 
 	<reporting>
 		<outputDirectory>site</outputDirectory>
+		
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.sonar-plugins</groupId>
+				<artifactId>maven-report</artifactId>
+			</plugin>
+		</plugins>
 	</reporting>
 </project>

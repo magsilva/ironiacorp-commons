@@ -27,13 +27,10 @@ import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 import org.apache.http.HttpVersion;
 import org.apache.http.client.HttpClient;
 import org.apache.http.conn.ClientConnectionManager;
-import org.apache.http.conn.params.ConnManagerParams;
 import org.apache.http.conn.scheme.PlainSocketFactory;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
@@ -74,15 +71,12 @@ public class HttpJobRunner4 implements HttpJobRunner
 		HttpProtocolParams.setContentCharset(params, "UTF-8");
 		HttpProtocolParams.setHttpElementCharset(params, "UTF-8");
 		// HttpProtocolParams.setUserAgent(params, "");
-
-		ConnManagerParams.setMaxTotalConnections(params, 100);
-		ConnManagerParams.setTimeout(params, 360);
 	}
 	
 	private void setupConnectionManager()
 	{
-		Scheme schemeHTTP = new Scheme("http", PlainSocketFactory.getSocketFactory(), 80);
-		Scheme schemeHTTPS = new Scheme("https", SSLSocketFactory.getSocketFactory(), 443);
+		Scheme schemeHTTP = new Scheme("http", 80, PlainSocketFactory.getSocketFactory());
+		Scheme schemeHTTPS = new Scheme("https", 443, SSLSocketFactory.getSocketFactory());
 		
 		// Create and initialize scheme registry
 		SchemeRegistry schemeRegistry = new SchemeRegistry();
@@ -90,7 +84,13 @@ public class HttpJobRunner4 implements HttpJobRunner
 		schemeRegistry.register(schemeHTTPS);
 
 		// Create an HttpClient with the ThreadSafeClientConnManager.
-		cm = new ThreadSafeClientConnManager(schemeRegistry);
+		cm = new ThreadSafeClientConnManager(params, schemeRegistry);
+		// Increase max total connection to 200
+		((ThreadSafeClientConnManager) cm).setMaxTotalConnections(200);
+		// Increase default max connection per route to 20
+		((ThreadSafeClientConnManager) cm).setDefaultMaxPerRoute(20);
+
+
 	}
 	
 	public HttpJobRunner4()
@@ -120,35 +120,36 @@ public class HttpJobRunner4 implements HttpJobRunner
 	
 	public void run()
 	{
-		HttpClient httpClient = new DefaultHttpClient(cm, params);
 		ExecutorService executor = Executors.newFixedThreadPool(maxThreadsCount);
 		ExecutorCompletionService<HttpJob> queue = new ExecutorCompletionService<HttpJob>(executor);
-		List<Future<?>> status = new ArrayList<Future<?>>(); 
-		
+		List<Future<?>> workers = new ArrayList<Future<?>>(); 
+		HttpClient httpClient = new DefaultHttpClient(cm, params); 
+
 		for (HttpJob job : jobs) {
 			if (StringUtil.isSimilar(job.getMethod(), "GET")) {
-				Future<HttpJob> jobStatus = queue.submit(new GetRequest4(httpClient, job));
-				status.add(jobStatus);
+				GetRequest4 request = new GetRequest4(httpClient, job);
+				Future<HttpJob> jobStatus = queue.submit(request);
+				workers.add(jobStatus);
 				continue;
 			}
 		}
 
-		while (! status.isEmpty()) {
-			Iterator<Future<?>> i = status.iterator();
+		while (! workers.isEmpty()) {
+			Iterator<Future<?>> i = workers.iterator();
 			while (i.hasNext()) {
 				try {
 					Future<?> future = i.next();
-					future.get(timeout, TimeUnit.MILLISECONDS);
+					// future.get(timeout, TimeUnit.MILLISECONDS);
+					future.get();
 					i.remove();
-				} catch (TimeoutException e) {
+				// } catch (TimeoutException e) {
 				} catch (InterruptedException e) {
 				} catch (ExecutionException e) {
 				}
 			}
 		}
-
+	
 		executor.shutdown();
-
 	}
 	
 	public void abort()

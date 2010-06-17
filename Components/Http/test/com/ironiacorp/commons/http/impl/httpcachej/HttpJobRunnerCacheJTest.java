@@ -1,6 +1,5 @@
 package com.ironiacorp.commons.http.impl.httpcachej;
 
-
 import static org.junit.Assert.*;
 
 import java.net.URI;
@@ -10,7 +9,7 @@ import org.junit.Test;
 
 
 import com.ironiacorp.http.HttpJob;
-import com.ironiacorp.http.impl.httpclient4.HttpJobRunner4;
+import com.ironiacorp.http.impl.httpcachej.HttpJobRunnerCacheJ;
 
 public class HttpJobRunnerCacheJTest
 {
@@ -18,7 +17,7 @@ public class HttpJobRunnerCacheJTest
 	public void testSingle() throws URISyntaxException 
 	{
 		HttpJob job = new HttpJob("GET", new URI("http://www.icmc.usp.br/~magsilva/index.html"));
-		HttpJobRunner4 runner = new HttpJobRunner4();
+		HttpJobRunnerCacheJ runner = new HttpJobRunnerCacheJ();
 		runner.addJob(job);
 		runner.run();
 		assertNotNull(job.getResult());
@@ -27,7 +26,7 @@ public class HttpJobRunnerCacheJTest
 	@Test
 	public void testMultiple() throws URISyntaxException 
 	{
-		HttpJobRunner4 runner = new HttpJobRunner4();
+		HttpJobRunnerCacheJ runner = new HttpJobRunnerCacheJ();
 		runner.addJob(new HttpJob("GET", new URI("http://www.icmc.usp.br/~magsilva/index.html")));
 		runner.addJob(new HttpJob("GET", new URI("http://www.google.com")));
 		runner.addJob(new HttpJob("GET", new URI("http://www.uol.com.br")));

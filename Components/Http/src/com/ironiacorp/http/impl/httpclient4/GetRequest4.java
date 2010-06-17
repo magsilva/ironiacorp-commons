@@ -37,31 +37,34 @@ import org.apache.http.protocol.BasicHttpContext;
 import com.ironiacorp.io.IoUtil;
 import com.ironiacorp.http.HttpJob;
 import com.ironiacorp.http.HttpMethodResult;
+import com.ironiacorp.http.HttpMethodResultFormat;
 
 /**
  * How to send a request via proxy using {@link HttpClient HttpClient}.
  * 
  * @author Roland Weber
  */
-public class GetRequest4 implements Callable<HttpJob>
+public class GetRequest4<T> implements Callable<HttpJob<T>>
 {
-	private HttpJob job;
+	private HttpJob<T> job;
 
 	private final HttpClient httpClient;
 
 	private final HttpContext context;
+	
+	private HttpGet getMethod;
 
-	public GetRequest4(HttpClient httpClient, HttpJob job)
+	public GetRequest4(HttpClient httpClient, HttpJob<T> job)
 	{
-		this.httpClient = httpClient;
+		this.httpClient = httpClient; 
 		this.context = new BasicHttpContext();
 		this.job = job;
+		this.getMethod = new HttpGet((URI) job.getParameter(0));
 	}
 
-	public HttpJob call()
+	@SuppressWarnings("unchecked")
+	public HttpJob<T> call()
 	{
-		URI uri = (URI) job.getParameter(0);
-		HttpGet getMethod = new HttpGet(uri);
 		try {
 	        HttpResponse response = httpClient.execute(getMethod, context);
 	        HttpEntity entity = response.getEntity();
@@ -69,24 +72,26 @@ public class GetRequest4 implements Callable<HttpJob>
 	        if (entity != null) {
 	        	InputStream inputStream = entity.getContent();
 	        	if (inputStream != null) {
-	        		HttpMethodResult result = new HttpMethodResult();
+	        		HttpMethodResult<T> result = new HttpMethodResult<T>();
 	    			OutputStream outputStream = null;
 	    			int readBytes = 0;
 	    			byte[] buffer = new byte[IoUtil.BUFFER_SIZE];
 	
 	    			try {
-	        			if (job.isSaveContentToFile()) {
-	        				File file = IoUtil.createTempFile("sysrev-get-", ".html");
+	    				if (job.getResultFormat() == HttpMethodResultFormat.FILE) {
+	    	    			File file = IoUtil.createTempFile("sysrev-get-", ".html");
 	        				outputStream = new FileOutputStream(file);
-	        			} else {
+	        			} else if (job.getResultFormat() == HttpMethodResultFormat.MEM) {
 	        				outputStream = new ByteArrayOutputStream();
+	        			} else {
+	        				throw new UnsupportedOperationException("Output content format not supported");
 	        			}
 						
 	        			while ((readBytes = inputStream.read(buffer, 0, buffer.length)) != -1) {
 	        				outputStream.write(buffer, 0, readBytes);
 	        			}
 	        			
-	        			result.setContent(outputStream);
+	        			result.setContent((T) outputStream);
 	        			result.setStatusCode(response.getStatusLine().getStatusCode());
 	        			job.setResult(result);
 	        		} finally {
@@ -97,10 +102,13 @@ public class GetRequest4 implements Callable<HttpJob>
 	        			}
 	        		}
 				}
+        		entity.consumeContent();
 	        }
+	        // httpClient.getConnectionManager().shutdown();
 		} catch (Exception e) {
 			getMethod.abort();
 		}
+		
         return job;
 	}
 }
