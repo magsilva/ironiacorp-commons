@@ -5,7 +5,7 @@
 
 	<groupId>ironiacorp</groupId>
 	<artifactId>commons-datastructures</artifactId>
-	<version>1.0.0</version>
+	<version>1.1.0</version>
 	<packaging>jar</packaging>
 
 	<name>Ironia-DataStructures</name>
@@ -45,19 +45,18 @@
 
 	<issueManagement>
 		<system>Bugzilla</system>
-		<url>http://www.ironiacorp.com/Admin/Bugzilla/</url>
+		<url>http://www.ironiacorp.com/Apps/Bugzilla/</url>
 	</issueManagement>
 
 	<scm>
-		<connection>scm:svn:https://www.ironiacorp.com/svn/projects/ironiacorp-commons/Components/DataStructures/trunk</connection>
-		<developerConnection>scm:svn:https://www.ironiacorp.com/svn/projects/ironiacorp-commons/Components/DataStructures/trunk</developerConnection>
-		<tag>trunk</tag>
-		<url>https://www.ironiacorp.com/Admin/ViewVC/viewvc.cgi/ironiacorp-commons/Components/DataStructures/trunk</url>
+		<connection>scm:svn:https://www.ironiacorp.com/svn/projects/ironiacorp-commons/trunk/Components/DataStructures</connection>
+		<developerConnection>scm:svn:https://www.ironiacorp.com/svn/projects/ironiacorp-commons/trunk/Components/DataStructures</developerConnection>
+		<url>http://www.ironiacorp.com/Apps/WebSVN/wsvn/Active%20projects.ironiacorp-commons/trunk/Components/DataStructures/</url>
 	</scm>
 
 	<ciManagement>
 		<system>Hudson</system>
-		<url>http://www.ironiacorp.com/Apps/Hudson</url>
+		<url>http://www.ironiacorp.com/Apps/Hudson/job/Ironia-DataStructures/</url>
 		<notifiers>
 			<notifier>
 				<type>mail</type>
@@ -87,6 +86,9 @@
 
 	<properties>
 		<sonar.host.url>http://www.ironiacorp.com/Apps/Sonar/</sonar.host.url>
+		<!--
+			<sonar.core.codeCoveragePlugin>emma</sonar.core.codeCoveragePlugin>
+		-->
 	</properties>
 
 	<dependencies>
@@ -107,14 +109,6 @@
 
 		<outputDirectory>target/classes</outputDirectory>
 		<testOutputDirectory>target/test-classes</testOutputDirectory>
-
-		<resources>
-			<resource>
-				<targetPath>lib/</targetPath>
-				<filtering>false</filtering>
-				<directory>${basedir}/lib</directory>
-			</resource>
-		</resources>
 
 		<plugins>
 			<plugin>
