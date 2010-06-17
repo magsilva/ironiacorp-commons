@@ -45,19 +45,18 @@
 
 	<issueManagement>
 		<system>Bugzilla</system>
-		<url>http://www.ironiacorp.com/Admin/Bugzilla/</url>
+		<url>http://www.ironiacorp.com/Apps/Bugzilla/</url>
 	</issueManagement>
 
 	<scm>
-		<connection>scm:svn:https://www.ironiacorp.com/svn/projects/ironiacorp-commons/Components/XML/trunk</connection>
-		<developerConnection>scm:svn:https://www.ironiacorp.com/svn/projects/ironiacorp-commons/Components/XML/trunk</developerConnection>
-		<tag>trunk</tag>
-		<url>https://www.ironiacorp.com/Admin/ViewVC/viewvc.cgi/ironiacorp-commons/Components/XML/trunk</url>
+		<connection>scm:svn:https://www.ironiacorp.com/svn/projects/ironiacorp-commons/trunk/Components/XML</connection>
+		<developerConnection>scm:svn:https://www.ironiacorp.com/svn/projects/ironiacorp-commons/trunk/Components/XML</developerConnection>
+		<url>http://www.ironiacorp.com/Apps/WebSVN/wsvn/Active%20projects.ironiacorp-commons/trunk/Components/XML</url>
 	</scm>
 
 	<ciManagement>
 		<system>Hudson</system>
-		<url>http://www.ironiacorp.com:8080/Hudson</url>
+		<url>http://www.ironiacorp.com/Apps/Hudson/job/Ironia-XML/</url>
 		<notifiers>
 			<notifier>
 				<type>mail</type>
@@ -74,14 +73,14 @@
 		<repository>
 			<id>labes-pc-010808-releases</id>
 			<name>labes-pc-010808-releases</name>
-			<url>http://www.ironiacorp.com:8080/artifactory/libs-releases-local</url>
+			<url>http://www.ironiacorp.com/Apps/Artifactory/libs-releases-local</url>
 		</repository>
 	</distributionManagement>
 
 	<repositories>
 		<repository>
 			<id>labes-pc-010808-releases</id>
-			<url>http://www.ironiacorp.com:8080/artifactory/repo</url>
+			<url>http://www.ironiacorp.com/Apps/Artifactory/repo</url>
 		</repository>
 	</repositories>
 
@@ -159,5 +158,15 @@
 
 	<reporting>
 		<outputDirectory>site</outputDirectory>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.sonar-plugins</groupId>
+				<artifactId>maven-report</artifactId>
+			</plugin>
+		</plugins>
 	</reporting>
+
+	<properties>
+		<sonar.host.url>http://www.ironiacorp.com/Apps/Sonar/</sonar.host.url>
+	</properties>
 </project>
