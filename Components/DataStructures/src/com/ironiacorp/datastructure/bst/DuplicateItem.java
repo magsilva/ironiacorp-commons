@@ -1,4 +1,4 @@
-package com.ironiacorp.datastructure.tree.bst;
+package com.ironiacorp.datastructure.bst;
 
 /**
  * Exception class for duplicate item errors

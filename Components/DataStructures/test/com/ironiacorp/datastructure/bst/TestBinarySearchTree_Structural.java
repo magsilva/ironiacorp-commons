@@ -1,10 +1,15 @@
-package com.ironiacorp.datastructure.tree.bst;
+package com.ironiacorp.datastructure.bst;
 
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-public class BinarySearchTreeTest_Structural {
+import com.ironiacorp.datastructure.bst.BinarySearchTree;
+import com.ironiacorp.datastructure.bst.BinarySearchTreeWithRank;
+import com.ironiacorp.datastructure.bst.DuplicateItem;
+import com.ironiacorp.datastructure.bst.ItemNotFound;
+
+public class TestBinarySearchTree_Structural {
 
 	private BinarySearchTree tree;
 	

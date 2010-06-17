@@ -1,4 +1,4 @@
-package com.ironiacorp.datastructure.tree.bst;
+package com.ironiacorp.datastructure.bst;
 /**
  * Exception class for failed finds/removes in search
  * trees, hash tables, and list and tree iterators.

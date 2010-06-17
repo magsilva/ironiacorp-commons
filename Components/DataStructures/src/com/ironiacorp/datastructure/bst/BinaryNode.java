@@ -1,4 +1,4 @@
-package com.ironiacorp.datastructure.tree.bst;
+package com.ironiacorp.datastructure.bst;
 
 /**
  * Basic node stored in all binary search trees. Includes fields for all

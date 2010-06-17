@@ -1,11 +1,14 @@
-package com.ironiacorp.datastructure.tree.bst;
+package com.ironiacorp.datastructure.bst;
 
 import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
 
-public class BinarySearchTreeWithRankTest_Functional
+import com.ironiacorp.datastructure.bst.BinarySearchTreeWithRank;
+import com.ironiacorp.datastructure.bst.ItemNotFound;
+
+public class TestBinarySearchTreeWithRank_Functional
 {
 	private BinarySearchTreeWithRank rankTree;
 

@@ -1,4 +1,4 @@
-package com.ironiacorp.datastructure.tree.bst;
+package com.ironiacorp.datastructure.bst;
 
 /**
  * Protocol for search trees. Note that all "matching" is based on the compares
