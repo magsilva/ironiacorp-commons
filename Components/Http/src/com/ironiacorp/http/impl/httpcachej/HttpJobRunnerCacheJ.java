@@ -30,7 +30,6 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import org.apache.commons.httpclient.HttpClient;
 import org.codehaus.httpcache4j.cache.HTTPCache;
 import org.codehaus.httpcache4j.cache.MemoryCacheStorage;
 import org.codehaus.httpcache4j.client.HTTPClientResponseResolver;
@@ -64,8 +63,7 @@ public class HttpJobRunnerCacheJ implements HttpJobRunner
 	{
 		cache = new HTTPCache(
 			new MemoryCacheStorage(),
-			new HTTPClientResponseResolver(new HttpClient())
-		);
+			HTTPClientResponseResolver.createMultithreadedInstance());
 	}
 	
 	public HttpJobRunnerCacheJ()
