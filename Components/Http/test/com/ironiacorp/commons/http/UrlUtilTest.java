@@ -1,3 +1,4 @@
+package com.ironiacorp.commons.http;
 
 
 import static org.junit.Assert.*;
@@ -40,4 +41,33 @@ public class UrlUtilTest
 		assertFalse(UrlUtil.exists(new URL(BAD_URL)));
 	}
 
+	@Test
+	public void testEncodeUrlParameter_Space()
+	{
+		assertEquals("%20", UrlUtil.encodeUrlParameter(" "));
+	}
+
+	@Test
+	public void testEncodeUrlParameter_DoubleQuote()
+	{
+		assertEquals("%22", UrlUtil.encodeUrlParameter("\""));
+	}
+	
+	@Test
+	public void testEncodeUrlParameter_SingleQuote()
+	{
+		assertEquals("%27", UrlUtil.encodeUrlParameter("'"));
+	}
+	
+	@Test
+	public void testEncodeUrlParameter_Word()
+	{
+		assertEquals("abc", UrlUtil.encodeUrlParameter("abc"));
+	}
+
+	@Test
+	public void testEncodeUrlParameter_Words()
+	{
+		assertEquals("abc%20test", UrlUtil.encodeUrlParameter("abc test"));
+	}
 }

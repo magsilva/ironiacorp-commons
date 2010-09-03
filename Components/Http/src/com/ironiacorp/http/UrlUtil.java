@@ -45,4 +45,51 @@ public final class UrlUtil
 			return false;
 		}
 	}
+	
+	/**
+	 * A better solution is to use an URI and convert it to URL (URI.toURL())
+	 * and vice-versa.
+	 */
+	@Deprecated
+	public static String encodeUrlParameter(String text)
+	{
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < text.length(); i++) {
+			Character letter = text.charAt(i);
+			switch (letter) {
+				//  gen-delims
+				case ':':
+				case '/':
+				case '?':
+				case '#':
+				case '[':
+				case ']':
+				case '@':
+				//  sub-delims
+				case '!':
+				case '$':
+				case '&':
+				case '\'':
+				case '(':
+				case ')':
+				case '*':
+				case '+':
+				case ',':
+				case ';':
+				case '=':
+				// others
+				case '"':
+				case ' ':
+					String code = Integer.toHexString(letter);
+					sb.append('%');
+					sb.append(code);
+					break;
+				default:
+					// ALPHA / DIGIT / "-" / "." / "_" / "~"
+					sb.append(letter);
+			}
+
+		}
+		return sb.toString();
+	}
 }

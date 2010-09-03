@@ -14,7 +14,7 @@ import com.ironiacorp.http.HttpJob;
 import com.ironiacorp.http.HttpMethodResult;
 import com.ironiacorp.http.impl.httpclient4.HttpJobRunner4;
 
-public class HttpJobRunnerHttpClient4
+public class HttpJobRunnerHttpClient4Test
 {
 	@Test
 	public void testSingle() throws URISyntaxException 
