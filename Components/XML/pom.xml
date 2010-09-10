@@ -5,7 +5,7 @@
 
 	<groupId>ironiacorp</groupId>
 	<artifactId>commons-xml</artifactId>
-	<version>1.0.0</version>
+	<version>1.0.1</version>
 	<packaging>jar</packaging>
 
 	<name>Ironia-XML</name>
@@ -106,8 +106,8 @@
 
 		<dependency>
     			<groupId>net.sf.saxon</groupId>
-			<artifactId>saxon</artifactId>
-			<version>9.2.0.2</version>
+			<artifactId>saxon-he</artifactId>
+			<version>9.2.1.2</version>
 		</dependency> 
 	</dependencies>
 
@@ -121,39 +121,6 @@
 
 		<outputDirectory>target/classes</outputDirectory>
 		<testOutputDirectory>target/test-classes</testOutputDirectory>
-
-		<resources>
-			<resource>
-				<targetPath>lib/</targetPath>
-				<filtering>false</filtering>
-				<directory>${basedir}/lib</directory>
-			</resource>
-		</resources>
-
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<fork>true</fork>
-					<meminitial>128m</meminitial>
-					<maxmem>512m</maxmem>
-					<source>1.5</source>
-					<target>1.5</target>
-				</configuration>
-			</plugin>
-
-			<plugin>
-				<artifactId>maven-clean-plugin</artifactId>
-				<configuration>
-					<filesets>
-						<fileset>
-							<directory>bin/</directory>
-						</fileset>
-					</filesets>
-				</configuration>
-			</plugin>
-		</plugins>
 	</build>
 
 	<reporting>
