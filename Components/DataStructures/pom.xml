@@ -85,7 +85,7 @@
 	</repositories>
 
 	<properties>
-		<sonar.host.url>http://www.ironiacorp.com/Apps/Sonar/</sonar.host.url>
+		<sonar.host.url>http://www.ironiacorp.com/Apps/Sonar</sonar.host.url>
 		<!--
 			<sonar.core.codeCoveragePlugin>emma</sonar.core.codeCoveragePlugin>
 		-->
