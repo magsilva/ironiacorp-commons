@@ -63,10 +63,15 @@ public class IdentityMethodSet<K, V>
 		map = new TreeMap<K, V>();
 	}
 	
-	private K getIdentity(V object)
+	protected K getDefaultIdentity(V object)
+	{
+		return (K) Integer.toHexString(object.hashCode());
+	}
+	
+	public K getIdentity(V object)
 	{
 		if (identityMethodName == null) {
-			return (K) Integer.toHexString(object.hashCode());
+			return getDefaultIdentity(object);
 		}
 		
 		try {
@@ -96,7 +101,7 @@ public class IdentityMethodSet<K, V>
 	public Collection<? extends V> addAll(Collection<? extends V> objects)
 	{
 		if (objects == null) {
-			throw new NullPointerException("Specified collection");
+			throw new IllegalArgumentException(new NullPointerException());
 		}
 		
 		List<V> result = new ArrayList<V>();
@@ -113,7 +118,7 @@ public class IdentityMethodSet<K, V>
 	public boolean contains(V object)
 	{
 		if (object == null) {
-			throw new IllegalArgumentException(new NullPointerException());
+			return false;
 		}
 
 		K key = getIdentity(object);

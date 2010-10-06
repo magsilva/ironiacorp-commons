@@ -20,8 +20,10 @@ Copyright (C) 2010 Marco Aurelio Graciotto Silva <magsilva@ironiacorp.com>
 package com.ironiacorp.datastructure.set;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 import java.io.File;
+import java.net.InetAddress;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -37,15 +39,48 @@ public class IdentityMethodSetTest
 	@Before
 	public void setUp() throws Exception
 	{
-		set = new IdentityMethodSet<String, String>("toUpperCase");
+		set = new IdentityMethodSet<String, String>();
 	}
 
+	
+	@Test
+	public void testNew_NoIdentityMethod()
+	{
+		new IdentityMethodSet<String, String>();
+	}
+
+	@Test(expected=UnsupportedOperationException.class)
+	public void testNew_InvalidIdentityMethod_NoSuchMethod()
+	{
+		IdentityMethodSet<String, String> set2 = new IdentityMethodSet<String, String>("fkljadfkls");
+		set2.add("ABC");
+	}
+
+	@Test(expected=UnsupportedOperationException.class)
+	public void testNew_InvalidIdentityMethod_UnsupportedOperation() throws Exception
+	{
+		InetAddress clazz = mock(InetAddress.class);
+		when(clazz.toString()).thenThrow(new NullPointerException());
+		IdentityMethodSet<String, InetAddress> set2 = new IdentityMethodSet<String, InetAddress>("toString");
+		set2.add(clazz);
+	}
+
+	
+	@Test
+	public void testAdd_NoIdentityMethod()
+	{
+		IdentityMethodSet<String, String> set2 = new IdentityMethodSet<String, String>();
+		set2.add("ABC");
+		assertTrue(set2.contains("ABC"));
+	}
+
+	
 	@Test
 	public void testAdd()
 	{
 		String abc = "test 1 2 3";
 		set.add(abc);
-		assertEquals(abc, set.getByKey("TEST 1 2 3"));
+		assertEquals(abc, set.getByKey(set.getIdentity(abc)));
 		assertEquals(abc, set.add(abc));
 	}
 
@@ -60,6 +95,12 @@ public class IdentityMethodSetTest
 		assertTrue(set.containsAll(collectionObjectsBefore));
 	}
 
+	@Test(expected=IllegalArgumentException.class)
+	public void testAddAll_NullSet()
+	{
+		set.addAll(null);
+	}
+	
 	@Test
 	public void testAddAll_SetWithIntersection_String()
 	{
@@ -72,14 +113,15 @@ public class IdentityMethodSetTest
 		Collection<String> collectionObjects2 = ArrayUtil.toCollection(arrayObjects2); 
 		Collection<? extends String> result = set.addAll(collectionObjects2);
 		assertEquals(collectionObjects2, result);
-		assertTrue(arrayObjects1[0] == set.getByKey("TEST"));
-		assertTrue(arrayObjects1[1] == set.getByKey("1"));
-		assertTrue(arrayObjects1[2] == set.getByKey("2"));
-		assertTrue(arrayObjects1[3] == set.getByKey("3"));
+		assertTrue(arrayObjects1[0] == set.getByKey(set.getIdentity(arrayObjects1[0])));
+		assertTrue(arrayObjects1[1] == set.getByKey(set.getIdentity(arrayObjects1[1])));
+		assertTrue(arrayObjects1[2] == set.getByKey(set.getIdentity(arrayObjects1[2])));
+		assertTrue(arrayObjects1[3] == set.getByKey(set.getIdentity(arrayObjects1[3])));
 		// Strings are an special case... they hold the identity if they are equal
 		// assertFalse(arrayObjects2[0] == set.get("2"));
 		// assertFalse(arrayObjects2[1] == set.get("3"));
-		assertTrue(arrayObjects2[2] == set.getByKey("4"));
+		assertTrue(arrayObjects2[0] == set.getByKey(set.getIdentity(arrayObjects1[2])));
+		assertTrue(arrayObjects2[0] == set.getByKey(set.getIdentity(arrayObjects2[0])));
 		
 		assertTrue(set.containsAll(collectionObjects1));
 		assertTrue(set.containsAll(collectionObjects2));
@@ -125,7 +167,7 @@ public class IdentityMethodSetTest
 	public void testContains_ValidValue()
 	{
 		set.add("a");
-		assertTrue(set.contains("A"));
+		assertTrue(set.contains("a"));
 	}
 
 	@Test
@@ -134,27 +176,40 @@ public class IdentityMethodSetTest
 		String element = "a";
 		set.add(element);
 		assertTrue(set.contains(element));
-		assertEquals(element, set.getByKey(element.toUpperCase()));
+		assertEquals(element, set.getByKey(set.getIdentity(element)));
 		assertFalse(set.contains("B"));
 	}
 
+	@Test
+	public void testContainsAll()
+	{
+		String[] arrayObjects1 = {"test", "1", "2", "3"};
+		String[] arrayObjects2 = {"2", "3", "4"};
+		Collection<String> collectionObjects1 = ArrayUtil.toCollection(arrayObjects1); 
+		Collection<String> collectionObjects2 = ArrayUtil.toCollection(arrayObjects2); 
+		set.addAll(collectionObjects1);
+		assertTrue(set.containsAll(collectionObjects1));
+		assertFalse(set.containsAll(collectionObjects2));
+	}
+
+	
 	@Test(expected=IllegalArgumentException.class)
-	public void testContains_InvalidValue_Null()
+	public void testAdd_InvalidValue_Null()
 	{
 		set.add(null);
-		assertFalse(set.contains(null));
 	}
+
 	
 	@Test
 	public void testGet_Invalid()
 	{
-		assertNull(set.getByKey("ABC"));
+		assertNull(set.get("ABC"));
 	}
 
 	@Test(expected=IllegalArgumentException.class)
 	public void testGet_Invalid_Null()
 	{
-		set.getByKey(null);
+		set.get(null);
 	}
 	
 	@Test
@@ -162,7 +217,43 @@ public class IdentityMethodSetTest
 	{
 		String element = "a";
 		set.add(element);
-		assertTrue(element == set.getByKey("A"));
+		assertTrue(element == set.get("a"));
+		assertFalse(element == set.get("A"));
+	}
+
+	
+	@Test
+	public void testGetByKey_Invalid()
+	{
+		assertNull(set.getByKey("ABC"));
+	}
+
+	@Test(expected=IllegalArgumentException.class)
+	public void testGetByKey_Invalid_Null()
+	{
+		set.getByKey(null);
+	}
+	
+	@Test
+	public void testGetByKey_Valid()
+	{
+		String element = "a";
+		set.add(element);
+		assertTrue(element == set.getByKey(set.getIdentity("a")));
+	}
+
+	@Test
+	public void testGetByValue_Valid()
+	{
+		String element = "a";
+		set.add(element);
+		assertEquals(element, set.getByValue("a"));
+	}
+
+	@Test(expected=IllegalArgumentException.class)
+	public void testGetByValue_Invalid()
+	{
+		set.getByValue(null);
 	}
 	
 	@Test
@@ -203,7 +294,7 @@ public class IdentityMethodSetTest
 	{
 		String[] arrayObjects = {"test", "1", "2", "3"};
 		set.addAll(ArrayUtil.toCollection(arrayObjects));
-		set.removeByKey(arrayObjects[0].toUpperCase());
+		set.removeByKey(set.getIdentity(arrayObjects[0]));
 		assertFalse(set.contains(arrayObjects[0]));
 	}
 
@@ -220,6 +311,31 @@ public class IdentityMethodSetTest
 		assertFalse(set.contains(arrayObjects[3]));
 	}
 
+	@Test
+	public void testRemove_Invalid_Inexistent()
+	{
+		assertNull(set.remove("test"));
+	}
+
+	@Test(expected=IllegalArgumentException.class)
+	public void testRemove_Invalid_Null()
+	{
+		set.remove(null);
+	}
+
+	@Test
+	public void testRemoveByKey_Invalid_Inexistent()
+	{
+		assertNull(set.removeByKey("test"));
+	}
+
+	@Test(expected=IllegalArgumentException.class)
+	public void testRemoveBByKey_Invalid_Null()
+	{
+		set.removeByKey(null);
+	}
+
+	
 	@Test
 	public void testIsEmpty()
 	{
@@ -247,5 +363,11 @@ public class IdentityMethodSetTest
 		String[] arrayObjects = {"test", "1", "2", "3"};
 		set.addAll(ArrayUtil.toCollection(arrayObjects));
 		assertEquals(arrayObjects.length, set.size());
+	}
+	
+	@Test
+	public void testContains_Null()
+	{
+		assertFalse(set.contains(null));
 	}
 }
