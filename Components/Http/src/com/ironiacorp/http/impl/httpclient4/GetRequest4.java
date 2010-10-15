@@ -19,14 +19,10 @@ Copyright (C) 2007 Apache Software Foundation (ASF).
 
 package com.ironiacorp.http.impl.httpclient4;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.URI;
 import java.util.concurrent.Callable;
 
+import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -34,19 +30,18 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.protocol.BasicHttpContext;
 
-import com.ironiacorp.io.IoUtil;
 import com.ironiacorp.http.HttpJob;
 import com.ironiacorp.http.HttpMethodResult;
-import com.ironiacorp.http.HttpMethodResultFormat;
+import com.ironiacorp.http.HttpResponseHeader;
 
 /**
  * How to send a request via proxy using {@link HttpClient HttpClient}.
  * 
  * @author Roland Weber
  */
-public class GetRequest4<T> implements Callable<HttpJob<T>>
+public class GetRequest4 implements Callable<HttpJob>
 {
-	private HttpJob<T> job;
+	private HttpJob job;
 
 	private final HttpClient httpClient;
 
@@ -54,16 +49,16 @@ public class GetRequest4<T> implements Callable<HttpJob<T>>
 	
 	private HttpGet getMethod;
 
-	public GetRequest4(HttpClient httpClient, HttpJob<T> job)
+	public GetRequest4(HttpClient httpClient, HttpJob job)
 	{
 		this.httpClient = httpClient; 
 		this.context = new BasicHttpContext();
 		this.job = job;
-		this.getMethod = new HttpGet((URI) job.getParameter(0));
+		this.getMethod = new HttpGet(job.getUri());
 	}
 
 	@SuppressWarnings("unchecked")
-	public HttpJob<T> call()
+	public HttpJob call()
 	{
 		try {
 	        HttpResponse response = httpClient.execute(getMethod, context);
@@ -72,39 +67,24 @@ public class GetRequest4<T> implements Callable<HttpJob<T>>
 	        if (entity != null) {
 	        	InputStream inputStream = entity.getContent();
 	        	if (inputStream != null) {
-	        		HttpMethodResult<T> result = new HttpMethodResult<T>();
-	    			OutputStream outputStream = null;
-	    			int readBytes = 0;
-	    			byte[] buffer = new byte[IoUtil.BUFFER_SIZE];
-	
-	    			try {
-	    				if (job.getResultFormat() == HttpMethodResultFormat.FILE) {
-	    	    			File file = IoUtil.createTempFile("sysrev-get-", ".html");
-	        				outputStream = new FileOutputStream(file);
-	        			} else if (job.getResultFormat() == HttpMethodResultFormat.MEM) {
-	        				outputStream = new ByteArrayOutputStream();
-	        			} else {
-	        				throw new UnsupportedOperationException("Output content format not supported");
-	        			}
-						
-	        			while ((readBytes = inputStream.read(buffer, 0, buffer.length)) != -1) {
-	        				outputStream.write(buffer, 0, readBytes);
-	        			}
-	        			
-	        			result.setContent((T) outputStream);
-	        			result.setStatusCode(response.getStatusLine().getStatusCode());
-	        			job.setResult(result);
-	        		} finally {
-	        			try {
-	        				outputStream.close();
-	        				inputStream.close();
-	        			} catch (Exception e) {
-	        			}
+	        		HttpMethodResult result = new HttpMethodResult();
+	    			result.setContent(inputStream);
+	        		result.setStatusCode(response.getStatusLine().getStatusCode());
+
+	        		String location = null;
+	        		String via = null;
+	        		Header[] headers = response.getAllHeaders();
+	        		Header header = response.getFirstHeader(HttpResponseHeader.LOCATION.name);
+	        		if (header != null) {
+	        			location = header.getValue();
 	        		}
+	        		header = response.getFirstHeader(HttpResponseHeader.VIA.name);
+	        		if (header != null) {
+	        			via = header.getValue();
+	        		}
+	        		job.setResult(result);
 				}
-        		entity.consumeContent();
 	        }
-	        // httpClient.getConnectionManager().shutdown();
 		} catch (Exception e) {
 			getMethod.abort();
 		}

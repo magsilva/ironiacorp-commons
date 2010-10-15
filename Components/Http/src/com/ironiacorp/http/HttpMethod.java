@@ -14,40 +14,22 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-Copyright (C) 2009 Marco Aurélio Graciotto Silva <magsilva@icmc.usp.br>
- */
+Copyright (C) 2010 Marco Aurélio Graciotto Silva <magsilva@icmc.usp.br>
+*/
 
 package com.ironiacorp.http;
 
 /**
- * HTTP request descriptor.
+ * HTTP methods (as of RFC 2616).
  */
-public interface HttpMethod
+public enum HttpMethod
 {
-	/**
-	 * Check if a HTTP job is supported by the implemented HTTP method.
-	 * 
-	 * @param job HTTP job to be checked
-	 * 
-	 * @return True if job is supported, false otherwise.
-	 */
-	boolean checkHttpJob(HttpJob job);
-
-	/**
-	 * Check if the method is supported by the implemented HTTP method.
-	 * 
-	 * @param name HTTP method name.
-	 * 
-	 * @return True if supported, false otherwise.
-	 */
-	boolean checkName(String name);
-
-	/**
-	 * Check if the parameters are supported by the implemented HTTP method.
-	 * 
-	 * @param name HTTP method's parameters.
-	 * 
-	 * @return True if supported, false otherwise.
-	 */
-	boolean checkParameters(Object... parameters);
+	CONNECT,
+	DELETE,
+	GET,
+	HEAD,
+	OPTIONS,
+	POST,
+	PUT,
+	TRACE
 }

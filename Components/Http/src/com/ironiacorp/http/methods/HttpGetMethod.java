@@ -22,38 +22,11 @@ package com.ironiacorp.http.methods;
 import java.net.URI;
 
 import com.ironiacorp.http.HttpJob;
-import com.ironiacorp.http.HttpMethod;
 import com.ironiacorp.string.StringUtil;
 
 /**
  * HTTP GET request descriptor.
  */
-public class HttpGetMethod implements HttpMethod
+public class HttpGetMethod
 {
-	public boolean checkHttpJob(HttpJob job)
-	{
-		boolean result = true;
-		result &= checkName(job.getMethod());
-		result &= checkParameters(job.getParameters());
-		
-		return result;
-	}
-	
-	public boolean checkName(String name)
-	{
-		return StringUtil.isSimilar("GET", name);
-	}
-
-	public boolean checkParameters(Object... parameters)
-	{
-		if (parameters.length != 1) {
-			return false;	
-		}
-		
-		if (parameters[0] instanceof URI) {
-			return true;
-		}
-		
-		return false;
-	}
 }

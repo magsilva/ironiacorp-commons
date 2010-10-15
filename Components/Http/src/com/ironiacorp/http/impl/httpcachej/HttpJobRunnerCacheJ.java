@@ -50,11 +50,6 @@ public class HttpJobRunnerCacheJ implements HttpJobRunner
 	
 	private List<HttpJob> jobs;
 	
-	private static final HttpMethod[] registeredHttpMethods =
-	{
-		new HttpGetMethod()
-	};
-	
 	private void setupHttpParams()
 	{
 	}
@@ -76,14 +71,8 @@ public class HttpJobRunnerCacheJ implements HttpJobRunner
 	public void addJob(HttpJob job)
 	{
 		boolean added = false;
-		
-		for (HttpMethod m : registeredHttpMethods) {
-			if (m.checkHttpJob(job)) {
-				jobs.add(job);
-				added = true;
-				break;
-			}
-		}
+
+		added = jobs.add(job);
 		
 		if (! added) {
 			throw new IllegalArgumentException("Invalid job");
@@ -98,7 +87,7 @@ public class HttpJobRunnerCacheJ implements HttpJobRunner
 		List<Future<?>> status = new ArrayList<Future<?>>(); 
 		
 		for (HttpJob job : jobs) {
-			if (StringUtil.isSimilar(job.getMethod(), "GET")) {
+			if (HttpMethod.GET == job.getMethod()) {
 				Future<HttpJob> jobStatus = queue.submit(new GetRequest4(cache, job));
 				status.add(jobStatus);
 				continue;

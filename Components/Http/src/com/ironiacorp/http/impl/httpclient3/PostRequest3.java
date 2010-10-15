@@ -57,7 +57,7 @@ public class PostRequest3 implements Callable<HttpJob>
 	
 	public HttpJob call()
 	{
-		URI uri = (URI) job.getParameter(0);
+		URI uri = (URI) job.getUri();
 		NameValuePair[] data = (NameValuePair[]) job.getParameter(1);
 		
 		PostMethod postMethod = new PostMethod(uri.toString());
@@ -74,36 +74,10 @@ public class PostRequest3 implements Callable<HttpJob>
 			InputStream inputStream = postMethod.getResponseBodyAsStream();
 			
 			if (inputStream != null) {
-				OutputStream outputStream = null;  
-				int readBytes = 0;
-
-				try {
-					if (job.getResultFormat() == HttpMethodResultFormat.FILE) {
-    	    			File file = IoUtil.createTempFile("sysrev-get-", ".html");
-        				outputStream = new FileOutputStream(file);
-        			} else if (job.getResultFormat() == HttpMethodResultFormat.MEM) {
-        				outputStream = new ByteArrayOutputStream();
-        			} else {
-        				throw new UnsupportedOperationException("Output content format not supported");
-        			}
-					
-					
-					byte[] buffer = new byte[IoUtil.BUFFER_SIZE];
-					while ((readBytes = inputStream.read(buffer, 0, buffer.length)) != -1) {
-						outputStream.write(buffer, 0, readBytes);
-					}
-					
-					result.setContent(outputStream);
-        			result.setStatusCode(statusCode);
-        			job.setResult(result);
-				} finally {
-					try {
-						outputStream.close();
-						inputStream.close();
-						postMethod.releaseConnection();
-					} catch (Exception e) {
-					}
-				}
+				result.setContent(inputStream);
+        		result.setStatusCode(statusCode);
+        		job.setResult(result);
+				postMethod.releaseConnection();
 			}
 		} catch (HttpException e) {
 		} catch (IOException e) {

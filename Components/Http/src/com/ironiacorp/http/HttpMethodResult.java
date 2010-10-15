@@ -19,12 +19,29 @@ Copyright (C) 2010 Marco Aurélio Graciotto Silva <magsilva@icmc.usp.br>
 
 package com.ironiacorp.http;
 
-public class HttpMethodResult<T>
+import java.io.File;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.HashMap;
+import java.util.Map;
+
+import com.ironiacorp.io.IoUtil;
+
+public class HttpMethodResult
 {
 	private int statusCode;
 	
-	private T content;
-
+	private InputStream content;
+	
+	private Map<HttpResponseHeader, String> responseHeader;
+	
+	
+	public HttpMethodResult()
+	{
+		responseHeader = new HashMap<HttpResponseHeader, String>();
+	}
+	
+	
 	public int getStatusCode()
 	{
 		return statusCode;
@@ -35,13 +52,40 @@ public class HttpMethodResult<T>
 		this.statusCode = statusCode;
 	}
 
-	public T getContent()
+	public void setContent(InputStream content)
+	{
+		this.content = content;
+	}	
+
+	public InputStream getContent()
 	{
 		return content;
 	}
 
-	public void setContent(T content)
+	public byte[] getContentAsByteArray()
 	{
-		this.content = content;
-	}	
+		return IoUtil.toByteArray(content);
+	}
+	
+	public File getContentAsFile()
+	{
+		return IoUtil.toFile(content);
+	}
+	
+	public String setResposeHeader(HttpResponseHeader header, String value)
+	{
+		if (header == null) {
+			throw new IllegalArgumentException();
+		}
+		
+		return responseHeader.put(header, value);
+	}
+	
+	public String getResponseHeader(HttpResponseHeader header)
+	{
+		if (header == null) {
+			throw new IllegalArgumentException(new NullPointerException());
+		}
+		return responseHeader.get(header);
+	}
 }

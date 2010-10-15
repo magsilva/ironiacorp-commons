@@ -19,6 +19,7 @@ Copyright (C) 2007 Marco Aurélio Graciotto Silva <magsilva@ironiacorp.com>
 
 package com.ironiacorp.http.impl.httpclient4;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -28,8 +29,11 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
+import org.apache.http.ProtocolException;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.RedirectHandler;
 import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.conn.scheme.PlainSocketFactory;
 import org.apache.http.conn.scheme.Scheme;
@@ -40,12 +44,11 @@ import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
+import org.apache.http.protocol.HttpContext;
 
-import com.ironiacorp.string.StringUtil;
 import com.ironiacorp.http.HttpJob;
 import com.ironiacorp.http.HttpJobRunner;
 import com.ironiacorp.http.HttpMethod;
-import com.ironiacorp.http.methods.HttpGetMethod;
 
 public class HttpJobRunner4 implements HttpJobRunner
 {
@@ -58,12 +61,7 @@ public class HttpJobRunner4 implements HttpJobRunner
 	private HttpParams params;
 	
 	private List<HttpJob> jobs;
-	
-	private static final HttpMethod[] registeredHttpMethods =
-	{
-		new HttpGetMethod()
-	};
-	
+		
 	private void setupHttpParams()
 	{
 		params = new BasicHttpParams();
@@ -104,13 +102,7 @@ public class HttpJobRunner4 implements HttpJobRunner
 	{
 		boolean added = false;
 		
-		for (HttpMethod m : registeredHttpMethods) {
-			if (m.checkHttpJob(job)) {
-				jobs.add(job);
-				added = true;
-				break;
-			}
-		}
+		added = jobs.add(job);
 		
 		if (! added) {
 			throw new IllegalArgumentException("Invalid job");
@@ -123,10 +115,10 @@ public class HttpJobRunner4 implements HttpJobRunner
 		ExecutorService executor = Executors.newFixedThreadPool(maxThreadsCount);
 		ExecutorCompletionService<HttpJob> queue = new ExecutorCompletionService<HttpJob>(executor);
 		List<Future<?>> workers = new ArrayList<Future<?>>(); 
-		HttpClient httpClient = new DefaultHttpClient(cm, params); 
-
+		DefaultHttpClient httpClient = new DefaultHttpClient(cm, params);
+	
 		for (HttpJob job : jobs) {
-			if (StringUtil.isSimilar(job.getMethod(), "GET")) {
+			if (HttpMethod.GET == job.getMethod()) {
 				GetRequest4 request = new GetRequest4(httpClient, job);
 				Future<HttpJob> jobStatus = queue.submit(request);
 				workers.add(jobStatus);
@@ -150,6 +142,7 @@ public class HttpJobRunner4 implements HttpJobRunner
 		}
 	
 		executor.shutdown();
+		cm.shutdown();
 	}
 	
 	public void abort()

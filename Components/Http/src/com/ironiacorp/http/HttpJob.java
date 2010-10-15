@@ -19,60 +19,129 @@ Copyright (C) 2009 Marco Aurélio Graciotto Silva <magsilva@icmc.usp.br>
 
 package com.ironiacorp.http;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * An HTTP job is a descriptor for an HTTP operation, i.e., the HTTP
  * request type and its parameters.
  */
-
-public class HttpJob<T>
+public class HttpJob
 {
 	/**
-	 * HTTP method name.
+	 * HTTP method.
 	 */
-	private String method;
+	private HttpMethod method;
 	
 	/**
-	 * HTTP method parameters.
+	 * Target URI.
 	 */
-	private Object[] parameters;
+	private URI uri;
+	
+	/**
+	 * HTTP method request method headers.
+	 */
+	private Map<HttpRequestHeader, String> requestHeader;
 	
 	/**
 	 * Job result.
 	 */
-	private HttpMethodResult<T> result;
+	private HttpMethodResult result;
 	
-	private HttpMethodResultFormat resultFormat = HttpMethodResultFormat.MEM;
+	/**
+	 * Desired result format.
+	 */
+	private HttpMethodResultFormat resultFormat; 
 	
-
-	public HttpJob(String method, Object... parameters)
+	/**
+	 * Initializer of the current object. This is must only be called by constructor
+	 * methods.
+	 */
+	private void init(HttpMethod method, URI uri)
 	{
+		if (method == null) {
+			throw new IllegalArgumentException("No HTTP method was choosen");
+		}
+		if (uri == null) {
+			throw new IllegalArgumentException("No target URI was defined");
+		}
 		this.method = method;
-		this.parameters = parameters.clone();
+		this.uri = uri;
+		this.requestHeader = new HashMap<HttpRequestHeader, String>();
 	}
 	
-	public String getMethod()
+	/**
+	 * Create a HTTP job.
+	 * 
+	 * @param method HTTP method to be executed (GET, POST, etc).
+	 * @param url Target URL of the HTTP method.
+
+	 * @throws URISyntaxException 
+	 */
+	public HttpJob(HttpMethod method, URL url)
+	{
+		if (url == null) {
+			throw new IllegalArgumentException("Invalid URL");
+		}
+		try {
+			init(method, url.toURI());	
+		} catch (URISyntaxException se) {
+			throw new IllegalArgumentException(se);
+		}
+	}
+
+	
+	/**
+	 * Create a HTTP job.
+	 * 
+	 * @param method HTTP method to be executed (GET, POST, etc).
+	 * @param uri Target URI of the HTTP method.
+	 */
+	public HttpJob(HttpMethod method, URI uri)
+	{
+		init(method, uri);	
+	}
+	
+	public HttpMethod getMethod()
 	{
 		return method;
 	}
 
-	public Object getParameter(int i)
+	public URI getUri()
 	{
-		return parameters[i];
-	}
-	
-	public Object[] getParameters()
-	{
-		return parameters;
+		return uri;
 	}
 
-	public HttpMethodResult<T> getResult()
+	public HttpMethodResult getResult()
 	{
 		return result;
 	}
 
-	public void setResult(HttpMethodResult<T> response)
+	public void setResult(HttpMethodResult response)
 	{
 		this.result = response;
+	}
+	
+
+	
+	public String setRequestHeader(HttpRequestHeader header, String value)
+	{
+		if (header == null) {
+			throw new IllegalArgumentException();
+		}
+		
+		return requestHeader.put(header, value);
+	}
+	
+	public String getRequestHeader(HttpRequestHeader header)
+	{
+		if (header == null) {
+			throw new IllegalArgumentException(new NullPointerException());
+		}
+		return requestHeader.get(header);
 	}
 	
 	public HttpMethodResultFormat getResultFormat()
@@ -83,9 +152,14 @@ public class HttpJob<T>
 	public void setResultFormat(HttpMethodResultFormat resultFormat)
 	{
 		if (result != null) {
-			throw new IllegalArgumentException("Job has already finished, cannot change the result format.");
+			throw new UnsupportedOperationException("Result has already been collected");
+		}
+		
+		if (resultFormat == null) {
+			throw new IllegalArgumentException("Invalid result format");
 		}
 		
 		this.resultFormat = resultFormat;
 	}
+
 }

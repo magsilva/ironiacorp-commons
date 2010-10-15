@@ -42,22 +42,22 @@ import com.ironiacorp.http.HttpMethodResultFormat;
  * 
  * @author Roland Weber
  */
-public class GetRequest4<T> implements Callable<HttpJob<T>>
+public class GetRequest4 implements Callable<HttpJob>
 {
-	private HttpJob<T> job;
+	private HttpJob job;
 	
 	private HTTPCache cache;
 
-	public GetRequest4(HTTPCache cache, HttpJob<T> job)
+	public GetRequest4(HTTPCache cache, HttpJob job)
 	{
 		this.cache = cache;
 		this.job = job;
 	}
 
 	@SuppressWarnings("unchecked")
-	public HttpJob<T> call()
+	public HttpJob call()
 	{
-		URI uri = (URI) job.getParameter(0);
+		URI uri = job.getUri();
 		HTTPRequest request = new HTTPRequest(uri);
 		try {
 			HTTPResponse response = cache.doCachedRequest(request);
@@ -66,35 +66,10 @@ public class GetRequest4<T> implements Callable<HttpJob<T>>
 	        if (payload != null && payload.isAvailable()) {
 	        	InputStream inputStream = payload.getInputStream();
 	        	if (inputStream != null) {
-	        		HttpMethodResult<T> result = new HttpMethodResult<T>();
-	    			OutputStream outputStream = null;
-	    			int readBytes = 0;
-	    			byte[] buffer = new byte[IoUtil.BUFFER_SIZE];
-	
-	    			try {
-	    				if (job.getResultFormat() == HttpMethodResultFormat.FILE) {
-	    	    			File file = IoUtil.createTempFile("sysrev-get-", ".html");
-	        				outputStream = new FileOutputStream(file);
-	        			} else if (job.getResultFormat() == HttpMethodResultFormat.MEM) {
-	        				outputStream = new ByteArrayOutputStream();
-	        			} else {
-	        				throw new UnsupportedOperationException("Output content format not supported");
-	        			}
-						
-	        			while ((readBytes = inputStream.read(buffer, 0, buffer.length)) != -1) {
-	        				outputStream.write(buffer, 0, readBytes);
-	        			}
-	        			
-	        			result.setContent((T) outputStream);
-	        			result.setStatusCode(response.getStatus().getCode());
-	        			job.setResult(result);
-	        		} finally {
-	        			try {
-	        				outputStream.close();
-	        				inputStream.close();
-	        			} catch (Exception e) {
-	        			}
-	        		}
+	        		HttpMethodResult result = new HttpMethodResult();
+        			result.setContent(inputStream);
+	        		result.setStatusCode(response.getStatus().getCode());
+	        		job.setResult(result);
 				}
 	        }
 		} catch (Exception e) {

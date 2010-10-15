@@ -14,30 +14,42 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-Copyright (C) 2009 Marco Aurélio Graciotto Silva <magsilva@ironiacorp.com>
- */
+Copyright (C) 2010 Marco Aurélio Graciotto Silva <magsilva@icmc.usp.br>
+*/
 
 package com.ironiacorp.http;
 
 /**
- * Runs a set of HTTP jobs.
+ * Header options for a HTTP request.
  */
-public interface HttpJobRunner
+public enum HttpResponseHeader
 {
-	/**
-	 * Add a job to be run.
-	 * 
-	 * @param job Job to be run.
-	 */
-	void addJob(HttpJob job);
+	// General header
+	CACHE_CONTROL("Cache-Control"),
+	CONNECTION("Connection"),
+	DATE("Date"),
+	PRAGMA("Pragma"),
+	TRAILER("Trailer"),
+	TRAILER_ENCODING("Transfer-Encoding"),
+	UPGRADE("Upgrade"),
+	VIA("Via"),
+	WARNING("Warning"),
 	
-	/**
-	 * Run the jobs.
-	 */
-	void run();
-	
-	/**
-	 * Abort the execution of the jobs.
-	 */
-	void abort();
+	// Response header
+	ACCEPT_RANGES("Accept-Ranges"),
+	AGE("Age"),
+	ETAG("ETag"),
+	LOCATION("Location"),
+	PROXY_AUTHENTICATE("Proxy-Authenticate"),
+	RETRY_AFTER("Retry-After"),
+	SERVER("Server"),
+	VARY("Vary"),
+	WWW_AUTHENTICATE("WWW-Authenticate");
+    
+    public final String name;
+    
+    private HttpResponseHeader(String name)
+    {
+    	this.name = name;
+    }
 }

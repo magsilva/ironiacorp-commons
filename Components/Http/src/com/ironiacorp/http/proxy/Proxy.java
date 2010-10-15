@@ -17,33 +17,36 @@ limitations under the License.
 Copyright (C) 2007 Marco Aurélio Graciotto Silva <magsilva@ironiacorp.com>
 */
 
-package com.ironiacorp.http;
+package com.ironiacorp.http.proxy;
 
-public class SocksProxy extends Proxy
+/**
+ * Proxy support. Actually, this class contains just the configuration of
+ * the proxy.
+ */
+public abstract class Proxy
 {
-	private String username;
+	private String host;
 	
-	private String password;
+	private int port;
 	
-	public String getUsername()
+	public Proxy(String host, String port)
 	{
-		return username;
+		this(host, Integer.parseInt(port));
 	}
 
-	public String getPassword()
+	public Proxy(String host, int port)
 	{
-		return password;
+		this.host = host;
+		this.port = port;
+	}
+	
+	public String getHost()
+	{
+		return host;
 	}
 
-	public SocksProxy(String host, int port)
+	public int getPort()
 	{
-		super(host, port);
-	}
-
-	public SocksProxy(String host, int port, String username, String password)
-	{
-		super(host, port);
-		this.username = username;
-		this.password = password;
+		return port;
 	}
 }
