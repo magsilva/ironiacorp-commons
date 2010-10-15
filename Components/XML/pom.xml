@@ -134,6 +134,6 @@
 	</reporting>
 
 	<properties>
-		<sonar.host.url>http://www.ironiacorp.com/Apps/Sonar/</sonar.host.url>
+		<sonar.host.url>http://www.ironiacorp.com/Apps/Sonar</sonar.host.url>
 	</properties>
 </project>
