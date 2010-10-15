@@ -149,5 +149,15 @@
 
 	<reporting>
 		<outputDirectory>site</outputDirectory>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.sonar-plugins</groupId>
+				<artifactId>maven-report</artifactId>
+			</plugin>
+		</plugins>
 	</reporting>
+
+	<properties>
+		<sonar.host.url>http://www.ironiacorp.com/Apps/Sonar</sonar.host.url>
+	</properties>
 </project>
