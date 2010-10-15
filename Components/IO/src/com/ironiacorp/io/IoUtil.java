@@ -1,4 +1,3 @@
-package com.ironiacorp.io;
 /*
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -17,9 +16,10 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 Copyright (C) 2005 Marco Aurelio Graciotto Silva <magsilva@gmail.com>
  */
 
-
+package com.ironiacorp.io;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileDescriptor;
 import java.io.FileInputStream;
@@ -27,6 +27,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -36,8 +38,6 @@ import com.ironiacorp.string.StringUtil;
 /**
  * Methods useful for file manipulations (what a shame Java doesn't have them in
  * its standard library).
- * 
- * @author Marco Aurélio Graciotto Silva
  */
 public final class IoUtil
 {
@@ -53,6 +53,10 @@ public final class IoUtil
 
 	public static String getExtension(String filename)
 	{
+		if (filename == null) {
+			throw new IllegalArgumentException(new NullPointerException());
+		}
+		
 		int index = filename.lastIndexOf('.');
 
 		if (index == -1) {
@@ -63,20 +67,6 @@ public final class IoUtil
 	}
 
 	/**
-	 * Check if a file exists.
-	 * 
-	 * @param filename
-	 *            The filename or directory to be checked.
-	 * 
-	 * @return True if the file exists, false otherwise.
-	 */
-	public static boolean exists(String filename)
-	{
-		File file = new File(filename);
-		return file.exists();
-	}
-
-	/**
 	 * Create a directory (any missing parent directory is created too).
 	 * 
 	 * @param dir
@@ -84,11 +74,42 @@ public final class IoUtil
 	 */
 	public static File createDir(String dir)
 	{
+		if (dir == null) {
+			throw new IllegalArgumentException(new NullPointerException());
+		}
+		if (dir.isEmpty()) {
+			throw new IllegalArgumentException("Cannot create a directory with no name");
+		}
+		
 		File file = new File(dir);
-		file.mkdirs();
-		return file;
+		return createDir(file);
 	}
 
+
+	/**
+	 * Create a directory (any missing parent directory is created too).
+	 * 
+	 * @param dir
+	 *            The directory to be created.
+	 */
+	public static File createDir(File file)
+	{
+		if (file == null) {
+			throw new IllegalArgumentException(new NullPointerException());
+		}
+
+		if (file.isDirectory()) {
+			return file;
+		}
+		boolean result = file.mkdirs();
+		if (result == false) {
+			throw new UnsupportedOperationException("Error creating directory");
+		}
+
+		
+		return file;
+	}
+	
 	/**
 	 * Create a a file.
 	 * 
@@ -113,6 +134,13 @@ public final class IoUtil
 	 */
 	public static File createFile(File dir, String filename) throws IOException
 	{
+		if (dir == null) {
+			throw new IllegalArgumentException("Invalid directory");
+		}
+		if (filename == null) {
+			throw new IllegalArgumentException("Invalid filename");
+		}
+
 		dir.mkdirs();
 		File file = new File(dir, filename);
 		file.createNewFile();
@@ -129,6 +157,13 @@ public final class IoUtil
 	 */
 	public static void moveFile(String src, String dest) throws IOException
 	{
+		if (src == null || dest == null) {
+			throw new IllegalArgumentException(new NullPointerException());
+		}
+		if (src.isEmpty() || dest.isEmpty()) {
+			throw new IllegalArgumentException();
+		}
+
 		File srcFile = new File(src);
 		File destFile = new File(dest);
 		moveFile(srcFile, destFile);
@@ -144,10 +179,20 @@ public final class IoUtil
 	 */
 	public static void moveFile(File src, File dest) throws IOException
 	{
-		boolean result = false;
+		if (src == null || dest == null) {
+			throw new IllegalArgumentException(new NullPointerException());
+		}
 
-		result = src.renameTo(dest);
-		if (!result) {
+		if (src.equals(dest)) {
+			throw new IllegalArgumentException("Destination is the same file as the target");
+		}
+		
+		if (! src.exists()) {
+			throw new IllegalArgumentException("Source file does not exist");
+		}
+		
+		boolean result = src.renameTo(dest);
+		if (! result) {
 			copyFile(src.getAbsolutePath(), dest.getAbsolutePath());
 			src.delete();
 		}
@@ -161,12 +206,16 @@ public final class IoUtil
 	 */
 	public static void syncFile(FileOutputStream fileStream)
 	{
+		if (fileStream == null) {
+			throw new IllegalArgumentException(new NullPointerException());
+		}
 		try {
 			FileDescriptor fd = fileStream.getFD();
 			fileStream.flush();
 			// Block until the system buffers have been written to disk.
 			fd.sync();
 		} catch (IOException e) {
+			throw new UnsupportedOperationException(e);
 		}
 	}
 
@@ -193,7 +242,7 @@ public final class IoUtil
 	 */
 	public static void copyFile(String srcFilename, String destFilename) throws IOException
 	{
-		if (!exists(srcFilename)) {
+		if (! new File(srcFilename).exists()) {
 			throw new IOException();
 		}
 
@@ -643,5 +692,44 @@ public final class IoUtil
 	public static String getDefaultTempBasedir()
 	{
 		return System.getProperty("java.io.tmpdir");
+	}
+	
+	public static void copyStream(InputStream in, OutputStream out) throws IOException
+	{
+		int readBytes = 0;
+		byte[] buffer = new byte[IoUtil.BUFFER_SIZE];
+		while ((readBytes = in.read(buffer, 0, buffer.length)) != -1) {
+			out.write(buffer, 0, readBytes);
+		}
+	}
+	
+	public static byte[] toByteArray(InputStream is)
+	{
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		try {
+			copyStream(is, outputStream);
+		} catch (IOException e) {
+			return null;
+		}
+		return outputStream.toByteArray();
+	}
+	
+	public static File toFile(InputStream is)
+	{
+		File file = IoUtil.createTempFile("inputstream-", ".tmp");
+		return toFile(is, file);
+	}
+	
+	public static File toFile(InputStream is, File file)
+	{
+		FileOutputStream outputStream = null;
+		try {
+			outputStream = new FileOutputStream(file);
+			copyStream(is, outputStream);
+			outputStream.close();
+		} catch (IOException e) {
+			return null;
+		}
+		return file;
 	}
 }
