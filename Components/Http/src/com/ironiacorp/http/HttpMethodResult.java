@@ -35,6 +35,8 @@ public class HttpMethodResult
 	
 	private Map<HttpResponseHeader, String> responseHeader;
 	
+	private String host;
+	
 	
 	public HttpMethodResult()
 	{
@@ -87,5 +89,17 @@ public class HttpMethodResult
 			throw new IllegalArgumentException(new NullPointerException());
 		}
 		return responseHeader.get(header);
+	}
+
+
+	public String getHost()
+	{
+		return host;
+	}
+
+
+	public void setHost(String host)
+	{
+		this.host = host;
 	}
 }

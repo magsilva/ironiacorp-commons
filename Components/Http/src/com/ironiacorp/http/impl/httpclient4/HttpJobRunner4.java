@@ -19,7 +19,6 @@ Copyright (C) 2007 Marco Aurélio Graciotto Silva <magsilva@ironiacorp.com>
 
 package com.ironiacorp.http.impl.httpclient4;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -29,21 +28,24 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
-import org.apache.http.ProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.RedirectHandler;
+import org.apache.http.client.CookieStore;
+import org.apache.http.client.params.ClientPNames;
+import org.apache.http.client.params.CookiePolicy;
+import org.apache.http.client.protocol.ClientContext;
 import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.conn.scheme.PlainSocketFactory;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
 import org.apache.http.conn.ssl.SSLSocketFactory;
+import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.DefaultRedirectStrategy;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
+import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
 
 import com.ironiacorp.http.HttpJob;
@@ -108,18 +110,27 @@ public class HttpJobRunner4 implements HttpJobRunner
 			throw new IllegalArgumentException("Invalid job");
 		}
 	}
-	
-	
+		
 	public void run()
 	{
 		ExecutorService executor = Executors.newFixedThreadPool(maxThreadsCount);
 		ExecutorCompletionService<HttpJob> queue = new ExecutorCompletionService<HttpJob>(executor);
 		List<Future<?>> workers = new ArrayList<Future<?>>(); 
 		DefaultHttpClient httpClient = new DefaultHttpClient(cm, params);
-	
-		for (HttpJob job : jobs) {
+		HttpContext context = new BasicHttpContext();
+		
+		// Cookie configuration
+		CookieStore cookieStore = new BasicCookieStore();
+	    httpClient.getParams().setParameter(ClientPNames.COOKIE_POLICY, CookiePolicy.BROWSER_COMPATIBILITY); 
+	    httpClient.setCookieStore(cookieStore);
+	    context.setAttribute(ClientContext.COOKIE_STORE, cookieStore);
+
+	    // Redirection stratety
+	    httpClient.setRedirectStrategy(new DefaultRedirectStrategy());
+	    
+	    for (HttpJob job : jobs) {
 			if (HttpMethod.GET == job.getMethod()) {
-				GetRequest4 request = new GetRequest4(httpClient, job);
+				GetRequest4 request = new GetRequest4(httpClient, context, job);
 				Future<HttpJob> jobStatus = queue.submit(request);
 				workers.add(jobStatus);
 				continue;
@@ -149,6 +160,4 @@ public class HttpJobRunner4 implements HttpJobRunner
 	{
 		cm.shutdown();
 	}
-
-
 }

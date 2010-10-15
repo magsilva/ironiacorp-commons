@@ -57,6 +57,11 @@ public class HttpJob
 	private HttpMethodResultFormat resultFormat; 
 	
 	/**
+	 * Optional parameters.
+	 */
+	private Map<String, Object> parameters;
+	
+	/**
 	 * Initializer of the current object. This is must only be called by constructor
 	 * methods.
 	 */
@@ -71,6 +76,7 @@ public class HttpJob
 		this.method = method;
 		this.uri = uri;
 		this.requestHeader = new HashMap<HttpRequestHeader, String>();
+		this.parameters = new HashMap<String, Object>();
 	}
 	
 	/**
@@ -162,4 +168,13 @@ public class HttpJob
 		this.resultFormat = resultFormat;
 	}
 
+	public Object addParameter(String name, Object value)
+	{
+		return parameters.put(name, value);
+	}
+	
+	public Object getParameter(String name)
+	{
+		return parameters.get(name);
+	}
 }

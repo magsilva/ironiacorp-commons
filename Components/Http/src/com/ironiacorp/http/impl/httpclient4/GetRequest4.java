@@ -22,17 +22,16 @@ package com.ironiacorp.http.impl.httpclient4;
 import java.io.InputStream;
 import java.util.concurrent.Callable;
 
-import org.apache.http.Header;
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.protocol.ExecutionContext;
 import org.apache.http.protocol.HttpContext;
-import org.apache.http.protocol.BasicHttpContext;
 
 import com.ironiacorp.http.HttpJob;
 import com.ironiacorp.http.HttpMethodResult;
-import com.ironiacorp.http.HttpResponseHeader;
 
 /**
  * How to send a request via proxy using {@link HttpClient HttpClient}.
@@ -49,15 +48,14 @@ public class GetRequest4 implements Callable<HttpJob>
 	
 	private HttpGet getMethod;
 
-	public GetRequest4(HttpClient httpClient, HttpJob job)
+	public GetRequest4(HttpClient httpClient, HttpContext context, HttpJob job)
 	{
 		this.httpClient = httpClient; 
-		this.context = new BasicHttpContext();
+		this.context = context;
 		this.job = job;
 		this.getMethod = new HttpGet(job.getUri());
 	}
 
-	@SuppressWarnings("unchecked")
 	public HttpJob call()
 	{
 		try {
@@ -68,21 +66,13 @@ public class GetRequest4 implements Callable<HttpJob>
 	        	InputStream inputStream = entity.getContent();
 	        	if (inputStream != null) {
 	        		HttpMethodResult result = new HttpMethodResult();
+	        	    HttpHost currentHost = (HttpHost) context.getAttribute(ExecutionContext.HTTP_TARGET_HOST);
 	    			result.setContent(inputStream);
 	        		result.setStatusCode(response.getStatusLine().getStatusCode());
 
-	        		String location = null;
-	        		String via = null;
-	        		Header[] headers = response.getAllHeaders();
-	        		Header header = response.getFirstHeader(HttpResponseHeader.LOCATION.name);
-	        		if (header != null) {
-	        			location = header.getValue();
-	        		}
-	        		header = response.getFirstHeader(HttpResponseHeader.VIA.name);
-	        		if (header != null) {
-	        			via = header.getValue();
-	        		}
+	        	    result.setHost(currentHost.getHostName());
 	        		job.setResult(result);
+
 				}
 	        }
 		} catch (Exception e) {

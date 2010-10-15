@@ -58,7 +58,7 @@ public class PostRequest3 implements Callable<HttpJob>
 	public HttpJob call()
 	{
 		URI uri = (URI) job.getUri();
-		NameValuePair[] data = (NameValuePair[]) job.getParameter(1);
+		NameValuePair[] data = (NameValuePair[]) job.getParameter("payload");
 		
 		PostMethod postMethod = new PostMethod(uri.toString());
 		postMethod.setRequestBody(data);
