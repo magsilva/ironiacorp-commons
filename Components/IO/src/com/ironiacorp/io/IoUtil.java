@@ -333,23 +333,6 @@ public final class IoUtil
 	}
 
 	/**
-	 * Get all the files within the directory.
-	 */
-	public static ArrayList<File> find(String path)
-	{
-		ArrayList<File> files = new ArrayList<File>();
-		File dir = new File(path);
-		for (File file : dir.listFiles()) {
-			if (file.isFile()) {
-				files.add(file);
-			} else if (file.isDirectory()) {
-				files.addAll(find(file.getAbsolutePath()));
-			}
-		}
-		return files;
-	}
-
-	/**
 	 * Remove a file or a directory.
 	 */
 	public static void remove(String path)
