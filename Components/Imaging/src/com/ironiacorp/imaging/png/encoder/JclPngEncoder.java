@@ -42,7 +42,6 @@ public class JclPngEncoder implements PngImageEncoder
 		this.alphaChannel = alphaChannel;
 	}
 
-	@Override
 	public byte[] encode(BufferedImage image)
 	{
 		Iterator<ImageWriter> writers = ImageIO.getImageWritersByFormatName("png");

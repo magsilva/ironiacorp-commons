@@ -43,7 +43,6 @@ public class JFreePngEncoder implements PngImageEncoder
 		this.alphaChannel = alphaChannel;
 	}
 	
-	@Override
 	public byte[] encode(BufferedImage image)
 	{
 		encoder.setImage(image);

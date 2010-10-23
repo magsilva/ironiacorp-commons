@@ -5,17 +5,14 @@ import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
 import com.ironiacorp.imaging.BitmapImage;
 import com.ironiacorp.imaging.ImageDecoder;
-import com.ironiacorp.imaging.ImageEncoder;
 import com.ironiacorp.imaging.png.decoder.JclPngDecoder;
 import com.ironiacorp.imaging.png.encoder.JclPngEncoder;
 import com.ironiacorp.imaging.png.encoder.PngImageEncoder;
-import com.keypoint.PngEncoder;
 
 public class PngImage implements BitmapImage
 {
@@ -70,8 +67,6 @@ public class PngImage implements BitmapImage
 		return image.getHeight();
 	}
 
-
-	@Override
 	public boolean hasAlphaChannel()
 	{
 		if (image.getTransparency()  == BufferedImage.OPAQUE) {
@@ -81,32 +76,27 @@ public class PngImage implements BitmapImage
 		}
 	}
 
-	@Override
 	public void removeAlphaChannel()
 	{
 		encoder.setAlphaChannel(false);
 	}
 
-	@Override
 	public void setHeight(double height)
 	{
 		this.height = height;
 	}
 
-	@Override
 	public void setResolution(double resolution)
 	{
 		this.resolution = resolution;
 
 	}
 
-	@Override
 	public void setWidth(double width)
 	{
 		this.width = width;
 	}
 
-	@Override
 	public File save(String filename)
 	{
 		boolean mustResize = false;

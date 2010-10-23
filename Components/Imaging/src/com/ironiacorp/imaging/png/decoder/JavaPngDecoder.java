@@ -17,7 +17,6 @@ public class JavaPngDecoder implements ImageDecoder
 		decoder = new com.sixlegs.png.PngImage();
 	}
 
-	@Override
 	public BufferedImage decode(byte[] data)
 	{
 		try {
