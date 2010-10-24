@@ -16,10 +16,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 Copyright (C) 2005 Marco Aurélio Graciotto Silva <magsilva@gmail.com>
 */
 
-package tests;
+package com.ironiacorp.persistence;
 
-
-import net.sf.ideais.util.patterns.HibernateDataSource;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

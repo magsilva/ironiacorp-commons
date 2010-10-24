@@ -101,21 +101,18 @@ public class JPA_DAO<K, E> extends GenericDAO<K, E>
 		this.entityManager = entityManager;
 	}
 
-	@Override
 	public List<E> findByExample(E example)
 	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
 	public List<E> findByExample(Map<String, Serializable> fields)
 	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
 	public List<E> findByProperty(String name, Serializable value)
 	{
 		// TODO Auto-generated method stub
