@@ -102,13 +102,15 @@
 
 
 		<!-- http://developer.gauner.org/jspellcorrect/ -->
+
+
 		<dependency>
 			<groupId>org.gauner</groupId>
 			<artifactId>jspellcorrect</artifactId>
 			<version>0.4</version>
+			<type>jar</type>
+			<scope>compile</scope>
 		</dependency>
-
-
 	</dependencies>
 
 	<build>
