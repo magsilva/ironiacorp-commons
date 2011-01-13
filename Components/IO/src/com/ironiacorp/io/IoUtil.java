@@ -253,9 +253,9 @@ public final class IoUtil
 		int bytes;
 
 		do {
-			bytes = srcFileStream.read(buffer, position, buffer.length);
+			bytes = srcFileStream.read(buffer, 0, buffer.length);
 			if (bytes != -1) {
-				destFileStream.write(buffer, position, bytes);
+				destFileStream.write(buffer, 0, bytes);
 				position += bytes;
 			}
 		} while (bytes != -1);
