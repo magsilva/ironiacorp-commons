@@ -166,4 +166,212 @@ public class StringUtilTest
 	{
 		assertNull(StringUtil.findSimilar(badWordlist, origStr));
 	}
+	
+	@Test
+	public void testCapitalize_Null()
+	{
+		assertNull(StringUtil.capitaliseFirstLetter(null));
+	}
+	
+	@Test
+	public void testCapitalize_Empty()
+	{
+		assertEquals("", StringUtil.capitaliseFirstLetter(""));
+	}
+
+	@Test
+	public void testCapitalize_OneLetter()
+	{
+		assertEquals("A", StringUtil.capitaliseFirstLetter("a"));
+	}
+
+	@Test
+	public void testCapitalize_TwoLetters()
+	{
+		assertEquals("Ab", StringUtil.capitaliseFirstLetter("ab"));
+	}
+	
+	@Test
+	public void testCapitalize_Word()
+	{
+		assertEquals("Test", StringUtil.capitaliseFirstLetter("test"));
+	}
+
+	@Test
+	public void testCapitalize_CapitalizedWord()
+	{
+		assertEquals("Test", StringUtil.capitaliseFirstLetter("Test"));
+	}
+
+	@Test
+	public void testIsEmpty_NullWord()
+	{
+		assertTrue(StringUtil.isEmpty(null));
+	}
+
+	@Test
+	public void testIsEmpty_EmptyWord()
+	{
+		assertTrue(StringUtil.isEmpty(""));
+	}
+
+	@Test
+	public void testIsEmpty_OnlySpaces()
+	{
+		assertTrue(StringUtil.isEmpty("  "));
+	}
+
+	@Test
+	public void testIsEmpty_OnlySpaceTabNewline()
+	{
+		assertTrue(StringUtil.isEmpty(" \t\n "));
+	}
+
+	@Test
+	public void testIsEmpty_Word()
+	{
+		assertFalse(StringUtil.isEmpty("test"));
+	}
+	
+	@Test
+	public void testIsEmptyWithoutSpaces_Word()
+	{
+		assertFalse(StringUtil.isEmpty(" ", false));
+	}
+	
+	@Test
+	public void testIsInt_Int()
+	{
+		assertTrue(StringUtil.isInt("10"));
+	}
+	
+	@Test
+	public void testIsInt_IntWithSpaces()
+	{
+		assertTrue(StringUtil.isInt(" 10\n"));
+	}
+
+	@Test
+	public void testIsInt_Word()
+	{
+		assertFalse(StringUtil.isInt("ten"));
+	}
+
+	
+	@Test
+	public void testIsFloat_Int()
+	{
+		assertTrue(StringUtil.isFloat("10"));
+	}
+
+	@Test
+	public void testIsFloat_Float()
+	{
+		assertTrue(StringUtil.isFloat("10.0"));
+	}
+
+	@Test
+	public void testIsFloat_FloatWithSpaces()
+	{
+		assertTrue(StringUtil.isFloat(" 10.0\n"));
+	}
+
+	@Test
+	public void testIsFloat_Word()
+	{
+		assertFalse(StringUtil.isFloat("ten"));
+	}
+
+	@Test
+	public void testIsFloat_BuggyDouble()
+	{
+		assertTrue(StringUtil.isFloat("2.2250738585072011e-308"));
+	}
+
+	
+	@Test
+	public void testIsDouble_Int()
+	{
+		assertTrue(StringUtil.isDouble("10"));
+	}
+
+	@Test
+	public void testIsDouble_Double()
+	{
+		assertTrue(StringUtil.isDouble("10.0"));
+	}
+
+	@Test
+	public void testIsDouble_DoubleWithSpaces()
+	{
+		assertTrue(StringUtil.isDouble(" 10.0\n"));
+	}
+
+	@Test
+	public void testIsDouble_Word()
+	{
+		assertFalse(StringUtil.isDouble("ten"));
+	}
+
+	@Test
+	public void testIsDouble_BuggyDouble()
+	{
+		assertTrue(StringUtil.isDouble("2.2250738585072011e-308"));
+	}
+	
+	
+	@Test(expected=IllegalArgumentException.class)
+	public void testMD5_Nul()
+	{
+		StringUtil.digestMD5(null);
+	}
+
+	@Test
+	public void testMD5_EmptyWord()
+	{
+		assertEquals("d41d8cd98f00b204e9800998ecf8427e", StringUtil.digestMD5(""));
+	}
+	
+	@Test
+	public void testMD5_Word()
+	{
+		assertEquals("098f6bcd4621d373cade4e832627b4f6", StringUtil.digestMD5("test"));
+	}
+
+	@Test
+	public void testMD5_LongText()
+	{
+		assertEquals("be666f48526de8cafd77bf02c27e1123", StringUtil.digestMD5("The book is on the table, the sky is blue, the flowers are red. What about the birds on the rooftop?"));
+	}
+
+	
+	@Test(expected=IllegalArgumentException.class)
+	public void testSHA1_Nul()
+	{
+		StringUtil.digestSHA1(null);
+	}
+
+	@Test
+	public void testSHA1_EmptyWord()
+	{
+		assertEquals("da39a3ee5e6b4b0d3255bfef95601890afd80709", StringUtil.digestSHA1(""));
+	}
+	
+	@Test
+	public void testSHA1_Word()
+	{
+		assertEquals("a94a8fe5ccb19ba61c4c0873d391e987982fbbd3", StringUtil.digestSHA1("test"));
+	}
+
+	@Test
+	public void testSHA1_LongText()
+	{
+		assertEquals("402b044e36706f63cecc372e5c8529a85311fcb5", StringUtil.digestSHA1("The book is on the table, the sky is blue, the flowers are red. What about the birds on the rooftop?"));
+	}
+
+	@Test(expected=IllegalArgumentException.class)
+	public void testDigest_InvalidDigest()
+	{
+		StringUtil.digest("test", "IroniaCorp");
+	}
 }

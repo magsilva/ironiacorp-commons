@@ -1,4 +1,3 @@
-package com.ironiacorp.string;
 /*
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -17,7 +16,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 Copyright (C) 2007 Marco Aurelio Graciotto Silva <magsilva@gmail.com>
  */
 
-
+package com.ironiacorp.string;
 
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
@@ -58,8 +57,6 @@ public final class StringUtil
 		}
 	}
 
-	
-	
 	/**
 	 * Apply the transformations defined at 'options' into a string. Unknown
 	 * options will be ignored.
@@ -87,6 +84,30 @@ public final class StringUtil
 		return str;
 	}
 
+	/**
+	 * Capitalize the first letter of a string.
+	 * 
+	 * @param str String to have its first letter capitalized.
+	 * 
+	 * @return String with the first word capitalized.
+	 */
+	public static String capitaliseFirstLetter(String str)
+	{
+		if (str == null) {
+			return null;
+		}
+		
+		switch (str.length()) {
+			case 0:
+				return str;
+			case 1:
+				return str.substring(0, 1).toUpperCase();
+			default:
+				return str.substring(0, 1).toUpperCase() + str.substring(1);
+		}
+	}
+
+	
 	/**
 	 * Check if the strings are similar.
 	 * 
@@ -185,15 +206,7 @@ public final class StringUtil
 	 */
 	public static boolean isEmpty(String str)
 	{
-		if (str == null) {
-			return true;
-		}
-
-		if (str.trim().length() == 0) {
-			return true;
-		}
-
-		return false;
+		return isEmpty(str, true);
 	}
 
 	/**
@@ -217,39 +230,91 @@ public final class StringUtil
 		}
 	}
 
-	
+	/**
+	 * Check whether a string is an integer.
+	 * 
+	 * @param s String to be checked.
+	 * @return True if the string represents an integer, false otherwise.
+	 */
 	public static boolean isInt(String s)
 	{
 		try {
-			new Integer(s);
+			new Integer(s.trim());
 			return true;
 		} catch (NumberFormatException e) {
 			return false;
 		}
 	}
 
+	/**
+	 * Check whether a string is a float.
+	 * 
+	 * @param s String to be checked.
+	 * @return True if the string represents a float, false otherwise.
+	 */
 	public static boolean isFloat(String s)
 	{
 		try {
-			new Float(s);
+			new Float(s.trim());
 			return true;
 		} catch (NumberFormatException e) {
 			return false;
 		}
 	}
 
-		public static String digestSHA1(String text)
+	/**
+	 * Check whether a string is a double.
+	 * 
+	 * @param s String to be checked.
+	 * @return True if the string represents a double, false otherwise.
+	 */
+	public static boolean isDouble(String s)
+	{
+		try {
+			new Double(s.trim());
+			return true;
+		} catch (NumberFormatException e) {
+			return false;
+		}
+	}
+	
+	/**
+	 * Calculate the SHA-1 digest code for the text.
+	 * 
+	 * @param text Text to be digested.
+	 * @return Digest text as by the SHA-1 code.
+	 */
+	public static String digestSHA1(String text)
 	{
 		return digest(text, "SHA1");
 	}
-	
+
+	/**
+	 * Calculate the MD5 digest code for the text.
+	 * 
+	 * @param text Text to be digested.
+	 * @return Digest text as by the MD5 code.
+	 */
 	public static String digestMD5(String text)
 	{
 		return digest(text, "MD5");
 	}
 	
+	/**
+	 * Create the hash/digest code for a given text.
+	 * 
+	 * @param text Text to be digested.
+	 * @param algorithm Digest code to be used (usually MD5 or SHA1).
+	 * 
+	 * @return Digest code.
+	 * @throws IllegalArgumentException if an invalid text (null) is set.
+	 */
 	public static String digest(String text, String algorithm)
 	{
+		if (text == null) {
+			throw new IllegalArgumentException(new NullPointerException());
+		}
+		
 		MessageDigest md;
 		try {
 			md = MessageDigest.getInstance(algorithm);
