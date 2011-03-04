@@ -85,6 +85,10 @@
 		</repository>
 	</repositories>
 
+        <properties>
+                <sonar.host.url>http://www.ironiacorp.com/Apps/Sonar</sonar.host.url>
+        </properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -140,5 +144,11 @@
 
 	<reporting>
 		<outputDirectory>site</outputDirectory>
+                <plugins>
+                        <plugin>
+                                <groupId>org.codehaus.sonar-plugins</groupId>
+                                <artifactId>maven-report</artifactId>
+                        </plugin>
+                </plugins>
 	</reporting>
 </project>
