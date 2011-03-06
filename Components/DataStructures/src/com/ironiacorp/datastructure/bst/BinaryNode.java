@@ -4,25 +4,47 @@ package com.ironiacorp.datastructure.bst;
  * Basic node stored in all binary search trees. Includes fields for all
  * variations.
  */
-class BinaryNode
+class BinaryNode<T extends Comparable<T>>
 {
-	// Friendly data; accessible by other package routines
-	Comparable element; // The data in the node
-	BinaryNode left; // Left child
-	BinaryNode right; // Right child
+	/**
+	 * Data of the node.
+	 */
+	T element;
+	
+	/**
+	 * Left child.
+	 */
+	BinaryNode<T> left;
+	
+	/**
+	 * Right child.
+	 */
+	BinaryNode<T> right; // Right child
 
-	// Balancing information; only one is used at a time
-	int size = 1; // For BinarySearchTreeWithRank
+	/**
+	 * Balancing information;
+	 */
+	int size = 1;
 
-	// Constructors
-	BinaryNode(Comparable theElement) {
-		this(theElement, null, null);
+	/**
+	 * Create a node with no child.
+	 * 
+	 * @param element Element to be added
+	 */
+	BinaryNode(T element) {
+		this(element, null, null);
 	}
 
-	BinaryNode(Comparable theElement, BinaryNode lt, BinaryNode rt) {
-		element = theElement;
-		left = lt;
-		right = rt;
+	/**
+	 * Create a node.
+	 * 
+	 * @param element Element to be added.
+	 * @param leftNode Left child node.
+	 * @param rightNode Right child node.
+	 */
+	BinaryNode(T element, BinaryNode<T> leftNode, BinaryNode<T> rightNode) {
+		this.element = element;
+		left = leftNode;
+		right = rightNode;
 	}
-
 }

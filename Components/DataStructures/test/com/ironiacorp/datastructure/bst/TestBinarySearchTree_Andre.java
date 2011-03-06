@@ -1,24 +1,26 @@
 package com.ironiacorp.datastructure.bst;
 
 import static org.junit.Assert.*;
+
+import java.util.NoSuchElementException;
+
 import org.junit.Before;
 import org.junit.Test;
 
 import com.ironiacorp.datastructure.bst.BinarySearchTree;
 import com.ironiacorp.datastructure.bst.BinarySearchTreeWithRank;
 import com.ironiacorp.datastructure.bst.DuplicateItem;
-import com.ironiacorp.datastructure.bst.ItemNotFound;
 
 public class TestBinarySearchTree_Andre {
 
-	private BinarySearchTreeWithRank bstwrank;
+	private BinarySearchTreeWithRank<Integer> bstwrank;
 
-	private BinarySearchTree bstwrankb;
+	private BinarySearchTree<Integer> bstwrankb;
 
 	@Before
 	public void setUp() {
-		bstwrank = new BinarySearchTreeWithRank();
-		bstwrankb = new BinarySearchTree();
+		bstwrank = new BinarySearchTreeWithRank<Integer>();
+		bstwrankb = new BinarySearchTree<Integer>();
 	}
 
 	@Test
@@ -73,7 +75,7 @@ public class TestBinarySearchTree_Andre {
 		bstwrankb.insert(Integer.valueOf(10));
 	}
 
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void test_remove_01() {
 		bstwrank.remove(Integer.valueOf(10));
 	}
@@ -99,7 +101,7 @@ public class TestBinarySearchTree_Andre {
 		bstwrank.remove(Integer.valueOf(15));
 	}
 
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void test_remove_05() {
 		bstwrank.insert(Integer.valueOf(10));
 		bstwrank.remove(Integer.valueOf(15));
@@ -127,7 +129,7 @@ public class TestBinarySearchTree_Andre {
 		bstwrank.remove(Integer.valueOf(10));
 	}
 
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void test_remove_01b() {
 		bstwrankb.remove(Integer.valueOf(10));
 	}
@@ -139,7 +141,7 @@ public class TestBinarySearchTree_Andre {
 		assertTrue(bstwrankb.isEmpty());
 	}
 
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void test_remove_03b() {
 		bstwrankb.insert(Integer.valueOf(10));
 		bstwrankb.insert(Integer.valueOf(5));
@@ -147,7 +149,7 @@ public class TestBinarySearchTree_Andre {
 		assertEquals(null, bstwrankb.find(Integer.valueOf(5)));
 	}
 
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void test_remove_04b() {
 		bstwrankb.insert(Integer.valueOf(10));
 		bstwrankb.insert(Integer.valueOf(15));
@@ -155,13 +157,13 @@ public class TestBinarySearchTree_Andre {
 		assertEquals(null, bstwrankb.find(Integer.valueOf(15)));
 	}
 
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void test_remove_05b() {
 		bstwrankb.insert(Integer.valueOf(10));
 		bstwrankb.remove(Integer.valueOf(15));
 	}
 
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void test_remove_06b() {
 		bstwrankb.insert(Integer.valueOf(10));
 		bstwrankb.insert(Integer.valueOf(5));
@@ -169,7 +171,7 @@ public class TestBinarySearchTree_Andre {
 		assertEquals(null, bstwrankb.find(Integer.valueOf(10)));
 	}
 
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void test_remove_07b() {
 		bstwrankb.insert(Integer.valueOf(10));
 		bstwrankb.insert(Integer.valueOf(15));
@@ -177,7 +179,7 @@ public class TestBinarySearchTree_Andre {
 		assertEquals(null, bstwrankb.find(Integer.valueOf(10)));
 	}
 
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void test_remove_08b() {
 		bstwrankb.insert(Integer.valueOf(10));
 		bstwrankb.insert(Integer.valueOf(5));
@@ -193,13 +195,13 @@ public class TestBinarySearchTree_Andre {
 		assertEquals(Integer.valueOf(10), bstwrank.find(Integer.valueOf(10)));
 	}
 
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void test_find_02() {
 		bstwrank.find(Integer.valueOf(5));
 		assertEquals(null, bstwrank.find(Integer.valueOf(5)));
 	}
 
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void test_find_03() {
 		bstwrank.insert(Integer.valueOf(10));
 		bstwrank.find(Integer.valueOf(5));
@@ -215,7 +217,7 @@ public class TestBinarySearchTree_Andre {
 		assertEquals(Integer.valueOf(15), bstwrank.find(Integer.valueOf(15)));
 	}
 
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void test_findMin_01() {
 		bstwrank.findMin();
 		assertTrue(bstwrank.isEmpty());
@@ -230,7 +232,7 @@ public class TestBinarySearchTree_Andre {
 		assertEquals(Integer.valueOf(10), bstwrank.findMin());
 	}
 
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void test_findMin_01b() {
 		bstwrankb.findMin();
 		assertTrue(bstwrankb.isEmpty());
@@ -263,7 +265,7 @@ public class TestBinarySearchTree_Andre {
 	}
 
 
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void test_findMax_01() {
 		bstwrank.findMax();
 		assertTrue(bstwrank.isEmpty());
@@ -278,7 +280,7 @@ public class TestBinarySearchTree_Andre {
 		assertEquals(Integer.valueOf(10), bstwrank.findMax());
 	}
 
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void test_findMax_01b() {
 		bstwrankb.findMax();
 		assertTrue(bstwrankb.isEmpty());
@@ -310,7 +312,7 @@ public class TestBinarySearchTree_Andre {
 		assertEquals(Integer.valueOf(20), bstwrankb.findMax());
 	}
 
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void test_findKth_01() {
 		assertTrue(bstwrank.isEmpty());
 		bstwrank.findKth(1);
@@ -333,7 +335,7 @@ public class TestBinarySearchTree_Andre {
 		assertEquals(Integer.valueOf(10), bstwrank.findKth(2));
 	}
 
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void test_findKth_04() {
 		bstwrank.insert(Integer.valueOf(10));
 		bstwrank.insert(Integer.valueOf(5));
@@ -341,7 +343,7 @@ public class TestBinarySearchTree_Andre {
 		bstwrank.findKth(3);
 	}
 
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void test_findKth_05() { // structural
 		bstwrank.insert(Integer.valueOf(10));
 		bstwrank.insert(Integer.valueOf(5));
@@ -377,12 +379,12 @@ public class TestBinarySearchTree_Andre {
 		assertTrue(bstwrank.isEmpty());
 	}
 
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void test_removeMin_01() { // structural
 		bstwrank.removeMin();
 	}
 
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void test_removeMin_02() { // structural
 		bstwrank.insert(Integer.valueOf(10));
 		bstwrank.removeMin();
@@ -390,7 +392,7 @@ public class TestBinarySearchTree_Andre {
 		bstwrank.find(Integer.valueOf(10));
 	}
 
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void test_removeMin_03() { // structural
 		bstwrank.insert(Integer.valueOf(10));
 		bstwrank.insert(Integer.valueOf(5));
@@ -398,7 +400,7 @@ public class TestBinarySearchTree_Andre {
 		bstwrank.find(Integer.valueOf(5));
 	}
 
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void test_removeMin_01b() { // structural
 		bstwrankb.removeMin();
 	}

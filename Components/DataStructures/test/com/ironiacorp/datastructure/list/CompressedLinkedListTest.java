@@ -36,9 +36,9 @@ import static org.junit.Assert.*;
  */
 public class CompressedLinkedListTest
 {
-	protected CompressedLinkedList buildAL()
+	protected CompressedLinkedList<String> buildAL()
 	{
-		Vector v = new Vector();
+		Vector<String> v = new Vector<String>();
 		v.add("a");
 		v.add("c");
 		v.add("u");
@@ -53,18 +53,18 @@ public class CompressedLinkedListTest
 		v.add("i");
 		v.add("a");
 		v.add(null);
-		return new CompressedLinkedList(v);
+		return new CompressedLinkedList<String>(v);
 	}
 
 	/**
 	 * implemented. <br>
-	 * only LinkedList(Collection c) is tested
+	 * only LinkedList(Collection<String> c) is tested
 	 */
 	@Test
 	public void testEqual()
 	{
-		Vector v = new Vector();
-		CompressedLinkedList al = new CompressedLinkedList(v);
+		Vector<String> v = new Vector<String>();
+		CompressedLinkedList<String> al = new CompressedLinkedList<String>(v);
 		assertTrue("No elements added", al.isEmpty());
 		v.add("a");
 		v.add("c");
@@ -74,34 +74,34 @@ public class CompressedLinkedListTest
 		v.add("a");
 		v.add(null);
 
-		al = new CompressedLinkedList(v);
+		al = new CompressedLinkedList<String>(v);
 		assertTrue("The vector and the list's content should be equal", v.equals(al));
 	}
 
 	@Test(expected = NullPointerException.class)
 	public void testNull()
 	{
-		new CompressedLinkedList(null);
+		new CompressedLinkedList<String>(null);
 	}
 
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testAddNegativePosition()
 	{
-		CompressedLinkedList al = new CompressedLinkedList();
+		CompressedLinkedList<String> al = new CompressedLinkedList<String>();
 		al.add(-1, "a");
 	}
 
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testAddOverflowPosition()
 	{
-		CompressedLinkedList al = new CompressedLinkedList();
+		CompressedLinkedList<String> al = new CompressedLinkedList<String>();
 		al.add(1, "a");
 	}
 
 	@Test
 	public void testAdd()
 	{
-		CompressedLinkedList al = new CompressedLinkedList();
+		CompressedLinkedList<String> al = new CompressedLinkedList<String>();
 		al.clear();
 		al.add(0, "a");
 		al.add(1, "c");
@@ -116,7 +116,7 @@ public class CompressedLinkedListTest
 	@Test
 	public void testAddReturnValue()
 	{
-		CompressedLinkedList al = new CompressedLinkedList();
+		CompressedLinkedList<String> al = new CompressedLinkedList<String>();
 		assertTrue(al.add("a"));
 		assertTrue(al.add("c"));
 		assertTrue(al.add("u"));
@@ -139,20 +139,20 @@ public class CompressedLinkedListTest
 	@Test(expected = NullPointerException.class)
 	public void testAddAllNull()
 	{
-		CompressedLinkedList al = new CompressedLinkedList();
+		CompressedLinkedList<String> al = new CompressedLinkedList<String>();
 		al.addAll(null);
 	}
 
 	@Test
 	public void testAddAll()
 	{
-		CompressedLinkedList al = new CompressedLinkedList();
-		Collection c = (Collection) al;
+		CompressedLinkedList<String> al = new CompressedLinkedList<String>();
+		Collection<String> c = al;
 		assertFalse(al.addAll(c));
 		al.add("a");
 		al.add("b");
 		al.add("c");
-		c = (Collection) al;
+		c = al;
 		al = buildAL();
 		assertTrue(al.addAll(c));
 		assertTrue(al.containsAll(c));
@@ -164,13 +164,13 @@ public class CompressedLinkedListTest
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testAddAllOutOfBoundsNegative()
 	{
-		CompressedLinkedList al = new CompressedLinkedList();
-		Collection c = (Collection) al;
+		CompressedLinkedList<String> al = new CompressedLinkedList<String>();
+		Collection<String> c = al;
 		assertFalse(al.addAll(0, c));
 		al.add("a");
 		al.add("b");
 		al.add("c");
-		c = (Collection) al;
+		c = al;
 		al = buildAL();
 		al.addAll(-1, c);
 	}
@@ -178,28 +178,27 @@ public class CompressedLinkedListTest
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testAddAllOutOfBoundsPositive()
 	{
-		CompressedLinkedList al = new CompressedLinkedList();
-		Collection c = (Collection) al;
+		CompressedLinkedList<String> al = new CompressedLinkedList<String>();
+		Collection<String> c = al;
 		assertFalse(al.addAll(0, c));
 		al.add("a");
 		al.add("b");
 		al.add("c");
-		c = (Collection) al;
+		c = al;
 		al = buildAL();
 		al.addAll(15, c);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void testAddAllBounds()
 	{
-		CompressedLinkedList al = new CompressedLinkedList();
-		Collection c = (Collection) al;
+		CompressedLinkedList<String> al = new CompressedLinkedList<String>();
+		Collection<String> c = al;
 		assertFalse(al.addAll(0, c));
 		al.add("a");
 		al.add("b");
 		al.add("c");
-		c = (Collection) al;
+		c = al;
 		al = buildAL();
 		assertTrue(al.addAll(11, c));
 		assertTrue(al.containsAll(c));
@@ -214,7 +213,7 @@ public class CompressedLinkedListTest
 
 	public void test_clear()
 	{
-		CompressedLinkedList al = new CompressedLinkedList();
+		CompressedLinkedList<String> al = new CompressedLinkedList<String>();
 		al.clear();
 		al = buildAL();
 		al.clear();

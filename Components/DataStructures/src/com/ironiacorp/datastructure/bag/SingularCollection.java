@@ -129,7 +129,7 @@ public class SingularCollection<T> implements Collection<T>
 		return result;
 	}
 
-	private final class SingularCollectionIterator<I> implements Iterator<I>
+	private final class SingularCollectionIterator<T> implements Iterator<T>
 	{
 		private boolean hasNext;
 
@@ -147,12 +147,12 @@ public class SingularCollection<T> implements Collection<T>
 			return hasNext;
 		}
 
-		public I next()
+		public T next()
 		{
 			if (! hasNext()) {
 				throw new NoSuchElementException();
 			}
-			return (I) obj;
+			return (T) obj;
 		}
 
 		public void remove()

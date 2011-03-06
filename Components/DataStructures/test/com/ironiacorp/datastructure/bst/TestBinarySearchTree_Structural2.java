@@ -1,27 +1,29 @@
 package com.ironiacorp.datastructure.bst;
 
 import static org.junit.Assert.*;
+
+import java.util.NoSuchElementException;
+
 import org.junit.Before;
 import org.junit.Test;
 
 import com.ironiacorp.datastructure.bst.BinarySearchTree;
 import com.ironiacorp.datastructure.bst.BinarySearchTreeWithRank;
-import com.ironiacorp.datastructure.bst.ItemNotFound;
 
 public class TestBinarySearchTree_Structural2 {
 
-	private BinarySearchTree tree;
-	private BinarySearchTreeWithRank rankTree;
+	private BinarySearchTree<Integer> tree;
+	private BinarySearchTreeWithRank<Integer> rankTree;
 
 	@Before
 	public void setUp() {
-		tree = new BinarySearchTree();
-		rankTree = new BinarySearchTreeWithRank();
+		tree = new BinarySearchTree<Integer>();
+		rankTree = new BinarySearchTreeWithRank<Integer>();
 	}
 
 	@Test
 	public void testCase1() { // def-uso da variável sl
-		Comparable f;
+		Comparable<Integer> f;
 		rankTree.insert(Integer.valueOf(50));
 		rankTree.insert(Integer.valueOf(40));
 		rankTree.insert(Integer.valueOf(60));
@@ -35,21 +37,21 @@ public class TestBinarySearchTree_Structural2 {
 		assertEquals("59", f.toString());
 	}
 
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void testCase2() { // k < 1
 		rankTree.insert(Integer.valueOf(50));
 		rankTree.findKth(0);
 	}
 
 	
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void testCase3() { // cobertura do método void removeMin
 		rankTree.insert(Integer.valueOf(4));
 		rankTree.removeMin();
 		rankTree.find(Integer.valueOf(4));
 	}
 
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void testCase4() { // cobertura do método void
 								// BinarySearchTreeWithRank::removeMin
 		rankTree.insert(Integer.valueOf(4));
@@ -62,7 +64,7 @@ public class TestBinarySearchTree_Structural2 {
 	@Test
 	public void testCase5() { // cobertura do método void
 								// BinarySearchTree::findMax
-		Comparable f;
+		Comparable<Integer> f;
 		tree.insert(Integer.valueOf(1));
 		tree.insert(Integer.valueOf(2));
 		tree.insert(Integer.valueOf(3));
@@ -74,13 +76,13 @@ public class TestBinarySearchTree_Structural2 {
 	@Test
 	public void testCase6() { // cobertura do método void
 								// BinarySearchTree::findMax
-		Comparable f;
+		Comparable<Integer> f;
 		tree.insert(Integer.valueOf(1));
 		f = tree.findMax();
 		assertEquals(Integer.valueOf(1), f);
 	}
 
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void testCase7() { // cobertura do método void
 								// BinarySearchTree::remove
 		tree.insert(Integer.valueOf(2));
@@ -91,7 +93,7 @@ public class TestBinarySearchTree_Structural2 {
 		tree.find(Integer.valueOf(2));
 	}
 
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void testCase8() { // cobertura do método void
 								// BinarySearchTree::remove
 		tree.insert(Integer.valueOf(1));
@@ -100,7 +102,7 @@ public class TestBinarySearchTree_Structural2 {
 		tree.find(Integer.valueOf(2));
 	}
 
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void testCase9() { // cobertura do método void
 								// BinarySearchTree::remove
 		tree.insert(Integer.valueOf(1));
@@ -110,7 +112,7 @@ public class TestBinarySearchTree_Structural2 {
 		tree.find(Integer.valueOf(2));
 	}
 
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void testCase10() { // cobertura do método void
 								// BinarySearchTreeWithRank::remove
 		rankTree.insert(Integer.valueOf(1));
@@ -120,7 +122,7 @@ public class TestBinarySearchTree_Structural2 {
 		rankTree.find(Integer.valueOf(2));
 	}
 
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void testCase11() { // cobertura do método void
 								// BinarySearchTreeWithRank::remove
 		rankTree.insert(Integer.valueOf(2));
@@ -132,7 +134,7 @@ public class TestBinarySearchTree_Structural2 {
 		rankTree.find(Integer.valueOf(2));
 	}
 
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void testCase12() { // cobertura do método void
 								// BinarySearchTree::remove
 		tree.insert(Integer.valueOf(1));
@@ -142,7 +144,7 @@ public class TestBinarySearchTree_Structural2 {
 		tree.find(Integer.valueOf(2));
 	}
 
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void testCase13() { // cobertura do método void
 								// BinarySearchTree::remove
 		tree.insert(Integer.valueOf(2));
@@ -154,7 +156,7 @@ public class TestBinarySearchTree_Structural2 {
 		tree.find(Integer.valueOf(2));
 	}
 
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void testCase14() { // cobertura do método void
 								// BinarySearchTree::remove
 		rankTree.insert(Integer.valueOf(2));
@@ -165,7 +167,7 @@ public class TestBinarySearchTree_Structural2 {
 		rankTree.find(Integer.valueOf(2));
 	}
 
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void testCase15() { // cobertura do método void
 								// BinarySearchTree::remove
 		rankTree.insert(Integer.valueOf(1));
@@ -174,7 +176,7 @@ public class TestBinarySearchTree_Structural2 {
 		rankTree.find(Integer.valueOf(2));
 	}
 
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void testCase16() { // cobertura do método void
 								// BinarySearchTree::remove
 		rankTree.insert(Integer.valueOf(1));
@@ -184,7 +186,7 @@ public class TestBinarySearchTree_Structural2 {
 		rankTree.find(Integer.valueOf(2));
 	}
 
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void testCase17() { // cobertura do método void
 								// BinarySearchTree::remove
 		tree.insert(Integer.valueOf(5));

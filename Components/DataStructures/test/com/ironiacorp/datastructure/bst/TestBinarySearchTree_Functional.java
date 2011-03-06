@@ -2,20 +2,21 @@ package com.ironiacorp.datastructure.bst;
 
 import static org.junit.Assert.*;
 
+import java.util.NoSuchElementException;
+
 import org.junit.Before;
 import org.junit.Test;
 
 import com.ironiacorp.datastructure.bst.BinarySearchTree;
 import com.ironiacorp.datastructure.bst.DuplicateItem;
-import com.ironiacorp.datastructure.bst.ItemNotFound;
 
 public class TestBinarySearchTree_Functional
 {
-	private BinarySearchTree tree;
+	private BinarySearchTree<Integer> tree;
 
 	@Before
 	public void setUp() {
-		tree = new BinarySearchTree();
+		tree = new BinarySearchTree<Integer>();
 	}
 
 	@Test
@@ -74,14 +75,14 @@ public class TestBinarySearchTree_Functional
 		assertEquals("4", tree.root.right.element.toString());
 	}
 
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void testCaseDeletion3() {
 		tree.root = tree.insert(Integer.valueOf(1), tree.root);
 		tree.root = tree.insert(Integer.valueOf(4), tree.root);
 		tree.root = tree.remove(Integer.valueOf(2), tree.root);
 	}
 
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void testCaseDeletion4() {
 		tree.root = tree.remove(Integer.valueOf(2), tree.root);
 	}
@@ -89,7 +90,7 @@ public class TestBinarySearchTree_Functional
 
 	@Test
 	public void testCaseSeaching1() {
-		Comparable f;
+		Comparable<Integer> f;
 		tree.root = tree.insert(Integer.valueOf(1), tree.root);
 		tree.root = tree.insert(Integer.valueOf(4), tree.root);
 		tree.root = tree.insert(Integer.valueOf(2), tree.root);
@@ -97,7 +98,7 @@ public class TestBinarySearchTree_Functional
 		assertEquals("2", f.toString());
 	}
 
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void testCaseSearching2() {
 		tree.root = tree.insert(Integer.valueOf(1), tree.root);
 		tree.root = tree.insert(Integer.valueOf(4), tree.root);
@@ -107,7 +108,7 @@ public class TestBinarySearchTree_Functional
 
 	@Test
 	public void testCaseSearching3() {
-		Comparable f;
+		Comparable<Integer> f;
 		tree.root = tree.insert(Integer.valueOf(1), tree.root);
 		tree.root = tree.insert(Integer.valueOf(4), tree.root);
 		tree.root = tree.insert(Integer.valueOf(2), tree.root);
@@ -116,14 +117,14 @@ public class TestBinarySearchTree_Functional
 		assertEquals("1", f.toString());
 	}
 
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void testCaseSearching4() {
 		tree.findMin();
 	}
 
 	@Test
 	public void testCaseSearching5() {
-		Comparable f;
+		Comparable<Integer> f;
 		tree.root = tree.insert(Integer.valueOf(1), tree.root);
 		tree.root = tree.insert(Integer.valueOf(4), tree.root);
 		tree.root = tree.insert(Integer.valueOf(2), tree.root);
@@ -132,7 +133,7 @@ public class TestBinarySearchTree_Functional
 		assertEquals("4", f.toString());
 	}
 
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void testCaseSearching6() {
 		tree.findMax();
 	}

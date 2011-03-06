@@ -1,12 +1,14 @@
 package com.ironiacorp.datastructure.bst;
 
+import java.util.NoSuchElementException;
+
 /**
  * Protocol for search trees. Note that all "matching" is based on the compares
  * method.
  * 
  * @author Mark Allen Weiss
  */
-public interface SearchTree {
+public interface SearchTree<T extends Comparable<T>> {
 	/**
 	 * Insert into the tree.
 	 * 
@@ -15,43 +17,43 @@ public interface SearchTree {
 	 * @exception DuplicateItem
 	 *                if an item that matches x is already in the tree.
 	 */
-	void insert(Comparable x) throws DuplicateItem;
+	void insert(T x) throws DuplicateItem;
 
 	/**
 	 * Remove from the tree.
 	 * 
 	 * @param x
 	 *            the item to remove.
-	 * @exception ItemNotFound
+	 * @exception NoSuchElementException
 	 *                if no item that matches x can be found in the tree.
 	 */
-	void remove(Comparable x) throws ItemNotFound;
+	void remove(T x) throws NoSuchElementException;
 
 	/**
 	 * Remove the smallest item from the tree.
 	 * 
-	 * @exception ItemNotFound
+	 * @exception NoSuchElementException
 	 *                if the tree is empty.
 	 */
-	void removeMin() throws ItemNotFound;
+	void removeMin() throws NoSuchElementException;
 
 	/**
 	 * Find the smallest item in the tree.
 	 * 
 	 * @return the smallest item.
-	 * @exception ItemNotFound
+	 * @exception NoSuchElementException
 	 *                if the tree is empty.
 	 */
-	Comparable findMin() throws ItemNotFound;
+	T findMin() throws NoSuchElementException;
 
 	/**
 	 * Find the largest item the tree.
 	 * 
 	 * @return the largest item.
-	 * @exception ItemNotFound
+	 * @exception NoSuchElementException
 	 *                if the tree is empty.
 	 */
-	Comparable findMax() throws ItemNotFound;
+	T findMax() throws NoSuchElementException;
 
 	/**
 	 * Find an item in the tree.
@@ -59,10 +61,10 @@ public interface SearchTree {
 	 * @param x
 	 *            the item to search for.
 	 * @return the matching item.
-	 * @exception ItemNotFound
+	 * @exception NoSuchElementException
 	 *                if no item that matches x can be found in the tree.
 	 */
-	Comparable find(Comparable x) throws ItemNotFound;
+	T find(T x) throws NoSuchElementException;
 
 	/**
 	 * Make the tree logically empty.

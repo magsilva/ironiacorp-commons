@@ -2,19 +2,20 @@ package com.ironiacorp.datastructure.bst;
 
 import static org.junit.Assert.*;
 
+import java.util.NoSuchElementException;
+
 import org.junit.Before;
 import org.junit.Test;
 
 import com.ironiacorp.datastructure.bst.BinarySearchTreeWithRank;
-import com.ironiacorp.datastructure.bst.ItemNotFound;
 
 public class TestBinarySearchTreeWithRank_Functional
 {
-	private BinarySearchTreeWithRank rankTree;
+	private BinarySearchTreeWithRank<Integer> rankTree;
 
 	@Before
 	public void setUp() {
-		rankTree = new BinarySearchTreeWithRank();
+		rankTree = new BinarySearchTreeWithRank<Integer>();
 	}
 
 	@Test
@@ -58,7 +59,7 @@ public class TestBinarySearchTreeWithRank_Functional
 
 	@Test
 	public void testCaseSearching1() {
-		Comparable f;
+		Comparable<Integer> f;
 		rankTree.root = rankTree.insert(Integer.valueOf(1), rankTree.root);
 		rankTree.root = rankTree.insert(Integer.valueOf(4), rankTree.root);
 		rankTree.root = rankTree.insert(Integer.valueOf(2), rankTree.root);
@@ -75,7 +76,7 @@ public class TestBinarySearchTreeWithRank_Functional
 		assertEquals("4", f.toString());
 	}
 
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void testCaseSearching2() {
 		rankTree.root = rankTree.insert(Integer.valueOf(1), rankTree.root);
 		rankTree.root = rankTree.insert(Integer.valueOf(4), rankTree.root);

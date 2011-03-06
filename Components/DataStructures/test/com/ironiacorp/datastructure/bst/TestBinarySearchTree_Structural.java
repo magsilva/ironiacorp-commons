@@ -1,28 +1,31 @@
 package com.ironiacorp.datastructure.bst;
 
 import static org.junit.Assert.*;
+
+import java.util.NoSuchElementException;
+
 import org.junit.Before;
 import org.junit.Test;
 
 import com.ironiacorp.datastructure.bst.BinarySearchTree;
 import com.ironiacorp.datastructure.bst.BinarySearchTreeWithRank;
 import com.ironiacorp.datastructure.bst.DuplicateItem;
-import com.ironiacorp.datastructure.bst.ItemNotFound;
+
 
 public class TestBinarySearchTree_Structural {
 
-	private BinarySearchTree tree;
+	private BinarySearchTree<Integer> tree;
 	
-	private BinarySearchTreeWithRank rankTree;
+	private BinarySearchTreeWithRank<Integer> rankTree;
 
 	@Before
 	public void setUp() {
-		tree = new BinarySearchTree();
-		rankTree = new BinarySearchTreeWithRank();
+		tree = new BinarySearchTree<Integer>();
+		rankTree = new BinarySearchTreeWithRank<Integer>();
 	}
 
 	// structural test cases
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void testCase() { // testa remoção para elemento que não está na
 								// árvore
 		tree.root = tree.insert(Integer.valueOf(1), tree.root);
@@ -44,7 +47,7 @@ public class TestBinarySearchTree_Structural {
 		assertEquals(null, tree.root);
 	}
 
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void testCase3() { // cobertura do método void findMin
 		tree.root = tree.insert(Integer.valueOf(1), tree.root);
 		tree.root = tree.insert(Integer.valueOf(4), tree.root);
@@ -54,7 +57,7 @@ public class TestBinarySearchTree_Structural {
 		tree.find(Integer.valueOf(1));
 	}
 
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void testCase4() { // cobertura do caso da folha ser filho direito no
 								// remove
 		tree.insert(Integer.valueOf(1));
@@ -63,7 +66,7 @@ public class TestBinarySearchTree_Structural {
 		tree.find(Integer.valueOf(2));
 	}
 
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void testCase5_1() { // cobertura do caso do removido com um filho ser
 								// filho direito
 		tree.insert(Integer.valueOf(4));
@@ -73,7 +76,7 @@ public class TestBinarySearchTree_Structural {
 		tree.find(Integer.valueOf(3));
 	}
 
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void testCase5_2() { // cobertura do caso do removido com um filho ser
 								// filho direito
 		tree.insert(Integer.valueOf(4));
@@ -85,7 +88,7 @@ public class TestBinarySearchTree_Structural {
 	}
 
 	
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void testCase5_3() { // cobertura do caso do removido com um filho ser
 								// filho direito
 		tree.insert(Integer.valueOf(4));
@@ -99,7 +102,7 @@ public class TestBinarySearchTree_Structural {
 	}
 
 	
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void testCase6() { // cobertura do caso do removido com um filho ser
 								// filho direito
 		tree.insert(Integer.valueOf(3));
@@ -109,7 +112,7 @@ public class TestBinarySearchTree_Structural {
 		tree.find(Integer.valueOf(1));
 	}
 
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void testCase7() { // cobertura do caso do removido com um filho ser
 								// filho direito
 		tree.insert(Integer.valueOf(1));
@@ -119,7 +122,7 @@ public class TestBinarySearchTree_Structural {
 		tree.find(Integer.valueOf(3));
 	}
 
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void testCase8() { // cobertura do caso do removido com um filho ser
 								// filho direito
 		tree.insert(Integer.valueOf(1));
@@ -129,7 +132,7 @@ public class TestBinarySearchTree_Structural {
 		tree.find(Integer.valueOf(2));
 	}
 
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void testCase9() {
 		tree.insert(Integer.valueOf(2));
 		tree.insert(Integer.valueOf(1));
@@ -139,7 +142,7 @@ public class TestBinarySearchTree_Structural {
 		tree.find(Integer.valueOf(2));
 	}
 
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void testCase10() {
 		tree.insert(Integer.valueOf(2));
 		tree.insert(Integer.valueOf(4));
@@ -149,7 +152,7 @@ public class TestBinarySearchTree_Structural {
 		tree.find(Integer.valueOf(4));
 	}
 
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void testCase11() {
 		tree.insert(Integer.valueOf(6));
 		tree.insert(Integer.valueOf(4));
@@ -159,7 +162,7 @@ public class TestBinarySearchTree_Structural {
 		tree.find(Integer.valueOf(4));
 	}
 
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void testCase12() {
 		tree.insert(Integer.valueOf(6));
 		tree.insert(Integer.valueOf(4));
@@ -169,7 +172,7 @@ public class TestBinarySearchTree_Structural {
 		tree.find(Integer.valueOf(4));
 	}
 
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void testCase13() {
 		tree.insert(Integer.valueOf(2));
 		tree.insert(Integer.valueOf(1));
@@ -178,7 +181,7 @@ public class TestBinarySearchTree_Structural {
 		tree.find(Integer.valueOf(2));
 	}
 
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void testCase14() {
 		tree.insert(Integer.valueOf(5));
 		tree.insert(Integer.valueOf(10));
@@ -190,7 +193,7 @@ public class TestBinarySearchTree_Structural {
 		tree.find(Integer.valueOf(2));
 	}
 
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void testCase15() {
 		tree.insert(Integer.valueOf(14));
 		tree.insert(Integer.valueOf(10));
@@ -202,7 +205,7 @@ public class TestBinarySearchTree_Structural {
 		tree.find(Integer.valueOf(10));
 	}
 
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void testCase16() {
 		tree.insert(Integer.valueOf(3));
 		tree.insert(Integer.valueOf(2));
@@ -216,7 +219,7 @@ public class TestBinarySearchTree_Structural {
 		tree.insert(Integer.valueOf(3));
 		tree.insert(Integer.valueOf(2));
 		tree.insert(Integer.valueOf(1));
-		Comparable f = tree.findMin();
+		Comparable<Integer> f = tree.findMin();
 		assertEquals("1", f.toString());
 	}
 
@@ -255,20 +258,20 @@ public class TestBinarySearchTree_Structural {
 		assertEquals("4", rankTree.root.right.element.toString());
 	}
 
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void testCase22() {
 		rankTree.insert(Integer.valueOf(1));
 		rankTree.insert(Integer.valueOf(4));
 		rankTree.remove(Integer.valueOf(2));
 	}
 
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void testCase23() {
 		rankTree.insert(Integer.valueOf(1));
 		rankTree.remove(Integer.valueOf(2));
 	}
 
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void testCase24() { // cobertura do método void removeMin
 		rankTree.insert(Integer.valueOf(4));
 		rankTree.insert(Integer.valueOf(1));
@@ -278,7 +281,7 @@ public class TestBinarySearchTree_Structural {
 	}
 
 	// testa outros casos da remoção para BinarySearchTreeWithRank
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void testCase25_1() {
 		rankTree.insert(Integer.valueOf(5));
 		rankTree.insert(Integer.valueOf(10));
@@ -307,7 +310,7 @@ public class TestBinarySearchTree_Structural {
 	}
 
 	
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void testCase26() {
 		rankTree.insert(Integer.valueOf(14));
 		rankTree.insert(Integer.valueOf(10));
@@ -319,7 +322,7 @@ public class TestBinarySearchTree_Structural {
 		rankTree.find(Integer.valueOf(10));
 	}
 
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void testCase27() { // testa remoção para elemento que não está na
 								// árvore
 		rankTree.insert(Integer.valueOf(1));
@@ -341,7 +344,7 @@ public class TestBinarySearchTree_Structural {
 		assertEquals(null, rankTree.root);
 	}
 
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void testCase30() { // cobertura do caso da folha ser filho direito
 								// no remove
 		rankTree.insert(Integer.valueOf(1));
@@ -351,7 +354,7 @@ public class TestBinarySearchTree_Structural {
 		rankTree.find(Integer.valueOf(2));
 	}
 
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void testCase31() { // cobertura do caso do removido com um filho ser
 								// filho direito
 		rankTree.insert(Integer.valueOf(4));
@@ -369,7 +372,7 @@ public class TestBinarySearchTree_Structural {
 		
 	}
 
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void testCase32() { // cobertura do caso do removido com um filho ser
 								// filho direito
 		rankTree.insert(Integer.valueOf(3));
@@ -379,7 +382,7 @@ public class TestBinarySearchTree_Structural {
 		rankTree.find(Integer.valueOf(1));
 	}
 
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void testCase33() { // cobertura do caso do removido com um filho ser
 								// filho direito
 		rankTree.insert(Integer.valueOf(1));
@@ -389,7 +392,7 @@ public class TestBinarySearchTree_Structural {
 		rankTree.find(Integer.valueOf(3));
 	}
 
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void testCase34() { // cobertura do caso do removido com um filho ser
 								// filho direito
 		rankTree.insert(Integer.valueOf(1));
@@ -399,7 +402,7 @@ public class TestBinarySearchTree_Structural {
 		rankTree.find(Integer.valueOf(2));
 	}
 
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void testCase35() {
 		rankTree.insert(Integer.valueOf(2));
 		rankTree.insert(Integer.valueOf(1));
@@ -409,7 +412,7 @@ public class TestBinarySearchTree_Structural {
 		rankTree.find(Integer.valueOf(2));
 	}
 
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void testCase36() {
 		rankTree.insert(Integer.valueOf(2));
 		rankTree.insert(Integer.valueOf(4));
@@ -419,7 +422,7 @@ public class TestBinarySearchTree_Structural {
 		rankTree.find(Integer.valueOf(4));
 	}
 
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void testCase37() {
 		rankTree.insert(Integer.valueOf(6));
 		rankTree.insert(Integer.valueOf(4));
@@ -429,7 +432,7 @@ public class TestBinarySearchTree_Structural {
 		rankTree.find(Integer.valueOf(4));
 	}
 
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void testCase38() {
 		rankTree.insert(Integer.valueOf(6));
 		rankTree.insert(Integer.valueOf(4));
@@ -439,7 +442,7 @@ public class TestBinarySearchTree_Structural {
 		rankTree.find(Integer.valueOf(4));
 	}
 
-	@Test(expected=ItemNotFound.class)
+	@Test(expected=NoSuchElementException.class)
 	public void testCase39() {
 		rankTree.insert(Integer.valueOf(2));
 		rankTree.insert(Integer.valueOf(1));

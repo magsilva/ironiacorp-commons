@@ -1,7 +1,7 @@
 package com.ironiacorp.datastructure.queue;
 
 import java.io.Serializable;
-import java.util.AbstractList;
+import java.lang.reflect.Array;
 import java.util.Collection;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
@@ -9,15 +9,25 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-public class PriorityQueue<E> extends AbstractList<E> implements Serializable
+public class PriorityQueue<E> implements Serializable, Collection<E>
 {
 	/**
-	 * 
+	 * Class version.
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	/**
+	 * Default priority count.
+	 */
 	private final static int DEFAULT_PRIORITY_COUNT = 10;
+	
+	/**
+	 * Default priority for a new element.
+	 */
 	private final static int DEFAULT_PRIORITY = 0;
 
+	private int modCount;
+	
 	private List<E>[] queue;
 
 	public PriorityQueue()
@@ -42,9 +52,7 @@ public class PriorityQueue<E> extends AbstractList<E> implements Serializable
 			throw new IllegalArgumentException("Illegal priority count: " + count);
 		}
 		queue = new List[count];
-		if (col != null) {
-			addAll(col);
-		}
+		addAll(col);
 	}
 
 	public boolean add(E element)
@@ -55,7 +63,7 @@ public class PriorityQueue<E> extends AbstractList<E> implements Serializable
 
 	public void insert(E element, int priority)
 	{
-		if (priority < 0) {
+		if (priority < 0 || priority >= queue.length) {
 			throw new IllegalArgumentException("Illegal priority: " + priority);
 		}
 		if (queue[priority] == null) {
@@ -75,22 +83,27 @@ public class PriorityQueue<E> extends AbstractList<E> implements Serializable
 		if (index < 0) {
 			throw new IllegalArgumentException("Illegal index: " + index);
 		}
+		
 		Iterator<E> iter = iterator();
 		int pos = 0;
 		while (iter.hasNext()) {
 			if (pos == index) {
 				return iter.next();
 			} else {
+				iter.next();
 				pos++;
 			}
 		}
-		return null;
+
+		throw new NoSuchElementException();
 	}
 
 	public void clear()
 	{
 		for (int i = 0, n = queue.length; i < n; i++) {
-			queue[i].clear();
+			if (queue[i] != null) {
+				queue[i].clear();
+			}
 		}
 	}
 
@@ -124,16 +137,7 @@ public class PriorityQueue<E> extends AbstractList<E> implements Serializable
 			// Used to prevent successive remove() calls
 			int lastRet = -1;
 
-			Iterator<E> tempIter;
-
-			// Get iterator for highest priority
-			{
-				if (queue[priority] == null) {
-					tempIter = null;
-				} else {
-					tempIter = queue[priority].iterator();
-				}
-			}
+			Iterator<E> tempIter = null;
 
 			private final void checkForComodification()
 			{
@@ -150,21 +154,31 @@ public class PriorityQueue<E> extends AbstractList<E> implements Serializable
 			public E next()
 			{
 				while (true) {
-					if ((tempIter != null) && (tempIter.hasNext())) {
-						E next = tempIter.next();
-						checkForComodification();
-						lastRet = count++;
-						return next;
+					if (tempIter != null) {
+						if (tempIter.hasNext()) {
+							E next = tempIter.next();
+							checkForComodification();
+							lastRet = count++;
+							return next;
+						} else {
+							tempIter = null;
+							priority--;
+						}
 					} else {
 						// Get next iterator
-						if (--priority < 0) {
+						if (priority < 0) {
 							checkForComodification();
 							throw new NoSuchElementException();
 						} else {
 							if (queue[priority] == null) {
 								tempIter = null;
+								priority--;
 							} else {
 								tempIter = queue[priority].iterator();
+								if (! tempIter.hasNext()) {
+									tempIter = null;
+									priority--;
+								}
 							}
 						}
 					}
@@ -185,6 +199,17 @@ public class PriorityQueue<E> extends AbstractList<E> implements Serializable
 		};
 		return iter;
 	}
+	
+	public boolean contains(Object element)
+	{
+		for (int i = (queue.length - 1); i >= 0; i--) {
+			List<E> list = queue[i];
+			if (list != null && list.contains(element)) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 	public String toString()
 	{
@@ -200,5 +225,101 @@ public class PriorityQueue<E> extends AbstractList<E> implements Serializable
 		}
 		buffer.append("}");
 		return buffer.toString();
+	}
+
+	@Override
+	public boolean isEmpty() {
+		return (size() == 0);
+	}
+
+	@Override
+	public Object[] toArray() {
+		Object[] result = new Object[size()];
+		Iterator<E> i = iterator();
+		int n = 0;
+		while (i.hasNext()) {
+			result[n] = i.next();
+			n++;
+		}
+		return result;
+	}
+
+	@Override
+	public <E> E[] toArray(E[] inputArray) {
+		if (inputArray != null && inputArray.length >= size()) {
+			Iterator<E> i = (Iterator<E>) iterator();
+			int n = 0;
+			while (i.hasNext()) {
+				inputArray[n] = i.next();
+				n++;
+			}
+			return inputArray;
+		} else {
+			E[] result = (E[]) Array.newInstance(inputArray.getClass().getComponentType(), size());
+			Iterator<E> i = (Iterator<E>) iterator();
+			int n = 0;
+			while (i.hasNext()) {
+				result[n] = i.next();
+				n++;
+			}
+			return result;
+		}
+	}
+
+	@Override
+	public boolean remove(Object o) {
+		boolean changed = false;
+		Iterator<E> i = iterator();
+		while (i.hasNext()) {
+			E element = i.next();
+			if (element.equals(o)) {
+				i.remove();
+				changed |= true;
+			}
+		}
+		return changed;
+	}
+
+	@Override
+	public boolean containsAll(Collection<?> c) {
+		Iterator<?> i = c.iterator();
+		while (i.hasNext()) {
+			Object obj = i.next();
+			if (! contains(obj)) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	@Override
+	public boolean addAll(Collection<? extends E> col) {
+		boolean changed = false;
+		if (col != null) {
+			for (E element : col) {
+				changed |= add(element);
+			}
+		}
+
+		return changed;
+	}
+	
+	@Override
+	public boolean removeAll(Collection<?> col) {
+		boolean changed = false;
+		
+		if (col != null) {
+			for (Object element : col) {
+				changed |= remove(element);
+			}
+		}
+		
+		return changed;
+	}
+
+	@Override
+	public boolean retainAll(Collection<?> c) {
+		throw new UnsupportedOperationException();
 	}
 }

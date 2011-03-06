@@ -20,7 +20,6 @@ package com.ironiacorp.datastructure.array;
 
 import static org.junit.Assert.*;
 
-import java.io.File;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
