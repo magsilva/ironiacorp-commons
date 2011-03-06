@@ -17,37 +17,37 @@ import static org.junit.Assert.*;
 
 public class TestGenericTreeNode {
     @Test
-    public void TestNodeDataIsNullOnNewNodeCreation() {
+    public void testNodeDataIsNullOnNewNodeCreation() {
         GenericTreeNode<String> node = new GenericTreeNode<String>();
         assertNull(node.getData());
     }
 
     @Test
-    public void TestNodeHasNonNullChildrenListOnNewNodeCreation() {
+    public void testNodeHasNonNullChildrenListOnNewNodeCreation() {
         GenericTreeNode<String> node = new GenericTreeNode<String>();
         assertNotNull(node.getChildren());
     }
 
     @Test
-    public void TestNodeHasZeroChildrenOnNewNodeCreation() {
+    public void testNodeHasZeroChildrenOnNewNodeCreation() {
         GenericTreeNode<String> node = new GenericTreeNode<String>();
         assertEquals(node.getNumberOfChildren(), 0);
     }
 
     @Test
-    public void TestNodeHasChildrenReturnsFalseOnNewNodeCreation() {
+    public void testNodeHasChildrenReturnsFalseOnNewNodeCreation() {
         GenericTreeNode<String> node = new GenericTreeNode<String>();
         assertFalse(node.hasChildren());
     }
 
     @Test
-    public void TestNodeDataIsNonNullWithParameterizedConstructor() {
+    public void testNodeDataIsNonNullWithParameterizedConstructor() {
         GenericTreeNode<String> node = new GenericTreeNode<String>("I haz data");
         assertNotNull(node.getData());
     }
 
     @Test
-    public void TestNodeSetAndGetData() {
+    public void testNodeSetAndGetData() {
         GenericTreeNode<String> node = new GenericTreeNode<String>();
         String data = "data";
         node.setData(data);
@@ -55,7 +55,7 @@ public class TestGenericTreeNode {
     }
 
     @Test
-    public void TestNodeSetAndGetChildren() {
+    public void testNodeSetAndGetChildren() {
         GenericTreeNode<String> node = new GenericTreeNode<String>();
         GenericTreeNode<String> child = new GenericTreeNode<String>();
 
@@ -67,7 +67,7 @@ public class TestGenericTreeNode {
     }
 
     @Test
-    public void TestNodeRemoveChildren() {
+    public void testNodeRemoveChildren() {
         GenericTreeNode<String> node = new GenericTreeNode<String>();
         GenericTreeNode<String> child = new GenericTreeNode<String>();
 
@@ -80,7 +80,7 @@ public class TestGenericTreeNode {
     }
 
     @Test
-    public void TestNodeAddChildHasOneChild() {
+    public void testNodeAddChildHasOneChild() {
         GenericTreeNode<String> node = new GenericTreeNode<String>();
         GenericTreeNode<String> child = new GenericTreeNode<String>();
 
@@ -89,7 +89,7 @@ public class TestGenericTreeNode {
     }
 
     @Test
-    public void TestNodeAddChildHasChildrenIsTrue() {
+    public void testNodeAddChildHasChildrenIsTrue() {
         GenericTreeNode<String> node = new GenericTreeNode<String>();
         GenericTreeNode<String> child = new GenericTreeNode<String>();
 
@@ -99,7 +99,7 @@ public class TestGenericTreeNode {
     }
 
     @Test
-    public void TestNodeAddAndGetChildAt() {
+    public void testNodeAddAndGetChildAt() {
         GenericTreeNode<String> node = new GenericTreeNode<String>("root");
         GenericTreeNode<String> child1 = new GenericTreeNode<String>("child1");
         GenericTreeNode<String> child2 = new GenericTreeNode<String>("child2");
@@ -111,7 +111,7 @@ public class TestGenericTreeNode {
     }
 
     @Test
-    public void TestNodeAddAndRemoveChildAt() {
+    public void testNodeAddAndRemoveChildAt() {
         GenericTreeNode<String> node = new GenericTreeNode<String>("root");
         GenericTreeNode<String> child1 = new GenericTreeNode<String>("child1");
         GenericTreeNode<String> child2 = new GenericTreeNode<String>("child2");
@@ -125,7 +125,7 @@ public class TestGenericTreeNode {
     }
 
     @Test(expected=java.lang.IndexOutOfBoundsException.class)
-    public void TestNodeAddChildAtThrowsException() {
+    public void testNodeAddChildAtThrowsException() {
         GenericTreeNode<String> node = new GenericTreeNode<String>();
         GenericTreeNode<String> child = new GenericTreeNode<String>();
 
@@ -133,27 +133,27 @@ public class TestGenericTreeNode {
     }
 
     @Test(expected=java.lang.IndexOutOfBoundsException.class)
-    public void TestNodeRemoveChildAtThrowsException() {
+    public void testNodeRemoveChildAtThrowsException() {
         GenericTreeNode<String> node = new GenericTreeNode<String>();
         node.removeChildAt(1);
     }
 
     @Test
-    public void TestNodeToString() {
+    public void testNodeToString() {
         GenericTreeNode<String> node = new GenericTreeNode<String>();
         node.setData("data");
         assertEquals(node.toString(), "data");
     }
 
     @Test
-    public void TestNodeToStringVerboseNoChildren() {
+    public void testNodeToStringVerboseNoChildren() {
         GenericTreeNode<String> node = new GenericTreeNode<String>();
         node.setData("data");
         assertEquals(node.toStringVerbose(), "data:[]");
     }
 
     @Test
-    public void TestNodeToStringVerboseOneChild() {
+    public void testNodeToStringVerboseOneChild() {
         GenericTreeNode<String> node = new GenericTreeNode<String>();
         node.setData("data");
 
@@ -165,7 +165,7 @@ public class TestGenericTreeNode {
     }
 
     @Test
-    public void TestNodeToStringVerboseMoreThanOneChild() {
+    public void testNodeToStringVerboseMoreThanOneChild() {
         GenericTreeNode<String> node = new GenericTreeNode<String>();
         node.setData("data");
 

@@ -50,7 +50,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
-import java.util.Queue;
 
 /**
  * Linked list implementation of the List interface. In addition to the methods of the List
@@ -647,13 +646,15 @@ public class CompressedLinkedList<T> extends AbstractSequentialList<T> implement
 			Entry<T> e = new Entry<T>(o);
 			modCount++;
 			e.next = after;
-			e.previous = after.previous;
-			if (after.previous == null) {
-				first = e;
-			} else {
-				after.previous.next = e;
+			if (after != null) {
+				e.previous = after.previous;
+				if (after.previous == null) {
+					first = e;
+				} else {
+					after.previous.next = e;
+				}
+				after.previous = e;
 			}
-			after.previous = e;
 			size++;
 		} else {
 			if (last != null && last.data.equals(o)) {

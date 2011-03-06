@@ -130,6 +130,7 @@ public class SingleElementSetTest {
 		String[] expected = new String[0];
 		Object[] result = set.toArray();
 		assertEquals(0, result.length);
+		assertArrayEquals(expected, result);
 	}
 	
 	@Test

@@ -385,10 +385,10 @@ public class BinarySearchTree implements SearchTree
         try
         {
             for( int i = GAP; i != 0; i = ( i + GAP ) % NUMS )
-                t.insert( new Integer( i ) );
+                t.insert( Integer.valueOf( i ) );
 
             for( int i = 1; i < NUMS; i+= 2 )
-                t.remove( new Integer( i ) );
+                t.remove( Integer.valueOf( i ) );
 
             if( NUMS < 40 )
                 t.printTree( );
@@ -397,12 +397,12 @@ public class BinarySearchTree implements SearchTree
                 System.out.println( "FindMin or FindMax error!" );
 
             for( int i = 2; i < NUMS; i+=2 )
-                 t.find( new Integer( i ) );
+                 t.find( Integer.valueOf( i ) );
 
             for( int i = 1; i < NUMS; i+=2 )
             {
                 try
-                  { System.out.println( "OOPS!!! " + t.find( new Integer( i ) ) ); }
+                  { System.out.println( "OOPS!!! " + t.find( Integer.valueOf( i ) ) ); }
                 catch( ItemNotFound e )
                   { }
             }

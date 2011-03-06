@@ -19,10 +19,10 @@ public class TestBinarySearchTreeWithRank_Functional
 
 	@Test
 	public void testCaseInsertion1() {
-		rankTree.root = rankTree.insert(new Integer(1), rankTree.root);
-		rankTree.root = rankTree.insert(new Integer(4), rankTree.root);
-		rankTree.root = rankTree.insert(new Integer(2), rankTree.root);
-		rankTree.root = rankTree.insert(new Integer(3), rankTree.root);
+		rankTree.root = rankTree.insert(Integer.valueOf(1), rankTree.root);
+		rankTree.root = rankTree.insert(Integer.valueOf(4), rankTree.root);
+		rankTree.root = rankTree.insert(Integer.valueOf(2), rankTree.root);
+		rankTree.root = rankTree.insert(Integer.valueOf(3), rankTree.root);
 
 		assertEquals("3", rankTree.root.right.left.right.element.toString());
 
@@ -42,10 +42,10 @@ public class TestBinarySearchTreeWithRank_Functional
 
 	@Test
 	public void testCaseDeletion1() {
-		rankTree.root = rankTree.insert(new Integer(1), rankTree.root);
-		rankTree.root = rankTree.insert(new Integer(4), rankTree.root);
-		rankTree.root = rankTree.insert(new Integer(2), rankTree.root);
-		rankTree.root = rankTree.remove(new Integer(4), rankTree.root);
+		rankTree.root = rankTree.insert(Integer.valueOf(1), rankTree.root);
+		rankTree.root = rankTree.insert(Integer.valueOf(4), rankTree.root);
+		rankTree.root = rankTree.insert(Integer.valueOf(2), rankTree.root);
+		rankTree.root = rankTree.remove(Integer.valueOf(4), rankTree.root);
 
 		assertEquals("1", rankTree.root.element.toString());
 		assertEquals("2", rankTree.root.right.element.toString());
@@ -59,9 +59,9 @@ public class TestBinarySearchTreeWithRank_Functional
 	@Test
 	public void testCaseSearching1() {
 		Comparable f;
-		rankTree.root = rankTree.insert(new Integer(1), rankTree.root);
-		rankTree.root = rankTree.insert(new Integer(4), rankTree.root);
-		rankTree.root = rankTree.insert(new Integer(2), rankTree.root);
+		rankTree.root = rankTree.insert(Integer.valueOf(1), rankTree.root);
+		rankTree.root = rankTree.insert(Integer.valueOf(4), rankTree.root);
+		rankTree.root = rankTree.insert(Integer.valueOf(2), rankTree.root);
 
 		f = rankTree.findKth(1);
 		assertEquals("1", f.toString());
@@ -77,9 +77,9 @@ public class TestBinarySearchTreeWithRank_Functional
 
 	@Test(expected=ItemNotFound.class)
 	public void testCaseSearching2() {
-		rankTree.root = rankTree.insert(new Integer(1), rankTree.root);
-		rankTree.root = rankTree.insert(new Integer(4), rankTree.root);
-		rankTree.root = rankTree.insert(new Integer(2), rankTree.root);
+		rankTree.root = rankTree.insert(Integer.valueOf(1), rankTree.root);
+		rankTree.root = rankTree.insert(Integer.valueOf(4), rankTree.root);
+		rankTree.root = rankTree.insert(Integer.valueOf(2), rankTree.root);
 		rankTree.findKth(5, rankTree.root);
 	}
 }

@@ -105,12 +105,10 @@ public class ArrayUtilTest
 	}
 
 	
-	@Test
+	@Test(expected=IllegalArgumentException.class)
 	public void testDupNull()
 	{
-		Object[] dupArray = ArrayUtil.dup(null);
-		assertTrue(Arrays.equals(null, dupArray));
-		assertTrue(dupArray == null);
+		ArrayUtil.dup(null);
 	}
 
 	
@@ -257,10 +255,10 @@ public class ArrayUtilTest
 		assertFalse(Arrays.equals(ArrayUtil.clean(arrayWithNull), null));
 	}
 	
-	@Test
+	@Test(expected=IllegalArgumentException.class)
 	public void testClean4()
 	{
-		assertTrue(Arrays.equals(ArrayUtil.clean(null), null));
+		ArrayUtil.clean(null);
 	}
 	
 	@Test
@@ -281,23 +279,23 @@ public class ArrayUtilTest
 	@Test
 	public void testToCollection_File()
 	{
-		File[] fileArray = {
-			new File("/tmp/0"),
-			new File("/tmp/1"),
-			new File("/tmp/2"),
-			new File("/tmp/3")
+		String[] fileArray = {
+			"/tmp/0",
+			"/tmp/1",
+			"/tmp/2",
+			"/tmp/3"
 		};
 		
-		Collection<File> fileCollection = ArrayUtil.toCollection(fileArray);
+		Collection<String> fileCollection = ArrayUtil.toCollection(fileArray);
 		assertNotNull(fileCollection);
 		assertEquals(fileArray.length, fileCollection.size());
-		Iterator<File> i = fileCollection.iterator();
+		Iterator<String> i = fileCollection.iterator();
 		for (int j = 0; j < fileArray.length; j++) {
-			File element = i.next();
+			String element = i.next();
 			assertEquals(fileArray[j], element);
 			assertTrue(fileArray[j] == element);
-			assertEquals(new File("/tmp/" + j), element);
-			assertFalse(new File("/tmp/" + j) == element);
+			assertEquals("/tmp/" + j, element);
+			assertNotSame("/tmp/" + j, element);
 		}
 	}
 }

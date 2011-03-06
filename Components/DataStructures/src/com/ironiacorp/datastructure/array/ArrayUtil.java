@@ -80,7 +80,7 @@ public final class ArrayUtil
 	public static Object[] dup(Object[] array)
 	{
 		if (array == null) {
-			return null;
+			throw new IllegalArgumentException(new NullPointerException());
 		}
 		
 		Object[] dupArray = new Object[array.length];
@@ -245,13 +245,13 @@ public final class ArrayUtil
 	@SuppressWarnings("unchecked")
 	public static <T> T[] clean(T[] array)
 	{
+		if (array == null) {
+			throw new IllegalArgumentException(new NullPointerException());
+		}
+		
 		int nonNullCount = 0;
 		int i = 0;
-		Object[] result = null;
-		
-		if (array == null) {
-			return null;
-		}
+		Object[] result;
 		
 		for (Object obj : array) {
 			if (obj != null) {

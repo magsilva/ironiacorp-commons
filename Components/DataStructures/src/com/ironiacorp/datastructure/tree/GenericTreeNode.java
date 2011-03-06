@@ -107,20 +107,24 @@ public class GenericTreeNode<T> {
 	}
 
     public String toStringVerbose() {
-        String stringRepresentation = getData().toString() + ":[";
+    	StringBuilder sb = new StringBuilder();
+        sb.append(getData().toString());
+        sb.append(":[");
 
         for (GenericTreeNode<T> node : getChildren()) {
-            stringRepresentation += node.getData().toString() + ", ";
+        	sb.append(node.getData().toString());
+        	sb.append(", ");
         }
 
-        //Pattern.DOTALL causes ^ and $ to match. Otherwise it won't. It's retarded.
+        // Pattern.DOTALL causes ^ and $ to match. Otherwise it won't. It's retarded.
         Pattern pattern = Pattern.compile(", $", Pattern.DOTALL);
-        Matcher matcher = pattern.matcher(stringRepresentation);
+        Matcher matcher = pattern.matcher(sb.toString());
 
-        stringRepresentation = matcher.replaceFirst("");
-        stringRepresentation += "]";
+        sb.setLength(0);
+        sb.append(matcher.replaceFirst(""));
+        sb.append("]");
 
-        return stringRepresentation;
+        return sb.toString();
     }
 }
 

@@ -40,7 +40,7 @@ public class WeakHashSet<E> extends HashSet<E>
 	/**
      * Helps to detect garbage collected values.
      */
-    ReferenceQueue<E> queue = new ReferenceQueue<E>();
+    transient ReferenceQueue<E> queue = new ReferenceQueue<E>();
 
     /**
      * Returns an iterator over the elements in this set.  The elements
