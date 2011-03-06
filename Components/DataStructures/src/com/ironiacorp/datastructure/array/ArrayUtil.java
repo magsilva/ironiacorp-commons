@@ -43,11 +43,11 @@ public final class ArrayUtil
 	 * always return False
 	 * 
 	 * @param array The array we will search into.
-	 * @param o The object to be found.
+	 * @param object The object to be found.
 	 * 
 	 * @return True if the object was found in the array, False otherwise.
 	 */
-	public static boolean has(Object[] array, Object o)
+	public static boolean has(final Object[] array, final Object object)
 	{
 		if (array == null) {
 			return false;
@@ -55,11 +55,11 @@ public final class ArrayUtil
 		
 		for (Object temp : array) {
 			if (temp == null) {
-				if (o == null) {
+				if (object == null) {
 					return true;
 				}
 			} else {
-				if (temp.equals(o)) {
+				if (temp.equals(object)) {
 					return true;
 				}
 			}
@@ -77,18 +77,18 @@ public final class ArrayUtil
 	 * 
 	 * @return Duplicated array.
 	 */
-	public static Object[] dup(Object[] array)
+	public static Object[] dup(final Object[] array)
 	{
 		if (array == null) {
 			throw new IllegalArgumentException(new NullPointerException());
 		}
 		
-		Object[] dupArray = new Object[array.length];
+		final Object[] dupArray = new Object[array.length];
 		System.arraycopy(array, 0, dupArray, 0, array.length);
 		return dupArray;
 	}
 	
-	public static boolean equalIgnoreOrder(Object[] array1, Object[] array2)
+	public static boolean equalIgnoreOrder(final Object[] array1, final Object[] array2)
 	{
 		final class HashComparator<T> implements Comparator<T>
 		{
@@ -102,7 +102,7 @@ public final class ArrayUtil
 			 * 
 			 * Note: this comparator imposes orderings that are inconsistent with equals.
 			 */
-			public int compare(T o1, T o2)
+			public int compare(final T o1, final T o2)
 			{
 				if (o1 == null && o2 == null) {
 					return 0;
@@ -114,9 +114,7 @@ public final class ArrayUtil
 					return 1;
 				}
 				
-				int hash1 = o1.hashCode();
-				int hash2 = o2.hashCode();
-				return (hash1 - hash2);
+				return (o1.hashCode() - o2.hashCode());
 			}
 		}
 		
@@ -134,8 +132,8 @@ public final class ArrayUtil
 			return false;
 		}
 		
-		Object[] sortedArray1 = dup(array1);
-		Object[] sortedArray2 = dup(array2);
+		final Object[] sortedArray1 = dup(array1);
+		final Object[] sortedArray2 = dup(array2);
 		Arrays.sort(sortedArray1, new HashComparator<Object>());
 		Arrays.sort(sortedArray2, new HashComparator<Object>());
 		
@@ -151,18 +149,15 @@ public final class ArrayUtil
 	 * 
 	 * @return The object (if found) or null otherwise.
 	 */
-	public static Object find(Object[] array, Class<?> targetClass)
+	public static Object find(final Object[] array, final Class<?> targetClass)
 	{
-		if (array == null) {
-			return null;
+		if (array == null || targetClass == null) {
+			throw new IllegalArgumentException(new NullPointerException());
 		}
 		
 		for (Object o : array) {
-			try {
-				if (o.getClass().equals(targetClass)) {
-					return o;
-				}
-			} catch (NullPointerException e) {
+			if (o instanceof Object && o.getClass().equals(targetClass)) {
+				return o;
 			}
 		}
 		
@@ -178,13 +173,13 @@ public final class ArrayUtil
 	 * @return The index for the string within the array or -1 if the
 	 * string couldn't be found.
 	 */
-	public static int find(String[] array, String str)
+	public static int find(final String[] array, final String str)
 	{
 		if (array == null) {
 			return -1;
 		}
 		
-		int i = 0;
+		int i;
 		for (i = 0; i < array.length && ! array[i].equals(str); i++);
 
 		if (i == array.length) {
@@ -202,9 +197,9 @@ public final class ArrayUtil
 	 * 
 	 * @return The string.
 	 */
-	public static String toString(Object[] arg)
+	public static String toString(final Object[] array)
 	{
-		return ArrayUtil.toString(arg, "\n");
+		return ArrayUtil.toString(array, "\n");
 	}
 	
 	/**
@@ -215,13 +210,13 @@ public final class ArrayUtil
 	 * 
 	 * @return The string.
 	 */
-	public static String toString(Object[] arg, String separator)
+	public static String toString(final Object[] arg, final String separator)
 	{
 		if (separator == null) {
 			throw new IllegalArgumentException("The separator string cannot be null");
 		}
 		
-		StringBuffer sb = new StringBuffer();
+		final StringBuffer sb = new StringBuffer();
 		for (Object o : arg) {
 			if (o != null) {
 				sb.append(o);
@@ -243,7 +238,7 @@ public final class ArrayUtil
 	 * @return Cleant array.
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T> T[] clean(T[] array)
+	public static <T> T[] clean(final T[] array)
 	{
 		if (array == null) {
 			throw new IllegalArgumentException(new NullPointerException());
@@ -277,7 +272,7 @@ public final class ArrayUtil
 	 * @param elements The objects to save into the array.
 	 * @return The array.
 	 */
-    public static <T> T[] array(T... elements)
+    public static <T> T[] array(final T... elements)
     {
     	return elements;
     }
@@ -285,9 +280,9 @@ public final class ArrayUtil
     /**
      * Create a collection using an array.
      */
-    public static <T> Collection<T> toCollection(T[] elements)
+    public static <T> Collection<T> toCollection(final T[] elements)
     {
-    	List<T> result = new ArrayList<T>();
+    	final List<T> result = new ArrayList<T>();
     	for (T element : elements) {
     		result.add(element);
     	}

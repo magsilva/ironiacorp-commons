@@ -145,7 +145,6 @@ public class ArrayUtilTest
 	@Test
 	public void testFindObjectArrayClass1()
 	{
-		assertNotNull(ArrayUtil.find(arrayWithNull, String.class));
 		assertTrue(ArrayUtil.find(arrayWithoutNull, String.class).equals(objectInArray));
 	}
 
@@ -155,19 +154,19 @@ public class ArrayUtilTest
 		assertNull(ArrayUtil.find(arrayWithNull, Long.class));
 	}
 
-	@Test
+	@Test(expected=IllegalArgumentException.class)
 	public void testFindObjectArrayClass3()
 	{
-		assertNull(ArrayUtil.find(arrayWithNull, null));
+		ArrayUtil.find(arrayWithNull, null);
 	}
 
-	@Test
+	@Test(expected=IllegalArgumentException.class)
 	public void testFindObjectArrayClass4()
 	{
-		assertNull(ArrayUtil.find(null, String.class));
+		ArrayUtil.find(null, String.class);
 	}
 
-	@Test
+	@Test(expected=IllegalArgumentException.class)
 	public void testFindObjectArrayClass5()
 	{
 		assertNull(ArrayUtil.find((Object[]) null, (Class<?>) null));

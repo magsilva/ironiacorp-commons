@@ -18,12 +18,12 @@ public class SingularCollection<T> implements Collection<T>
 		return false;
 	}
 
-	public boolean addAll(Collection<? extends T> c)
+	public boolean addAll(final Collection<? extends T> c)
 	{
-		Iterator<? extends T> i = c.iterator();
+		final Iterator<? extends T> i = c.iterator();
 		boolean result = false;
 		while (i.hasNext()) {
-			result = add(i.next());
+			result |= add(i.next());
 		}
 		return result;
 	}
@@ -118,7 +118,7 @@ public class SingularCollection<T> implements Collection<T>
 	public <T> T[] toArray(T[] a)
 	{
 		if (a == null) {
-			throw new NullPointerException();
+			throw new IllegalArgumentException(new NullPointerException());
 		}
 
 		T[] result =  (T[]) Array.newInstance(a.getClass().getComponentType(), size());
