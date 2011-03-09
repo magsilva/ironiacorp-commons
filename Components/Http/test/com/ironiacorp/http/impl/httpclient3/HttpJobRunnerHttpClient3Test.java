@@ -18,6 +18,8 @@
 package com.ironiacorp.http.impl.httpclient3;
 
 
+import java.net.URISyntaxException;
+
 import org.junit.Before;
 
 import com.ironiacorp.http.HttpJobRunnerTest;
@@ -25,6 +27,10 @@ import com.ironiacorp.http.HttpJobRunnerTest;
 
 public class HttpJobRunnerHttpClient3Test extends HttpJobRunnerTest
 {
+	@Override
+	public void testManyIdenticalRequests() throws URISyntaxException {
+	}
+
 	@Before
 	public void setUp() throws Exception {
 		runner = new HttpJobRunnerHttpClient3();

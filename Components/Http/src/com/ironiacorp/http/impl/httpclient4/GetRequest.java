@@ -61,10 +61,8 @@ public class GetRequest implements Callable<HttpJob>
 	        	    HttpHost currentHost = (HttpHost) context.getAttribute(ExecutionContext.HTTP_TARGET_HOST);
 	    			result.setContent(inputStream);
 	        		result.setStatusCode(response.getStatusLine().getStatusCode());
-
 	        	    result.setHost(currentHost.getHostName());
 	        		job.setResult(result);
-
 				}
 	        }
 		} catch (Exception e) {

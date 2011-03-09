@@ -61,8 +61,6 @@ public class GetRequest implements Callable<HttpJob>
 				result.setContent(inputStream);
        			result.setStatusCode(statusCode);
        			job.setResult(result);
-       			result.cacheContent();
-       			getMethod.releaseConnection();
 			}
 		} catch (HttpException e) {
 		} catch (IOException e) {

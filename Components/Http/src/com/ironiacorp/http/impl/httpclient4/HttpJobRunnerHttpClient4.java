@@ -66,6 +66,7 @@ public class HttpJobRunnerHttpClient4 extends HttpClient implements HttpJobRunne
 		HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
 		HttpProtocolParams.setContentCharset(params, "UTF-8");
 		HttpProtocolParams.setHttpElementCharset(params, "UTF-8");
+		HttpProtocolParams.setUserAgent(params, "Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2.14) Gecko/20110301 Fedora/3.6.14-1.fc14 Firefox/3.6.14");
 		// HttpProtocolParams.setUserAgent(params, "");
 	}
 	
@@ -146,7 +147,6 @@ public class HttpJobRunnerHttpClient4 extends HttpClient implements HttpJobRunne
 		}
 	
 		executor.shutdown();
-		cm.shutdown();
 	}
 	
 	public void abort()

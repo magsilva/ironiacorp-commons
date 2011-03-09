@@ -83,8 +83,6 @@ public class PostRequest implements Callable<HttpJob>
 				result.setContent(inputStream);
         		result.setStatusCode(statusCode);
         		job.setResult(result);
-        		result.cacheContent();
-				postMethod.releaseConnection();
 			}
 		} catch (HttpException e) {
 		} catch (IOException e) {

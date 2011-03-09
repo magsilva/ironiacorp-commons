@@ -19,6 +19,7 @@ package com.ironiacorp.http;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -126,35 +127,28 @@ public abstract class HttpJobRunnerTest
 
 	@Test
 	public void testManyDifferentRequests() throws URISyntaxException {
-		runner.addJob(new HttpJob(HttpMethod.GET, new URI(
-				"http://www.icmc.usp.br/~magsilva/index.html")));
-		runner.addJob(new HttpJob(HttpMethod.GET, new URI(
-				"http://www.google.com")));
-		runner.addJob(new HttpJob(HttpMethod.GET, new URI(
-				"http://www.uol.com.br")));
-		runner.addJob(new HttpJob(HttpMethod.GET, new URI(
-				"http://www.terra.com.br")));
-		runner.addJob(new HttpJob(HttpMethod.GET, new URI(
-				"http://www.ig.com.br")));
-		runner.addJob(new HttpJob(HttpMethod.GET, new URI(
-				"http://www.globo.com")));
-		runner.addJob(new HttpJob(HttpMethod.GET, new URI(
-				"http://www.odiariomaringa.com.br")));
-		runner.addJob(new HttpJob(HttpMethod.GET, new URI(
-				"http://www.freshmeat.net")));
-		runner.addJob(new HttpJob(HttpMethod.GET, new URI(
-				"http://www.slashdot.org")));
+		runner.addJob(new HttpJob(HttpMethod.GET, new URI("http://www.icmc.usp.br/~magsilva/index.html")));
+		runner.addJob(new HttpJob(HttpMethod.GET, new URI("http://www.google.com")));
+		runner.addJob(new HttpJob(HttpMethod.GET, new URI("http://www.uol.com.br")));
+		runner.addJob(new HttpJob(HttpMethod.GET, new URI("http://www.terra.com.br")));
+		runner.addJob(new HttpJob(HttpMethod.GET, new URI("http://www.ig.com.br")));
+		runner.addJob(new HttpJob(HttpMethod.GET, new URI("http://www.globo.com")));
+		runner.addJob(new HttpJob(HttpMethod.GET, new URI("http://www.odiariomaringa.com.br")));
+		runner.addJob(new HttpJob(HttpMethod.GET, new URI("http://www.freshmeat.net")));
+		runner.addJob(new HttpJob(HttpMethod.GET, new URI("http://www.slashdot.org")));
 		runner.run();
 	}
 
 	@Test
 	public void testSingleWithRedirect() throws URISyntaxException {
-		HttpJob job = new HttpJob(HttpMethod.GET, new URI(
-				"http://dx.doi.org/10.1109/ITHET.2006.339782"));
+		HttpJob job = new HttpJob(HttpMethod.GET, new URI("http://dx.doi.org/10.1109/ITHET.2006.339782"));
 		runner.addJob(job);
 		runner.run();
 		HttpMethodResult result = job.getResult();
 		assertNotNull(result);
+		File file = result.getContentAsFile();
+		assertTrue(file.exists());
+		assertTrue(file.length() > 0);
 	}
 
 	/**

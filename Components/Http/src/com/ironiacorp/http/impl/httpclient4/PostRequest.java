@@ -100,7 +100,6 @@ public class PostRequest implements Callable<HttpJob>
 	        }
 		} catch (Exception e) {
 			method.abort();
-		} finally {
 		}
 		
         return job;

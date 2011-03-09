@@ -93,10 +93,6 @@ class PostRequest implements Callable<HttpJob>
 				}
 	        }
 		} catch (Exception e) {
-		} finally {
-			if (response != null) {
-				response.consume();
-			}
 		}
         return job;
 	}
