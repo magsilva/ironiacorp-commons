@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 Marco Aurélio Graciotto Silva <magsilva@ironiacorp.com>
+ * Copyright (C) 2011 Marco Aurélio Graciotto Silva <magsilva@ironiacorp.com>
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,27 +14,29 @@
  * limitations under the License.
  */
 
-package com.ironiacorp.http;
+package com.ironiacorp.http.impl;
 
-/**
- * Runs a set of HTTP jobs.
- */
-public interface HttpJobRunner
+import java.util.ArrayList;
+import java.util.List;
+
+import com.ironiacorp.http.HttpJob;
+
+public class HttpClient
 {
-	/**
-	 * Add a job to be run.
-	 * 
-	 * @param job Job to be run.
-	 */
-	void addJob(HttpJob job);
-	
-	/**
-	 * Run the jobs.
-	 */
-	void run();
-	
-	/**
-	 * Abort the execution of the jobs.
-	 */
-	void abort();
+
+	protected List<HttpJob> jobs;
+
+	public HttpClient() {
+		jobs = new ArrayList<HttpJob>();
+	}
+
+	public void addJob(HttpJob job) {
+		boolean added = false;
+		
+		added = jobs.add(job);
+		
+		if (! added) {
+			throw new IllegalArgumentException("Invalid job");
+		}
+	}
 }

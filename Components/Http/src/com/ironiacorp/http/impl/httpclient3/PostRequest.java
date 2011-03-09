@@ -1,31 +1,27 @@
 /*
-Licensed to the Apache Software Foundation (ASF) under one or more
-contributor license agreements.  See the NOTICE file distributed with
-this work for additional information regarding copyright ownership.
-The ASF licenses this file to You under the Apache License, Version 2.0
-(the "License"); you may not use this file except in compliance with
-the License.  You may obtain a copy of the License at
-
-	http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-
-Copyright (C) 2007 Apache Software Foundation (ASF).
+ * Copyright (C) 2010 Marco Aurélio Graciotto Silva <magsilva@ironiacorp.com>
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 
 package com.ironiacorp.http.impl.httpclient3;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Callable;
 
 import org.apache.commons.httpclient.HttpClient;
@@ -34,36 +30,46 @@ import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.methods.PostMethod;
 
-import com.ironiacorp.io.IoUtil;
 import com.ironiacorp.http.HttpJob;
 import com.ironiacorp.http.HttpMethodResult;
-import com.ironiacorp.http.HttpMethodResultFormat;
 
-/**
- * How to send a request via proxy using {@link HttpClient HttpClient}.
- * 
- * @author Roland Weber
- */
-public class PostRequest3 implements Callable<HttpJob>
+
+public class PostRequest implements Callable<HttpJob>
 {
 	private HttpJob job;
 	
 	private HttpClient client;
 	
-	public PostRequest3(HttpClient client, HttpJob job)
+	private List<NameValuePair> parameters;
+	
+	public PostRequest(HttpClient client, HttpJob job)
 	{
 		this.client = client;
+		this.job = job;
+		this.parameters = new ArrayList<NameValuePair>(5);
+		setParameters();
+	}
+	
+	private void setParameters()
+	{
+		for (String name : job.getParameters().keySet()) {
+			Object value = job.getParameter(name);
+			NameValuePair pair = new NameValuePair(name, value.toString());
+			if (parameters.contains(pair)) {
+				parameters.remove(pair);
+			}
+			parameters.add(pair);
+		}
 	}
 	
 	public HttpJob call()
 	{
 		URI uri = (URI) job.getUri();
-		NameValuePair[] data = (NameValuePair[]) job.getParameter("payload");
-		
 		PostMethod postMethod = new PostMethod(uri.toString());
-		postMethod.setRequestBody(data);
 		HttpMethodResult result = new HttpMethodResult();
+		postMethod.setRequestBody(parameters.toArray(new NameValuePair[0]));
 
+		
 		try {
 			int statusCode = client.executeMethod(postMethod);
 			
@@ -77,6 +83,7 @@ public class PostRequest3 implements Callable<HttpJob>
 				result.setContent(inputStream);
         		result.setStatusCode(statusCode);
         		job.setResult(result);
+        		result.cacheContent();
 				postMethod.releaseConnection();
 			}
 		} catch (HttpException e) {

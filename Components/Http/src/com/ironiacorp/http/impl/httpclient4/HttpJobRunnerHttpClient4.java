@@ -1,21 +1,18 @@
 /*
-Licensed to the Apache Software Foundation (ASF) under one or more
-contributor license agreements.  See the NOTICE file distributed with
-this work for additional information regarding copyright ownership.
-The ASF licenses this file to You under the Apache License, Version 2.0
-(the "License"); you may not use this file except in compliance with
-the License.  You may obtain a copy of the License at
-
-	http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-
-Copyright (C) 2007 Marco Aurélio Graciotto Silva <magsilva@ironiacorp.com>
-*/
+ * Copyright (C) 2011 Marco Aurélio Graciotto Silva <magsilva@ironiacorp.com>
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 package com.ironiacorp.http.impl.httpclient4;
 
@@ -51,8 +48,9 @@ import org.apache.http.protocol.HttpContext;
 import com.ironiacorp.http.HttpJob;
 import com.ironiacorp.http.HttpJobRunner;
 import com.ironiacorp.http.HttpMethod;
+import com.ironiacorp.http.impl.HttpClient;
 
-public class HttpJobRunner4 implements HttpJobRunner
+public class HttpJobRunnerHttpClient4 extends HttpClient implements HttpJobRunner
 {
 	private int maxThreadsCount = 3;
 	
@@ -62,8 +60,6 @@ public class HttpJobRunner4 implements HttpJobRunner
 	
 	private HttpParams params;
 	
-	private List<HttpJob> jobs;
-		
 	private void setupHttpParams()
 	{
 		params = new BasicHttpParams();
@@ -86,31 +82,21 @@ public class HttpJobRunner4 implements HttpJobRunner
 		// Create an HttpClient with the ThreadSafeClientConnManager.
 		cm = new ThreadSafeClientConnManager(params, schemeRegistry);
 		// Increase max total connection to 200
-		((ThreadSafeClientConnManager) cm).setMaxTotalConnections(200);
+		((ThreadSafeClientConnManager) cm).setMaxTotal(200);
 		// Increase default max connection per route to 20
 		((ThreadSafeClientConnManager) cm).setDefaultMaxPerRoute(20);
 
 
 	}
+
 	
-	public HttpJobRunner4()
+	public HttpJobRunnerHttpClient4()
 	{
+		super();
 		setupHttpParams();
 		setupConnectionManager();
-		jobs = new ArrayList<HttpJob>();
 	}
 	
-	public void addJob(HttpJob job)
-	{
-		boolean added = false;
-		
-		added = jobs.add(job);
-		
-		if (! added) {
-			throw new IllegalArgumentException("Invalid job");
-		}
-	}
-		
 	public void run()
 	{
 		ExecutorService executor = Executors.newFixedThreadPool(maxThreadsCount);
@@ -130,11 +116,18 @@ public class HttpJobRunner4 implements HttpJobRunner
 	    
 	    for (HttpJob job : jobs) {
 			if (HttpMethod.GET == job.getMethod()) {
-				GetRequest4 request = new GetRequest4(httpClient, context, job);
+				GetRequest request = new GetRequest(httpClient, context, job);
 				Future<HttpJob> jobStatus = queue.submit(request);
 				workers.add(jobStatus);
 				continue;
 			}
+			if (HttpMethod.POST == job.getMethod()) {
+				PostRequest request = new PostRequest(httpClient, context, job);
+				Future<HttpJob> jobStatus = queue.submit(request);
+				workers.add(jobStatus);
+				continue;
+			}
+			// TODO: job cannot be handled, what to do?
 		}
 
 		while (! workers.isEmpty()) {

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 Marco Aurélio Graciotto Silva <magsilva@ironiacorp.com>
+ * Copyright (C) 2011 Marco Aurélio Graciotto Silva <magsilva@ironiacorp.com>
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,27 +14,18 @@
  * limitations under the License.
  */
 
-package com.ironiacorp.http;
 
-/**
- * Runs a set of HTTP jobs.
- */
-public interface HttpJobRunner
+package com.ironiacorp.http.impl.httpclient4;
+
+import org.junit.Before;
+
+import com.ironiacorp.http.HttpJobRunnerTest;
+
+public class HttpJobRunnerHttpClient4Test extends HttpJobRunnerTest
 {
-	/**
-	 * Add a job to be run.
-	 * 
-	 * @param job Job to be run.
-	 */
-	void addJob(HttpJob job);
-	
-	/**
-	 * Run the jobs.
-	 */
-	void run();
-	
-	/**
-	 * Abort the execution of the jobs.
-	 */
-	void abort();
+	@Before
+	public void setUp()
+	{
+		runner = new HttpJobRunnerHttpClient4();
+	}
 }
