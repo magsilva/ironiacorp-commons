@@ -43,15 +43,13 @@ public class HttpJobRunnerHttpClient3 extends com.ironiacorp.http.impl.HttpClien
 {
 	private int maxThreadsCount = 3;
 	
-	public void run()
+	private HttpClient httpClient;
+	
+	private void setupClient()
 	{
-		ExecutorService executor = Executors.newFixedThreadPool(maxThreadsCount);
-		ExecutorCompletionService<HttpJob> queue = new ExecutorCompletionService<HttpJob>(executor);
-		List<Future<?>> workers = new ArrayList<Future<?>>();
-		
 		MultiThreadedHttpConnectionManager connectionManager = new MultiThreadedHttpConnectionManager();
 		// connectionManager.// maxConnectionsPerHost // maxTotalConnections
-        HttpClient httpClient = new HttpClient(connectionManager);
+        httpClient = new HttpClient(connectionManager);
 
         // http://jakarta.apache.org/httpcomponents/httpclient-3.x/preference-api.html
         HttpClientParams params = httpClient.getParams();
@@ -60,6 +58,20 @@ public class HttpJobRunnerHttpClient3 extends com.ironiacorp.http.impl.HttpClien
 		params.setParameter("http.protocol.content-charset", "UTF-8");
         params.setCookiePolicy(CookiePolicy.RFC_2109);
         
+		
+	}
+	
+	public HttpJobRunnerHttpClient3()
+	{
+		setupClient();
+	}
+	
+	public void run()
+	{
+		ExecutorService executor = Executors.newFixedThreadPool(maxThreadsCount);
+		ExecutorCompletionService<HttpJob> queue = new ExecutorCompletionService<HttpJob>(executor);
+		List<Future<?>> workers = new ArrayList<Future<?>>();
+		
         for (HttpJob job : jobs) {
 			if (HttpMethod.GET == job.getMethod()) {
 				GetRequest request = new GetRequest(httpClient, job);

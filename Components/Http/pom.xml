@@ -5,7 +5,7 @@
 
 	<groupId>ironiacorp</groupId>
 	<artifactId>commons-http</artifactId>
-	<version>1.2.2</version>
+	<version>1.2.4</version>
 	<packaging>jar</packaging>
 
 	<name>Ironia-Http</name>
@@ -96,6 +96,7 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>[4.0,)</version>
+			<scope>test</scope>
 		</dependency>
 
 		<!-- HTTP Client 3.x -->
@@ -135,6 +136,7 @@
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
+		
 		<dependency>
 			<groupId>org.codehaus.httpcache4j</groupId>
 			<artifactId>httpcache4j-core</artifactId>
@@ -142,6 +144,7 @@
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
+		
 		<dependency>
 			<groupId>org.codehaus.httpcache4j.resolvers</groupId>
 			<artifactId>resolvers-commons-httpclient</artifactId>
@@ -149,11 +152,17 @@
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
+		
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-server</artifactId>
 			<version>7.3.1.v20110307</version>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+			<version>[2.5,)</version>
 		</dependency>
 	</dependencies>
 

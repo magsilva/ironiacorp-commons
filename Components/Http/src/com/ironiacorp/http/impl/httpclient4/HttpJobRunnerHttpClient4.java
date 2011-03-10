@@ -44,6 +44,7 @@ import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
+import org.apache.http.protocol.SyncBasicHttpContext;
 
 import com.ironiacorp.http.HttpJob;
 import com.ironiacorp.http.HttpJobRunner;
@@ -58,16 +59,15 @@ public class HttpJobRunnerHttpClient4 extends HttpClient implements HttpJobRunne
 
 	private ClientConnectionManager cm;
 	
-	private HttpParams params;
-	
-	private void setupHttpParams()
+	private DefaultHttpClient httpClient;
+
+	private HttpContext context;
+
+	public HttpJobRunnerHttpClient4()
 	{
-		params = new BasicHttpParams();
-		HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
-		HttpProtocolParams.setContentCharset(params, "UTF-8");
-		HttpProtocolParams.setHttpElementCharset(params, "UTF-8");
-		HttpProtocolParams.setUserAgent(params, "Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.2.14) Gecko/20110301 Fedora/3.6.14-1.fc14 Firefox/3.6.14");
-		// HttpProtocolParams.setUserAgent(params, "");
+		super();
+		setupConnectionManager();
+		setupClient();
 	}
 	
 	private void setupConnectionManager()
@@ -81,30 +81,23 @@ public class HttpJobRunnerHttpClient4 extends HttpClient implements HttpJobRunne
 		schemeRegistry.register(schemeHTTPS);
 
 		// Create an HttpClient with the ThreadSafeClientConnManager.
-		cm = new ThreadSafeClientConnManager(params, schemeRegistry);
-		// Increase max total connection to 200
-		((ThreadSafeClientConnManager) cm).setMaxTotal(200);
-		// Increase default max connection per route to 20
-		((ThreadSafeClientConnManager) cm).setDefaultMaxPerRoute(20);
-
-
+		cm = new ThreadSafeClientConnManager(schemeRegistry);
+		((ThreadSafeClientConnManager) cm).setMaxTotal(100);
+		((ThreadSafeClientConnManager) cm).setDefaultMaxPerRoute(4);
 	}
 
 	
-	public HttpJobRunnerHttpClient4()
+	private void setupClient()
 	{
-		super();
-		setupHttpParams();
-		setupConnectionManager();
-	}
-	
-	public void run()
-	{
-		ExecutorService executor = Executors.newFixedThreadPool(maxThreadsCount);
-		ExecutorCompletionService<HttpJob> queue = new ExecutorCompletionService<HttpJob>(executor);
-		List<Future<?>> workers = new ArrayList<Future<?>>(); 
-		DefaultHttpClient httpClient = new DefaultHttpClient(cm, params);
-		HttpContext context = new BasicHttpContext();
+		HttpParams params = new BasicHttpParams();
+		HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
+		HttpProtocolParams.setContentCharset(params, "UTF-8");
+		HttpProtocolParams.setHttpElementCharset(params, "UTF-8");
+		HttpProtocolParams.setUserAgent(params, "Mozilla/5.0 (X11; U; Linux x86_64; r1.9.0.2) Gecko/20121225 Firefox/3.6.14");
+
+		httpClient = new DefaultHttpClient(cm, params);
+		context = new BasicHttpContext();
+		context = new SyncBasicHttpContext(context);
 		
 		// Cookie configuration
 		CookieStore cookieStore = new BasicCookieStore();
@@ -114,7 +107,14 @@ public class HttpJobRunnerHttpClient4 extends HttpClient implements HttpJobRunne
 
 	    // Redirection stratety
 	    httpClient.setRedirectStrategy(new DefaultRedirectStrategy());
-	    
+	}
+	
+	public void run()
+	{
+		ExecutorService executor = Executors.newFixedThreadPool(maxThreadsCount);
+		ExecutorCompletionService<HttpJob> queue = new ExecutorCompletionService<HttpJob>(executor);
+		List<Future<?>> workers = new ArrayList<Future<?>>(); 
+			    
 	    for (HttpJob job : jobs) {
 			if (HttpMethod.GET == job.getMethod()) {
 				GetRequest request = new GetRequest(httpClient, context, job);
