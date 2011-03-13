@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Arrays;
+import java.util.regex.Pattern;
 
 import com.Ostermiller.util.RandPass;
 import com.ironiacorp.string.StringUtil;
@@ -65,6 +66,32 @@ public final class IoUtil
 		return filename.substring(index + 1);
 	}
 
+	/**
+	 * Replace the extension of a file for a new one.
+	 * @param filename File name.
+	 * @param extension New extension.
+	 * @return File name with new extension.
+	 */
+	public static String replaceExtension(String filename, String extension)
+	{
+		if (filename == null) {
+			throw new IllegalArgumentException(new NullPointerException());
+		}
+			
+		if (extension == null) {
+			extension = "";
+		} else if (extension.length() > 0 && extension.charAt(0) != '.') {
+			extension = "." + extension;
+		}
+		
+		int index = filename.lastIndexOf('.');
+		if (index == -1) {
+			return filename + extension;
+		} else {
+			return filename.substring(0, index) + extension;
+		}
+	}
+	
 	/**
 	 * Create a directory (any missing parent directory is created too).
 	 * 

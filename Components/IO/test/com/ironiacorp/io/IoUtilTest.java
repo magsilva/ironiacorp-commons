@@ -575,4 +575,45 @@ public class IoUtilTest
 		
 		src.delete();
 	}
+	
+	@Test
+	public void testReplaceExtension()
+	{
+		String filename = "teste.abc";
+		assertEquals("teste.exe", IoUtil.replaceExtension(filename, "exe"));
+	}
+	
+	@Test
+	public void testReplaceExtension_ExtensionWithDot()
+	{
+		String filename = "teste.abc";
+		assertEquals("teste.exe", IoUtil.replaceExtension(filename, ".exe"));
+	}
+	
+	@Test
+	public void testReplaceExtension_EmptyExtension()
+	{
+		String filename = "teste.abc";
+		assertEquals("teste", IoUtil.replaceExtension(filename, ""));
+	}
+	@Test
+	public void testReplaceExtension_NullExtension()
+	{
+		String filename = "teste.abc";
+		assertEquals("teste", IoUtil.replaceExtension(filename, null));
+	}
+	
+	@Test
+	public void testReplaceExtension_FileWithouExtension()
+	{
+		String filename = "teste";
+		assertEquals("teste.exe", IoUtil.replaceExtension(filename, "exe"));
+	}
+	
+	@Test
+	public void testReplaceExtension_FileWithouExtension_NullExtension()
+	{
+		String filename = "teste";
+		assertEquals("teste", IoUtil.replaceExtension(filename, null));
+	}
 }
