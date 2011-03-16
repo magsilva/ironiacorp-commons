@@ -1,0 +1,1 @@
+Create the diff from the root of the MPLayer source tree: this makes the diff easier do apply.

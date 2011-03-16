@@ -5,7 +5,7 @@
 
 	<groupId>ironiacorp</groupId>
 	<artifactId>commons-io</artifactId>
-	<version>2.2.0</version>
+	<version>2.1.1</version>
 	<packaging>jar</packaging>
 
 	<name>Ironia-IO</name>
@@ -118,12 +118,17 @@
 
 		<resources>
 			<resource>
-				<targetPath>lib/</targetPath>
-				<filtering>false</filtering>
-				<directory>${basedir}/lib</directory>
+				<directory>${project.basedir}/resources</directory>
+				<filtering>true</filtering>
 			</resource>
 		</resources>
 
+		<testResources>
+			<testResource>
+				<directory>${project.basedir}/test-resources</directory>
+				<filtering>true</filtering>
+			</testResource>
+		</testResources>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

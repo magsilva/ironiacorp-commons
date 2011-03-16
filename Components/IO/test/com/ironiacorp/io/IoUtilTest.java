@@ -2,11 +2,14 @@ package com.ironiacorp.io;
 
 import static org.junit.Assert.*;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import org.junit.Test;
 
@@ -574,6 +577,34 @@ public class IoUtilTest
 		assertEquals(3, bis.read());
 		
 		src.delete();
+	}
+	
+	@Test
+	public void testDumpFile_FromFile() throws Exception
+	{
+		File tmpFile1 = IoUtil.createTempFile();
+		File tmpFile2 = null;
+		
+		FileInputStream fis = new FileInputStream(tmpFile1);
+		FileOutputStream fos = new FileOutputStream(tmpFile1);
+		fos.write("Create the diff from the root of the MPLayer source tree: this makes the diff easier do apply.".getBytes());
+		fos.flush();
+		fos.close();
+		
+		tmpFile2 = IoUtil.toFile(fis);
+		
+		assertEquals(tmpFile1.length(), tmpFile2.length());
+	}
+	
+	@Test
+	public void testToFile_FromClassLoader() throws Exception
+	{
+		InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("MplayerPatchingPolicy.txt");
+		File tmpFile = IoUtil.toFile(is);
+		BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(tmpFile)));
+		assertEquals(
+				"Create the diff from the root of the MPLayer source tree: this makes the diff easier do apply.",
+				reader.readLine());
 	}
 	
 	@Test

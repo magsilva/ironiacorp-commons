@@ -705,6 +705,10 @@ public final class IoUtil
 	
 	public static void copyStream(InputStream in, OutputStream out) throws IOException
 	{
+		if (in == null || out == null) {
+			throw new IllegalArgumentException(new NullPointerException());
+		}
+		
 		int readBytes = 0;
 		byte[] buffer = new byte[IoUtil.BUFFER_SIZE];
 		while ((readBytes = in.read(buffer, 0, buffer.length)) != -1) {
