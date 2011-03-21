@@ -336,4 +336,21 @@ public final class StringUtil
 		
 		return sb.toString();
 	}
+	
+	public static int countUpCaseLetters(String text)
+	{
+		if (text == null) {
+			throw new IllegalArgumentException(new NullPointerException());
+		}
+		
+		int count = 0;
+		for (int i = 0; i < text.length(); i++) {
+			char c = text.charAt(i);
+			if (Character.isUpperCase(c)) {
+				count++;
+			}
+		}
+		
+		return count;
+	}
 }

@@ -5,7 +5,7 @@
 
 	<groupId>ironiacorp</groupId>
 	<artifactId>commons-string</artifactId>
-	<version>1.1.0</version>
+	<version>1.2.0</version>
 	<packaging>jar</packaging>
 
 	<name>Ironia-String</name>
@@ -45,7 +45,7 @@
 
 	<issueManagement>
 		<system>Bugzilla</system>
-		<url>http://www.ironiacorp.com/Admin/Bugzilla/</url>
+		<url>http://www.ironiacorp.com/Apps/Bugzilla/</url>
 	</issueManagement>
 
 	<scm>
@@ -85,9 +85,9 @@
 		</repository>
 	</repositories>
 
-        <properties>
-                <sonar.host.url>http://www.ironiacorp.com/Apps/Sonar</sonar.host.url>
-        </properties>
+	<properties>
+		<sonar.host.url>http://www.ironiacorp.com/Apps/Sonar</sonar.host.url>
+	</properties>
 
 	<dependencies>
 		<dependency>
@@ -107,14 +107,6 @@
 
 		<outputDirectory>target/classes</outputDirectory>
 		<testOutputDirectory>target/test-classes</testOutputDirectory>
-
-		<resources>
-			<resource>
-				<targetPath>lib/</targetPath>
-				<filtering>false</filtering>
-				<directory>${basedir}/lib</directory>
-			</resource>
-		</resources>
 
 		<plugins>
 			<plugin>
@@ -143,12 +135,12 @@
 	</build>
 
 	<reporting>
-		<outputDirectory>site</outputDirectory>
-                <plugins>
-                        <plugin>
-                                <groupId>org.codehaus.sonar-plugins</groupId>
-                                <artifactId>maven-report</artifactId>
-                        </plugin>
-                </plugins>
-	</reporting>
+	<outputDirectory>site</outputDirectory>
+	<plugins>
+		<plugin>
+			<groupId>org.codehaus.sonar-plugins</groupId>
+			<artifactId>maven-report</artifactId>
+		</plugin>
+	</plugins>
+</reporting>
 </project>

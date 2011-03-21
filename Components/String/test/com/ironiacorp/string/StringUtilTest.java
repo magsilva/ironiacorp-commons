@@ -1,4 +1,3 @@
-package com.ironiacorp.string;
 /*
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -17,7 +16,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 Copyright (C) 2007 Marco Aurelio Graciotto Silva <magsilva@gmail.com>
 */
 
-
+package com.ironiacorp.string;
 
 import static org.junit.Assert.*;
 
@@ -374,4 +373,67 @@ public class StringUtilTest
 	{
 		StringUtil.digest("test", "IroniaCorp");
 	}
+	
+	
+	@Test
+	public void testCountUpCaseLetters_0()
+	{
+		assertEquals(0, StringUtil.countUpCaseLetters("test"));
+	}
+	
+	@Test
+	public void testCountUpCaseLetters_1_First()
+	{
+		assertEquals(1, StringUtil.countUpCaseLetters("Test"));
+	}
+	
+	@Test
+	public void testCountUpCaseLetters_1_Last()
+	{
+		assertEquals(1, StringUtil.countUpCaseLetters("tesT"));
+	}
+
+	@Test
+	public void testCountUpCaseLetters_2_FirstLast()
+	{
+		assertEquals(2, StringUtil.countUpCaseLetters("TesT"));
+	}
+
+	@Test
+	public void testCountUpCaseLetters_3()
+	{
+		assertEquals(3, StringUtil.countUpCaseLetters("TeST"));
+	}
+	
+	@Test
+	public void testCountUpCaseLetters_All()
+	{
+		assertEquals(4, StringUtil.countUpCaseLetters("TEST"));
+	}
+	
+	@Test
+	public void testCountUpCaseLetters_AllWithSpaces()
+	{
+		assertEquals(4, StringUtil.countUpCaseLetters(" TEST\n"));
+	}
+
+	@Test
+	public void testCountUpCaseLetters_NoText()
+	{
+		assertEquals(0, StringUtil.countUpCaseLetters(""));
+	}
+	
+	@Test(expected=IllegalArgumentException.class)
+	public void testCountUpCaseLetters_Null()
+	{
+		StringUtil.countUpCaseLetters(null);
+	}
+	
+	@Test
+	public void testCountUpCaseLetters_TwoWords()
+	{
+		assertEquals(2, StringUtil.countUpCaseLetters("January February"));
+	}
+
+
 }
