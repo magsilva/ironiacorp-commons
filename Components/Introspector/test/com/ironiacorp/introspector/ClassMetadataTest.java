@@ -46,7 +46,6 @@ public class ClassMetadataTest
 	@Before
 	public void setUp() throws Exception
 	{
-
 	}
 
 	@Test

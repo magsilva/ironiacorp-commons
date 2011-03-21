@@ -335,4 +335,58 @@ public final class ReflectionUtil
 		
 		return urls;
 	}
+	
+	@SuppressWarnings({"rawtypes", "unchecked"})
+	public static boolean isInstanceOf(Class[] classes, Class clazz)
+	{
+		if (clazz == null || classes == null) {
+			throw new IllegalArgumentException(new NullPointerException());
+		}
+		
+		for (Class c : classes) {
+			if (c != null && c.isAssignableFrom(clazz)) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	@SuppressWarnings("rawtypes")
+	public static boolean isInstanceOf(Class[] classes, Object object)
+	{
+		if (object == null) {
+			throw new IllegalArgumentException(new NullPointerException());
+		}
+
+		return isInstanceOf(classes, object.getClass());
+	}
+	
+	
+	@SuppressWarnings({"rawtypes", "unchecked"})
+	public static boolean isInstanceOf(Set classes, Class<?> clazz)
+	{
+		if (clazz == null || classes == null) {
+			throw new IllegalArgumentException(new NullPointerException());
+		}
+		
+		for (Object o : classes) {
+			Class c = (Class) o;
+			if (c.isAssignableFrom(clazz)) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	@SuppressWarnings("rawtypes")
+	public static boolean isInstanceOf(Set classes, Object object)
+	{
+		if (object == null) {
+			throw new IllegalArgumentException(new NullPointerException());
+		}
+
+		return isInstanceOf(classes, object.getClass());
+	}
 }

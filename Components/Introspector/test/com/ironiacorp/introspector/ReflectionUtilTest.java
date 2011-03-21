@@ -20,6 +20,9 @@ package com.ironiacorp.introspector;
 
 import static org.junit.Assert.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 
 import org.junit.Test;
 
@@ -59,4 +62,100 @@ public class ReflectionUtilTest
 		assertEquals(c, ClassInitializationException.class);
 	}
 	
+	@Test
+	public void testIsInstanceOf_Array_Class_Ok()
+	{
+		Class[] classes = {Number.class};
+		assertTrue(ReflectionUtil.isInstanceOf(classes, Integer.class));
+	}
+	
+	@Test
+	public void testIsInstanceOf_Array_Object_Ok()
+	{
+		Class[] classes = {Number.class};
+		assertTrue(ReflectionUtil.isInstanceOf(classes, Integer.valueOf(1)));
+	}
+
+	
+	@Test
+	public void testIsInstanceOf_Array_Class_Err()
+	{
+		Class[] classes = {Number.class};
+		assertFalse(ReflectionUtil.isInstanceOf(classes, String.class));
+	}
+	
+	@Test(expected=IllegalArgumentException.class)
+	public void testIsInstanceOf_Array_Class_Err_Null()
+	{
+		ReflectionUtil.isInstanceOf((Class[] ) null, null);
+	}
+	
+	@Test
+	public void testIsInstanceOf_Array_Object_Err()
+	{
+		Class[] classes = {Number.class};
+		assertFalse(ReflectionUtil.isInstanceOf(classes, "abc"));
+	}
+
+	@Test(expected=IllegalArgumentException.class)
+	public void testIsInstanceOf_Array_Object_Err_Null()
+	{
+		Class[] classes = {Number.class};
+		ReflectionUtil.isInstanceOf(classes, (Object) null);
+	}
+	
+	
+	@Test
+	public void testIsInstanceOf_Set_Class_Ok()
+	{
+		Set<Class> classes = new HashSet<Class>();
+		classes.add(Number.class);
+		assertTrue(ReflectionUtil.isInstanceOf(classes, Integer.class));
+	}
+	
+	@Test
+	public void testIsInstanceOf_Set_Object_Ok()
+	{
+		Set<Class> classes = new HashSet<Class>();
+		classes.add(Number.class);
+		assertTrue(ReflectionUtil.isInstanceOf(classes, Integer.valueOf(1)));
+	}
+
+	
+	@Test
+	public void testIsInstanceOf_Set_Class_Err()
+	{
+		Set<Class> classes = new HashSet<Class>();
+		classes.add(Number.class);
+		assertFalse(ReflectionUtil.isInstanceOf(classes, String.class));
+	}
+	
+	@Test(expected=IllegalArgumentException.class)
+	public void testIsInstanceOf_Set_Class_Err_Null()
+	{
+		ReflectionUtil.isInstanceOf((Set) null, null);
+	}
+	
+	public void testIsInstanceOf_Set_Class_Err_ArrayWithNull()
+	{
+		Class[] classes = new Class[1];
+		classes[0] = null;
+		assertFalse(ReflectionUtil.isInstanceOf(classes, String.class));
+	}
+	
+	@Test
+	public void testIsInstanceOf_Set_Object_Err()
+	{
+		Set<Class> classes = new HashSet<Class>();
+		classes.add(Number.class);
+		assertFalse(ReflectionUtil.isInstanceOf(classes, "abc"));
+	}
+
+	@Test(expected=IllegalArgumentException.class)
+	public void testIsInstanceOf_Set_Object_Err_Null()
+	{
+		Set<Class> classes = new HashSet<Class>();
+		classes.add(Number.class);
+		ReflectionUtil.isInstanceOf(classes, (Object) null);
+	}
 }
