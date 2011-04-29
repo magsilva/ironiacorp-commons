@@ -5,7 +5,7 @@
 
 	<groupId>ironiacorp</groupId>
 	<artifactId>commons-datastructures</artifactId>
-	<version>1.6.1</version>
+	<version>1.6.2</version>
 	<packaging>jar</packaging>
 
 	<name>Ironia-DataStructures</name>
@@ -95,14 +95,14 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.7</version>
+			<version>[4.7,)</version>
     		<scope>test</scope>
 		</dependency>
 		
 		<dependency>
     		<groupId>org.mockito</groupId>
     		<artifactId>mockito-core</artifactId>
-    		<version>1.8.5</version>
+    		<version>[1.8.5,)</version>
     		<scope>test</scope>
 		</dependency>
 	</dependencies>
