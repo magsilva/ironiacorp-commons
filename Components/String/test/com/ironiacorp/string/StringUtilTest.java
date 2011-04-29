@@ -18,14 +18,12 @@ Copyright (C) 2007 Marco Aurelio Graciotto Silva <magsilva@gmail.com>
 
 package com.ironiacorp.string;
 
-import static org.junit.Assert.*;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-
+import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
