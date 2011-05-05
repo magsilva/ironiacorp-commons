@@ -14,11 +14,11 @@ public class Permutator<T>
 
 	public Permutator(T[] data, int p)
 	{
-		if (n < 1) {
+		if (p < 1) {
 			throw new IllegalArgumentException("Min 1");
 		}
 		this.data = data;
-		this.n = n;
+		this.p = p;
 		
 		a = new int[n];
 		total = getFactorial(n);
