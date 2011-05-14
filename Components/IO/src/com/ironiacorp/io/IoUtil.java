@@ -29,6 +29,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.channels.FileChannel;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
@@ -290,6 +291,29 @@ public final class IoUtil
 		destFileStream.close();
 	}
 
+	/**
+	 * Copy the source file to the destination file (using Java NIO).
+	 * 
+	 * @param srcFilename
+	 *            The source filename.
+	 * @param destFilename
+	 *            The destination filename.
+	 */
+	public static void copyFile2(String srcFilename, String destFilename) throws IOException
+	{
+		if (! new File(srcFilename).exists()) {
+			throw new IOException();
+		}
+
+		FileInputStream srcFileStream = new FileInputStream(srcFilename);
+		FileOutputStream destFileStream = new FileOutputStream(destFilename);
+		FileChannel srcChannel = srcFileStream.getChannel();
+		FileChannel destChannel = destFileStream.getChannel();
+		srcChannel.transferTo(0, srcChannel.size(), destChannel);
+		srcFileStream.close();
+		destFileStream.close();
+	}
+	
 	/**
 	 * Copy the files in the source directory to the destination directory.
 	 * 
