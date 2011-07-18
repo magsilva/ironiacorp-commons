@@ -1,5 +1,6 @@
 package com.ironiacorp.persistence.dao.jpa;
 
+import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.List;
 
@@ -11,7 +12,7 @@ import com.ironiacorp.persistence.PersistenceService;
 
 
 @Transactional(propagation = Propagation.REQUIRED)
-public class PersistenceServiceImpl<K, E> implements PersistenceService<K, E>
+public class PersistenceServiceImpl<K extends Serializable, E> implements PersistenceService<K, E>
 {
 	private JPA_DAO<K, E> dao = new JPA_DAO<K, E>();
 	

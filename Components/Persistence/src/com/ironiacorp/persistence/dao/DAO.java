@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-public interface DAO<K, E>
+public interface DAO<K extends Serializable, E>
 {
 	void persist(E entity);
 	

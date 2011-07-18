@@ -30,7 +30,6 @@ import java.util.PropertyResourceBundle;
 
 import com.ironiacorp.configuration.Configuration;
 import com.ironiacorp.configuration.ConfigurationMap;
-import com.ironiacorp.errorhandler.ExceptionUtil;
 import com.ironiacorp.persistence.SqlUtil;
 
 
@@ -284,7 +283,7 @@ public class DbDataSource implements DataSource
     			}
     		}
     	} catch (SQLException e) {
-    		ExceptionUtil.dumpException(e);
+    		// ExceptionUtil.dumpException(e);
     	}
 
 		return conn;

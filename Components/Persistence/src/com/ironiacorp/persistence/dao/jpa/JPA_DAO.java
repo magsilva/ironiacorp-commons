@@ -14,7 +14,7 @@ import com.ironiacorp.persistence.dao.GenericDAO;
 
 
 @Repository
-public class JPA_DAO<K, E> extends GenericDAO<K, E>
+public class JPA_DAO<K extends Serializable, E> extends GenericDAO<K, E>
 {
 	@PersistenceContext
 	protected EntityManager entityManager;

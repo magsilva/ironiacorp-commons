@@ -18,16 +18,18 @@ Copyright (C) 2006 Marco Aurelio Graciotto Silva <magsilva@gmail.com>
 
 package com.ironiacorp.persistence.dao.ideais;
 
+import java.io.Serializable;
 import java.sql.Connection;
 
 import com.ironiacorp.configuration.Configuration;
+import com.ironiacorp.persistence.dao.GenericDAO;
 
 
 /**
  * Data Transfer Object for a task available at a DotProject instance.
  * 
  */
-public abstract class DbDAO<T, I> extends GenericDAO<T, I>
+public abstract class DbDAO<K extends Serializable, T> extends GenericDAO<K, T>
 {
 	protected Connection conn;
 	
