@@ -49,10 +49,9 @@
 	</issueManagement>
 
 	<scm>
-		<connection>scm:svn:https://www.ironiacorp.com/svn/projects/ironiacorp-commons/Components/Persistence/trunk</connection>
-		<developerConnection>scm:svn:https://www.ironiacorp.com/svn/projects/ironiacorp-commons/Components/Persistence/trunk</developerConnection>
-		<tag>trunk</tag>
-		<url>https://www.ironiacorp.com/Admin/ViewVC/viewvc.cgi/ironiacorp-commons/Components/Persistence/trunk</url>
+		<connection>scm:svn:https://www.ironiacorp.com/svn/projects/ironiacorp-commons/trunk/Components/Persistence</connection>
+		<developerConnection>scm:svn:https://www.ironiacorp.com/svn/projects/ironiacorp-commons/trunk/Components/Persistence</developerConnection>
+		<url>http://www.ironiacorp.com/Apps/WebSVN/wsvn/Active%20projects.ironiacorp-commons/trunk/Components/Persistence</url>
 	</scm>
 
 	<ciManagement>
@@ -72,8 +71,8 @@
 
 	<distributionManagement>
 		<repository>
-			<id>labes-pc-010808-releases</id>
-			<name>labes-pc-010808-releases</name>
+			<id>labes-pc-010808</id>
+			<name>labes-pc-010808</name>
 			<url>http://www.ironiacorp.com/Apps/Artifactory/libs-releases-local</url>
 		</repository>
 	</distributionManagement>
