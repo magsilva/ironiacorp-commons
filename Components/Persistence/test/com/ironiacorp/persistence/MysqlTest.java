@@ -25,6 +25,8 @@ import java.sql.Statement;
 import java.sql.ResultSet;
 
 import static org.junit.Assert.*;
+
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class MysqlTest
@@ -73,6 +75,7 @@ public class MysqlTest
 		}
 	}
 
+	@Ignore
 	@Test
 	public void testConnection()
 	{
@@ -101,6 +104,7 @@ public class MysqlTest
 		}
 	}
 	
+	@Ignore
 	@Test
 	public void testSimpleQueryStatement()
 	{

@@ -3,6 +3,7 @@ package com.ironiacorp.persistence.dao.jpa;
 import static org.junit.Assert.*;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.ironiacorp.persistence.dao.DAO;
@@ -16,6 +17,7 @@ public class JPA_DAOTest
 	{
 	}
 
+	@Ignore
 	@Test
 	public void testJPA_DAO()
 	{

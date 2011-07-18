@@ -5,7 +5,7 @@
 
 	<groupId>ironiacorp</groupId>
 	<artifactId>commons-persistence</artifactId>
-	<version>1.1.0</version>
+	<version>1.1.1</version>
 	<packaging>jar</packaging>
 
 	<name>Ironia-Persistence</name>
@@ -45,7 +45,7 @@
 
 	<issueManagement>
 		<system>Bugzilla</system>
-		<url>http://www.ironiacorp.com/Admin/Bugzilla/</url>
+		<url>http://www.ironiacorp.com/Apps/Bugzilla/</url>
 	</issueManagement>
 
 	<scm>
@@ -57,7 +57,6 @@
 
 	<ciManagement>
 		<system>Hudson</system>
-		<url>http://www.ironiacorp.com/Hudson</url>
 		<notifiers>
 			<notifier>
 				<type>mail</type>
@@ -68,6 +67,7 @@
 				<address>magsilva@icmc.usp.br</address>
 			</notifier>
 		</notifiers>
+		<url>http://www.ironiacorp.com/Apps/Hudson/job/IroniaCorp-Persistence/</url>
 	</ciManagement>
 
 	<distributionManagement>

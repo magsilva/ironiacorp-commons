@@ -22,6 +22,7 @@ Copyright (C) 2007 Marco Aurelio Graciotto Silva <magsilva@gmail.com>
 
 import static org.junit.Assert.*;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.ironiacorp.introspector.ReflectionUtil;
@@ -41,6 +42,7 @@ public class SqlUtilTest
 		}
 	}
 	
+	@Ignore
 	@Test
 	public void testIsDriverLoaded1()
 	{
@@ -71,6 +73,7 @@ public class SqlUtilTest
 		SqlUtil.unloadDriver(invalidDriver);
 	}
 		
+	@Ignore
 	@Test
 	public void testLoadDriver()
 	{
