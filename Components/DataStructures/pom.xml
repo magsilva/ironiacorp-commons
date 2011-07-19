@@ -71,24 +71,40 @@
 
 	<distributionManagement>
 		<repository>
-			<id>labes-pc-010808-releases</id>
-			<name>labes-pc-010808-releases</name>
+			<id>labes-pc-010808</id>
+			<name>labes-pc-010808</name>
 			<url>http://www.ironiacorp.com/Apps/Artifactory/libs-releases-local</url>
 		</repository>
 	</distributionManagement>
 
 	<repositories>
 		<repository>
-			<id>labes-pc-010808-releases</id>
+			<id>central</id>
+			<url>http://repo1.maven.org/maven2/</url>
+			<releases>
+				<updatePolicy>never</updatePolicy>
+			</releases>
+		</repository>
+		
+		<repository>
+			<id>repo2</id>
+			<url>http://repo2.maven.org/maven2/</url>
+			<releases>
+				<updatePolicy>never</updatePolicy>
+			</releases>
+		</repository>
+		
+		<repository>
+			<id>labes-pc-010808</id>
 			<url>http://www.ironiacorp.com/Apps/Artifactory/repo</url>
+			<releases>
+				<updatePolicy>never</updatePolicy>
+			</releases>
 		</repository>
 	</repositories>
 
 	<properties>
 		<sonar.host.url>http://www.ironiacorp.com/Apps/Sonar</sonar.host.url>
-		<!--
-			<sonar.core.codeCoveragePlugin>emma</sonar.core.codeCoveragePlugin>
-		-->
 	</properties>
 
 	<dependencies>
@@ -126,19 +142,8 @@
 					<fork>true</fork>
 					<meminitial>128m</meminitial>
 					<maxmem>512m</maxmem>
-					<source>1.5</source>
-					<target>1.5</target>
-				</configuration>
-			</plugin>
-
-			<plugin>
-				<artifactId>maven-clean-plugin</artifactId>
-				<configuration>
-					<filesets>
-						<fileset>
-							<directory>bin/</directory>
-						</fileset>
-					</filesets>
+					<source>1.6</source>
+					<target>1.6</target>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -146,12 +151,5 @@
 
 	<reporting>
 		<outputDirectory>site</outputDirectory>
-
-		<plugins>
-			<plugin>
-				<groupId>org.codehaus.sonar-plugins</groupId>
-				<artifactId>maven-report</artifactId>
-			</plugin>
-		</plugins>
 	</reporting>
 </project>
