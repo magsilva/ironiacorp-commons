@@ -97,7 +97,7 @@
 	</dependencies>
 
 	<build>
-		<finalName>${artifactId}-${version}</finalName>
+		<finalName>${project.artifactId}-${project.version}</finalName>
 
 		<directory>target</directory>
 
@@ -115,8 +115,8 @@
 					<fork>true</fork>
 					<meminitial>128m</meminitial>
 					<maxmem>512m</maxmem>
-					<source>1.5</source>
-					<target>1.5</target>
+					<source>1.6</source>
+					<target>1.6</target>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -125,4 +125,8 @@
 	<reporting>
 		<outputDirectory>site</outputDirectory>
 	</reporting>
+	
+	<properties>
+		<sonar.host.url>http://www.ironiacorp.com/Apps/Sonar</sonar.host.url>
+	</properties>
 </project>
