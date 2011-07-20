@@ -93,6 +93,14 @@
 				<updatePolicy>never</updatePolicy>
 			</releases>
 		</repository>
+		
+		<repository>
+			<id>CodeHaus</id>
+			<url>http://repository.codehaus.org</url>
+				<releases>
+				<updatePolicy>never</updatePolicy>
+			</releases>
+		</repository>	
 	</repositories>
 
 	<properties>
@@ -124,11 +132,13 @@
 			<artifactId>j-interop-deps</artifactId>
 			<version>[2.0.7,)</version>
 		</dependency>
+		
 		<dependency>
 			<groupId>ironiacorp</groupId>
 			<artifactId>commons-errorhandler</artifactId>
-			<version>2.0.0</version>
+			<version>[2.0.0,)</version>
 		</dependency>
+		
 		<dependency>
 			<groupId>ironiacorp</groupId>
 			<artifactId>commons-io</artifactId>
@@ -147,6 +157,35 @@
 		<outputDirectory>target/classes</outputDirectory>
 		<testOutputDirectory>target/test-classes</testOutputDirectory>
 
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.codehaus.mojo</groupId>
+										<artifactId>javacc-maven-plugin</artifactId>
+										<versionRange>[2.0,)</versionRange>
+										<goals>
+											<goal>javacc</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<execute />
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -158,6 +197,25 @@
 					<source>1.6</source>
 					<target>1.6</target>
 				</configuration>
+			</plugin>
+			
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>javacc-maven-plugin</artifactId>
+				<version>2.6</version>
+				<executions>
+					<execution>
+						<id>javacc</id>
+						<goals>
+							<goal>javacc</goal>
+						</goals>
+						<configuration>
+							<sourceDirectory>${project.build.sourceDirectory}/com/ironiacorp/graph/parser/dot</sourceDirectory>
+							<outputDirectory>${project.build.sourceDirectory}</outputDirectory>
+							<interimDirectory>${project.build.sourceDirectory}</interimDirectory>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
