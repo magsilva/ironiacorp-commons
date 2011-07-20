@@ -2,6 +2,7 @@ package com.ironiacorp.graph.layout;
 
 import java.io.*;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 
 import org.jinterop.dcom.common.IJIAuthInfo;
 import org.jinterop.dcom.common.JIDefaultAuthInfoImpl;
@@ -10,6 +11,7 @@ import org.jinterop.winreg.IJIWinReg;
 import org.jinterop.winreg.JIPolicyHandle;
 import org.jinterop.winreg.JIWinRegFactory;
 
+import com.ironiacorp.io.IoUtil;
 import com.ironiacorp.systeminfo.OperationalSystem;
 import com.ironiacorp.systeminfo.OperationalSystemDetector;
 
@@ -48,6 +50,24 @@ public class Graphviz
 		}
 	}
 
+	public enum OutputFormat
+	{
+		DOT("dot"),
+		GIF("gif"),
+		JPG("jpg"),
+		PDF("pdf"),
+		PNG("png"),
+		PS("ps2"),
+		SVG("svg"),
+		XDOT("xdot");
+		
+		public final String name;
+		
+		OutputFormat(String name) {
+			this.name = name;
+		}
+	}
+	
 	public static final String[] DEFAULT_UNIX_PATH = {
 		"/usr/bin",
 		"/usr/local/bin",
@@ -64,11 +84,11 @@ public class Graphviz
 	
 	public static final Filter DEFAULT_FILTER = Filter.DOT;
 
-	public static final String DEFAULT_FLAGS = "-Tpng";
+	public static final OutputFormat DEFAULT_FORMAT = OutputFormat.PNG;
 
-	private File binary;
+	private File binaryBasedir;
 	
-	private String flags;
+	private ArrayList<String> defaultParameters;
 	
     private String getGraphVizPathOnWindows()
     {
@@ -91,7 +111,7 @@ public class Graphviz
 
         
         if (path == null) {
-        	path = getGraphVizPathOnWindows();
+        	path = getGraphVizPathOnWindowsUsingLuckyCharm();
         }
         
         return path;
@@ -160,6 +180,7 @@ public class Graphviz
     			return dir;
     		}
     	}
+    	return null;
     }
 
     
@@ -171,6 +192,7 @@ public class Graphviz
     			return dir;
     		}
     	}
+    	return null;
     }
 	
     private String getGraphVizPathOnMacOS()
@@ -203,6 +225,7 @@ public class Graphviz
     	}
     	
     	setBinary(new File(path));
+    	defaultParameters = new ArrayList<String>();
 	}
 	
 	public Graphviz(File file)
@@ -213,23 +236,68 @@ public class Graphviz
 	public void setBinary(File file)
 	{
 		if (file.exists() && file.isFile() && file.canExecute()) {
-			binary = file;
+			binaryBasedir = file;
 		} else {
 			throw new IllegalArgumentException("Invalid file: " + file.getAbsolutePath());
 		}
 	}
+
+	// TODO: escolher executável pelo Layout
+	public File layout(String graphDescription)
+	{
+    	return layout(DEFAULT_FILTER, graphDescription, DEFAULT_FORMAT);
+	}
+
+	// TODO: escolher executável pelo Layout
+	public File layout(Filter filter, String graphDescription, OutputFormat format)
+	{
+    	File outputFile = IoUtil.createTempFile();
+    	return layout(filter, graphDescription, format, outputFile);
+	}
 	
 	// TODO: escolher executável pelo Layout
-	public void layout(Filter filter, String graphDescription, String targetFile) {
-	        Runtime command;
-	        command = Runtime.getRuntime();
-	        try {
-	            command.exec(EXEC + " " + FLAGS + " " + dotFile + " -o " + targetFile);
-	        } catch (IOException ioe) {
-	            System.err.println("Error executing GraphViz:\n" + ioe.getMessage() + "\n");
-	            return -1;
-	        }
-	        return 0;
-	    }
-	}
+	public File layout(Filter filter, String graphDescription, OutputFormat format, File outputFile)
+	{
+		OperationalSystemDetector detector = new OperationalSystemDetector();
+    	OperationalSystem os = detector.detectCurrentOS();
+    	File binary;
+    	File inputFile;
+    	ArrayList<String> parameters = new ArrayList<String>();
+    	
+    	if (filter == null || graphDescription == null || format == null || outputFile == null) {
+    		throw new IllegalArgumentException(new NullPointerException());
+    	}
+    	
+		switch (os) {
+			case Windows:
+				binary = new File(binaryBasedir, filter.name() + DEFAULT_WINDOWS_EXTENSION);
+				break;
+			default:
+				binary = new File(binaryBasedir, filter.name());
+		}
+		
+		inputFile = IoUtil.createTempFile();
+		parameters.add(0, binary.getAbsolutePath());
+		parameters.add("-o" + outputFile.getAbsolutePath());
+		parameters.add("+T" + format.name());
+		parameters.addAll(defaultParameters);
+		try {
+	    	FileWriter writer = new FileWriter(inputFile);
+			writer.append(graphDescription);
+		} catch (IOException e) {
+			throw new UnsupportedOperationException("Cannot write graph to file", e);
+		}
+		
+		ProcessBuilder pb = new ProcessBuilder(parameters.toArray(new String[0]));
+		try {
+			Process process = pb.start();
+			int result = process.waitFor();
+			if (result != 0) {
+				throw new IllegalArgumentException("Error running command: " + parameters.toArray(new String[0]));
+			}
+			return outputFile;
+		} catch (Exception e) {
+			throw new IllegalArgumentException("Error running command: " + parameters.toArray(new String[0]));
+		}
+    }
 }

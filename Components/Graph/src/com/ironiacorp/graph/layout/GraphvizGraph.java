@@ -16,7 +16,7 @@ Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 Copyright (C) 2003 Laszlo Szathmary <szathml@delfin.unideb.hu>
  */
 
-package br.jabuti.graph.layout.graphviz;
+package com.ironiacorp.graph.layout;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -37,9 +37,6 @@ import org.jinterop.winreg.IJIWinReg;
 import org.jinterop.winreg.JIPolicyHandle;
 import org.jinterop.winreg.JIWinRegFactory;
 
-import br.jabuti.graph.layout.GraphLayout;
-import br.jabuti.graph.view.gvf.GVFNode;
-
 /**
  * GraphViz Java API is a simple API to call dot from Java programs.
  * 
@@ -57,129 +54,13 @@ import br.jabuti.graph.view.gvf.GVFNode;
  * gv.writeGraphToFile(gv.getGraph(gv.getDotSource()), out);
  * </pre>
  */
-public class GraphvizLayout implements GraphLayout
+public class GraphvizGraph
 {
-	/**
-	 * The dir where temporary files will be created.
-	 */
-	private static String TEMP_DIR = System.getProperty("java.io.tmpdir");
-
-	/**
-	 * Where is your dot program located? It will be called externally.
-	 */
-	private final static String DOT_W = "c:\\Arquivos de programas\\Graphviz2.22\\bin\\dot.exe";
-
-	private final static String DOT_L = "/usr/bin/dot";
-
-	private String DOT = null;
-
 	/**
 	 * The source of the graph written in dot language.
 	 */
 	private StringBuffer graph = new StringBuffer();
 
-	private String windowsFindDot()
-	{
-		String s = getGraphVizPath2();
-		if (s == null)
-			return DOT_W;
-		else
-			return s += File.separator + "bin" + File.separator + "dot.exe";
-	}
-
-	/**
-	 * You can set the Authentication in DCOM component to "None" , this way no authentication would
-	 * be required by it. Unfortunately j-Interop does not support this. (We need security to
-	 * atleast be set to "Connect").
-	 * 
-	 * @return
-	 */
-	public String getGraphVizPath()
-	{
-		String domain = "";
-		;
-		String username = "";
-		String password = "";
-		String key = "Software\\Software\\AT&T Research Labs\\Graphviz\\";
-
-		String dir = null;
-
-		// IJIWinReg winReg = JIWinRegFactory.getSingleTon().getWinreg(hostInfo, hostInfo.getHost(), true);
-		IJIAuthInfo authInfo = new JIDefaultAuthInfoImpl(domain, username, password);
-		try {
-			IJIWinReg registry = JIWinRegFactory.getSingleTon().getWinreg(authInfo, domain, true);
-			JIPolicyHandle policyHandle1 = registry.winreg_OpenHKLM();
-			JIPolicyHandle policyHandle2 = registry.winreg_OpenKey(policyHandle1, key,
-							IJIWinReg.KEY_READ);
-			Object[] value = registry.winreg_QueryValue(policyHandle2, "InstallPath", 4096);
-			dir = (String) value[0];
-			System.out.println(dir);
-			registry.winreg_CloseKey(policyHandle2);
-			registry.winreg_CloseKey(policyHandle1);
-		} catch (JIException e) {
-		} catch (UnknownHostException JavaDoc) {
-		}
-
-		return dir;
-	}
-
-	public String getGraphVizPath2()
-	{
-		final String REGQUERY_UTIL = "reg query ";
-		final String REGSTR_TOKEN = "REG_EXPAND_SZ";
-		final String COMPUTER_WINDOWS_GRAPHVIZ_FOLDER = REGQUERY_UTIL
-						+ "\"HKLM\\SOFTWARE\\AT&T Research Labs\\Graphviz\" /v InstallPath";
-
-		try {
-			Process process = Runtime.getRuntime().exec(COMPUTER_WINDOWS_GRAPHVIZ_FOLDER);
-			BufferedReader reader = new BufferedReader(new InputStreamReader(process
-							.getInputStream()));
-			process.waitFor();
-			String result = reader.readLine();
-			int p = result.indexOf(REGSTR_TOKEN);
-			if (p == -1)
-				return null;
-			else
-				return result.substring(p + REGSTR_TOKEN.length()).trim();
-		} catch (Exception e) {
-			return null;
-		}
-	}
-
-	/**
-	 * Constructor: creates a new GraphViz object that will contain a graph.
-	 * 
-	 * @throws FileNotFoundException
-	 */
-	public GraphvizLayout()
-	{
-		if (DOT == null) {
-			String s = System.getProperty("os.name").toUpperCase();
-			if ("LINUX".equals(s)) {
-				DOT = DOT_L;
-			} else if (s != null && s.startsWith("WINDOWS")) {
-				DOT = windowsFindDot();
-				DOT = DOT_W;
-			} else {
-				DOT = JOptionPane.showInputDialog(null, "Please enter path:",
-								"Cannot find GraphViz layouter (dot).", JOptionPane.ERROR_MESSAGE);
-
-			}
-			while (DOT != null) {
-				File f = new File(DOT);
-				if (f.isFile() && f.canRead())
-					break;
-				DOT = JOptionPane.showInputDialog(null, "Please enter path:",
-								"Cannot find GraphViz layouter at " + DOT,
-								JOptionPane.ERROR_MESSAGE);
-
-			}
-			if (DOT == null) {
-				DOT = "";
-				throw new RuntimeException(new FileNotFoundException("Cannot find GraphViz."));
-			}
-		}
-	}
 
 	/**
 	 * Returns the graph's source description in dot language.
@@ -218,17 +99,6 @@ public class GraphvizLayout implements GraphLayout
 		} catch (Exception ioe) {
 			return null;
 		}
-	}
-
-	private String runDotLayout(File dot) throws IOException, InterruptedException
-	{
-		File output = File.createTempFile("graph_", ".dot", new File(TEMP_DIR));
-
-		Runtime rt = Runtime.getRuntime();
-		String cmd = DOT + " -Tdot " + dot.getAbsolutePath() + " -o" + output.getAbsolutePath();
-		Process p = rt.exec(cmd);
-		p.waitFor();
-		return output.getAbsolutePath();
 	}
 
 	/**
