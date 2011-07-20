@@ -3,6 +3,7 @@ package com.ironiacorp.graph.layout;
 import java.io.*;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.jinterop.dcom.common.IJIAuthInfo;
 import org.jinterop.dcom.common.JIDefaultAuthInfoImpl;
@@ -34,22 +35,32 @@ import com.ironiacorp.systeminfo.OperationalSystemDetector;
  */
 public class Graphviz
 {
+	/**
+	 * Layouts implemented by GraphViz.
+	 */
 	public enum Filter
 	{
-		DOT("dot"),
-		NEATO("neato"),
-		TWOPI("twopi"),
-		CIRCO("circo"),
-		FDP("fdp"),
-		SFDP("sfdp");
+		DOT("dot", "Directed graphs."),
+		NEATO("neato", "Undirected graphs."),
+		TWOPI("twopi", "Radial layout. One node is chosen as the center and put at the origin. The remaining nodes are placed on a sequence of concentric circles centered about the origin, each a fixed radial distance from the previous circle."),
+		CIRCO("circo", "Circular layout. It identifies biconnected components and draws the nodes of the component on a circle."),
+		FDP("fdp", "Undirected graphs using a spring model using a force-directed approach."),
+		SFDP("sfdp", "Undirected graphs using a spring model using a multi-scale approach (suitable for large graphs).");
 		
 		public final String name;
 		
-		Filter(String name) {
+		public final String description;
+		
+		Filter(String name, String description) {
 			this.name = name;
+			this.description = description;
 		}
 	}
 
+	/**
+	 * Subset of output formats supported by GraphViz. The subset is composed of
+	 * the most common formats.
+	 */
 	public enum OutputFormat
 	{
 		DOT("dot"),
@@ -67,12 +78,18 @@ public class Graphviz
 			this.name = name;
 		}
 	}
-	
+
+	/**
+	 * Default path for GraphViz in Unix systems.
+	 */
 	public static final String[] DEFAULT_UNIX_PATH = {
 		"/usr/bin",
 		"/usr/local/bin",
 	};
 	
+	/**
+	 * Default path for GraphViz in Windows systems.
+	 */
 	public static final String[] DEFAULT_WINDOWS_PATH = {
 		"C:\\Program Files\\ATT\\Graphviz\\bin\\",
 		"C:\\Program Files\\Graphviz2.24\\bin\\",
@@ -80,19 +97,41 @@ public class Graphviz
 		"C:\\Program Files\\Graphviz2.28\\bin\\",
 	};
 	
+	/**
+	 * Default extension of executable file in Windows.
+	 */
 	public static final String DEFAULT_WINDOWS_EXTENSION = ".exe";
 	
+	/**
+	 * Default filter (layout) to be used by GraphViz.
+	 */
 	public static final Filter DEFAULT_FILTER = Filter.DOT;
 
+	/**
+	 * Default output format to be used by GraphViz.
+	 */
 	public static final OutputFormat DEFAULT_FORMAT = OutputFormat.PNG;
 
+	/**
+	 * Directory where GraphViz's binaries have been installed into.
+	 */
 	private File binaryBasedir;
 	
+	/**
+	 * Options parameters to run GraphViz.
+	 */
 	private ArrayList<String> defaultParameters;
 	
+	/**
+	 * Find GraphViz on Windows systems.
+	 * 
+	 * @return Directory where GraphViz has been installed.
+	 */
     private String getGraphVizPathOnWindows()
     {
-        String path = null;;
+        String path = null;
+        
+        // Try to access Windows's registry using native access.
         try {
         	path = getGraphVizPathOnWindowsUsingNativeAccess();
         	if (path != null) {
@@ -101,6 +140,7 @@ public class Graphviz
         } catch (Exception e) {
         }
 
+        // Try to access Windows's registry using RegEdit.exe
         try {
         	path = getGraphVizPathOnWindowsUsingRegEdit();
         	if (path != null) {
@@ -109,28 +149,25 @@ public class Graphviz
         } catch (Exception e) {
         }
 
-        
-        if (path == null) {
-        	path = getGraphVizPathOnWindowsUsingLuckyCharm();
-        }
+        // Last resort: try to find GraphViz in the usual places.
+       	path = getGraphVizPathOnWindowsUsingLuckyCharm();
         
         return path;
     }
 
+
     /**
-     * You can set the Authentication in DCOM component to "None" , this way no authentication would
-     * be required by it. Unfortunately j-Interop does not support this. (We need security to
-     * atleast be set to "Connect").
+     * Read GraphViz installation path using native access.
      * 
-     * @return
+     * @return Directory where GraphViz has been installed (and null if not found).
      */
+    // TODO: Refactor and move this to IroniaCorp-Commons-SystemInfo
     private String getGraphVizPathOnWindowsUsingNativeAccess()
     {
             String domain = "";
             String username = "";
             String password = "";
             String key = "Software\\Software\\AT&T Research Labs\\Graphviz\\";
-
             String dir = null;
 
             // IJIWinReg winReg = JIWinRegFactory.getSingleTon().getWinreg(hostInfo, hostInfo.getHost(), true);
@@ -150,6 +187,12 @@ public class Graphviz
             return dir;
     }
 
+    /**
+     * Read GraphViz installation path using RegEdit.exe
+     * 
+     * @return Directory where GraphViz has been installed (and null if not found).
+     */
+    // TODO: Refactor and move this to IroniaCorp-Commons-SystemInfo
     private String getGraphVizPathOnWindowsUsingRegEdit()
     {
             final String REGQUERY_UTIL = "reg query ";
@@ -172,10 +215,15 @@ public class Graphviz
             }
     }
 
+    /**
+     * Try to find GraphViz in the usual places.
+     * 
+     * @return Directory where GraphViz has been installed (and null if not found).
+     */
     private String getGraphVizPathOnWindowsUsingLuckyCharm()
     {
     	for (String dir : DEFAULT_WINDOWS_PATH) {
-    		File file = new File(dir, DEFAULT_FILTER.name() + DEFAULT_WINDOWS_EXTENSION);
+    		File file = new File(dir, DEFAULT_FILTER.name + DEFAULT_WINDOWS_EXTENSION);
     		if (file.exists()) {
     			return dir;
     		}
@@ -184,10 +232,15 @@ public class Graphviz
     }
 
     
+    /**
+	 * Find GraphViz on Linux systems.
+	 * 
+	 * @return Directory where GraphViz has been installed.
+	 */
     private String getGraphVizPathOnLinux()
     {
     	for (String dir : DEFAULT_UNIX_PATH) {
-    		File file = new File(dir, DEFAULT_FILTER.name());
+    		File file = new File(dir, DEFAULT_FILTER.name);
     		if (file.exists()) {
     			return dir;
     		}
@@ -195,17 +248,26 @@ public class Graphviz
     	return null;
     }
 	
+    /**
+	 * Find GraphViz on MacOS systems.
+	 * 
+	 * @return Directory where GraphViz has been installed.
+	 */
     private String getGraphVizPathOnMacOS()
     {
     	return getGraphVizPathOnLinux();
     }
     
-	public Graphviz()
-	{
+    /**
+	 * Find GraphViz.
+	 * 
+	 * @return Directory where GraphViz has been installed.
+	 */
+    private String findGraphVizPath()
+    {
     	OperationalSystemDetector detector = new OperationalSystemDetector();
     	OperationalSystem os = detector.detectCurrentOS();
     	String path = null;
-    	
     	switch (os) {
     		case Windows:
     			path = getGraphVizPathOnWindows();
@@ -220,43 +282,121 @@ public class Graphviz
     			break;    			
     	}
 
-    	if (path == null) {
-    		throw new UnsupportedOperationException(new FileNotFoundException("Cannot find GraphViz."));
-    	}
-    	
-    	setBinary(new File(path));
-    	defaultParameters = new ArrayList<String>();
-	}
-	
-	public Graphviz(File file)
+    	return path;
+    }
+    
+    /**
+     * Set the directory where GraphViz has been installed.
+     * 
+     * @param file Directory where GraphViz has been installed.
+     */
+	private void setBinaryBasedir(File file)
 	{
-		setBinary(file);
-	}
-	
-	public void setBinary(File file)
-	{
-		if (file.exists() && file.isFile() && file.canExecute()) {
+		if (file != null && file.exists() && file.isDirectory()) {
 			binaryBasedir = file;
 		} else {
 			throw new IllegalArgumentException("Invalid file: " + file.getAbsolutePath());
 		}
 	}
 
-	// TODO: escolher executável pelo Layout
-	public File layout(String graphDescription)
+    
+    /**
+	 * Create the GraphViz runner. We will try to find where GraphViz has been installed in the
+	 * system automatically.
+	 * 
+	 * @throws UnsupportedOperationException if GraphViz could not be found.
+	 */
+	public Graphviz()
 	{
-    	return layout(DEFAULT_FILTER, graphDescription, DEFAULT_FORMAT);
-	}
-
-	// TODO: escolher executável pelo Layout
-	public File layout(Filter filter, String graphDescription, OutputFormat format)
-	{
-    	File outputFile = IoUtil.createTempFile();
-    	return layout(filter, graphDescription, format, outputFile);
+		String path = findGraphVizPath();
+    	if (path == null) {
+    		throw new UnsupportedOperationException(new FileNotFoundException("Cannot find GraphViz."));
+    	}
+    	
+    	setBinaryBasedir(new File(path));
+    	defaultParameters = new ArrayList<String>();
 	}
 	
-	// TODO: escolher executável pelo Layout
-	public File layout(Filter filter, String graphDescription, OutputFormat format, File outputFile)
+	/**
+	 * Create the GraphViz runner.
+	 * 
+	 * @param file Directory where GraphViz has been installed.
+	 * @throws UnsupportedOperationException if GraphViz could not be found.
+	 */
+	public Graphviz(File file)
+	{
+		setBinaryBasedir(file);
+    	defaultParameters = new ArrayList<String>();
+	}
+	
+	/**
+	 * Get the directory where GraphViz has been installed.
+	 * @return
+	 */
+	public File getBinaryBasedir()
+	{
+		return binaryBasedir;
+	}
+	
+	/**
+	 * Add a new parameter to the list of default parameters to be provided to Graphviz.
+	 * 
+	 * @param parameter GraphViz parameter (eg., -n1).
+	 */
+	public void addParameter(String parameter)
+	{
+		if (parameter != null) {
+			defaultParameters.add(parameter);
+		}
+	}
+	
+	/**
+	 * Get default parameters.
+	 * 
+	 * @return Array with default parameters.
+	 */
+	public String[] getParameters()
+	{
+		return defaultParameters.toArray(new String[0]);
+	}
+
+	/**
+	 * Run GraphViz against the graph. It will use the default layout and output
+	 * format.
+	 * 
+	 * @param graphDescription Graph definition (in the format required by GraphViz).
+	 * @return Output file.
+	 */
+	public File run(String graphDescription)
+	{
+    	return run(graphDescription, DEFAULT_FILTER, DEFAULT_FORMAT);
+	}
+
+	/**
+	 * Run GraphViz against the graph.
+	 * 
+	 * @param graphDescription Graph definition (in the format required by GraphViz).
+	 * @param filter Layout engine to be used.
+	 * @param format Output format.
+	 *  
+	 * @return Output file.
+	 */
+	public File run(String graphDescription, Filter filter, OutputFormat format)
+	{
+    	File outputFile = IoUtil.createTempFile();
+    	return run(graphDescription, filter, format, outputFile);
+	}
+	
+	/**
+	 * Run GraphViz against the graph.
+	 * 
+	 * @param graphDescription Graph definition (in the format required by GraphViz).
+	 * @param filter Layout engine to be used.
+	 * @param format Output format.
+	 *  
+	 * @return Output file.
+	 */
+	public File run(String graphDescription, Filter filter, OutputFormat format, File outputFile)
 	{
 		OperationalSystemDetector detector = new OperationalSystemDetector();
     	OperationalSystem os = detector.detectCurrentOS();
@@ -270,20 +410,23 @@ public class Graphviz
     	
 		switch (os) {
 			case Windows:
-				binary = new File(binaryBasedir, filter.name() + DEFAULT_WINDOWS_EXTENSION);
+				binary = new File(binaryBasedir, filter.name + DEFAULT_WINDOWS_EXTENSION);
 				break;
 			default:
-				binary = new File(binaryBasedir, filter.name());
+				binary = new File(binaryBasedir, filter.name);
 		}
 		
 		inputFile = IoUtil.createTempFile();
 		parameters.add(0, binary.getAbsolutePath());
 		parameters.add("-o" + outputFile.getAbsolutePath());
-		parameters.add("+T" + format.name());
+		parameters.add("-T" + format.name);
 		parameters.addAll(defaultParameters);
+		parameters.add(inputFile.getAbsolutePath());
 		try {
 	    	FileWriter writer = new FileWriter(inputFile);
 			writer.append(graphDescription);
+			writer.flush();
+			writer.close();
 		} catch (IOException e) {
 			throw new UnsupportedOperationException("Cannot write graph to file", e);
 		}
@@ -297,7 +440,7 @@ public class Graphviz
 			}
 			return outputFile;
 		} catch (Exception e) {
-			throw new IllegalArgumentException("Error running command: " + parameters.toArray(new String[0]));
+			throw new IllegalArgumentException("Error running command: " + Arrays.toString(parameters.toArray(new String[0])));
 		}
     }
 }
