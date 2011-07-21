@@ -45,19 +45,18 @@
 
 	<issueManagement>
 		<system>Bugzilla</system>
-		<url>http://www.ironiacorp.com/Admin/Bugzilla/</url>
+		<url>http://www.ironiacorp.com/Apps/Bugzilla/</url>
 	</issueManagement>
 
 	<scm>
-		<connection>scm:svn:https://www.ironiacorp.com/svn/projects/ironiacorp-commons/Components/Error-Handler/trunk</connection>
-		<developerConnection>scm:svn:https://www.ironiacorp.com/svn/projects/ironiacorp-commons/Components/Error-Handler/trunk</developerConnection>
-		<tag>trunk</tag>
-		<url>https://www.ironiacorp.com/Admin/ViewVC/viewvc.cgi/ironiacorp-commons/Components/Error-Handler/trunk</url>
+		<connection>scm:svn:https://www.ironiacorp.com/svn/projects/ironiacorp-commons/trunk/Components/ErrorHandler</connection>
+		<developerConnection>scm:svn:https://www.ironiacorp.com/svn/projects/ironiacorp-commons/trunk/Components/ErrorHandler</developerConnection>
+		<url>http://www.ironiacorp.com/Apps/WebSVN/wsvn/Active%20projects.ironiacorp-commons/trunk/Components/ErrorHandler/</url>
 	</scm>
 
 	<ciManagement>
 		<system>Hudson</system>
-		<url>http://www.ironiacorp.com/Apps/Hudson</url>
+		<url>http://www.ironiacorp.com/Apps/Hudson/job/IroniaCorp-ErrorHandler/</url>
 		<notifiers>
 			<notifier>
 				<type>mail</type>
@@ -238,19 +237,8 @@
 					<fork>true</fork>
 					<meminitial>128m</meminitial>
 					<maxmem>512m</maxmem>
-					<source>1.5</source>
-					<target>1.5</target>
-				</configuration>
-			</plugin>
-
-			<plugin>
-				<artifactId>maven-clean-plugin</artifactId>
-				<configuration>
-					<filesets>
-						<fileset>
-							<directory>bin/</directory>
-						</fileset>
-					</filesets>
+					<source>1.6</source>
+					<target>1.6</target>
 				</configuration>
 			</plugin>
 		</plugins>
