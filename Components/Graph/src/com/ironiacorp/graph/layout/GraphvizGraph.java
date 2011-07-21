@@ -60,14 +60,14 @@ public class GraphvizGraph
 					if (edge instanceof DirectedEdge) {
 						DirectedEdge directedEdge = (DirectedEdge) element;
 						sb.append("{");
-						for (Node nodeSrc : directedEdge.getEdges(NodeType.SOURCE)) {
+						for (Node nodeSrc : directedEdge.getNodes(NodeType.SOURCE)) {
 							sb.append(nodeSrc.getId());
 							sb.append(" ");
 						}
 						sb.append("}");
 						sb.append(" -> ");
 						sb.append("{");
-						for (Node nodeDest : directedEdge.getEdges(NodeType.DEST)) {
+						for (Node nodeDest : directedEdge.getNodes(NodeType.DEST)) {
 							sb.append(nodeDest.getId());
 							sb.append(" ");
 						}
@@ -106,7 +106,7 @@ public class GraphvizGraph
 		return sb.toString();
 	}
 	
-	// TODO: Fix parsin
+	// TODO: Fix parser
 	/*
 	public Graph convert(String graph)
 	{

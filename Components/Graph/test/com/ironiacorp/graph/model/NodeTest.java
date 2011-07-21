@@ -16,51 +16,16 @@
 
 package com.ironiacorp.graph.model;
 
-import java.util.HashSet;
-import java.util.Set;
+import static org.junit.Assert.*;
 
-public class Edge extends Element
+import org.junit.Before;
+
+public class NodeTest extends ElementTest
 {
-	protected Set<Node> nodes;
-	
-	public Edge()
-	{
-		nodes = new HashSet<Node>();
+	@Before
+	public void setUp() throws Exception {
+		element = new Node();
+		element2 = new Node();
 	}
 
-	public Set<Node> getNodes()
-	{
-		return nodes;
-	}
-
-	public void setNodes(Set<Node> nodes)
-	{
-		this.nodes = nodes;
-	}
-	
-	public boolean addNode(Node node)
-	{
-		return nodes.add(node);
-	}
-	
-	public boolean removeNode(Node node)
-	{
-		return nodes.remove(node);
-	}
-	
-	public Node findNode(int id)
-	{
-		for (Node node : nodes) {
-			if (node.getId() == id) {
-				return node;
-			}
-		}
-		
-		return null;
-	}
-	
-	public boolean contains(Node node)
-	{
-		return nodes.contains(node);
-	}
 }

@@ -2,7 +2,6 @@
 package com.ironiacorp.graph.parser.dot;
 import java.util.*;
 import java.util.regex.Matcher;
-import java.io.*;
 import com.ironiacorp.graph.model.*;
 import com.ironiacorp.graph.rendering.*;
 

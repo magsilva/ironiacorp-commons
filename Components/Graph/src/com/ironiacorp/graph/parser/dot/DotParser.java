@@ -3,45 +3,11 @@ package com.ironiacorp.graph.parser.dot;
 
 import java.util.*;
 import java.util.regex.Matcher;
-import java.io.*;
 import com.ironiacorp.graph.model.*;
 import com.ironiacorp.graph.rendering.*;
 
 public class DotParser implements DotParserConstants {
                 private Graph graph;
-
-                private Node findLabel(String x)
-                {
-                                if (vnode == null)      {
-                                                return null;
-                                }
-                                Iterator i = vnode.iterator();
-                                while (i.hasNext()) {
-                                                Node ret = (GVFNode) i.next();
-                                                if (x.equals(ret.getSource())) {
-                                                                return ret;
-                                                }
-                                }
-                                return null;
-                }
-
-                private Edge findEdge(String orig, String dest)
-                {
-                                if (vlink == null)
-                                {
-                                                return null;
-                                }
-                                Iterator i = vlink.iterator();
-                                while (i.hasNext())
-                                {
-                                                GVFLink ret = (GVFLink) i.next();
-                                                if (orig.equals(ret.getSourceNode().getSource()) && dest.equals(ret.getDestinationNode().getSource()))
-                                                {
-                                                                return ret;
-                                                }
-                                }
-                                return null;
-                }
 
                 private void setPositionPreCheck()
                 {
@@ -52,31 +18,22 @@ public class DotParser implements DotParserConstants {
                                 }
                 }
 
-                private void setPosition(String label, Position pos)
+                private void setNodePosition(String label, Position pos)
                 {
                                 RenderingDescription rd = graph.getRenderingDescription();
                                 BoundingBox bb = rd.getBoundingBox();
-                                GVFNode node = findLabel(label);
-                                if (node != null) {
-                                                setPositionPreCheck();
-                                                node.moveTo((int) pos.getX(), (int) (bb.getHeight() - pos.getY()));
-                                }
-                }
+                                setPositionPreCheck();
+                                //  node.moveTo((int) pos.getX(), (int) (bb.getHeight() - pos.getY()));                }
 
-                private void setLinkPosition(String l1, String l2, List < Position > pos)
+                private void setEdgePosition(String l1, String l2, List<Position> pos)
                 {
                                 RenderingDescription rd = graph.getRenderingDescription();
                                 BoundingBox bb = rd.getBoundingBox();
-                                GVFLink link = findLink(l1, l2);
-                                if (link == null) {
-                                                return;
-                                }
-                                Iterator < Position > i = pos.iterator();
+                                Iterator<Position> i = pos.iterator();
                                 while (i.hasNext()) {
                                                 setPositionPreCheck();
                                                 Position p = i.next();
-                                                link.addPoint((int) p.getX(), (int) (bb.getHeight() - p.getY()));
-                                }
+                                                // link.addPoint((int) p.getX(), (int) (bb.getHeight() - p.getY()));                                }
                 }
 
                 private void setBoundingBox(BoundingBox bb)
@@ -217,7 +174,7 @@ public class DotParser implements DotParserConstants {
       switch (jj_nt.kind) {
       case POS:
         p = nodePosition();
-                                                                setPosition(l, p);
+                                                                setNodePosition(l, p);
         break;
       default:
         ;
@@ -241,7 +198,7 @@ public class DotParser implements DotParserConstants {
         switch (jj_nt.kind) {
         case POS:
           p = nodePosition();
-                                                                                setPosition(l, p);
+                                                                                setNodePosition(l, p);
           break;
         default:
           ;
@@ -336,7 +293,7 @@ public class DotParser implements DotParserConstants {
       switch (jj_nt.kind) {
       case POS:
         p = linkPosition();
-                                                                setLinkPosition(s1, s2, p);
+                                                                setEdgePosition(s1, s2, p);
         break;
       default:
         ;
@@ -360,7 +317,7 @@ public class DotParser implements DotParserConstants {
         switch (jj_nt.kind) {
         case POS:
           p = linkPosition();
-                                                                                setLinkPosition(s1, s2, p);
+                                                                                setEdgePosition(s1, s2, p);
           break;
         default:
           ;

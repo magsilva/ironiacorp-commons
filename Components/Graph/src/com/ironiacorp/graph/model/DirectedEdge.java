@@ -59,15 +59,26 @@ public class DirectedEdge extends Edge
 
 	public boolean addNode(Node node, NodeType type)
 	{
+		if (node == null || type == null) {
+			throw new IllegalArgumentException(new NullPointerException());
+		}
+		
+		NodeType originalType = directions.get(node);
+		boolean found = super.contains(node);
 		boolean result = super.addNode(node);
-		if (type != NodeType.SOURCE_DEST) {
-			NodeType originalType = directions.get(node);
-			if (originalType == NodeType.SOURCE_DEST || originalType != type) {
-				type = NodeType.SOURCE_DEST;
+		if (originalType != NodeType.SOURCE_DEST) {
+			if (found == true) {
+				if (originalType != type) {
+					type = NodeType.SOURCE_DEST;
+					directions.put(node, type);
+					result |= true;
+				}
+			} else {
+				directions.put(node, type);
+				result |= true;
 			}
 		}
-		directions.put(node,  type);
-		
+
 		return result;
 	}
 	
@@ -99,7 +110,7 @@ public class DirectedEdge extends Edge
 		return result;
 	}
 	
-	public Set<Node> getEdges(NodeType type)
+	public Set<Node> getNodes(NodeType type)
 	{
 		Set<Node> result = new HashSet<Node>();
 		for (Node node : directions.keySet()) {
@@ -109,5 +120,10 @@ public class DirectedEdge extends Edge
 			}
 		}
 		return result;
+	}
+	
+	public NodeType getType(Node node)
+	{
+		return directions.get(node);
 	}
 }
