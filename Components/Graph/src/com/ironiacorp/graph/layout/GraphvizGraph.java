@@ -61,24 +61,29 @@ public class GraphvizGraph
 						DirectedEdge directedEdge = (DirectedEdge) element;
 						sb.append("{");
 						for (Node nodeSrc : directedEdge.getNodes(NodeType.SOURCE)) {
-							sb.append(nodeSrc.getId());
 							sb.append(" ");
+							sb.append(nodeSrc.getId());
 						}
+						sb.append(" ");
 						sb.append("}");
 						sb.append(" -> ");
 						sb.append("{");
 						for (Node nodeDest : directedEdge.getNodes(NodeType.DEST)) {
-							sb.append(nodeDest.getId());
 							sb.append(" ");
+							sb.append(nodeDest.getId());
 						}
-						sb.append("}");
 						sb.append(" ");
-						sb.append("[");
-						sb.append("label=");
-						sb.append("\"");
-						sb.append(element.getLabel());
-						sb.append("\"");
-						sb.append("];\n");
+						sb.append("}");
+						if (element.getLabel() != null) {
+							sb.append(" ");
+							sb.append("[");
+							sb.append("label=");
+							sb.append("\"");
+							sb.append(element.getLabel());
+							sb.append("\"");
+							sb.append("]");
+						}
+						sb.append(";\n");
 					} else {
 						Iterator<Node> i = edge.getNodes().iterator();
 						sb.append("\t");
@@ -89,13 +94,16 @@ public class GraphvizGraph
 								sb.append(" -- ");
 							}
 						}
-						sb.append(" ");
-						sb.append("[");
-						sb.append("label=");
-						sb.append("\"");
-						sb.append(element.getLabel());
-						sb.append("\"");
-						sb.append("];\n");
+						if (element.getLabel() != null) {
+							sb.append(" ");
+							sb.append("[");
+							sb.append("label=");
+							sb.append("\"");
+							sb.append(element.getLabel());
+							sb.append("\"");
+							sb.append("]");
+						}
+						sb.append(";\n");
 					}
 				}
 			}

@@ -16,10 +16,17 @@
 
 package com.ironiacorp.graph.model;
 
+import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Graph.
+ */
 public class Graph extends Element
 {
+	/**
+	 * A graph can be either directed or undirected.
+	 */
 	public enum GraphType
 	{
 		DIRECTED,
@@ -30,6 +37,11 @@ public class Graph extends Element
 	
 	private Set<Element> elements;
 
+	public Graph()
+	{
+		elements = new HashSet<Element>();
+	}
+	
 	public GraphType getType()
 	{
 		return type;
