@@ -24,30 +24,37 @@ public abstract class JpaDao2<PK extends Serializable, E> extends JpaDaoSupport 
         this.entityClass = (Class<E>) genericSuperclass.getActualTypeArguments()[1];
     }
 
-    public void save(E entity) {
+    @Override
+    public void persist(E entity) {
         getJpaTemplate().persist(entity);
     }
 
-    public void delete(E entity) {
+    @Override
+    public void remove(E entity) {
         getJpaTemplate().remove(entity);
     }
 
+    @Override
     public E merge(E entity) {
         return getJpaTemplate().merge(entity);
     }
 
+    @Override
     public void refresh(E entity) {
         getJpaTemplate().refresh(entity);
     }
 
+    @Override
     public E findById(PK id) {
         return getJpaTemplate().find(entityClass, id);
     }
 
-    public void flush() {
+    @Override
+    public void flush(E entity) {
         getJpaTemplate().flush();
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public List<E> findAll() {
         Object res = getJpaTemplate().execute(new JpaCallback() {
@@ -58,15 +65,4 @@ public abstract class JpaDao2<PK extends Serializable, E> extends JpaDaoSupport 
         });
         return (List<E>) res;
     }
-
-    @SuppressWarnings("unchecked")
-    public Integer removeAll() {
-        return (Integer) getJpaTemplate().execute(new JpaCallback() {
-            public Object doInJpa(EntityManager em) throws PersistenceException {
-            	Query q = em.createQuery("DELETE FROM " + entityClass.getName() + " h");
-                return q.executeUpdate();
-            }
-        });
-    }
-
 }

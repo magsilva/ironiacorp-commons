@@ -28,35 +28,42 @@ public abstract class JpaDao<PK extends Serializable, E> implements DAO<PK, E>
         this.entityManager = entityManager;
     }
 
+    @Override
 	@Transactional
-    public void save(E entity) {
+    public void persist(E entity) {
         entityManager.persist(entity);
     }
 
+    @Override
 	@Transactional
-    public void delete(E entity) {
+    public void remove(E entity) {
     	entityManager.remove(entity);
     }
 
+    @Override
 	@Transactional
     public E merge(E entity) {
         return entityManager.merge(entity);
     }
 
+    @Override
 	@Transactional
     public void refresh(E entity) {
     	entityManager.refresh(entity);
     }
 
+    @Override
 	@Transactional
-    public void flush() {
+    public void flush(E entity) {
     	entityManager.flush();
     }
 
+    @Override
     public E findById(PK id) {
         return entityManager.find(entityClass, id);
     }
 
+    @Override
     @SuppressWarnings("unchecked")
 	public List<E> findAll() {
     	return entityManager.createQuery("SELECT c from " +  entityClass.getSimpleName() + " c").getResultList();
