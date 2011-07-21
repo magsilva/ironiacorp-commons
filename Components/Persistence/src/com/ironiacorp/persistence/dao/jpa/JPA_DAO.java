@@ -8,12 +8,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import org.springframework.stereotype.Repository;
-
 import com.ironiacorp.persistence.dao.GenericDAO;
 
-
-@Repository
 public class JPA_DAO<K extends Serializable, E> extends GenericDAO<K, E>
 {
 	@PersistenceContext
