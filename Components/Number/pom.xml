@@ -56,7 +56,7 @@
 
 	<ciManagement>
 		<system>Hudson</system>
-		<url>http://www.ironiacorp.com/Apps/Hudson/job/Ironia-Number</url>
+		<url>http://www.ironiacorp.com/Apps/Hudson/job/IroniaCorp-Number</url>
 		<notifiers>
 			<notifier>
 				<type>mail</type>
