@@ -1,4 +1,3 @@
-package com.ironiacorp.string;
 /*
 This class was written by Brian Burton and is in public domain.
 Modified by Marco Aurélio Graciotto Silva <magsilva@gmail.com> so that
@@ -6,7 +5,7 @@ it works with jUnit 4.
 */
 
 
-
+package com.ironiacorp.string;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
