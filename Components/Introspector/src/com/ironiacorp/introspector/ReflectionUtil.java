@@ -33,7 +33,6 @@ import java.util.jar.JarFile;
 
 import javax.servlet.ServletContext;
 
-import com.ironiacorp.errorhandler.ExceptionUtil;
 import com.ironiacorp.io.DirectoryFilter;
 import com.ironiacorp.io.ExtensionFilter;
 import com.ironiacorp.string.StringUtil;
@@ -102,13 +101,8 @@ public final class ReflectionUtil
 		Class<?> c = null;
 		try {
 			c = Class.forName(name);
-		} catch (ClassNotFoundException cnfe) {
-			ExceptionUtil.dumpException(cnfe);
-		} catch (ExceptionInInitializerError eiie) {
-			ExceptionUtil.dumpException(eiie);
-		} catch (LinkageError le) {
-			ExceptionUtil.dumpException(le);
-		}
+		} catch (Exception e) {
+		} 
 		
 		return c;
 	}
