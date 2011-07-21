@@ -14,7 +14,7 @@ public interface DAO<K extends Serializable, E>
 	
 	void refresh(E entity);
 	
-	void flush(E entity);
+	void flush();
 	
 	boolean contains(E entity);
 

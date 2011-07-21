@@ -54,7 +54,7 @@ public abstract class JpaDao<PK extends Serializable, E> implements DAO<PK, E>
 
     @Override
 	@Transactional
-    public void flush(E entity) {
+    public void flush() {
     	entityManager.flush();
     }
 

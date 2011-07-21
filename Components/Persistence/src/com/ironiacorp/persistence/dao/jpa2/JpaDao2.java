@@ -50,7 +50,7 @@ public abstract class JpaDao2<PK extends Serializable, E> extends JpaDaoSupport 
     }
 
     @Override
-    public void flush(E entity) {
+    public void flush() {
         getJpaTemplate().flush();
     }
 
