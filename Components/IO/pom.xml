@@ -80,8 +80,19 @@
 
 	<repositories>
 		<repository>
-			<id>labes-pc-010808</id>
+			<id>central</id>
+			<url>http://repo1.maven.org/maven2/</url>
+			<releases>
+				<updatePolicy>never</updatePolicy>
+			</releases>
+		</repository>
+			
+		<repository>
+			<id>LabES repository</id>
 			<url>http://www.ironiacorp.com/Apps/Artifactory/repo</url>
+			<releases>
+				<updatePolicy>never</updatePolicy>
+			</releases>
 		</repository>
 	</repositories>
 
