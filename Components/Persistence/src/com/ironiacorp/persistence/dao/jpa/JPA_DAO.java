@@ -1,9 +1,27 @@
+/*
+ * Copyright (C) 2007 Marco Aurélio Graciotto Silva <magsilva@ironiacorp.com>
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.ironiacorp.persistence.dao.jpa;
 
 import java.io.Serializable;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -12,6 +30,11 @@ import com.ironiacorp.persistence.dao.GenericDAO;
 
 public class JPA_DAO<K extends Serializable, E> extends GenericDAO<K, E>
 {
+	/**
+	 * The entity manager is defined (wired) using a dependency injector (DI)
+	 * framework (thus we do not have to instantiate an EntityManagerFactory
+	 * or EntityManager: this is due to the DI framework).
+	 */
 	@PersistenceContext
 	protected EntityManager entityManager;
 
@@ -20,19 +43,40 @@ public class JPA_DAO<K extends Serializable, E> extends GenericDAO<K, E>
 		super();
 	}
 
+	public EntityManager getEntityManager()
+	{
+		return entityManager;
+	}
+
+	public void setEntityManager(EntityManager entityManager)
+	{
+		this.entityManager = entityManager;
+	}
+	
+	@Override
 	public void persist(E entity)
 	{
-		entityManager.persist(entity);
+		try {
+			entityManager.persist(entity);
+		} catch (IllegalArgumentException e) {
+			throw e;
+		} catch (EntityExistsException e) {
+			throw new IllegalArgumentException("Object already exists.");
+		} catch (Exception e) {
+			throw new UnsupportedOperationException(e);
+		}
 	}
 
+	@Override
 	public void remove(E entity)
 	{
-		entityManager.remove(entity);
-	}
-
-	public void flush()
-	{
-		entityManager.flush();
+		try {
+			entityManager.remove(entity);
+		} catch (IllegalArgumentException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new UnsupportedOperationException(e);
+		}
 	}
 
 	public void refresh(E entity)
@@ -40,14 +84,28 @@ public class JPA_DAO<K extends Serializable, E> extends GenericDAO<K, E>
 		entityManager.refresh(entity);
 	}
 
+	@Override
 	public E merge(E entity)
 	{
-		return entityManager.merge(entity);
+		try {
+			return entityManager.merge(entity);
+		} catch (IllegalArgumentException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new UnsupportedOperationException(e);
+		}
 	}
 
+	@Override
 	public boolean contains(E entity)
 	{
-		return entityManager.contains(entity);
+		try {
+			return entityManager.contains(entity);
+		} catch (IllegalArgumentException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new UnsupportedOperationException(e);
+		}
 	}
 
 	/**
@@ -61,6 +119,7 @@ public class JPA_DAO<K extends Serializable, E> extends GenericDAO<K, E>
 		}
 	}
 
+	@Override
 	public E findById(K id)
 	{
 		return entityManager.find(entityClass, id);
@@ -70,6 +129,8 @@ public class JPA_DAO<K extends Serializable, E> extends GenericDAO<K, E>
 	 * Retrieves a non-paged query. Use with care, this method could potentially instantiate large
 	 * amounts of data.
 	 */
+	@SuppressWarnings("unchecked")
+	@Override
 	public List<E> find(String queryString, Object... params)
 	{
 		Query query = entityManager.createQuery(queryString);
@@ -77,41 +138,59 @@ public class JPA_DAO<K extends Serializable, E> extends GenericDAO<K, E>
 		return query.getResultList();
 	}
 
+	@Override
 	public List<E> findAll()
 	{
 		return (List<E>) find("from " + entityClass.getName());
 	}
 
-	public void flush(E entity)
+	@Override
+	public void flush()
 	{
-		entityManager.flush();
+		try {
+			entityManager.flush();
+		} catch (Exception e) {
+			throw new UnsupportedOperationException(e);
+		}
 	}
 
-	public EntityManager getEntityManager()
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<E> findByProperties(Map<String, Object> properties)
 	{
-		return entityManager;
-	}
-
-	public void setEntityManager(EntityManager entityManager)
-	{
-		this.entityManager = entityManager;
-	}
-
-	public List<E> findByExample(E example)
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public List<E> findByExample(Map<String, Serializable> fields)
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public List<E> findByProperty(String name, Serializable value)
-	{
-		// TODO Auto-generated method stub
-		return null;
+		Iterator<String> i = properties.keySet().iterator();
+		StringBuilder sb = new StringBuilder();
+		Query query = null;
+		String queryString;
+		
+		sb.append("from");
+		sb.append(" ");
+		sb.append(entityClass.getSimpleName());
+		sb.append(" ");
+		sb.append("c");
+		sb.append(" ");
+		sb.append("where");
+		sb.append(" ");
+		while (i.hasNext()) {
+			String key = i.next();
+			sb.append("c.");
+			sb.append(key);
+			sb.append(" ");
+			sb.append("=");
+			sb.append(" ");
+			sb.append(":");
+			sb.append(key);
+			sb.append(" ");
+		}
+		i = properties.keySet().iterator();
+		queryString = sb.toString();
+		query = entityManager.createQuery(queryString);
+		while (i.hasNext()) {
+			String key = i.next();
+			Object value = properties.get(key);
+			query.setParameter(key,  value);
+		}
+		
+		return query.getResultList();
 	}
 }

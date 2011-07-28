@@ -40,6 +40,12 @@ public abstract class GenericDAO<K extends Serializable, T> implements DAO<K, T>
 
 	protected Class<T> entityClass;
 	
+	/**
+	 * If you create a DAO using GenericDAO<String>, ie., if you define the generic parameter
+	 * type in the class declaration (public class Dummy extends GenericDAO<String>) instead
+	 * of defining it at the object instantiation (dummy = new GenericDAO<String>), you may
+	 * use this constructor.
+	 */
 	@SuppressWarnings("unchecked")
 	public GenericDAO()
 	{
@@ -50,6 +56,18 @@ public abstract class GenericDAO<K extends Serializable, T> implements DAO<K, T>
 	}
 	
 	/**
+	 * This constructor can define an DAO for any supported Java type.
+	 * 
+	 * @param keyClass Primary key for the entity.
+	 * @param entityClass Class of the entity.
+	 */
+	public GenericDAO(Class<K> keyClass, Class<T> entityClass)
+	{
+		this.keyClass = keyClass;
+		this.entityClass = entityClass;
+	}
+	
+	/**
 	 * Find objects whose property (key) matches the one required (value). 
 	 * 
 	 * @param key The property name.
@@ -57,11 +75,11 @@ public abstract class GenericDAO<K extends Serializable, T> implements DAO<K, T>
 	 * 
 	 * @return Objects found (may be an empty list).
 	 */
-	public List<T> findByProperty(String key, Serializable value)
+	public List<T> findByProperty(String key, Object value)
 	{
-		Map<String, Serializable> fields = new HashMap<String, Serializable>();
+		Map<String, Object> fields = new HashMap<String, Object>();
 		fields.put(key, value);
-		return findByExample(fields);
+		return findByProperties(fields);
 	}
 
 	/**
@@ -75,7 +93,8 @@ public abstract class GenericDAO<K extends Serializable, T> implements DAO<K, T>
 	@SuppressWarnings("unchecked")
 	public List<T> findByExample(T example)
 	{
-		return findByExample((T) JavaBeanUtil.mapBean(example));
+		return findByProperties(JavaBeanUtil.mapBean(example));
 	}
-
+	
+	public abstract List<T> findByProperties(Map<String, Object> properties);
 }
