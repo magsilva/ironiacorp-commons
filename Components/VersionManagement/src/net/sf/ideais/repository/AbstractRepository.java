@@ -31,7 +31,7 @@ import org.apache.commons.logging.LogFactory;
  * Repository interface. It define the basic information to identify
  * a repository.
  */
-public abstract class AbstractRepository
+public abstract class AbstractRepository implements SourceCodeRepository
 {
 	/**
 	* Commons Logging instance.

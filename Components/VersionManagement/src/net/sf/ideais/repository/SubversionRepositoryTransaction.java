@@ -25,10 +25,6 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import net.sf.ideais.objects.ConfigurationItem;
-import net.sf.ideais.objects.SourceCodeRepository;
-import net.sf.ideais.util.IoUtil;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.tigris.subversion.javahl.*;

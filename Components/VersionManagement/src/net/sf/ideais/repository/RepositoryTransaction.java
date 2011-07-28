@@ -21,12 +21,11 @@ package net.sf.ideais.repository;
 
 import java.io.File;
 
-import net.sf.ideais.objects.ConfigurationItem;
-import net.sf.ideais.objects.SourceCodeRepository;
-import net.sf.ideais.util.IoUtil;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import com.ironiacorp.io.IoUtil;
 
 /**
  * Abstract class for a repository transaction. A repository transaction is an

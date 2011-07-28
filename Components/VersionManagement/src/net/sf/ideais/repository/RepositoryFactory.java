@@ -21,8 +21,6 @@ package net.sf.ideais.repository;
 
 import java.util.ArrayList;
 
-import net.sf.ideais.objects.SourceCodeRepository;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 

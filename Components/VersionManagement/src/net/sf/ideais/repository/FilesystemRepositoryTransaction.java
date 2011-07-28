@@ -23,12 +23,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicLong;
 
-import net.sf.ideais.objects.ConfigurationItem;
-import net.sf.ideais.objects.SourceCodeRepository;
-import net.sf.ideais.util.IoUtil;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import com.ironiacorp.io.IoUtil;
 
 /**
  * Dummy software configuration just save the files. Actually, there's no
