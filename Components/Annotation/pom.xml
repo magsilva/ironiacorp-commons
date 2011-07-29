@@ -45,19 +45,18 @@
 
 	<issueManagement>
 		<system>Bugzilla</system>
-		<url>http://www.ironiacorp.com/Admin/Bugzilla/</url>
+		<url>http://www.ironiacorp.com/Apps/Bugzilla/</url>
 	</issueManagement>
 
 	<scm>
-		<connection>scm:svn:https://www.ironiacorp.com/svn/projects/ironiacorp-commons/Components/Annotation/trunk</connection>
-		<developerConnection>scm:svn:https://www.ironiacorp.com/svn/projects/ironiacorp-commons/Components/Annotation/trunk</developerConnection>
-		<tag>trunk</tag>
-		<url>https://www.ironiacorp.com/Admin/ViewVC/viewvc.cgi/ironiacorp-commons/Components/Annotation/trunk</url>
+		<connection>scm:svn:https://www.ironiacorp.com/svn/projects/ironiacorp-commons/trunk/Components/Annotation</connection>
+		<developerConnection>scm:svn:https://www.ironiacorp.com/svn/projects/ironiacorp-commons/trunk/Components/Annotation</developerConnection>
+		<url>http://www.ironiacorp.com/Apps/WebSVN/wsvn/Active%20projects.ironiacorp-commons/trunk/Components/Annotation/</url>
 	</scm>
 
 	<ciManagement>
 		<system>Hudson</system>
-		<url>http://www.ironiacorp.com:8080/Hudson</url>
+		<url>http://www.ironiacorp.com/Apps/Hudson/job/IroniaCorp-Annotation/</url>
 		<notifiers>
 			<notifier>
 				<type>mail</type>
@@ -72,16 +71,27 @@
 
 	<distributionManagement>
 		<repository>
-			<id>labes-pc-010808-releases</id>
-			<name>labes-pc-010808-releases</name>
-			<url>http://www.ironiacorp.com:8080/artifactory/libs-releases-local</url>
+			<id>labes-pc-010808</id>
+			<name>labes-pc-010808</name>
+			<url>http://www.ironiacorp.com/Apps/Artifactory/libs-releases-local</url>
 		</repository>
 	</distributionManagement>
 
 	<repositories>
 		<repository>
-			<id>labes-pc-010808-releases</id>
-			<url>http://www.ironiacorp.com:8080/artifactory/repo</url>
+			<id>central</id>
+			<url>http://repo1.maven.org/maven2/</url>
+			<releases>
+				<updatePolicy>never</updatePolicy>
+			</releases>
+		</repository>
+		
+		<repository>
+			<id>LabES repository</id>
+			<url>http://www.ironiacorp.com/Apps/Artifactory/repo</url>
+			<releases>
+				<updatePolicy>never</updatePolicy>
+			</releases>
 		</repository>
 	</repositories>
 
@@ -95,14 +105,14 @@
 		<dependency>
 			<groupId>ironiacorp</groupId>
 			<artifactId>commons-collection</artifactId>
-			<version>1.0.0</version>
+			<version>[1.0.0,)</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
 	</dependencies>
 
 	<build>
-		<finalName>${artifactId}-${version}</finalName>
+		<finalName>${project.artifactId}-${project.version}</finalName>
 
 		<directory>target</directory>
 
@@ -112,14 +122,6 @@
 		<outputDirectory>target/classes</outputDirectory>
 		<testOutputDirectory>target/test-classes</testOutputDirectory>
 
-		<resources>
-			<resource>
-				<targetPath>lib/</targetPath>
-				<filtering>false</filtering>
-				<directory>${basedir}/lib</directory>
-			</resource>
-		</resources>
-
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -128,19 +130,8 @@
 					<fork>true</fork>
 					<meminitial>128m</meminitial>
 					<maxmem>512m</maxmem>
-					<source>1.5</source>
-					<target>1.5</target>
-				</configuration>
-			</plugin>
-
-			<plugin>
-				<artifactId>maven-clean-plugin</artifactId>
-				<configuration>
-					<filesets>
-						<fileset>
-							<directory>bin/</directory>
-						</fileset>
-					</filesets>
+					<source>1.6</source>
+					<target>1.6</target>
 				</configuration>
 			</plugin>
 		</plugins>
