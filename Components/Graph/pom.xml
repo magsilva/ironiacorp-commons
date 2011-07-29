@@ -199,7 +199,7 @@
 				</configuration>
 			</plugin>
 
-			<!--			
+		
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>javacc-maven-plugin</artifactId>
@@ -218,7 +218,6 @@
 					</execution>
 				</executions>
 			</plugin>
-			-->
 		</plugins>
 	</build>
 
