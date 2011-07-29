@@ -30,7 +30,7 @@ import org.junit.Test;
 import com.ironiacorp.collection.ArrayUtil;
 
 
-public class AnnotationUtilTest
+public class ClassAnnotationAnalyzerTest
 {
 	private static Class<? extends Object> annotatedClass;
 	private static Class<? extends Object> ordinaryClass;
@@ -39,11 +39,15 @@ public class AnnotationUtilTest
 	private static Class<? extends Annotation> invalidAnnotation;
 	
 	private final static String DEFAULT_VALUE = "test123";
-	private final static String DEFAULT_FIELD_NAME = AnnotationUtil.DEFAULT_PROPERTY;
+	private final static String DEFAULT_FIELD_NAME = AnnotationAnalyzer.DEFAULT_PROPERTY;
 	private final static String VALID_FIELD_NAME = "test";
 	private final static String INVALID_FIELD_NAME = "asdfg";
 	private final static Field[] validFields = new Field[1];
 	private final static Field[] invalidFields = new Field[1];
+	
+	private ClassAnnotationAnalyzer classAnalyzer;
+	
+	private FieldAnnotationAnalyzer fieldAnalyzer;
 	
 	private DummyClass bean;
 	
@@ -83,69 +87,90 @@ public class AnnotationUtilTest
 		
 		validAnnotation = DummyAnnotation.class;
 		invalidAnnotation = DummyDummyAnnotation.class;
+		
+		classAnalyzer = new ClassAnnotationAnalyzer();
+		fieldAnalyzer = new FieldAnnotationAnalyzer();
 	}
 
 	@Test
 	public void testGetAnnotationDefaultValue1()
 	{
-		assertEquals(DEFAULT_VALUE, AnnotationUtil.getAnnotationValue(annotatedClass, validAnnotation));
+		classAnalyzer.setClazz(annotatedClass);
+		assertEquals(DEFAULT_VALUE, classAnalyzer.getAnnotationValue(validAnnotation));
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void testGetAnnotationDefaultValue2()
 	{
-		AnnotationUtil.getAnnotationValue(annotatedClass, invalidAnnotation);
+		classAnalyzer.setClazz(annotatedClass);
+		classAnalyzer.getAnnotationValue(invalidAnnotation);
 		fail();
 	}
 
 	@Test
 	public void testGetAnnotationValue1()
 	{
-		assertEquals(DEFAULT_VALUE, AnnotationUtil.getAnnotationValue(annotatedClass, validAnnotation, DEFAULT_FIELD_NAME));
+		classAnalyzer.setClazz(annotatedClass);
+		assertEquals(DEFAULT_VALUE, classAnalyzer.getAnnotationValue(validAnnotation, DEFAULT_FIELD_NAME));
 	}
 
 	@Test
 	public void testGetAnnotationValue2()
 	{
-		assertEquals(DEFAULT_VALUE, AnnotationUtil.getAnnotationValue(annotatedClass, validAnnotation, VALID_FIELD_NAME));
+		classAnalyzer.setClazz(annotatedClass);
+		assertEquals(DEFAULT_VALUE, classAnalyzer.getAnnotationValue(validAnnotation, VALID_FIELD_NAME));
 	}
 
 	@Test
 	public void testGetAnnotationValue3()
 	{
-		assertFalse(DEFAULT_VALUE.equals(AnnotationUtil.getAnnotationValue(annotatedClass, validAnnotation, INVALID_FIELD_NAME)));
+		classAnalyzer.setClazz(annotatedClass);
+		assertFalse(DEFAULT_VALUE.equals(classAnalyzer.getAnnotationValue(validAnnotation, INVALID_FIELD_NAME)));
 	}
 
 	@Test
 	public void testHasAnnotatiosClass1()
 	{
-		assertTrue(AnnotationUtil.hasAnnotations(annotatedClass));
+		classAnalyzer.setClazz(annotatedClass);
+		assertTrue(classAnalyzer.hasAnnotations());
 	}
 
 	@Test
 	public void testHasAnnotatiosClass2()
 	{
-		assertFalse(AnnotationUtil.hasAnnotations(ordinaryClass));
+		classAnalyzer.setClazz(ordinaryClass);
+		assertFalse(classAnalyzer.hasAnnotations());
 	}
 
 	@Test
+	public void testHasAnnotatiosClass3()
+	{
+		classAnalyzer.setClazz(annotatedClass);
+		assertTrue(classAnalyzer.hasAnnotations(DummyAnnotation.class));
+	}
+
+	
+	@Test
 	public void testGetAnnotatedPropertiesClass1()
 	{
-		Field[] fields = AnnotationUtil.getAnnotatedFields(annotatedClass);
+		classAnalyzer.setClazz(annotatedClass);
+		Field[] fields = classAnalyzer.getAnnotatedFields();
 		assertTrue(ArrayUtil.equalIgnoreOrder(validFields, fields));
 	}
 
 	@Test
 	public void testGetAnnotatedPropertiesClass2()
 	{
-		Field[] fields = AnnotationUtil.getAnnotatedFields(annotatedClass);
+		classAnalyzer.setClazz(annotatedClass);
+		Field[] fields = classAnalyzer.getAnnotatedFields();
 		assertFalse(ArrayUtil.equalIgnoreOrder(invalidFields, fields));
 	}
 
 	@Test
 	public void testGetAnnotatedPropertiesClass3()
 	{
-		Field[] fields = AnnotationUtil.getAnnotatedFields(ordinaryClass);
+		classAnalyzer.setClazz(ordinaryClass);
+		Field[] fields = classAnalyzer.getAnnotatedFields();
 		assertTrue(fields.length == 0);
 	}
 
@@ -153,21 +178,24 @@ public class AnnotationUtilTest
 	@Test
 	public void testGetAnnotatedPropertiesClassAnnotation1()
 	{
-		Field[] fields = AnnotationUtil.getAnnotatedFields(annotatedClass, validAnnotation);
+		classAnalyzer.setClazz(annotatedClass);
+		Field[] fields = classAnalyzer.getAnnotatedFields(validAnnotation);
 		assertTrue(ArrayUtil.equalIgnoreOrder(validFields, fields));
 	}
 
 	@Test
 	public void testGetAnnotatedPropertiesClassAnnotation2()
 	{
-		Field[] fields = AnnotationUtil.getAnnotatedFields(annotatedClass, validAnnotation);
+		classAnalyzer.setClazz(annotatedClass);
+		Field[] fields = classAnalyzer.getAnnotatedFields(validAnnotation);
 		assertFalse(ArrayUtil.equalIgnoreOrder(invalidFields, fields));
 	}
 
 	@Test
 	public void testGetAnnotatedPropertiesClassAnnotation3()
 	{
-		Field[] fields = AnnotationUtil.getAnnotatedFields(annotatedClass, invalidAnnotation);
+		classAnalyzer.setClazz(annotatedClass);
+		Field[] fields = classAnalyzer.getAnnotatedFields(invalidAnnotation);
 		assertTrue(fields.length == 0);
 	}
 }
