@@ -107,14 +107,6 @@
 		<outputDirectory>target/classes</outputDirectory>
 		<testOutputDirectory>target/test-classes</testOutputDirectory>
 
-		<resources>
-			<resource>
-				<targetPath>lib/</targetPath>
-				<filtering>false</filtering>
-				<directory>${basedir}/lib</directory>
-			</resource>
-		</resources>
-
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
