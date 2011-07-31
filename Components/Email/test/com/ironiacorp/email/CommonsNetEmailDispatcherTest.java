@@ -19,10 +19,23 @@ package com.ironiacorp.email;
 
 import org.junit.Before;
 
+import static org.junit.Assert.*;
+
+
 public class CommonsNetEmailDispatcherTest extends EmailDispatcherTest
 {
 	@Before
 	public void setUp() throws Exception {
 		dispatcher = new CommonsNetEmailDispatcher();
+	}
+
+	@Override
+	public void testSendEmails_Gmail_TLS() {
+		fail();
+	}
+
+	@Override
+	public void testSendEmails_Gmail_SSL() {
+		fail();
 	}
 }
