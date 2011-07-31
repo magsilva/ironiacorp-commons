@@ -16,6 +16,8 @@
 
 package com.ironiacorp.graph.model;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -81,5 +83,31 @@ public class Graph extends Element
 		}
 		
 		return null;
+	}
+	
+	public Collection<Element> findElementByProperty(String propertyName, Object value)
+	{
+		Collection<Element> foundElements = new ArrayList<Element>();
+		for (Element element : elements) {
+			Object elementValue = element.getAttribute(propertyName);
+			if (elementValue != null && elementValue.equals(value)) {
+				foundElements.add(element);
+			}
+		}
+		
+		return foundElements;
+	}
+	
+	public Collection<Element> findElementByLabel(String label)
+	{
+		Collection<Element> foundElements = new ArrayList<Element>();
+		for (Element element : elements) {
+			String elementLabel = element.getLabel();
+			if (label == elementLabel || (label != null && label.equals(elementLabel))) {
+				foundElements.add(element);
+			}
+		}
+		
+		return foundElements;
 	}
 }

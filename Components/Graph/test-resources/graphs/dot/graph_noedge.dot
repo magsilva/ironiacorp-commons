@@ -1,0 +1,18 @@
+digraph G {
+	node [label="\N"];
+	graph [bb="0,0,202,684"];
+	0 [width="0.50", height="0.50", pos="152,666"];
+	6 [width="0.50", height="0.50", pos="125,594"];
+	9 [width="0.50", height="0.50", pos="179,594"];
+	40 [width="0.64", height="0.50", pos="179,522"];
+	45 [width="0.64", height="0.50", pos="115,450"];
+	17 [width="0.64", height="0.50", pos="179,450"];
+	158 [width="0.83", height="0.50", pos="115,378"];
+	164 [width="0.83", height="0.50", pos="44,306"];
+	55 [width="0.64", height="0.50", pos="115,306"];
+	62 [width="0.64", height="0.50", pos="70,234"];
+	82 [width="0.64", height="0.50", pos="92,162"];
+	109 [width="0.83", height="0.50", pos="30,90"];
+	132 [width="0.83", height="0.50", pos="108,90"];
+	152 [width="0.83", height="0.50", pos="108,18"];
+}

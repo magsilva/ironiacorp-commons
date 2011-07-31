@@ -114,6 +114,18 @@ public abstract class Element
 	 * @param name Attribute name.
 	 * @return Attribute value.
 	 */
+	public boolean containsAttribute(String name)
+	{
+		return attributes.containsKey(name);
+	}
+
+	
+	/**
+	 * Get one specific attribute of the element.
+	 * 
+	 * @param name Attribute name.
+	 * @return Attribute value.
+	 */
 	public Object getAttribute(String name)
 	{
 		return attributes.get(name);
@@ -140,6 +152,18 @@ public abstract class Element
 	public Object setAttribute(String name, Object value)
 	{
 		return attributes.put(name, value);
+	}
+
+	/**
+	 * Configure one specific attribute of the element.
+	 * 
+	 * @param property Property to be set.
+
+	 * @return Previous attribute value (null in not previously set).
+	 */
+	public Object setAttribute(Property property)
+	{
+		return attributes.put(property.getName(), property.getValue());
 	}
 	
 	/**

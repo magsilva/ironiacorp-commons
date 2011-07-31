@@ -3,9 +3,9 @@ options
 		JDK_VERSION = "1.5";
 		CACHE_TOKENS = true;
 		DEBUG_LOOKAHEAD = false;
-		DEBUG_PARSER = false;
+		DEBUG_PARSER = true;
 		DEBUG_TOKEN_MANAGER = false;
-		ERROR_REPORTING = false;
+		ERROR_REPORTING = true;
 		IGNORE_CASE = false;
 		SANITY_CHECK = true;
 		STATIC = false;
@@ -13,18 +13,38 @@ options
 }
 
 PARSER_BEGIN(DotParser)
+/*
+ * Copyright (C) 2011 Marco Aurélio Graciotto Silva <magsilva@ironiacorp.com>
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.ironiacorp.graph.parser.dot;
 
 import java.util.*;
-import java.util.regex.Matcher;
 import com.ironiacorp.graph.model.*;
-import com.ironiacorp.graph.rendering.*;
 
+/**
+ * Parser for graphs defined in the Graphviz format. Based on documentation
+ * provided at:
+ * - http://www.graphviz.org/doc/info/attrs.html
+ * - http://www.graphviz.org/doc/info/lang.html
+ */
 public class DotParser
 {
-	public class DefaultPropertiesElement extends Element {};
-
-	private Graph graph;
+	public class DefaultNodePropertiesElement extends Element {};
+	public class DefaultEdgePropertiesElement extends Element {};
+	public class DefaultGraphPropertiesElement extends Element {};
 }
 
 PARSER_END(DotParser)
@@ -39,9 +59,11 @@ TOKEN :
 	< GRAPH : "graph" >
 |	< DIGRAPH : "digraph" >
 |	< SUBGRAPH : "subgraph" >
-|	< NODE : "node" >
-|	< DIRECTED_EDGE : "->" >
+|	< DEFAULT_PROPERTY_NODE : "node" >
+|	< DEFAULT_PROPERTY_EDGE : "edge" >
 |	< EDGE : "--" >
+|	< DIRECTED_EDGE : "->" >
+|	< STRICT : "strict" >
 }
 
 TOKEN :
@@ -70,75 +92,227 @@ TOKEN :
 
 
 
-void parse() :
-{}
+Graph parse() :
 {
-	graphDef()	  
+	Graph graph;
+}
+{
+	graph = graphDef()
+	{ return graph; }	  
 }
 
 Graph graphDef() :
 {
+	DefaultNodePropertiesElement defaultNodeProperties = null;
+	DefaultEdgePropertiesElement defaultEdgeProperties = null;
+	DefaultGraphPropertiesElement defaultGraphProperties = null;
 	Graph graph = new Graph();
-	Element element;
+	List<Element> elements;
 	Token t;
 }
 {
+	(<STRICT>)?
 	(
-			<GRAPH> { graph.setType(GraphType.UNDIRECTED); }
-		|	<DIGRAPH> { graph.setType(GraphType.DIRECTED); }
+			<GRAPH> { graph.setType(Graph.GraphType.UNDIRECTED); }
+		|	<DIGRAPH> { graph.setType(Graph.GraphType.DIRECTED); }
 	)
-	(<IDENTIFIER>)? <LBRACE>
+	(t = <IDENTIFIER> {	graph.setLabel(t.image);} )?
+	elements = statementList()
+	{
+		for (Element e : elements) {
+			if (e instanceof DefaultNodePropertiesElement) {
+				defaultNodeProperties = (DefaultNodePropertiesElement) e;
+			}
+			if (e instanceof DefaultEdgePropertiesElement) {
+				defaultEdgeProperties = (DefaultEdgePropertiesElement) e;
+			}
+			if (e instanceof DefaultGraphPropertiesElement) {
+				defaultGraphProperties = (DefaultGraphPropertiesElement) e;
+			}
+		}
+	
+		for (Element e : elements) {
+			Map<String, Object> nodeAttributes = (defaultNodeProperties == null) ? null : defaultNodeProperties.getAttributes();
+			Map<String, Object> edgeAttributes = (defaultEdgeProperties == null) ? null : defaultEdgeProperties.getAttributes();
+			Map<String, Object> graphAttributes = (defaultGraphProperties == null) ? null : defaultGraphProperties.getAttributes();
+			if (e instanceof Node && nodeAttributes != null) {
+				for (String name : nodeAttributes.keySet()) {
+					if (! e.containsAttribute(name)) {
+						e.setAttribute(name, nodeAttributes.get(name));
+					}
+				}
+			}
+			if (e instanceof Edge && edgeAttributes != null) {
+				for (String name : edgeAttributes.keySet()) {
+					if (! e.containsAttribute(name)) {
+						e.setAttribute(name, edgeAttributes.get(name));
+					}
+				}
+			}
+			if (e instanceof Graph && graphAttributes != null) {
+				for (String name : graphAttributes.keySet()) {
+					if (! e.containsAttribute(name)) {
+						e.setAttribute(name, graphAttributes.get(name));
+					}
+				}
+			}
+		}
+				
+		graph.removeElement(defaultNodeProperties);
+		graph.removeElement(defaultEdgeProperties);
+		graph.removeElement(defaultGraphProperties);
+
+		for (Element e : elements) {
+			graph.addElement(e);
+		}
+	
+		return graph;
+	}
+}
+
+List<Element> statementList() :
+{
+	List<Element> elements = new ArrayList<Element>();
+	List<Element> statementElements;
+}
+{
+	<LBRACE>
 	(
-		element = statement() <SEMICOLON>
-		{ graph.addElement(element); }
+		statementElements = statement() <SEMICOLON>
+		{
+			elements.addAll(statementElements);
+		}
 	)*
 	(
-		element = statement() (<SEMICOLON>)?
-		{ graph.addElement(element); }
-	) <RBRACE>
-	{ return graph; }
+		statementElements = statement()
+		{
+			elements.addAll(statementElements);
+		}
+	)?
+	<RBRACE>
+	{ return elements; }
 }
 
 
-Element statement() :
+List<Element> statement() :
 {
-	Element element;
+	List<Element> elements = null;
+	Element element = null;
 }
 {
 	(
-			element = defaultNode()
+			element = defaultNodeDef()
+		|	element = defaultEdgeDef()
+		|	element = defaultGraphDef()
 		|	element = subgraphDef()
+		|	LOOKAHEAD(<NODEIDENT> <DIRECTED_EDGE>) elements = linkDef()
+		|	LOOKAHEAD(<NODEIDENT> <EDGE>) elements = linkDef()
 		|	element = nodeDef()
-		|	LOOKAHEAD(<NODEIDENT> <DIRECTED_EDGE>) element = linkDef()
-		|	element = atribute()
 	)
-	{ return element; }
+	{
+		if (element != null) {
+			elements = new ArrayList<Element>(1);
+			elements.add(element);
+		}
+
+		return elements;
+	}
 }
 
-
-void defaultNode() :
+List<Property> attributeList() :
 {
-	DefaultPropertiesElement defaultProperties = new DefaultPropertiesElement();
+	List<Property> properties = new ArrayList<Property>();
+	Property property;
 }
 {
-		<NODE> atributeList(defaultProperties)
-		{ return defaultProperties; }
-}
-
-void atributeList(Element element) :
-{}
-{
-		<LBRACKET> atributeDef(element) (<COMMA> atributeDef(element))* <RBRACKET>
+	<LBRACKET>
+	property = attributeDef() { properties.add(property); }
+	(<COMMA> property = attributeDef() { properties.add(property); })*
+	<RBRACKET>
+	
+	{ return properties; }
 }
 
-void atributeDef(Element element) :
+Property attributeDef() :
 {
-	Token id, value;
+	Property property = null;
+	Token name, value;
 }
 {
-		id = <IDENTIFIER> <EQUALS> value = <STRING>
+		name = <IDENTIFIER> <EQUALS> value = <STRING>
 		{
-			element.setProperty(id, value);
+			property = new Property();
+			property.setName(name.image);
+			property.setValue(value.image.substring(1, value.image.length() - 1));
+			return property;
+		}
+}
+
+Graph subgraphDef() :
+{
+	Graph graph = new Graph();
+	List<Element> elements;
+	Token name;
+}
+{
+	<SUBGRAPH>
+	(
+		name = <IDENTIFIER>
+		{
+			graph.setLabel(name.image);
+		}
+	)?
+	elements = statement() 
+	{
+		for (Element e : elements) {
+			graph.addElement(e);
+		}
+		return graph;
+	}
+}
+
+DefaultNodePropertiesElement defaultNodeDef() :
+{
+	DefaultNodePropertiesElement defaultProperties = new DefaultNodePropertiesElement();
+	List<Property> properties;
+}
+{
+		<DEFAULT_PROPERTY_NODE> properties = attributeList()
+		{
+			for (Property property : properties) {
+				defaultProperties.setAttribute(property);
+			}
+			return defaultProperties;
+		}
+}
+
+DefaultEdgePropertiesElement defaultEdgeDef() :
+{
+	DefaultEdgePropertiesElement defaultProperties = new DefaultEdgePropertiesElement();
+	List<Property> properties;
+}
+{
+		<DEFAULT_PROPERTY_EDGE> properties = attributeList()
+		{
+			for (Property property : properties) {
+				defaultProperties.setAttribute(property);
+			}
+			return defaultProperties;
+		}
+}
+
+DefaultGraphPropertiesElement defaultGraphDef() :
+{
+	DefaultGraphPropertiesElement defaultProperties = new DefaultGraphPropertiesElement();
+	List<Property> properties;
+}
+{
+		<GRAPH> properties = attributeList()
+		{
+			for (Property property : properties) {
+				defaultProperties.setAttribute(property);
+			}
+			return defaultProperties;
 		}
 }
 
@@ -146,23 +320,30 @@ void atributeDef(Element element) :
 Node nodeDef() :
 {
 	Node node = new Node();
+	List<Property> properties;
 	Token t = null;
 }
 {
-	t = <NODEIDENT>	{ node.setLabel(t.image); } attributeList(node)
-	{ return node; }
+	t = <NODEIDENT>	{ node.setLabel(t.image); }
+	properties = attributeList()
+	{
+		for (Property property : properties) {
+			node.setAttribute(property);
+		} 
+		return node;
+	}
 }
 
-List<Edge> linkDef() :
+List<Element> linkDef() :
 {
-	List<Edge> edges = new ArrayList<Edge>();
+	List<Element> edges = new ArrayList<Element>();
+	List<Property> properties;
 	DirectedEdge directedEdge = null;
 	Edge edge = null;
 	Node node1 = null;
 	Node node2 = null;
 	Token srcNodeName;
 	Token destNodeName;
-	Token edgeType;
 }
 {
 	srcNodeName = <NODEIDENT> {
@@ -170,18 +351,17 @@ List<Edge> linkDef() :
 		node1.setLabel(srcNodeName.image);		
 	}
 	(
-		edgeType = (
-				<EDGE> { edge = new Edge(); }
+		(				<EDGE> { edge = new Edge(); }
 			|	<DIRECTED_EDGE> { directedEdge = new DirectedEdge(); edge = directedEdge; }
 		)
-		destNode = <NODEIDENT> {
+		destNodeName = <NODEIDENT> {
 			node2 = new Node();
-			node2.setLabel(srcNodeName.image);		
+			node2.setLabel(destNodeName.image);		
 		}
 		{
 			if (directedEdge != null) {
-				directedEdge.addNode(node1, NodeType.SOURCE);
-				directedEdge.addNode(node2, NodeType.DEST);
+				directedEdge.addNode(node1, DirectedEdge.NodeType.SOURCE);
+				directedEdge.addNode(node2, DirectedEdge.NodeType.DEST);
 			} else {
 				edge.addNode(node1);
 				edge.addNode(node2);
@@ -191,6 +371,14 @@ List<Edge> linkDef() :
 			edges.add(edge);
 		}
 	)+
-	attributeList(edge)
-	{ return edge; }
+	properties = attributeList()
+	{
+		for (Element element : edges) {
+			Edge e = (Edge) element;
+			for (Property property : properties) {
+				e.setAttribute(property);
+			}
+		} 
+		return edges;
+	}
 }
