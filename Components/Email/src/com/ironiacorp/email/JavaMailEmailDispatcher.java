@@ -41,25 +41,7 @@ import javax.mail.internet.MimeMultipart;
 
 public final class JavaMailEmailDispatcher implements EmailDispatcher
 {
-	public enum ServerConnectionType {
-		PLAIN(25, "smtp"),
-		TLS(587, "smtp"),
-		SSL(465, "smtps");
-		
-		public final int port;
-		
-		public final String transportProtocol;
-		
-		private ServerConnectionType(int port, String transportProtocol)
-		{
-			this.port = port;
-			this.transportProtocol = transportProtocol;
-		}
-	}
-	
-	public static final ServerConnectionType DEFAULT_SERVER_CONNECTION_TYPE = ServerConnectionType.PLAIN;
-	
-	private ServerConnectionType connectionType = DEFAULT_SERVER_CONNECTION_TYPE;
+	private EmailServerConnectionType connectionType = DEFAULT_SERVER_CONNECTION_TYPE;
 	
 	private String transportProtocol;
 	
@@ -149,7 +131,7 @@ public final class JavaMailEmailDispatcher implements EmailDispatcher
 	 * @see com.ironiacorp.email.EmailDispatcher#getConnectionType()
 	 */
 	@Override
-	public ServerConnectionType getConnectionType()
+	public EmailServerConnectionType getConnectionType()
 	{
 		return connectionType;
 	}
@@ -158,7 +140,7 @@ public final class JavaMailEmailDispatcher implements EmailDispatcher
 	 * @see com.ironiacorp.email.EmailDispatcher#setConnectionType(com.ironiacorp.email.JavaMailEmailDispatcher.ServerConnectionType)
 	 */
 	@Override
-	public void setConnectionType(ServerConnectionType connectionType)
+	public void setConnectionType(EmailServerConnectionType connectionType)
 	{
 		this.connectionType = connectionType;
 	}
@@ -296,7 +278,7 @@ public final class JavaMailEmailDispatcher implements EmailDispatcher
 			Transport transport = session.getTransport(protocol);
 			if (! transport.isConnected()) {
 				if (authenticationRequired) {
-					if (connectionType != ServerConnectionType.SSL) {
+					if (connectionType != EmailServerConnectionType.SSL) {
 						transport.connect(serverName, port, username, password);
 					}
 				} else {

@@ -79,8 +79,16 @@
 
 	<repositories>
 		<repository>
-			<id>repo1</id>
+			<id>central</id>
 			<url>http://repo1.maven.org/maven2/</url>
+			<releases>
+				<updatePolicy>never</updatePolicy>
+			</releases>
+		</repository>
+		
+		<repository>
+			<id>labes-pc-010808</id>
+			<url>http://www.ironiacorp.com/Apps/Artifactory/repo</url>
 			<releases>
 				<updatePolicy>never</updatePolicy>
 			</releases>
@@ -98,14 +106,23 @@
 		<dependency>
 			<groupId>javax.mail</groupId>
 			<artifactId>mail</artifactId>
-			<version>[1.4.0,)</version>
+			<version>1.4.1</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
+		
+		<dependency>
+			<groupId>commons-net</groupId>
+			<artifactId>commons-net</artifactId>
+			<version>[3.0.1,)</version>
+			<scope>compile</scope>
+		</dependency>
+		
 		<dependency>
 			<groupId>ironiacorp</groupId>
 			<artifactId>commons-string</artifactId>
 			<version>[1.2.0,)</version>
+			<scope>compile</scope>
 		</dependency>
 	</dependencies>
 

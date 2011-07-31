@@ -16,33 +16,19 @@
 
 package com.ironiacorp.email;
 
-public interface EmailDispatcher
+public enum EmailServerConnectionType
 {
-	static final EmailServerConnectionType DEFAULT_SERVER_CONNECTION_TYPE = EmailServerConnectionType.PLAIN;
+	PLAIN(25, "smtp"),
+	TLS(587, "smtp"),
+	SSL(465, "smtps");
 	
-	String getServerName();
-
-	void setServerName(String serverName);
-
-	int getServerPort();
-
-	void setServerPort(int serverPort);
-
-	EmailServerConnectionType getConnectionType();
-
-	void setConnectionType(EmailServerConnectionType connectionType);
+	public final int port;
 	
-	boolean isAuthenticationRequired();
-
-	void setAuthenticationRequired(boolean authenticationRequired);
-
-	String getUsername();
-
-	void setUsername(String username);
-
-	String getPassword();
-
-	void setPassword(String password);
-
-	void sendEmails(Email... emails);
+	public final String transportProtocol;
+	
+	private EmailServerConnectionType(int port, String transportProtocol)
+	{
+		this.port = port;
+		this.transportProtocol = transportProtocol;
+	}
 }

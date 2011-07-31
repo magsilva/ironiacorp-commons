@@ -19,10 +19,10 @@ package com.ironiacorp.email;
 
 import org.junit.Before;
 
-public class JavaMailEmailDispatcherTest extends EmailDispatcherTest
+public class CommonsNetEmailDispatcherTest extends EmailDispatcherTest
 {
 	@Before
 	public void setUp() throws Exception {
-		dispatcher = new JavaMailEmailDispatcher();
+		dispatcher = new CommonsNetEmailDispatcher();
 	}
 }
