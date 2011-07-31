@@ -3,10 +3,10 @@ options
 		JDK_VERSION = "1.5";
 		CACHE_TOKENS = true;
 		DEBUG_LOOKAHEAD = false;
-		DEBUG_PARSER = true;
+		DEBUG_PARSER = false;
 		DEBUG_TOKEN_MANAGER = false;
 		ERROR_REPORTING = true;
-		IGNORE_CASE = false;
+		IGNORE_CASE = true;
 		SANITY_CHECK = true;
 		STATIC = false;
 		SUPPORT_CLASS_VISIBILITY_PUBLIC = false;

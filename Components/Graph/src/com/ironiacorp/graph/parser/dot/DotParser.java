@@ -32,58 +32,51 @@ public class DotParser implements DotParserConstants {
         public class DefaultGraphPropertiesElement extends Element {};
 
   final public Graph parse() throws ParseException {
-    trace_call("parse");
-    try {
         Graph graph;
-      graph = graphDef();
+    graph = graphDef();
           {if (true) return graph;}
     throw new Error("Missing return statement in function");
-    } finally {
-      trace_return("parse");
-    }
   }
 
   final public Graph graphDef() throws ParseException {
-    trace_call("graphDef");
-    try {
         DefaultNodePropertiesElement defaultNodeProperties = null;
         DefaultEdgePropertiesElement defaultEdgeProperties = null;
         DefaultGraphPropertiesElement defaultGraphProperties = null;
         Graph graph = new Graph();
         List<Element> elements;
         Token t;
-      switch (jj_nt.kind) {
-      case STRICT:
-        jj_consume_token(STRICT);
-        break;
-      default:
-        jj_la1[0] = jj_gen;
-        ;
-      }
-      switch (jj_nt.kind) {
-      case GRAPH:
-        jj_consume_token(GRAPH);
+    switch (jj_nt.kind) {
+    case STRICT:
+      jj_consume_token(STRICT);
+      break;
+    default:
+      jj_la1[0] = jj_gen;
+      ;
+    }
+    switch (jj_nt.kind) {
+    case GRAPH:
+      jj_consume_token(GRAPH);
                                   graph.setType(Graph.GraphType.UNDIRECTED);
-        break;
-      case DIGRAPH:
-        jj_consume_token(DIGRAPH);
+      break;
+    case DIGRAPH:
+      jj_consume_token(DIGRAPH);
                                     graph.setType(Graph.GraphType.DIRECTED);
-        break;
-      default:
-        jj_la1[1] = jj_gen;
-        jj_consume_token(-1);
-        throw new ParseException();
-      }
-      switch (jj_nt.kind) {
-      case IDENTIFIER:
-        t = jj_consume_token(IDENTIFIER);
+      break;
+    default:
+      jj_la1[1] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
+    switch (jj_nt.kind) {
+    case IDENTIFIER:
+      t = jj_consume_token(IDENTIFIER);
                                 graph.setLabel(t.image);
-        break;
-      default:
-        jj_la1[2] = jj_gen;
-        ;
-      }
-      elements = statementList();
+      break;
+    default:
+      jj_la1[2] = jj_gen;
+      ;
+    }
+    elements = statementList();
                 for (Element e : elements) {
                         if (e instanceof DefaultNodePropertiesElement) {
                                 defaultNodeProperties = (DefaultNodePropertiesElement) e;
@@ -133,92 +126,82 @@ public class DotParser implements DotParserConstants {
 
                 {if (true) return graph;}
     throw new Error("Missing return statement in function");
-    } finally {
-      trace_return("graphDef");
-    }
   }
 
   final public List<Element> statementList() throws ParseException {
-    trace_call("statementList");
-    try {
         List<Element> elements = new ArrayList<Element>();
         List<Element> statementElements;
-      jj_consume_token(LBRACE);
-      label_1:
-      while (true) {
-        switch (jj_nt.kind) {
-        case GRAPH:
-        case SUBGRAPH:
-        case DEFAULT_PROPERTY_NODE:
-        case DEFAULT_PROPERTY_EDGE:
-        case NODEIDENT:
-          ;
-          break;
-        default:
-          jj_la1[3] = jj_gen;
-          break label_1;
-        }
-        statementElements = statement();
-        jj_consume_token(SEMICOLON);
-                        elements.addAll(statementElements);
-      }
+    jj_consume_token(LBRACE);
+    label_1:
+    while (true) {
       switch (jj_nt.kind) {
       case GRAPH:
       case SUBGRAPH:
       case DEFAULT_PROPERTY_NODE:
       case DEFAULT_PROPERTY_EDGE:
       case NODEIDENT:
-        statementElements = statement();
-                        elements.addAll(statementElements);
+        ;
         break;
       default:
-        jj_la1[4] = jj_gen;
-        ;
+        jj_la1[3] = jj_gen;
+        break label_1;
       }
-      jj_consume_token(RBRACE);
+      statementElements = statement();
+      jj_consume_token(SEMICOLON);
+                        elements.addAll(statementElements);
+    }
+    switch (jj_nt.kind) {
+    case GRAPH:
+    case SUBGRAPH:
+    case DEFAULT_PROPERTY_NODE:
+    case DEFAULT_PROPERTY_EDGE:
+    case NODEIDENT:
+      statementElements = statement();
+                        elements.addAll(statementElements);
+      break;
+    default:
+      jj_la1[4] = jj_gen;
+      ;
+    }
+    jj_consume_token(RBRACE);
           {if (true) return elements;}
     throw new Error("Missing return statement in function");
-    } finally {
-      trace_return("statementList");
-    }
   }
 
   final public List<Element> statement() throws ParseException {
-    trace_call("statement");
-    try {
         List<Element> elements = null;
         Element element = null;
-      switch (jj_nt.kind) {
-      case DEFAULT_PROPERTY_NODE:
-        element = defaultNodeDef();
-        break;
-      case DEFAULT_PROPERTY_EDGE:
-        element = defaultEdgeDef();
-        break;
-      case GRAPH:
-        element = defaultGraphDef();
-        break;
-      case SUBGRAPH:
-        element = subgraphDef();
-        break;
-      default:
-        jj_la1[5] = jj_gen;
-        if (jj_2_1(2147483647)) {
-          elements = linkDef();
-        } else if (jj_2_2(2147483647)) {
-          elements = linkDef();
-        } else {
-          switch (jj_nt.kind) {
-          case NODEIDENT:
-            element = nodeDef();
-            break;
-          default:
-            jj_la1[6] = jj_gen;
-            jj_consume_token(-1);
-            throw new ParseException();
-          }
+    switch (jj_nt.kind) {
+    case DEFAULT_PROPERTY_NODE:
+      element = defaultNodeDef();
+      break;
+    case DEFAULT_PROPERTY_EDGE:
+      element = defaultEdgeDef();
+      break;
+    case GRAPH:
+      element = defaultGraphDef();
+      break;
+    case SUBGRAPH:
+      element = subgraphDef();
+      break;
+    default:
+      jj_la1[5] = jj_gen;
+      if (jj_2_1(2147483647)) {
+        elements = linkDef();
+      } else if (jj_2_2(2147483647)) {
+        elements = linkDef();
+      } else {
+        switch (jj_nt.kind) {
+        case NODEIDENT:
+          element = nodeDef();
+          break;
+        default:
+          jj_la1[6] = jj_gen;
+          jj_consume_token(-1);
+          throw new ParseException();
         }
       }
+    }
                 if (element != null) {
                         elements = new ArrayList<Element>(1);
                         elements.add(element);
@@ -226,159 +209,119 @@ public class DotParser implements DotParserConstants {
 
                 {if (true) return elements;}
     throw new Error("Missing return statement in function");
-    } finally {
-      trace_return("statement");
-    }
   }
 
   final public List<Property> attributeList() throws ParseException {
-    trace_call("attributeList");
-    try {
         List<Property> properties = new ArrayList<Property>();
         Property property;
-      jj_consume_token(LBRACKET);
-      property = attributeDef();
+    jj_consume_token(LBRACKET);
+    property = attributeDef();
                                     properties.add(property);
-      label_2:
-      while (true) {
-        switch (jj_nt.kind) {
-        case COMMA:
-          ;
-          break;
-        default:
-          jj_la1[7] = jj_gen;
-          break label_2;
-        }
-        jj_consume_token(COMMA);
-        property = attributeDef();
-                                             properties.add(property);
+    label_2:
+    while (true) {
+      switch (jj_nt.kind) {
+      case COMMA:
+        ;
+        break;
+      default:
+        jj_la1[7] = jj_gen;
+        break label_2;
       }
-      jj_consume_token(RBRACKET);
+      jj_consume_token(COMMA);
+      property = attributeDef();
+                                             properties.add(property);
+    }
+    jj_consume_token(RBRACKET);
           {if (true) return properties;}
     throw new Error("Missing return statement in function");
-    } finally {
-      trace_return("attributeList");
-    }
   }
 
   final public Property attributeDef() throws ParseException {
-    trace_call("attributeDef");
-    try {
         Property property = null;
         Token name, value;
-      name = jj_consume_token(IDENTIFIER);
-      jj_consume_token(EQUALS);
-      value = jj_consume_token(STRING);
+    name = jj_consume_token(IDENTIFIER);
+    jj_consume_token(EQUALS);
+    value = jj_consume_token(STRING);
                         property = new Property();
                         property.setName(name.image);
                         property.setValue(value.image.substring(1, value.image.length() - 1));
                         {if (true) return property;}
     throw new Error("Missing return statement in function");
-    } finally {
-      trace_return("attributeDef");
-    }
   }
 
   final public Graph subgraphDef() throws ParseException {
-    trace_call("subgraphDef");
-    try {
         Graph graph = new Graph();
         List<Element> elements;
         Token name;
-      jj_consume_token(SUBGRAPH);
-      switch (jj_nt.kind) {
-      case IDENTIFIER:
-        name = jj_consume_token(IDENTIFIER);
+    jj_consume_token(SUBGRAPH);
+    switch (jj_nt.kind) {
+    case IDENTIFIER:
+      name = jj_consume_token(IDENTIFIER);
                         graph.setLabel(name.image);
-        break;
-      default:
-        jj_la1[8] = jj_gen;
-        ;
-      }
-      elements = statement();
+      break;
+    default:
+      jj_la1[8] = jj_gen;
+      ;
+    }
+    elements = statement();
                 for (Element e : elements) {
                         graph.addElement(e);
                 }
                 {if (true) return graph;}
     throw new Error("Missing return statement in function");
-    } finally {
-      trace_return("subgraphDef");
-    }
   }
 
   final public DefaultNodePropertiesElement defaultNodeDef() throws ParseException {
-    trace_call("defaultNodeDef");
-    try {
         DefaultNodePropertiesElement defaultProperties = new DefaultNodePropertiesElement();
         List<Property> properties;
-      jj_consume_token(DEFAULT_PROPERTY_NODE);
-      properties = attributeList();
+    jj_consume_token(DEFAULT_PROPERTY_NODE);
+    properties = attributeList();
                         for (Property property : properties) {
                                 defaultProperties.setAttribute(property);
                         }
                         {if (true) return defaultProperties;}
     throw new Error("Missing return statement in function");
-    } finally {
-      trace_return("defaultNodeDef");
-    }
   }
 
   final public DefaultEdgePropertiesElement defaultEdgeDef() throws ParseException {
-    trace_call("defaultEdgeDef");
-    try {
         DefaultEdgePropertiesElement defaultProperties = new DefaultEdgePropertiesElement();
         List<Property> properties;
-      jj_consume_token(DEFAULT_PROPERTY_EDGE);
-      properties = attributeList();
+    jj_consume_token(DEFAULT_PROPERTY_EDGE);
+    properties = attributeList();
                         for (Property property : properties) {
                                 defaultProperties.setAttribute(property);
                         }
                         {if (true) return defaultProperties;}
     throw new Error("Missing return statement in function");
-    } finally {
-      trace_return("defaultEdgeDef");
-    }
   }
 
   final public DefaultGraphPropertiesElement defaultGraphDef() throws ParseException {
-    trace_call("defaultGraphDef");
-    try {
         DefaultGraphPropertiesElement defaultProperties = new DefaultGraphPropertiesElement();
         List<Property> properties;
-      jj_consume_token(GRAPH);
-      properties = attributeList();
+    jj_consume_token(GRAPH);
+    properties = attributeList();
                         for (Property property : properties) {
                                 defaultProperties.setAttribute(property);
                         }
                         {if (true) return defaultProperties;}
     throw new Error("Missing return statement in function");
-    } finally {
-      trace_return("defaultGraphDef");
-    }
   }
 
   final public Node nodeDef() throws ParseException {
-    trace_call("nodeDef");
-    try {
         Node node = new Node();
         List<Property> properties;
         Token t = null;
-      t = jj_consume_token(NODEIDENT);
+    t = jj_consume_token(NODEIDENT);
                           node.setLabel(t.image);
-      properties = attributeList();
+    properties = attributeList();
                 for (Property property : properties) {
                         node.setAttribute(property);
                 }
                 {if (true) return node;}
     throw new Error("Missing return statement in function");
-    } finally {
-      trace_return("nodeDef");
-    }
   }
 
   final public List<Element> linkDef() throws ParseException {
-    trace_call("linkDef");
-    try {
         List<Element> edges = new ArrayList<Element>();
         List<Property> properties;
         DirectedEdge directedEdge = null;
@@ -387,26 +330,26 @@ public class DotParser implements DotParserConstants {
         Node node2 = null;
         Token srcNodeName;
         Token destNodeName;
-      srcNodeName = jj_consume_token(NODEIDENT);
+    srcNodeName = jj_consume_token(NODEIDENT);
                 node1 = new Node();
                 node1.setLabel(srcNodeName.image);
-      label_3:
-      while (true) {
-        switch (jj_nt.kind) {
-        case EDGE:
-          jj_consume_token(EDGE);
+    label_3:
+    while (true) {
+      switch (jj_nt.kind) {
+      case EDGE:
+        jj_consume_token(EDGE);
                                          edge = new Edge();
-          break;
-        case DIRECTED_EDGE:
-          jj_consume_token(DIRECTED_EDGE);
+        break;
+      case DIRECTED_EDGE:
+        jj_consume_token(DIRECTED_EDGE);
                                                   directedEdge = new DirectedEdge(); edge = directedEdge;
-          break;
-        default:
-          jj_la1[9] = jj_gen;
-          jj_consume_token(-1);
-          throw new ParseException();
-        }
-        destNodeName = jj_consume_token(NODEIDENT);
+        break;
+      default:
+        jj_la1[9] = jj_gen;
+        jj_consume_token(-1);
+        throw new ParseException();
+      }
+      destNodeName = jj_consume_token(NODEIDENT);
                         node2 = new Node();
                         node2.setLabel(destNodeName.image);
                         if (directedEdge != null) {
@@ -419,17 +362,17 @@ public class DotParser implements DotParserConstants {
                         node1 = node2;
                         node2 = null;
                         edges.add(edge);
-        switch (jj_nt.kind) {
-        case EDGE:
-        case DIRECTED_EDGE:
-          ;
-          break;
-        default:
-          jj_la1[10] = jj_gen;
-          break label_3;
-        }
+      switch (jj_nt.kind) {
+      case EDGE:
+      case DIRECTED_EDGE:
+        ;
+        break;
+      default:
+        jj_la1[10] = jj_gen;
+        break label_3;
       }
-      properties = attributeList();
+    }
+    properties = attributeList();
                 for (Element element : edges) {
                         Edge e = (Edge) element;
                         for (Property property : properties) {
@@ -438,9 +381,6 @@ public class DotParser implements DotParserConstants {
                 }
                 {if (true) return edges;}
     throw new Error("Missing return statement in function");
-    } finally {
-      trace_return("linkDef");
-    }
   }
 
   private boolean jj_2_1(int xla) {
@@ -579,7 +519,6 @@ public class DotParser implements DotParserConstants {
           }
         }
       }
-      trace_token(token, "");
       return token;
     }
     jj_nt = token;
@@ -617,7 +556,6 @@ public class DotParser implements DotParserConstants {
     if ((token = jj_nt).next != null) jj_nt = jj_nt.next;
     else jj_nt = jj_nt.next = token_source.getNextToken();
     jj_gen++;
-      trace_token(token, " (in getNextToken)");
     return token;
   }
 
@@ -696,55 +634,12 @@ public class DotParser implements DotParserConstants {
     return new ParseException(token, exptokseq, tokenImage);
   }
 
-  private int trace_indent = 0;
-  private boolean trace_enabled = true;
-
-/** Enable tracing. */
+  /** Enable tracing. */
   final public void enable_tracing() {
-    trace_enabled = true;
   }
 
-/** Disable tracing. */
+  /** Disable tracing. */
   final public void disable_tracing() {
-    trace_enabled = false;
-  }
-
-  private void trace_call(String s) {
-    if (trace_enabled) {
-      for (int i = 0; i < trace_indent; i++) { System.out.print(" "); }
-      System.out.println("Call:   " + s);
-    }
-    trace_indent = trace_indent + 2;
-  }
-
-  private void trace_return(String s) {
-    trace_indent = trace_indent - 2;
-    if (trace_enabled) {
-      for (int i = 0; i < trace_indent; i++) { System.out.print(" "); }
-      System.out.println("Return: " + s);
-    }
-  }
-
-  private void trace_token(Token t, String where) {
-    if (trace_enabled) {
-      for (int i = 0; i < trace_indent; i++) { System.out.print(" "); }
-      System.out.print("Consumed token: <" + tokenImage[t.kind]);
-      if (t.kind != 0 && !tokenImage[t.kind].equals("\"" + t.image + "\"")) {
-        System.out.print(": \"" + t.image + "\"");
-      }
-      System.out.println(" at line " + t.beginLine + " column " + t.beginColumn + ">" + where);
-    }
-  }
-
-  private void trace_scan(Token t1, int t2) {
-    if (trace_enabled) {
-      for (int i = 0; i < trace_indent; i++) { System.out.print(" "); }
-      System.out.print("Visited token: <" + tokenImage[t1.kind]);
-      if (t1.kind != 0 && !tokenImage[t1.kind].equals("\"" + t1.image + "\"")) {
-        System.out.print(": \"" + t1.image + "\"");
-      }
-      System.out.println(" at line " + t1.beginLine + " column " + t1.beginColumn + ">; Expected token: <" + tokenImage[t2] + ">");
-    }
   }
 
   private void jj_rescan_token() {
