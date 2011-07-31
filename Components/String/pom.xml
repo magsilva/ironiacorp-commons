@@ -79,8 +79,11 @@
 
 	<repositories>
 		<repository>
-			<id>labes-pc-010808-releases</id>
-			<url>http://www.ironiacorp.com/Apps/Artifactory/repo</url>
+			<id>central</id>
+			<url>http://repo1.maven.org/maven2/</url>
+			<releases>
+				<updatePolicy>never</updatePolicy>
+			</releases>
 		</repository>
 	</repositories>
 
@@ -93,6 +96,7 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>[4.0,)</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
