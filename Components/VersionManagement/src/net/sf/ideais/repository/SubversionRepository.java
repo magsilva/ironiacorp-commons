@@ -281,7 +281,7 @@ public class SubversionRepository extends AbstractRepository
 		}
 
 		try {
-			SVNAdmi svnAdmin = new SVNAdmin();
+			SVNAdmin svnAdmin = new SVNAdmin();
 
 			svnAdmin.create(getLocalPath(), false, false, null, SVNAdmin.FSFS);
 

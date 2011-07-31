@@ -29,6 +29,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.tigris.subversion.javahl.*;
 
+import com.ironiacorp.io.IoUtil;
+
 
 /**
  * Subversion (http://subversion.tigris.org) is a software configuration
