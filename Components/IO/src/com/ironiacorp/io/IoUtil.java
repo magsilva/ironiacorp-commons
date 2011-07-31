@@ -31,7 +31,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.channels.FileChannel;
 import java.util.Arrays;
-import java.util.regex.Pattern;
 
 import com.Ostermiller.util.RandPass;
 import com.ironiacorp.string.StringUtil;

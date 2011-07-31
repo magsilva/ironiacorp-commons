@@ -101,6 +101,7 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>[4.0,)</version>
+			<scope>test</scope>
 		</dependency>
 
 		<dependency>
@@ -130,16 +131,15 @@
 		<resources>
 			<resource>
 				<directory>${project.basedir}/resources</directory>
-				<filtering>true</filtering>
 			</resource>
 		</resources>
 
 		<testResources>
 			<testResource>
 				<directory>${project.basedir}/test-resources</directory>
-				<filtering>true</filtering>
 			</testResource>
 		</testResources>
+		
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
