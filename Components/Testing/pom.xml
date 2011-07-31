@@ -57,7 +57,7 @@
 
 	<ciManagement>
 		<system>Hudson</system>
-		<url>http://www.ironiacorp.com/Apps/Hudson</url>
+		<url>http://www.ironiacorp.com/Apps/Hudson/job/IroniaCorp-Testing/</url>
 		<notifiers>
 			<notifier>
 				<type>mail</type>
@@ -96,7 +96,7 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>[4.0,)</version>
+			<version>[4.7,)</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
