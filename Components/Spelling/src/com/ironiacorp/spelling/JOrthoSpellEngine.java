@@ -1,6 +1,6 @@
 package com.ironiacorp.spelling;
 
-public interface RawMaterial
+public class JOrthoSpellEngine
 {
 
 }
