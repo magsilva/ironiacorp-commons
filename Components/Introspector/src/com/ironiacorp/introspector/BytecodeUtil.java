@@ -18,6 +18,10 @@ package com.ironiacorp.introspector;
 
 public final class BytecodeUtil
 {
+	private BytecodeUtil()
+	{
+	}
+	
 	/**
 	 * Take a byte array of class data and modify it to ensure that the class is
 	 * public. This is used for the "main" classes of applications.
@@ -61,5 +65,4 @@ public final class BytecodeUtil
 		// add PUBLIC flag
 		theClass[currOffset + 1] |= 1;
 	}
-
 }
