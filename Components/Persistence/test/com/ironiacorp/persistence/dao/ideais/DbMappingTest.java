@@ -133,4 +133,9 @@ public class DbMappingTest
 		badBeanMapping.put("dkljlsa", DummyBean.DEFAULT_NAME);
 		badBeanMapping.put("j2309j9", DummyBean.DEFAULT_AGE);
 	}
+
+	@Test
+	public void testSomething()
+	{
+	}
 }
