@@ -23,8 +23,10 @@ import java.util.Map;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TransactionRequiredException;
 
 import com.ironiacorp.persistence.dao.GenericDAO;
 
@@ -37,10 +39,12 @@ public class JPA_DAO<K extends Serializable, E> extends GenericDAO<K, E>
 	 */
 	@PersistenceContext
 	protected EntityManager entityManager;
-
-	public JPA_DAO()
+	
+	private boolean autoCommit = false;
+	
+	public JPA_DAO(Class<K> keyClass, Class<E> entityClass)
 	{
-		super();
+		super(keyClass, entityClass);
 	}
 
 	public EntityManager getEntityManager()
@@ -53,11 +57,45 @@ public class JPA_DAO<K extends Serializable, E> extends GenericDAO<K, E>
 		this.entityManager = entityManager;
 	}
 	
+	public boolean isAutoCommit()
+	{
+		return autoCommit;
+	}
+
+	public void setAutoCommit(boolean autoCommit)
+	{
+		this.autoCommit = autoCommit;
+	}
+
+	private void checkTransactionBegin()
+	{
+		EntityTransaction tx = entityManager.getTransaction();
+		if (! tx.isActive()) {
+			tx.begin();
+		}
+	}
+
+	private void checkTransactionEnd()
+	{
+		EntityTransaction tx =entityManager.getTransaction();
+		if (autoCommit) {
+			try {
+				tx.commit();
+			} catch (Exception e) {
+				tx.rollback();
+				throw new UnsupportedOperationException(e);
+			}
+		}
+	}
+
+	
 	@Override
 	public void persist(E entity)
 	{
 		try {
+			checkTransactionBegin();
 			entityManager.persist(entity);
+			checkTransactionEnd();
 		} catch (IllegalArgumentException e) {
 			throw e;
 		} catch (EntityExistsException e) {
@@ -71,7 +109,9 @@ public class JPA_DAO<K extends Serializable, E> extends GenericDAO<K, E>
 	public void remove(E entity)
 	{
 		try {
+			checkTransactionBegin();
 			entityManager.remove(entity);
+			checkTransactionEnd();
 		} catch (IllegalArgumentException e) {
 			throw e;
 		} catch (Exception e) {
@@ -88,7 +128,11 @@ public class JPA_DAO<K extends Serializable, E> extends GenericDAO<K, E>
 	public E merge(E entity)
 	{
 		try {
-			return entityManager.merge(entity);
+			E result;
+			checkTransactionBegin();
+			result = entityManager.merge(entity);
+			checkTransactionEnd();
+			return result;
 		} catch (IllegalArgumentException e) {
 			throw e;
 		} catch (Exception e) {
@@ -149,6 +193,7 @@ public class JPA_DAO<K extends Serializable, E> extends GenericDAO<K, E>
 	{
 		try {
 			entityManager.flush();
+		} catch (TransactionRequiredException e) {
 		} catch (Exception e) {
 			throw new UnsupportedOperationException(e);
 		}
@@ -167,13 +212,13 @@ public class JPA_DAO<K extends Serializable, E> extends GenericDAO<K, E>
 		sb.append(" ");
 		sb.append(entityClass.getSimpleName());
 		sb.append(" ");
-		sb.append("c");
+		sb.append("e");
 		sb.append(" ");
 		sb.append("where");
 		sb.append(" ");
 		while (i.hasNext()) {
 			String key = i.next();
-			sb.append("c.");
+			sb.append("e.");
 			sb.append(key);
 			sb.append(" ");
 			sb.append("=");
@@ -188,7 +233,7 @@ public class JPA_DAO<K extends Serializable, E> extends GenericDAO<K, E>
 		while (i.hasNext()) {
 			String key = i.next();
 			Object value = properties.get(key);
-			query.setParameter(key,  value);
+			query.setParameter(key, value);
 		}
 		
 		return query.getResultList();

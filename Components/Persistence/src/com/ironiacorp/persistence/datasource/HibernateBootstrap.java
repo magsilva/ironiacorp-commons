@@ -1,4 +1,3 @@
-package com.ironiacorp.persistence;
 /*
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -17,6 +16,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 Copyright (C) 2005 Marco Aurélio Graciotto Silva <magsilva@gmail.com>
  */
 
+package com.ironiacorp.persistence.datasource;
 
 
 import org.apache.commons.logging.Log;
@@ -29,7 +29,7 @@ import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.hbm2ddl.SchemaUpdate;
 import org.hibernate.tool.hbm2ddl.DatabaseMetadata;
 
-import com.ironiacorp.collection.ArrayUtil;
+import com.ironiacorp.datastructure.array.ArrayUtil;
 
 import java.util.List;
 import java.util.LinkedList;

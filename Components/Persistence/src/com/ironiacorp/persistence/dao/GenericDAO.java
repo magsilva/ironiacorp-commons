@@ -25,8 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 
-import com.ironiacorp.persistence.JavaBeanUtil;
-
+import com.ironiacorp.introspector.ObjectIntrospector;
 
 /**
  * Implements a common set of methods for DAO classes.
@@ -90,10 +89,10 @@ public abstract class GenericDAO<K extends Serializable, T> implements DAO<K, T>
 	 * 
 	 * @return Objects found (may be an empty list).
 	 */
-	@SuppressWarnings("unchecked")
 	public List<T> findByExample(T example)
 	{
-		return findByProperties(JavaBeanUtil.mapBean(example));
+		ObjectIntrospector oi = new ObjectIntrospector();
+		return findByProperties(oi.mapBean(example));
 	}
 	
 	public abstract List<T> findByProperties(Map<String, Object> properties);

@@ -1,20 +1,26 @@
 package com.ironiacorp.persistence.dao.jpa;
 
 import java.io.Serializable;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.List;
 
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ironiacorp.introspector.AnnotationUtil;
-import com.ironiacorp.persistence.PersistenceService;
+import com.ironiacorp.annotation.ClassAnnotationAnalyzer;
+import com.ironiacorp.persistence.service.PersistenceService;
 
 
 @Transactional(propagation = Propagation.REQUIRED)
 public class PersistenceServiceImpl<K extends Serializable, E> implements PersistenceService<K, E>
 {
-	private JPA_DAO<K, E> dao = new JPA_DAO<K, E>();
+	private JPA_DAO<K, E> dao;
+	
+	public PersistenceServiceImpl(Class<K> keyClass, Class<E> entityClass)
+	{
+		dao = new JPA_DAO(keyClass, entityClass);
+	}
 	
 	/**
 	 * http://blog.xebia.com/2009/03/23/jpa-implementation-patterns-saving-detached-entities/
@@ -29,10 +35,12 @@ public class PersistenceServiceImpl<K extends Serializable, E> implements Persis
 		// If object is not in the persistent context, it may have been persisted sometime
 		// in the past (what we will check by it's id) or it is a new entity.
 		Field[] fields = null;
+		ClassAnnotationAnalyzer classAnalyzer = new ClassAnnotationAnalyzer();
 		try {
 			Class<? extends Object> clazz = entity.getClass();
-			Class<?> annClazz = Class.forName("javax.persistence.Id");
-			fields = AnnotationUtil.getAnnotatedFields(clazz, annClazz);
+			Class<? extends Annotation> annClazz = (Class<? extends Annotation>) Class.forName("javax.persistence.Id");
+			classAnalyzer.setClazz(clazz);
+			fields = classAnalyzer.getAnnotatedFields(annClazz);
 		} catch (ClassNotFoundException e) {
 			assert false : "Class javax.persistence.Id should exist";
 		}

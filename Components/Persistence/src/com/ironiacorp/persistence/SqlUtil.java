@@ -38,12 +38,7 @@ public final class SqlUtil
 	private SqlUtil()
 	{
 	}
-	
-	/**
-	* Commons Logging instance.
-	*/
-	private static Log log = LogFactory.getLog(SqlUtil.class);
-			
+		
     /**
      * Check if the database driver is loaded.
      * 

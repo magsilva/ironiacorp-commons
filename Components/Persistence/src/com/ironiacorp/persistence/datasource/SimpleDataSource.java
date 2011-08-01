@@ -10,7 +10,7 @@ direct developers back to JavaRanch.
 The original source can be found at <a href="http://www.javaranch.com">JavaRanch</a>.
 */
 
-package com.ironiacorp.persistence;
+package com.ironiacorp.persistence.datasource;
 
 import javax.sql.DataSource;
 import javax.naming.Reference;

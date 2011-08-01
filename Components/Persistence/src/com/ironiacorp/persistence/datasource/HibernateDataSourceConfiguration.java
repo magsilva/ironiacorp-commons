@@ -17,7 +17,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-package com.ironiacorp.persistence;
+package com.ironiacorp.persistence.datasource;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -57,12 +57,12 @@ import org.w3c.dom.Node;
  * @author Marco Aurélio Graciotto Silva
  * 
  */
-public class DataSourceConfiguration
+public class HibernateDataSourceConfiguration
 {
 	/**
 	 * Commons Logging instance.
 	 */
-	private static Logger log = LoggerFactory.getLogger(DataSourceConfiguration.class);
+	private static Logger log = LoggerFactory.getLogger(HibernateDataSourceConfiguration.class);
 
 	private String contextPath;
 
@@ -79,7 +79,7 @@ public class DataSourceConfiguration
 	/**
 	 * 
 	 */
-	public DataSourceConfiguration(String contextPath)
+	public HibernateDataSourceConfiguration(String contextPath)
 	{
 		super();
 		this.contextPath = contextPath;
@@ -219,10 +219,10 @@ public class DataSourceConfiguration
 	public String getDataSourceType()
 	{
 		if (preferences.containsKey("connection.driver_class")) {
-			return DataSourceConfiguration.JNDI_TYPE;
+			return HibernateDataSourceConfiguration.JNDI_TYPE;
 		}
 		if (preferences.containsKey("hibernate.connection.datasource")) {
-			return DataSourceConfiguration.JDBC_TYPE;
+			return HibernateDataSourceConfiguration.JDBC_TYPE;
 		}
 		return null;
 	}
@@ -317,10 +317,10 @@ public class DataSourceConfiguration
 		preferences.remove("connection.username");
 		preferences.remove("hibernate.connection.username");
 
-		if (getDataSourceType().equals(DataSourceConfiguration.JNDI_TYPE)) {
+		if (getDataSourceType().equals(HibernateDataSourceConfiguration.JNDI_TYPE)) {
 			preferences.put("hibernate.connection.username", username);
 		}
-		if (getDataSourceType().equals(DataSourceConfiguration.JDBC_TYPE)) {
+		if (getDataSourceType().equals(HibernateDataSourceConfiguration.JDBC_TYPE)) {
 			preferences.put("connection.username", username);
 		}
 	}
@@ -352,10 +352,10 @@ public class DataSourceConfiguration
 		preferences.remove("connection.password");
 		preferences.remove("hibernate.connection.password");
 
-		if (getDataSourceType().equals(DataSourceConfiguration.JNDI_TYPE)) {
+		if (getDataSourceType().equals(HibernateDataSourceConfiguration.JNDI_TYPE)) {
 			preferences.put("hibernate.connection.password", password);
 		}
-		if (getDataSourceType().equals(DataSourceConfiguration.JDBC_TYPE)) {
+		if (getDataSourceType().equals(HibernateDataSourceConfiguration.JDBC_TYPE)) {
 			preferences.put("connection.password", password);
 		}
 	}
@@ -461,8 +461,7 @@ public class DataSourceConfiguration
 		dialects.put("org.hibernate.dialect.SAPDBDialect", "resource.hibernateDialect.SAPDB");
 		dialects.put("org.hibernate.dialect.SQLServerDialect", "resource.hibernateDialect.SQLServer");
 		dialects.put("org.hibernate.dialect.SybaseDialect", "resource.hibernateDialect.Sybase");
-		dialects.put("org.hibernate.dialect.SybaseAnywhereDialect",
-				"resource.hibernateDialect.SybaseAnywhere");
+		dialects.put("org.hibernate.dialect.SybaseAnywhereDialect", "resource.hibernateDialect.SybaseAnywhere");
 		return dialects;
 	}
 }

@@ -1,4 +1,4 @@
-package com.ironiacorp.persistence;
+package com.ironiacorp.persistence.service;
 
 import java.util.List;
 

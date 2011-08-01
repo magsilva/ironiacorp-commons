@@ -5,7 +5,7 @@
 
 	<groupId>ironiacorp</groupId>
 	<artifactId>commons-persistence</artifactId>
-	<version>1.1.4</version>
+	<version>1.2.0</version>
 	<packaging>jar</packaging>
 
 	<name>Ironia-Persistence</name>
@@ -97,67 +97,30 @@
 
 	<properties>
 		<sonar.host.url>http://www.ironiacorp.com/Apps/Sonar/</sonar.host.url>
+		<org.hibernate.version>3.6.6.Final</org.hibernate.version>
 		<org.springframework.version>3.0.5.RELEASE</org.springframework.version>
-		<org.hibernate.version>3.6.5.Final</org.hibernate.version>
 	</properties>
 
 	<dependencies>
+		<!--
+			Database drivers
+		-->
+		<!-- MySQL -->
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>[4.0,)</version>
-			<scope>test</scope>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>[5.1.13,)</version>
+			<scope>compile</scope>
 		</dependency>
 		
-		<!-- Spring -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-beans</artifactId>
-			<version>${org.springframework.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context</artifactId>
-			<version>${org.springframework.version}</version>
-			<scope>runtime</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context-support</artifactId>
-			<version>${org.springframework.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-tx</artifactId>
-			<version>${org.springframework.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-orm</artifactId>
-			<version>${org.springframework.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-test</artifactId>
-			<version>${org.springframework.version}</version>
-			<scope>test</scope>
-		</dependency>
-
-
-		<!-- Hibernate -->
-		<dependency>
-    		<groupId>org.hibernate</groupId>
-    		<artifactId>hibernate-core</artifactId>
-    		<version>${org.hibernate.version}</version>
-			<type>jar</type>
-		</dependency>
+		<!-- HSQLDB -->
+        <dependency>
+            <groupId>org.hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+            <version>[2.2.4,)</version>
+            <scope>test</scope>
+        </dependency>
 		
-	
 		
 		<!-- Database connection pool -->
 		<dependency>
@@ -168,7 +131,7 @@
 		</dependency>
 
 		
-		<!-- JPA -->
+		<!-- JPA specification (API) -->
 		<dependency>
 			<groupId>org.apache.geronimo.specs</groupId>
 			<artifactId>geronimo-jpa_2.0_spec</artifactId>
@@ -176,6 +139,9 @@
 		</dependency>
 
 
+		<!--
+			JPA implementations 
+		-->
 		<!-- OpenJPA -->
 		<dependency>
 			<groupId>org.apache.openjpa</groupId>
@@ -183,16 +149,41 @@
 			<version>2.1.0</version>
 			<scope>runtime</scope>
 		</dependency>
-		
-
-		<!-- Database driver -->
+				
+		<!-- Hibernate -->
 		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>[5.1.13,)</version>
-			<scope>compile</scope>
+    		<groupId>org.hibernate</groupId>
+    		<artifactId>hibernate-core</artifactId>
+    		<version>${org.hibernate.version}</version>
+			<type>jar</type>
+		</dependency>
+
+        <dependency>
+        	<groupId>org.hibernate</groupId>
+        	<artifactId>hibernate-entitymanager</artifactId>
+        	<version>${org.hibernate.version}</version>
+        	<type>jar</type>
+			<scope>runtime</scope>
+        </dependency>		
+		
+		
+		<!-- Spring Framework -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-tx</artifactId>
+			<version>${org.springframework.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${org.springframework.version}</version>
+			<scope>test</scope>
 		</dependency>
 		
+		<!--
+			Requires libraries 
+		-->
 		<dependency>
 			<groupId>ironiacorp</groupId>
 			<artifactId>commons-configuration</artifactId>
@@ -203,22 +194,38 @@
 
 		<dependency>
 			<groupId>ironiacorp</groupId>
-			<artifactId>commons-errorhandler</artifactId>
-			<version>[2.0.0,)</version>
+			<artifactId>commons-datastructures</artifactId>
+			<version>[1.6.3,)</version>
 			<scope>compile</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>ironiacorp</groupId>
 			<artifactId>commons-introspector</artifactId>
-			<version>1.0.0</version>
-			<scope>compile</scope>
+			<version>[1.4.0,)</version>
 		</dependency>
 
 		<dependency>
 			<groupId>ironiacorp</groupId>
-			<artifactId>commons-datastructures</artifactId>
-			<version>[1.2.0,)</version>
+			<artifactId>commons-errorhandler</artifactId>
+			<version>[1.0.0,)</version>
+			<scope>runtime</scope>
+		</dependency>
+		
+		<!--
+			Test related dependencies 
+		-->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>[4.0,)</version>
+			<scope>test</scope>
+		</dependency>
+		
+			<dependency>
+			<groupId>ironiacorp</groupId>
+			<artifactId>commons-annotation</artifactId>
+			<version>[2.0.0,)</version>
 		</dependency>
 	</dependencies>
 
@@ -233,6 +240,18 @@
 		<outputDirectory>target/classes</outputDirectory>
 		<testOutputDirectory>target/test-classes</testOutputDirectory>
 
+		<resources>
+			<resource>
+				<directory>${project.basedir}/resources</directory>
+			</resource>
+		</resources>
+
+		<testResources>
+			<testResource>
+				<directory>${project.basedir}/test-resources</directory>
+			</testResource>
+		</testResources>
+		
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -247,8 +266,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
-	<reporting>
-		<outputDirectory>site</outputDirectory>
-	</reporting>
 </project>
