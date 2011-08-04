@@ -5,7 +5,7 @@
 
 	<groupId>ironiacorp</groupId>
 	<artifactId>commons-graph</artifactId>
-	<version>0.3.1</version>
+	<version>0.4.0</version>
 	<packaging>jar</packaging>
 
 	<name>Ironia-Graph</name>
