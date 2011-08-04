@@ -14,22 +14,11 @@
  * limitations under the License.
  */
 
-package com.ironiacorp.graph.model;
+package com.ironiacorp.graph.model.basic;
 
-import java.util.Set;
-
-
-public interface Edge extends GraphElement
+/**
+ * Graph node.
+ */
+public class BasicNode extends BasicGraphElement implements com.ironiacorp.graph.model.Node
 {
-	Set<Node> getNodes();
-
-	void setNodes(Set<Node> nodes);
-
-	boolean addNode(Node node);
-
-	boolean removeNode(Node node);
-
-	Node findNode(int id);
-
-	boolean contains(Node node);
 }

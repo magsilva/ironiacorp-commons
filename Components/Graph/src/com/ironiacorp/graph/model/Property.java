@@ -14,39 +14,26 @@
  * limitations under the License.
  */
 
-
 package com.ironiacorp.graph.model;
 
-/**
- * Property of a graph element.
- */
-public class Property
+public interface Property
 {
-	/**
-	 * Name of the property.
-	 */
-	private String name;
-	
-	/**
-	 * Value of the property.
-	 */
-	private Object value;
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public Object getValue() {
-		return value;
-	}
-
-	public void setValue(Object value) {
-		this.value = value;
+	public enum PropertyType {
+		LABEL("label");
+		
+		public final String name;
+		
+		private PropertyType(String name)
+		{
+			this.name = name;
+		}
 	}
 	
-	
+	String getName();
+
+	void setName(String name);
+
+	Object getValue();
+
+	void setValue(Object value);
 }

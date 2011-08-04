@@ -16,15 +16,10 @@
 
 package com.ironiacorp.graph.model;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Set;
 
-/**
- * Graph.
- */
-public class Graph extends Element
+public interface Graph extends GraphElement
 {
 	/**
 	 * A graph can be either directed or undirected.
@@ -35,79 +30,29 @@ public class Graph extends Element
 		UNDIRECTED
 	}
 	
-	private GraphType type;
-	
-	private Set<Element> elements;
+	GraphType getType();
 
-	public Graph()
-	{
-		elements = new HashSet<Element>();
-	}
-	
-	public GraphType getType()
-	{
-		return type;
-	}
+	void setType(GraphType type);
 
-	public void setType(GraphType type)
-	{
-		this.type = type;
-	}
+	Set<GraphElement> getElements();
 
-	public Set<Element> getElements()
-	{
-		return elements;
-	}
+	void setElements(Set<GraphElement> elements);
 
-	public void setElements(Set<Element> elements)
-	{
-		this.elements = elements;
-	}
-	
-	public void addElement(Element element)
-	{
-		elements.add(element);
-	}
-	
-	public void removeElement(Element element)
-	{
-		elements.remove(element);
-	}
+	void addElement(GraphElement element);
 
-	public Element findElement(int id)
-	{
-		for (Element element : elements) {
-			if (element.getId() == id) {
-				return element;
-			}
-		}
-		
-		return null;
-	}
-	
-	public Collection<Element> findElementByProperty(String propertyName, Object value)
-	{
-		Collection<Element> foundElements = new ArrayList<Element>();
-		for (Element element : elements) {
-			Object elementValue = element.getAttribute(propertyName);
-			if (elementValue != null && elementValue.equals(value)) {
-				foundElements.add(element);
-			}
-		}
-		
-		return foundElements;
-	}
-	
-	public Collection<Element> findElementByLabel(String label)
-	{
-		Collection<Element> foundElements = new ArrayList<Element>();
-		for (Element element : elements) {
-			String elementLabel = element.getLabel();
-			if (label == elementLabel || (label != null && label.equals(elementLabel))) {
-				foundElements.add(element);
-			}
-		}
-		
-		return foundElements;
-	}
+	void removeElement(GraphElement element);
+
+	Collection<? extends GraphElement> getElements(Class<? extends GraphElement> elementType);
+
+	Collection<Node> getNodes();
+
+	Collection<Edge> getEdges();
+
+	GraphElement findElement(int id);
+
+	Collection<GraphElement> findElementByProperty(String propertyName, Object value);
+
+	Collection<GraphElement> findElementByLabel(String label);
+
+	String toString();
 }

@@ -19,6 +19,8 @@ package com.ironiacorp.graph.parser.dot;
 
 import java.util.*;
 import com.ironiacorp.graph.model.*;
+import com.ironiacorp.graph.model.Property.PropertyType;
+import com.ironiacorp.graph.model.basic.*;
 
 /**
  * Parser for graphs defined in the Graphviz format. Based on documentation
@@ -27,9 +29,9 @@ import com.ironiacorp.graph.model.*;
  * - http://www.graphviz.org/doc/info/lang.html
  */
 public class DotParser implements DotParserConstants {
-        public class DefaultNodePropertiesElement extends Element {};
-        public class DefaultEdgePropertiesElement extends Element {};
-        public class DefaultGraphPropertiesElement extends Element {};
+        public class DefaultNodePropertiesElement extends BasicGraphElement {};
+        public class DefaultEdgePropertiesElement extends BasicGraphElement {};
+        public class DefaultGraphPropertiesElement extends BasicGraphElement {};
 
   final public Graph parse() throws ParseException {
         Graph graph;
@@ -42,8 +44,8 @@ public class DotParser implements DotParserConstants {
         DefaultNodePropertiesElement defaultNodeProperties = null;
         DefaultEdgePropertiesElement defaultEdgeProperties = null;
         DefaultGraphPropertiesElement defaultGraphProperties = null;
-        Graph graph = new Graph();
-        List<Element> elements;
+        Graph graph = new BasicGraph();
+        List<GraphElement> elements;
         Token t;
     switch (jj_nt.kind) {
     case STRICT:
@@ -70,14 +72,14 @@ public class DotParser implements DotParserConstants {
     switch (jj_nt.kind) {
     case IDENTIFIER:
       t = jj_consume_token(IDENTIFIER);
-                                graph.setLabel(t.image);
+                                graph.setAttribute(PropertyType.LABEL.name, t.image);
       break;
     default:
       jj_la1[2] = jj_gen;
       ;
     }
     elements = statementList();
-                for (Element e : elements) {
+                for (GraphElement e : elements) {
                         if (e instanceof DefaultNodePropertiesElement) {
                                 defaultNodeProperties = (DefaultNodePropertiesElement) e;
                         }
@@ -89,7 +91,7 @@ public class DotParser implements DotParserConstants {
                         }
                 }
 
-                for (Element e : elements) {
+                for (GraphElement e : elements) {
                         Map<String, Object> nodeAttributes = (defaultNodeProperties == null) ? null : defaultNodeProperties.getAttributes();
                         Map<String, Object> edgeAttributes = (defaultEdgeProperties == null) ? null : defaultEdgeProperties.getAttributes();
                         Map<String, Object> graphAttributes = (defaultGraphProperties == null) ? null : defaultGraphProperties.getAttributes();
@@ -120,7 +122,7 @@ public class DotParser implements DotParserConstants {
                 graph.removeElement(defaultEdgeProperties);
                 graph.removeElement(defaultGraphProperties);
 
-                for (Element e : elements) {
+                for (GraphElement e : elements) {
                         graph.addElement(e);
                 }
 
@@ -128,9 +130,9 @@ public class DotParser implements DotParserConstants {
     throw new Error("Missing return statement in function");
   }
 
-  final public List<Element> statementList() throws ParseException {
-        List<Element> elements = new ArrayList<Element>();
-        List<Element> statementElements;
+  final public List<GraphElement> statementList() throws ParseException {
+        List<GraphElement> elements = new ArrayList<GraphElement>();
+        List<GraphElement> statementElements;
     jj_consume_token(LBRACE);
     label_1:
     while (true) {
@@ -168,9 +170,9 @@ public class DotParser implements DotParserConstants {
     throw new Error("Missing return statement in function");
   }
 
-  final public List<Element> statement() throws ParseException {
-        List<Element> elements = null;
-        Element element = null;
+  final public List<GraphElement> statement() throws ParseException {
+        List<GraphElement> elements = null;
+        GraphElement element = null;
     switch (jj_nt.kind) {
     case DEFAULT_PROPERTY_NODE:
       element = defaultNodeDef();
@@ -203,7 +205,7 @@ public class DotParser implements DotParserConstants {
       }
     }
                 if (element != null) {
-                        elements = new ArrayList<Element>(1);
+                        elements = new ArrayList<GraphElement>(1);
                         elements.add(element);
                 }
 
@@ -242,7 +244,7 @@ public class DotParser implements DotParserConstants {
     name = jj_consume_token(IDENTIFIER);
     jj_consume_token(EQUALS);
     value = jj_consume_token(STRING);
-                        property = new Property();
+                        property = new BasicProperty();
                         property.setName(name.image);
                         property.setValue(value.image.substring(1, value.image.length() - 1));
                         {if (true) return property;}
@@ -250,21 +252,21 @@ public class DotParser implements DotParserConstants {
   }
 
   final public Graph subgraphDef() throws ParseException {
-        Graph graph = new Graph();
-        List<Element> elements;
+        Graph graph = new BasicGraph();
+        List<GraphElement> elements;
         Token name;
     jj_consume_token(SUBGRAPH);
     switch (jj_nt.kind) {
     case IDENTIFIER:
       name = jj_consume_token(IDENTIFIER);
-                        graph.setLabel(name.image);
+                        graph.setAttribute(PropertyType.LABEL.name, name.image);
       break;
     default:
       jj_la1[8] = jj_gen;
       ;
     }
     elements = statement();
-                for (Element e : elements) {
+                for (GraphElement e : elements) {
                         graph.addElement(e);
                 }
                 {if (true) return graph;}
@@ -308,11 +310,11 @@ public class DotParser implements DotParserConstants {
   }
 
   final public Node nodeDef() throws ParseException {
-        Node node = new Node();
+        Node node = new BasicNode();
         List<Property> properties;
         Token t = null;
     t = jj_consume_token(NODEIDENT);
-                          node.setLabel(t.image);
+                          node.setAttribute(PropertyType.LABEL.name, t.image);
     properties = attributeList();
                 for (Property property : properties) {
                         node.setAttribute(property);
@@ -321,8 +323,8 @@ public class DotParser implements DotParserConstants {
     throw new Error("Missing return statement in function");
   }
 
-  final public List<Element> linkDef() throws ParseException {
-        List<Element> edges = new ArrayList<Element>();
+  final public List<GraphElement> linkDef() throws ParseException {
+        List<GraphElement> edges = new ArrayList<GraphElement>();
         List<Property> properties;
         DirectedEdge directedEdge = null;
         Edge edge = null;
@@ -331,18 +333,18 @@ public class DotParser implements DotParserConstants {
         Token srcNodeName;
         Token destNodeName;
     srcNodeName = jj_consume_token(NODEIDENT);
-                node1 = new Node();
-                node1.setLabel(srcNodeName.image);
+                node1 = new BasicNode();
+                node1.setAttribute(PropertyType.LABEL.name, srcNodeName.image);
     label_3:
     while (true) {
       switch (jj_nt.kind) {
       case EDGE:
         jj_consume_token(EDGE);
-                                         edge = new Edge();
+                                         edge = new BasicEdge();
         break;
       case DIRECTED_EDGE:
         jj_consume_token(DIRECTED_EDGE);
-                                                  directedEdge = new DirectedEdge(); edge = directedEdge;
+                                                  directedEdge = new BasicDirectedEdge(); edge = directedEdge;
         break;
       default:
         jj_la1[9] = jj_gen;
@@ -350,8 +352,8 @@ public class DotParser implements DotParserConstants {
         throw new ParseException();
       }
       destNodeName = jj_consume_token(NODEIDENT);
-                        node2 = new Node();
-                        node2.setLabel(destNodeName.image);
+                        node2 = new BasicNode();
+                        node2.setAttribute(PropertyType.LABEL.name, destNodeName.image);
                         if (directedEdge != null) {
                                 directedEdge.addNode(node1, DirectedEdge.NodeType.SOURCE);
                                 directedEdge.addNode(node2, DirectedEdge.NodeType.DEST);
@@ -373,7 +375,7 @@ public class DotParser implements DotParserConstants {
       }
     }
     properties = attributeList();
-                for (Element element : edges) {
+                for (GraphElement element : edges) {
                         Edge e = (Edge) element;
                         for (Property property : properties) {
                                 e.setAttribute(property);

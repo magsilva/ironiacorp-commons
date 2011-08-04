@@ -29,13 +29,14 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import com.ironiacorp.graph.rendering.RenderingDescription;
+import com.ironiacorp.graph.model.Property.PropertyType;
+import com.ironiacorp.graph.model.basic.BasicGraphElement;
 
 public abstract class ElementTest {
 
-	protected Element element;
+	protected BasicGraphElement element;
 	
-	protected Element element2;
+	protected BasicGraphElement element2;
 
 	@Test
 	public void testHashCode_NotSameAndDifferentObjects() {
@@ -51,32 +52,33 @@ public abstract class ElementTest {
 		assertEquals(element.hashCode(), element2.hashCode());
 	}
 
+	
 	@Test
 	public void testHashCode_NotSameButEqualComplexObjects() {
 		element.setId(1);
-		element.setLabel("test");
-		element.setAttribute("class", Element.class);
+		element.setAttribute(PropertyType.LABEL.name, "test");
+		element.setAttribute("class", BasicGraphElement.class);
 		element2.setId(1);
-		element2.setLabel("test");
-		element2.setAttribute("class", Element.class);
+		element2.setAttribute(PropertyType.LABEL.name, "test");
+		element2.setAttribute("class", BasicGraphElement.class);
 		assertEquals(element.hashCode(), element2.hashCode());
 	}
 
 	@Test
 	public void testHashCode_NotSameButDifferentComplexObjectsYetSameHashCode() {
 		element.setId(1);
-		element.setLabel("test");
+		element.setAttribute(PropertyType.LABEL.name, "test");
 		element.setAttribute("color", "blue");
 		element2.setId(1);
-		element2.setLabel("test");
-		element2.setAttribute("class", Element.class);
+		element2.setAttribute(PropertyType.LABEL.name, "test");
+		element2.setAttribute("class", BasicGraphElement.class);
 		assertEquals(element.hashCode(), element2.hashCode());
 	}
 
 	@Test
 	public void testEquals_Null() {
 		element.setId(1);
-		element.setLabel("test");
+		element.setAttribute(PropertyType.LABEL.name, "test");
 		element.setAttribute("color", "blue");
 		assertFalse(element.equals(null));
 	}
@@ -84,7 +86,7 @@ public abstract class ElementTest {
 	@Test
 	public void testEquals_Same() {
 		element.setId(1);
-		element.setLabel("test");
+		element.setAttribute(PropertyType.LABEL.name, "test");
 		element.setAttribute("color", "blue");
 		assertEquals(element, element);
 	}
@@ -92,7 +94,7 @@ public abstract class ElementTest {
 	@Test
 	public void testEquals_ObjectDifferentClass() {
 		element.setId(1);
-		element.setLabel("test");
+		element.setAttribute(PropertyType.LABEL.name, "test");
 		element.setAttribute("color", "blue");
 		assertFalse(element.equals("test123"));
 	}
@@ -100,7 +102,7 @@ public abstract class ElementTest {
 	@Test
 	public void testEquals_Different_Id() {
 		element.setId(1);
-		element.setLabel("test");
+		element.setAttribute(PropertyType.LABEL.name, "test");
 		element.setAttribute("color", "blue");
 		element2.setId(2);
 		assertFalse(element.equals(element2));
@@ -109,41 +111,41 @@ public abstract class ElementTest {
 	@Test
 	public void testEquals_Different_Label() {
 		element.setId(1);
-		element.setLabel("123");
+		element.setAttribute(PropertyType.LABEL.name, "123");
 		element.setAttribute("color", "blue");
 		element2.setId(1);
-		element2.setLabel("test");
+		element2.setAttribute(PropertyType.LABEL.name, "test");
 		assertFalse(element.equals(element2));
 	}
 
 	@Test
 	public void testEquals_Different_Label_Null() {
 		element.setId(1);
-		element.setLabel(null);
+		element.setAttribute(PropertyType.LABEL.name, null);
 		element.setAttribute("color", "blue");
 		element2.setId(1);
-		element2.setLabel("test");
+		element2.setAttribute(PropertyType.LABEL.name, "test");
 		assertFalse(element.equals(element2));
 	}
 
 	@Test
 	public void testEquals_Different_Attributes() {
 		element.setId(1);
-		element.setLabel(null);
+		element.setAttribute(PropertyType.LABEL.name, null);
 		element.setAttributes(null);
 		element2.setId(1);
-		element2.setLabel(null);
+		element2.setAttribute(PropertyType.LABEL.name, null);
 		assertFalse(element.equals(element2));
 	}
 
 	@Test
 	public void testEquals_NotSameButDifferentComplexObjectsYetSameHashCode() {
 		element.setId(1);
-		element.setLabel("test");
+		element.setAttribute(PropertyType.LABEL.name, "test");
 		element.setAttribute("color", "blue");
 		element2.setId(1);
-		element2.setLabel("test");
-		element2.setAttribute("class", Element.class);
+		element2.setAttribute(PropertyType.LABEL.name, "test");
+		element2.setAttribute("class", BasicGraphElement.class);
 		assertFalse(element.equals(element2));
 		assertTrue(element.equals(element2, true));
 	}
@@ -169,21 +171,21 @@ public abstract class ElementTest {
 
 	@Test
 	public void testGetLabel_InitialValue() {
-		assertNull(element.getLabel());
+		assertNull(element.getAttribute(PropertyType.LABEL.name));
 	}
 
 	@Test
 	public void testGetLabel() {
-		element.setLabel("test");
-		assertEquals("test", element.getLabel());
+		element.setAttribute(PropertyType.LABEL.name, "test");
+		assertEquals("test", element.getAttribute(PropertyType.LABEL.name));
 	}
 
 	@Test
 	public void testSetLabel() {
-		element.setLabel("test");
-		assertEquals("test", element.getLabel());
-		element.setLabel("123");
-		assertEquals("123", element.getLabel());
+		element.setAttribute(PropertyType.LABEL.name, "test");
+		assertEquals("test", element.getAttribute(PropertyType.LABEL.name));
+		element.setAttribute(PropertyType.LABEL.name, "123");
+		assertEquals("123", element.getAttribute(PropertyType.LABEL.name));
 	}
 
 	@Test
@@ -219,18 +221,5 @@ public abstract class ElementTest {
 		element.setAttribute("test", "123");
 		Object result = element.getAttribute("test");
 		assertEquals("123", result);
-	}
-
-	@Test
-	public void testGetRenderingDescription_Initial() {
-		assertNull(element.getRenderingDescription());
-	}
-
-	@Test
-	public void testSetRenderingDescription() {
-		RenderingDescription rd = new RenderingDescription();
-		element.setRenderingDescription(rd);
-		assertNotNull(element.getRenderingDescription());
-		assertSame(rd, element.getRenderingDescription());
 	}
 }

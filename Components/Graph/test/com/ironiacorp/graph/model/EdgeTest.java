@@ -24,6 +24,9 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.ironiacorp.graph.model.basic.BasicEdge;
+import com.ironiacorp.graph.model.basic.BasicNode;
+
 public class EdgeTest extends ElementTest
 {
 	protected Edge edge;
@@ -32,11 +35,11 @@ public class EdgeTest extends ElementTest
 	
 	@Before
 	public void setUp() throws Exception {
-		element = new Edge();
-		element2 = new Edge();
+		element = new BasicEdge();
+		element2 = new BasicEdge();
 		
-		edge = (Edge) element;
-		edge2 = (Edge) element2;
+		edge = (BasicEdge) element;
+		edge2 = (BasicEdge) element2;
 	}
 
 	@Test
@@ -53,7 +56,7 @@ public class EdgeTest extends ElementTest
 	{
 		Set<Node> nodesBefore;
 		Set<Node> nodesAfter;
-		Node node = new Node();
+		Node node = new BasicNode();
 
 		nodesBefore = edge.getNodes();
 		assertTrue(edge.addNode(node));
@@ -70,7 +73,7 @@ public class EdgeTest extends ElementTest
 		Set<Node> nodes = new HashSet<Node>();
 
 		nodesBefore = edge.getNodes();
-		assertTrue(nodes.add(new Node()));
+		assertTrue(nodes.add(new BasicNode()));
 		edge.setNodes(nodes);
 		assertNotSame(nodesBefore, edge.getNodes());
 		assertSame(nodes, edge.getNodes());
@@ -79,7 +82,7 @@ public class EdgeTest extends ElementTest
 	@Test
 	public void testRemoveNode()
 	{
-		Node node = new Node();
+		BasicNode node = new BasicNode();
 		node.setId(3);
 		assertTrue(edge.addNode(node));
 		assertTrue(edge.contains(node));
@@ -90,7 +93,7 @@ public class EdgeTest extends ElementTest
 	@Test
 	public void testAddNode()
 	{
-		Node node = new Node();
+		BasicNode node = new BasicNode();
 		node.setId(3);
 		assertTrue(edge.addNode(node));
 		assertTrue(edge.contains(node));
@@ -99,7 +102,7 @@ public class EdgeTest extends ElementTest
 	@Test
 	public void testAddNode_DoubleAdd()
 	{
-		Node node = new Node();
+		BasicNode node = new BasicNode();
 		node.setId(3);
 		assertTrue(edge.addNode(node));
 		assertFalse(edge.addNode(node));
@@ -109,7 +112,7 @@ public class EdgeTest extends ElementTest
 	@Test
 	public void testFindNode()
 	{
-		Node node = new Node();
+		BasicNode node = new BasicNode();
 		node.setId(3);
 		assertTrue(edge.addNode(node));
 		assertSame(node, edge.findNode(3));

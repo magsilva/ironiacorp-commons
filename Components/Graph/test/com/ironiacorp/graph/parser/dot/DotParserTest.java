@@ -23,8 +23,9 @@ import java.util.Collection;
 
 import org.junit.Test;
 
-import com.ironiacorp.graph.model.Element;
 import com.ironiacorp.graph.model.Graph;
+import com.ironiacorp.graph.model.GraphElement;
+import com.ironiacorp.graph.model.basic.BasicGraphElement;
 
 public class DotParserTest
 {
@@ -33,8 +34,8 @@ public class DotParserTest
 		InputStream is =  Thread.currentThread().getContextClassLoader().getResourceAsStream("graphs/dot/graph_simple.dot");
 		DotParser parser = new DotParser(is);
 		Graph graph = parser.parse();
-		Collection<Element> elements;
-		Element element;
+		Collection<GraphElement> elements;
+		GraphElement element;
 		
 		elements = graph.findElementByLabel("0");
 		assertTrue(elements.size() == 1);

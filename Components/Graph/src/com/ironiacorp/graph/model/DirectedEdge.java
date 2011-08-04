@@ -16,12 +16,9 @@
 
 package com.ironiacorp.graph.model;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
-public class DirectedEdge extends Edge
+public interface DirectedEdge extends Edge
 {
 	public enum NodeType
 	{
@@ -30,100 +27,15 @@ public class DirectedEdge extends Edge
 		SOURCE_DEST,
 	}
 	
-	private Map<Node, NodeType> directions;
-	
-	public DirectedEdge()
-	{
-		directions = new HashMap<Node, DirectedEdge.NodeType>();
-	}
+	boolean addNode(Node node, NodeType type);
 
-	@Override
-	public void setNodes(Set<Node> nodes)
-	{
-		directions.clear();
-		super.setNodes(nodes);
-		for (Node node : nodes) {
-			directions.put(node, NodeType.SOURCE_DEST);
-		}
-		
-	}
+	boolean removeNode(Node node, NodeType type);
 
-	@Override
-	public boolean addNode(Node node)
-	{
-		boolean result = super.addNode(node);
-		directions.put(node, NodeType.SOURCE_DEST);
-		
-		return result;
-	}
+	Set<Node> getNodes(NodeType type);
+	
+	Set<Node> getSourceNodes(NodeType type);
+	
+	Set<Node> getDestinationNodes(NodeType type);
 
-	public boolean addNode(Node node, NodeType type)
-	{
-		if (node == null || type == null) {
-			throw new IllegalArgumentException(new NullPointerException());
-		}
-		
-		NodeType originalType = directions.get(node);
-		boolean found = super.contains(node);
-		boolean result = super.addNode(node);
-		if (originalType != NodeType.SOURCE_DEST) {
-			if (found == true) {
-				if (originalType != type) {
-					type = NodeType.SOURCE_DEST;
-					directions.put(node, type);
-					result |= true;
-				}
-			} else {
-				directions.put(node, type);
-				result |= true;
-			}
-		}
-
-		return result;
-	}
-	
-	@Override
-	public boolean removeNode(Node node)
-	{
-		directions.remove(node);
-		return super.removeNode(node);
-	}
-	
-	public boolean removeNode(Node node, NodeType type)
-	{
-		NodeType originalType = directions.get(node);
-		boolean result = false;
-		
-		if (type == NodeType.SOURCE_DEST || originalType == type) {
-			 result = removeNode(node);
-		} else {
-			if (originalType == NodeType.SOURCE_DEST) {
-				if (type == NodeType.SOURCE) {
-					directions.put(node,  NodeType.DEST);
-				} else {
-					directions.put(node,  NodeType.SOURCE);
-				}
-				result = true;
-			} 
-		}
-		
-		return result;
-	}
-	
-	public Set<Node> getNodes(NodeType type)
-	{
-		Set<Node> result = new HashSet<Node>();
-		for (Node node : directions.keySet()) {
-			NodeType nodeType = directions.get(node);
-			if (nodeType == type || nodeType == NodeType.SOURCE_DEST) {
-				result.add(node);
-			}
-		}
-		return result;
-	}
-	
-	public NodeType getType(Node node)
-	{
-		return directions.get(node);
-	}
+	NodeType getType(Node node);
 }

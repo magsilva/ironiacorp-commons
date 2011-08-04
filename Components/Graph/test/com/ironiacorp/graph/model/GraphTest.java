@@ -20,12 +20,15 @@ import static org.junit.Assert.*;
 
 import org.junit.Before;
 
+import com.ironiacorp.graph.model.basic.BasicGraph;
+
+
 public class GraphTest extends ElementTest
 {
 	@Before
 	public void setUp() throws Exception {
-		element = new Graph();
-		element2 = new Graph();
+		element = new BasicGraph();
+		element2 = new BasicGraph();
 	}
 
 }

@@ -16,9 +16,6 @@
 
 package com.ironiacorp.graph.model;
 
-/**
- * Graph node.
- */
-public class Node extends Element
+public interface Node extends GraphElement
 {
 }

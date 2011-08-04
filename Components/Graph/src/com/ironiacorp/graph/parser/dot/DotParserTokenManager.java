@@ -18,6 +18,8 @@
 package com.ironiacorp.graph.parser.dot;
 import java.util.*;
 import com.ironiacorp.graph.model.*;
+import com.ironiacorp.graph.model.Property.PropertyType;
+import com.ironiacorp.graph.model.basic.*;
 
 /** Token Manager. */
 class DotParserTokenManager implements DotParserConstants

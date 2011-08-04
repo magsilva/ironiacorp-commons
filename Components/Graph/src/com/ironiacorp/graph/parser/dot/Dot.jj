@@ -33,6 +33,8 @@ package com.ironiacorp.graph.parser.dot;
 
 import java.util.*;
 import com.ironiacorp.graph.model.*;
+import com.ironiacorp.graph.model.Property.PropertyType;
+import com.ironiacorp.graph.model.basic.*;
 
 /**
  * Parser for graphs defined in the Graphviz format. Based on documentation
@@ -42,9 +44,9 @@ import com.ironiacorp.graph.model.*;
  */
 public class DotParser
 {
-	public class DefaultNodePropertiesElement extends Element {};
-	public class DefaultEdgePropertiesElement extends Element {};
-	public class DefaultGraphPropertiesElement extends Element {};
+	public class DefaultNodePropertiesElement extends BasicGraphElement {};
+	public class DefaultEdgePropertiesElement extends BasicGraphElement {};
+	public class DefaultGraphPropertiesElement extends BasicGraphElement {};
 }
 
 PARSER_END(DotParser)
@@ -106,8 +108,8 @@ Graph graphDef() :
 	DefaultNodePropertiesElement defaultNodeProperties = null;
 	DefaultEdgePropertiesElement defaultEdgeProperties = null;
 	DefaultGraphPropertiesElement defaultGraphProperties = null;
-	Graph graph = new Graph();
-	List<Element> elements;
+	Graph graph = new BasicGraph();
+	List<GraphElement> elements;
 	Token t;
 }
 {
@@ -116,10 +118,10 @@ Graph graphDef() :
 			<GRAPH> { graph.setType(Graph.GraphType.UNDIRECTED); }
 		|	<DIGRAPH> { graph.setType(Graph.GraphType.DIRECTED); }
 	)
-	(t = <IDENTIFIER> {	graph.setLabel(t.image);} )?
+	(t = <IDENTIFIER> {	graph.setAttribute(PropertyType.LABEL.name, t.image);} )?
 	elements = statementList()
 	{
-		for (Element e : elements) {
+		for (GraphElement e : elements) {
 			if (e instanceof DefaultNodePropertiesElement) {
 				defaultNodeProperties = (DefaultNodePropertiesElement) e;
 			}
@@ -131,7 +133,7 @@ Graph graphDef() :
 			}
 		}
 	
-		for (Element e : elements) {
+		for (GraphElement e : elements) {
 			Map<String, Object> nodeAttributes = (defaultNodeProperties == null) ? null : defaultNodeProperties.getAttributes();
 			Map<String, Object> edgeAttributes = (defaultEdgeProperties == null) ? null : defaultEdgeProperties.getAttributes();
 			Map<String, Object> graphAttributes = (defaultGraphProperties == null) ? null : defaultGraphProperties.getAttributes();
@@ -162,7 +164,7 @@ Graph graphDef() :
 		graph.removeElement(defaultEdgeProperties);
 		graph.removeElement(defaultGraphProperties);
 
-		for (Element e : elements) {
+		for (GraphElement e : elements) {
 			graph.addElement(e);
 		}
 	
@@ -170,10 +172,10 @@ Graph graphDef() :
 	}
 }
 
-List<Element> statementList() :
+List<GraphElement> statementList() :
 {
-	List<Element> elements = new ArrayList<Element>();
-	List<Element> statementElements;
+	List<GraphElement> elements = new ArrayList<GraphElement>();
+	List<GraphElement> statementElements;
 }
 {
 	<LBRACE>
@@ -194,10 +196,10 @@ List<Element> statementList() :
 }
 
 
-List<Element> statement() :
+List<GraphElement> statement() :
 {
-	List<Element> elements = null;
-	Element element = null;
+	List<GraphElement> elements = null;
+	GraphElement element = null;
 }
 {
 	(
@@ -211,7 +213,7 @@ List<Element> statement() :
 	)
 	{
 		if (element != null) {
-			elements = new ArrayList<Element>(1);
+			elements = new ArrayList<GraphElement>(1);
 			elements.add(element);
 		}
 
@@ -241,7 +243,7 @@ Property attributeDef() :
 {
 		name = <IDENTIFIER> <EQUALS> value = <STRING>
 		{
-			property = new Property();
+			property = new BasicProperty();
 			property.setName(name.image);
 			property.setValue(value.image.substring(1, value.image.length() - 1));
 			return property;
@@ -250,8 +252,8 @@ Property attributeDef() :
 
 Graph subgraphDef() :
 {
-	Graph graph = new Graph();
-	List<Element> elements;
+	Graph graph = new BasicGraph();
+	List<GraphElement> elements;
 	Token name;
 }
 {
@@ -259,12 +261,12 @@ Graph subgraphDef() :
 	(
 		name = <IDENTIFIER>
 		{
-			graph.setLabel(name.image);
+			graph.setAttribute(PropertyType.LABEL.name, name.image);
 		}
 	)?
 	elements = statement() 
 	{
-		for (Element e : elements) {
+		for (GraphElement e : elements) {
 			graph.addElement(e);
 		}
 		return graph;
@@ -319,12 +321,12 @@ DefaultGraphPropertiesElement defaultGraphDef() :
 
 Node nodeDef() :
 {
-	Node node = new Node();
+	Node node = new BasicNode();
 	List<Property> properties;
 	Token t = null;
 }
 {
-	t = <NODEIDENT>	{ node.setLabel(t.image); }
+	t = <NODEIDENT>	{ node.setAttribute(PropertyType.LABEL.name, t.image); }
 	properties = attributeList()
 	{
 		for (Property property : properties) {
@@ -334,9 +336,9 @@ Node nodeDef() :
 	}
 }
 
-List<Element> linkDef() :
+List<GraphElement> linkDef() :
 {
-	List<Element> edges = new ArrayList<Element>();
+	List<GraphElement> edges = new ArrayList<GraphElement>();
 	List<Property> properties;
 	DirectedEdge directedEdge = null;
 	Edge edge = null;
@@ -347,16 +349,16 @@ List<Element> linkDef() :
 }
 {
 	srcNodeName = <NODEIDENT> {
-		node1 = new Node();
-		node1.setLabel(srcNodeName.image);		
+		node1 = new BasicNode();
+		node1.setAttribute(PropertyType.LABEL.name, srcNodeName.image);		
 	}
 	(
-		(				<EDGE> { edge = new Edge(); }
-			|	<DIRECTED_EDGE> { directedEdge = new DirectedEdge(); edge = directedEdge; }
+		(				<EDGE> { edge = new BasicEdge(); }
+			|	<DIRECTED_EDGE> { directedEdge = new BasicDirectedEdge(); edge = directedEdge; }
 		)
 		destNodeName = <NODEIDENT> {
-			node2 = new Node();
-			node2.setLabel(destNodeName.image);		
+			node2 = new BasicNode();
+			node2.setAttribute(PropertyType.LABEL.name, destNodeName.image);		
 		}
 		{
 			if (directedEdge != null) {
@@ -373,7 +375,7 @@ List<Element> linkDef() :
 	)+
 	properties = attributeList()
 	{
-		for (Element element : edges) {
+		for (GraphElement element : edges) {
 			Edge e = (Edge) element;
 			for (Property property : properties) {
 				e.setAttribute(property);

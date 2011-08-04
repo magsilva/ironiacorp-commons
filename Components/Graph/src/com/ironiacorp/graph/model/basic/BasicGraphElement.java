@@ -14,29 +14,24 @@
  * limitations under the License.
  */
 
-package com.ironiacorp.graph.model;
+package com.ironiacorp.graph.model.basic;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import com.ironiacorp.graph.rendering.RenderingDescription;
+import com.ironiacorp.graph.model.Property;
+import com.ironiacorp.graph.model.Property.PropertyType;
 
 /**
  * Graph element. Any element in a graph (nodes, edges, and subgraphs) must
  * derive this class.
  */
-public abstract class Element
+public abstract class BasicGraphElement implements com.ironiacorp.graph.model.GraphElement
 {
 	/**
 	 * Unique element id.
 	 */
 	private int id;
-	
-	/**
-	 * Element label. It also works as an identifier, but we rely mostly on 'id' due
-	 * to performance and memory usage.
-	 */
-	private String label;
 	
 	/**
 	 * Attributes associated with this element. This attributes are related just to
@@ -46,170 +41,124 @@ public abstract class Element
 	private Map<String, Object> attributes;
 	
 	/**
-	 * Rendering related attributes.
-	 */
-	private RenderingDescription rendering;
-
-	/**
 	 * Creates a new element. The default id is zero (it is responsibility of the
 	 * application to set an unique id).
 	 */
-	public Element()
+	public BasicGraphElement()
 	{
 		attributes = new HashMap<String, Object>();
 	}
 	
-	/**
-	 * Get the element id.
-	 * 
-	 * @return Element id.
+	/* (non-Javadoc)
+	 * @see com.ironiacorp.graph.model.basic.GraphElement#getId()
 	 */
+	@Override
 	public int getId()
 	{
 		return id;
 	}
 
-	/**
-	 * Configure the element id.
-	 * 
-	 * @param id Element id.
+	/* (non-Javadoc)
+	 * @see com.ironiacorp.graph.model.basic.GraphElement#setId(int)
 	 */
+	@Override
 	public void setId(int id)
 	{
 		this.id = id;
 	}
 
-	/**
-	 * Get the label for this element.
-	 * 
-	 * @return Element label or null if no label has been set.
+	/* (non-Javadoc)
+	 * @see com.ironiacorp.graph.model.basic.GraphElement#setId(int)
 	 */
-	public String getLabel()
+	@Override
+	public void setId(String id)
 	{
-		return label;
+		this.id = id.hashCode();
 	}
-
-	/**
-	 * Configure the label for the element.
-	 * @param label
+	
+	/* (non-Javadoc)
+	 * @see com.ironiacorp.graph.model.basic.GraphElement#getAttributes()
 	 */
-	public void setLabel(String label)
-	{
-		this.label = label;
-	}
-
-	/**
-	 * Get all the attributes of the element.
-	 * 
-	 * @return Attributes of the element.
-	 */
+	@Override
 	public Map<String, Object> getAttributes()
 	{
 		return attributes;
 	}
 	
-	/**
-	 * Get one specific attribute of the element.
-	 * 
-	 * @param name Attribute name.
-	 * @return Attribute value.
+	/* (non-Javadoc)
+	 * @see com.ironiacorp.graph.model.basic.GraphElement#containsAttribute(java.lang.String)
 	 */
+	@Override
 	public boolean containsAttribute(String name)
 	{
 		return attributes.containsKey(name);
 	}
 
 	
-	/**
-	 * Get one specific attribute of the element.
-	 * 
-	 * @param name Attribute name.
-	 * @return Attribute value.
+	/* (non-Javadoc)
+	 * @see com.ironiacorp.graph.model.basic.GraphElement#getAttribute(java.lang.String)
 	 */
+	@Override
 	public Object getAttribute(String name)
 	{
+		if (attributes == null) {
+			return null;
+		}
 		return attributes.get(name);
 	}
 
-	/**
-	 * Set a whole set of attributes for the element (completely replacing the previous
-	 * set).
-	 * 
-	 * @param attributes New set of attributes.
+	/* (non-Javadoc)
+	 * @see com.ironiacorp.graph.model.basic.GraphElement#setAttributes(java.util.Map)
 	 */
+	@Override
 	public void setAttributes(Map<String, Object> attributes)
 	{
 		this.attributes = attributes;
 	}
 	
-	/**
-	 * Configure one specific attribute of the element.
-	 * 
-	 * @param name Attribute name.
-	 * @param value Attribute value
-	 * @return Previous attribute value (null in not previously set).
+	/* (non-Javadoc)
+	 * @see com.ironiacorp.graph.model.basic.GraphElement#setAttribute(java.lang.String, java.lang.Object)
 	 */
+	@Override
 	public Object setAttribute(String name, Object value)
 	{
 		return attributes.put(name, value);
 	}
 
-	/**
-	 * Configure one specific attribute of the element.
-	 * 
-	 * @param property Property to be set.
-
-	 * @return Previous attribute value (null in not previously set).
+	/* (non-Javadoc)
+	 * @see com.ironiacorp.graph.model.basic.GraphElement#setAttribute(com.ironiacorp.graph.model.basic.Property)
 	 */
+	@Override
 	public Object setAttribute(Property property)
 	{
 		return attributes.put(property.getName(), property.getValue());
 	}
 	
-	/**
-	 * Get the rendering description of the element.
-	 * 
-	 * @return Rendering description (can be null if not set).
-	 */
-	public RenderingDescription getRenderingDescription()
-	{
-		return rendering;
-	}
-
-	/**
-	 * Configure the rendering description of the element.
-	 * 
-	 * @param rendering Rendering description to be used for the element.
-	 */
-	public void setRenderingDescription(RenderingDescription rendering)
-	{
-		this.rendering = rendering;
-	}
-
 	@Override
 	public int hashCode()
 	{
 		final int prime = 31;
 		int result = 1;
+		String label = (String) getAttribute(PropertyType.LABEL.name);
+		
 		result = prime * result + id;
 		result = prime * result + ((label == null) ? 0 : label.hashCode());
 		return result;
 	}
 
+	/* (non-Javadoc)
+	 * @see com.ironiacorp.graph.model.basic.GraphElement#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj)
 	{
-		return equals(obj,false);
+		return equals(obj, false);
 	}
 	
-	/**
-	 * Compares an object with an element, but ignoring the attributes if it
-	 * is an graph element.
-	 * 
-	 * @param obj Object to be compared to.
-	 * @param ignoreAttributes Whether to ignore the attributes.
-	 * @return True if equal, false otherwise.
+	/* (non-Javadoc)
+	 * @see com.ironiacorp.graph.model.basic.GraphElement#equals(java.lang.Object, boolean)
 	 */
+	@Override
 	public boolean equals(Object obj, boolean ignoreAttributes)
 	{
 		if (this == obj)
@@ -218,15 +167,18 @@ public abstract class Element
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Element other = (Element) obj;
+		BasicGraphElement other = (BasicGraphElement) obj;
 
 		if (id != other.id)
 			return false;
 
+		String label = (String) getAttribute(PropertyType.LABEL.name);
+		String objlabel = (String) getAttribute(PropertyType.LABEL.name);
+
 		if (label == null) {
-			if (other.label != null)
+			if (objlabel != null)
 				return false;
-		} else if (!label.equals(other.label))
+		} else if (!label.equals(objlabel))
 			return false;
 
 		if (! ignoreAttributes) {

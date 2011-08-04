@@ -21,11 +21,13 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.ironiacorp.graph.model.DirectedEdge;
 import com.ironiacorp.graph.model.Graph;
-import com.ironiacorp.graph.model.Node;
 import com.ironiacorp.graph.model.DirectedEdge.NodeType;
 import com.ironiacorp.graph.model.Graph.GraphType;
+import com.ironiacorp.graph.model.Property.PropertyType;
+import com.ironiacorp.graph.model.basic.BasicDirectedEdge;
+import com.ironiacorp.graph.model.basic.BasicGraph;
+import com.ironiacorp.graph.model.basic.BasicNode;
 
 public class GraphvizGraphTest
 {
@@ -41,40 +43,40 @@ public class GraphvizGraphTest
 	{
 		String result;
 		Graph graph;
-		Node srcNode;
-		Node dstNode;
-		DirectedEdge edge;
+		BasicNode srcNode;
+		BasicNode dstNode;
+		BasicDirectedEdge edge;
 		
-		graph = new Graph();
+		graph = new BasicGraph();
 		graph.setType(GraphType.DIRECTED);
 		
 		// A
-		srcNode = new Node();
+		srcNode = new BasicNode();
 		srcNode.setId(0);
-		srcNode.setLabel("A");
+		srcNode.setAttribute(PropertyType.LABEL.name, "A");
 		graph.addElement(srcNode);
 
 		// B
-		dstNode = new Node();
+		dstNode = new BasicNode();
 		dstNode.setId(1);
-		dstNode.setLabel("B");
+		dstNode.setAttribute(PropertyType.LABEL.name, "B");
 		graph.addElement(dstNode);
 		
 		// A -> B
-		edge = new DirectedEdge();
+		edge = new BasicDirectedEdge();
 		edge.setId(2);
 		edge.addNode(srcNode, NodeType.SOURCE);
 		edge.addNode(dstNode, NodeType.DEST);
 		graph.addElement(edge);
 
 		// C
-		dstNode = new Node();
+		dstNode = new BasicNode();
 		dstNode.setId(3);
-		dstNode.setLabel("C");
+		dstNode.setAttribute(PropertyType.LABEL.name, "C");
 		graph.addElement(dstNode);
 
 		// A -> C
-		edge = new DirectedEdge();
+		edge = new BasicDirectedEdge();
 		edge.setId(4);
 		edge.addNode(srcNode, NodeType.SOURCE);
 		edge.addNode(dstNode, NodeType.DEST);

@@ -24,6 +24,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.ironiacorp.graph.model.DirectedEdge.NodeType;
+import com.ironiacorp.graph.model.basic.BasicDirectedEdge;
+import com.ironiacorp.graph.model.basic.BasicNode;
+
 
 public class DirectedEdgeTest extends EdgeTest
 {
@@ -34,20 +37,20 @@ public class DirectedEdgeTest extends EdgeTest
 	
 	@Before
 	public void setUp() throws Exception {
-		element = new DirectedEdge();
-		element2 = new DirectedEdge();
+		element = new BasicDirectedEdge();
+		element2 = new BasicDirectedEdge();
 		
 		edge = (Edge) element;
 		edge2 = (Edge) element2;
 		
-		dedge = (DirectedEdge) element;
-		dedge2 = (DirectedEdge) element2;
+		dedge = (BasicDirectedEdge) element;
+		dedge2 = (BasicDirectedEdge) element2;
 	}
 
 	@Test
 	public void addNode_CheckType()
 	{
-		Node node = new Node();
+		Node node = new BasicNode();
 		assertTrue(dedge.addNode(node));
 		assertEquals(NodeType.SOURCE_DEST, dedge.getType(node));
 	}
@@ -55,7 +58,7 @@ public class DirectedEdgeTest extends EdgeTest
 	@Test
 	public void addNode_SOURCE()
 	{
-		Node node = new Node();
+		Node node = new BasicNode();
 		assertTrue(dedge.addNode(node, NodeType.SOURCE));
 		assertEquals(NodeType.SOURCE, dedge.getType(node));
 	}
@@ -63,7 +66,7 @@ public class DirectedEdgeTest extends EdgeTest
 	@Test
 	public void addNode_DEST()
 	{
-		Node node = new Node();
+		BasicNode node = new BasicNode();
 		assertTrue(dedge.addNode(node, NodeType.DEST));
 		assertEquals(NodeType.DEST, dedge.getType(node));
 	}
@@ -71,7 +74,7 @@ public class DirectedEdgeTest extends EdgeTest
 	@Test
 	public void addNode_DoubleAddSameType()
 	{
-		Node node = new Node();
+		BasicNode node = new BasicNode();
 		assertTrue(dedge.addNode(node, NodeType.DEST));
 		assertFalse(dedge.addNode(node, NodeType.DEST));
 		assertEquals(NodeType.DEST, dedge.getType(node));
@@ -80,7 +83,7 @@ public class DirectedEdgeTest extends EdgeTest
 	@Test
 	public void addNode_DoubleAddDifferentType1()
 	{
-		Node node = new Node();
+		BasicNode node = new BasicNode();
 		assertTrue(dedge.addNode(node, NodeType.DEST));
 		assertTrue(dedge.addNode(node, NodeType.SOURCE));
 		assertEquals(NodeType.SOURCE_DEST, dedge.getType(node));
@@ -89,7 +92,7 @@ public class DirectedEdgeTest extends EdgeTest
 	@Test
 	public void addNode_DoubleAddDifferentType2()
 	{
-		Node node = new Node();
+		BasicNode node = new BasicNode();
 		assertTrue(dedge.addNode(node, NodeType.DEST));
 		assertTrue(dedge.addNode(node, NodeType.SOURCE_DEST));
 		assertEquals(NodeType.SOURCE_DEST, dedge.getType(node));
@@ -99,7 +102,7 @@ public class DirectedEdgeTest extends EdgeTest
 	@Test
 	public void addNode_DoubleAddDifferentType_NoModification1()
 	{
-		Node node = new Node();
+		BasicNode node = new BasicNode();
 		assertTrue(dedge.addNode(node, NodeType.SOURCE_DEST));
 		assertFalse(dedge.addNode(node, NodeType.SOURCE));
 		assertEquals(NodeType.SOURCE_DEST, dedge.getType(node));
@@ -108,7 +111,7 @@ public class DirectedEdgeTest extends EdgeTest
 	@Test
 	public void addNode_DoubleAddDifferentType_NoModification2()
 	{
-		Node node = new Node();
+		BasicNode node = new BasicNode();
 		assertTrue(dedge.addNode(node, NodeType.SOURCE_DEST));
 		assertFalse(dedge.addNode(node, NodeType.SOURCE_DEST));
 		assertEquals(NodeType.SOURCE_DEST, dedge.getType(node));
@@ -117,7 +120,7 @@ public class DirectedEdgeTest extends EdgeTest
 	@Test
 	public void addNode_SOURCE_DEST()
 	{
-		Node node = new Node();
+		BasicNode node = new BasicNode();
 		assertTrue(dedge.addNode(node, NodeType.SOURCE_DEST));
 		assertEquals(NodeType.SOURCE_DEST, dedge.getType(node));
 	}
@@ -125,7 +128,7 @@ public class DirectedEdgeTest extends EdgeTest
 	@Test
 	public void addNode_SOURCE_then_DEST()
 	{
-		Node node = new Node();
+		BasicNode node = new BasicNode();
 		assertTrue(dedge.addNode(node, NodeType.SOURCE));
 		assertTrue(dedge.addNode(node, NodeType.DEST));
 		assertEquals(NodeType.SOURCE_DEST, dedge.getType(node));
@@ -134,7 +137,7 @@ public class DirectedEdgeTest extends EdgeTest
 	@Test
 	public void addNode_DEST_then_SOURCE()
 	{
-		Node node = new Node();
+		BasicNode node = new BasicNode();
 		assertTrue(dedge.addNode(node, NodeType.DEST));
 		assertTrue(dedge.addNode(node, NodeType.SOURCE));
 		assertEquals(NodeType.SOURCE_DEST, dedge.getType(node));
@@ -143,7 +146,7 @@ public class DirectedEdgeTest extends EdgeTest
 	@Test
 	public void addNode_SOURCE_DEST_then_DEST()
 	{
-		Node node = new Node();
+		BasicNode node = new BasicNode();
 		assertTrue(dedge.addNode(node, NodeType.SOURCE_DEST));
 		assertFalse(dedge.addNode(node, NodeType.DEST));
 		assertEquals(NodeType.SOURCE_DEST, dedge.getType(node));
@@ -152,7 +155,7 @@ public class DirectedEdgeTest extends EdgeTest
 	@Test
 	public void addNode_SOURCE_DEST_then_SOURCE()
 	{
-		Node node = new Node();
+		BasicNode node = new BasicNode();
 		assertTrue(dedge.addNode(node, NodeType.SOURCE_DEST));
 		assertFalse(dedge.addNode(node, NodeType.SOURCE));
 		assertEquals(NodeType.SOURCE_DEST, dedge.getType(node));
@@ -161,14 +164,14 @@ public class DirectedEdgeTest extends EdgeTest
 	@Test
 	public void removeNode_NotFound()
 	{
-		Node node = new Node();
+		BasicNode node = new BasicNode();
 		assertFalse(dedge.removeNode(node, NodeType.SOURCE));
 	}
 
 	@Test
 	public void removeNode_SOURCE()
 	{
-		Node node = new Node();
+		BasicNode node = new BasicNode();
 		assertTrue(dedge.addNode(node, NodeType.SOURCE));
 		assertTrue(dedge.removeNode(node, NodeType.SOURCE));
 		assertFalse(dedge.contains(node));
@@ -177,7 +180,7 @@ public class DirectedEdgeTest extends EdgeTest
 	@Test
 	public void removeNode_DEST()
 	{
-		Node node = new Node();
+		BasicNode node = new BasicNode();
 		assertTrue(dedge.addNode(node, NodeType.DEST));
 		assertTrue(dedge.removeNode(node, NodeType.DEST));
 		assertFalse(dedge.contains(node));
@@ -186,7 +189,7 @@ public class DirectedEdgeTest extends EdgeTest
 	@Test
 	public void removeNode_SOURCE_DEST()
 	{
-		Node node = new Node();
+		BasicNode node = new BasicNode();
 		assertTrue(dedge.addNode(node, NodeType.SOURCE_DEST));
 		assertTrue(dedge.removeNode(node, NodeType.SOURCE_DEST));
 		assertFalse(dedge.contains(node));
@@ -195,7 +198,7 @@ public class DirectedEdgeTest extends EdgeTest
 	@Test
 	public void removeNode_SOURCE_DEST_from_SOURCE()
 	{
-		Node node = new Node();
+		BasicNode node = new BasicNode();
 		assertTrue(dedge.addNode(node, NodeType.SOURCE_DEST));
 		assertTrue(dedge.removeNode(node, NodeType.SOURCE));
 		assertTrue(dedge.contains(node));
@@ -205,7 +208,7 @@ public class DirectedEdgeTest extends EdgeTest
 	@Test
 	public void removeNode_SOURCE_DEST_from_DEST()
 	{
-		Node node = new Node();
+		BasicNode node = new BasicNode();
 		assertTrue(dedge.addNode(node, NodeType.SOURCE_DEST));
 		assertTrue(dedge.removeNode(node, NodeType.DEST));
 		assertTrue(dedge.contains(node));
@@ -215,7 +218,7 @@ public class DirectedEdgeTest extends EdgeTest
 	@Test
 	public void removeNode_SOURCE_DEST_then_SOURCE_DEST()
 	{
-		Node node = new Node();
+		Node node = new BasicNode();
 		assertTrue(dedge.addNode(node, NodeType.SOURCE_DEST));
 		assertTrue(dedge.removeNode(node, NodeType.SOURCE_DEST));
 		assertFalse(dedge.contains(node));
@@ -224,9 +227,9 @@ public class DirectedEdgeTest extends EdgeTest
 	@Test
 	public void getNodes_SOURCE()
 	{
-		Node node1 = new Node();
-		Node node2 = new Node();
-		Node node3 = new Node();
+		Node node1 = new BasicNode();
+		Node node2 = new BasicNode();
+		Node node3 = new BasicNode();
 		node1.setId(1);
 		node2.setId(2);
 		node3.setId(3);
@@ -240,9 +243,9 @@ public class DirectedEdgeTest extends EdgeTest
 	@Test
 	public void getNodes_NO_SOURCE()
 	{
-		Node node1 = new Node();
-		Node node2 = new Node();
-		Node node3 = new Node();
+		Node node1 = new BasicNode();
+		Node node2 = new BasicNode();
+		Node node3 = new BasicNode();
 		node1.setId(1);
 		node2.setId(2);
 		node3.setId(3);
@@ -255,9 +258,9 @@ public class DirectedEdgeTest extends EdgeTest
 	@Test
 	public void getNodes_NO_SOURCE_Only()
 	{
-		Node node1 = new Node();
-		Node node2 = new Node();
-		Node node3 = new Node();
+		Node node1 = new BasicNode();
+		Node node2 = new BasicNode();
+		Node node3 = new BasicNode();
 		node1.setId(1);
 		node2.setId(2);
 		node3.setId(3);
@@ -270,9 +273,9 @@ public class DirectedEdgeTest extends EdgeTest
 	@Test
 	public void getNodes_SOURCE_ONLY()
 	{
-		Node node1 = new Node();
-		Node node2 = new Node();
-		Node node3 = new Node();
+		Node node1 = new BasicNode();
+		Node node2 = new BasicNode();
+		Node node3 = new BasicNode();
 		node1.setId(1);
 		node2.setId(2);
 		node3.setId(3);
@@ -285,9 +288,9 @@ public class DirectedEdgeTest extends EdgeTest
 	@Test
 	public void getNodes_DEST()
 	{
-		Node node1 = new Node();
-		Node node2 = new Node();
-		Node node3 = new Node();
+		Node node1 = new BasicNode();
+		Node node2 = new BasicNode();
+		Node node3 = new BasicNode();
 		node1.setId(1);
 		node2.setId(2);
 		node3.setId(3);
@@ -301,9 +304,9 @@ public class DirectedEdgeTest extends EdgeTest
 	@Test
 	public void getNodes_DEST_ONLY()
 	{
-		Node node1 = new Node();
-		Node node2 = new Node();
-		Node node3 = new Node();
+		Node node1 = new BasicNode();
+		Node node2 = new BasicNode();
+		Node node3 = new BasicNode();
 		node1.setId(1);
 		node2.setId(2);
 		node3.setId(3);
@@ -316,9 +319,9 @@ public class DirectedEdgeTest extends EdgeTest
 	@Test
 	public void getNodes_SOURCE_DEST()
 	{
-		Node node1 = new Node();
-		Node node2 = new Node();
-		Node node3 = new Node();
+		Node node1 = new BasicNode();
+		Node node2 = new BasicNode();
+		Node node3 = new BasicNode();
 		node1.setId(1);
 		node2.setId(2);
 		node3.setId(3);

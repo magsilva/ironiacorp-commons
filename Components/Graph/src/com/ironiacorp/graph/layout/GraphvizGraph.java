@@ -20,11 +20,12 @@ import java.util.Iterator;
 
 import com.ironiacorp.graph.model.DirectedEdge;
 import com.ironiacorp.graph.model.Edge;
-import com.ironiacorp.graph.model.Element;
 import com.ironiacorp.graph.model.Graph;
+import com.ironiacorp.graph.model.GraphElement;
 import com.ironiacorp.graph.model.DirectedEdge.NodeType;
 import com.ironiacorp.graph.model.Graph.GraphType;
 import com.ironiacorp.graph.model.Node;
+import com.ironiacorp.graph.model.Property.PropertyType;
 
 public class GraphvizGraph
 {
@@ -42,7 +43,7 @@ public class GraphvizGraph
 			sb.append("graph G {\n");
 		}
 
-		for (Element element : graph.getElements()) {
+		for (GraphElement element : graph.getElements()) {
 			if (element instanceof Node) {
 				sb.append("\t");
 				sb.append(element.getId());
@@ -50,7 +51,7 @@ public class GraphvizGraph
 				sb.append("[");
 				sb.append("label=");
 				sb.append("\"");
-				sb.append(element.getLabel());
+				sb.append((String) element.getAttribute(PropertyType.LABEL.name));
 				sb.append("\"");
 				sb.append("];\n");
 			} else if (element instanceof Edge) {
@@ -74,12 +75,12 @@ public class GraphvizGraph
 						}
 						sb.append(" ");
 						sb.append("}");
-						if (element.getLabel() != null) {
+						if ((String) element.getAttribute(PropertyType.LABEL.name) != null) {
 							sb.append(" ");
 							sb.append("[");
 							sb.append("label=");
 							sb.append("\"");
-							sb.append(element.getLabel());
+							sb.append((String) element.getAttribute(PropertyType.LABEL.name));
 							sb.append("\"");
 							sb.append("]");
 						}
@@ -94,12 +95,12 @@ public class GraphvizGraph
 								sb.append(" -- ");
 							}
 						}
-						if (element.getLabel() != null) {
+						if ((String) element.getAttribute(PropertyType.LABEL.name) != null) {
 							sb.append(" ");
 							sb.append("[");
 							sb.append("label=");
 							sb.append("\"");
-							sb.append(element.getLabel());
+							sb.append((String) element.getAttribute(PropertyType.LABEL.name));
 							sb.append("\"");
 							sb.append("]");
 						}
