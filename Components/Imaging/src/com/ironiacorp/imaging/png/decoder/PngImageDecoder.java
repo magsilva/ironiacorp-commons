@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-package com.ironiacorp.imaging;
+package com.ironiacorp.imaging.png.decoder;
 
-import java.awt.image.BufferedImage;
+import com.ironiacorp.imaging.ImageDecoder;
 
-public interface ImageEncoder
+public interface PngImageDecoder extends ImageDecoder
 {
-	byte[] encode(BufferedImage image);
 }

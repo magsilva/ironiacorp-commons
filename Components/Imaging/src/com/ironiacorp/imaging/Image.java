@@ -18,7 +18,17 @@ package com.ironiacorp.imaging;
 
 import java.awt.image.BufferedImage;
 
-public interface ImageEncoder
+public interface Image
 {
-	byte[] encode(BufferedImage image);
+	BufferedImage getBufferedImage();
+	
+	int getBitDepth();
+
+	int getWidth();
+	
+	int getHeight();
+	
+	double getResolutionX();
+	
+	double getResolutionY();
 }

@@ -5,7 +5,7 @@
 
 	<groupId>ironiacorp</groupId>
 	<artifactId>commons-imaging</artifactId>
-	<version>1.0.0</version>
+	<version>1.2.0</version>
 	<packaging>jar</packaging>
 
 	<name>Ironia-Imaging</name>
@@ -100,6 +100,7 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>[4.0,)</version>
+			<type>jar</type>
 			<scope>test</scope>
 		</dependency>
 
@@ -123,6 +124,16 @@
 			<groupId>com.sixlegs</groupId>
 			<artifactId>javapng</artifactId>
 			<version>[2.0,)</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		
+					
+		<dependency>
+			<groupId>rsbweb.nih.gov</groupId>
+			<artifactId>ij</artifactId>
+			<version>[1.45,)</version>
+			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
 	</dependencies>
@@ -141,12 +152,14 @@
 		<resources>
 			<resource>
 				<directory>${project.basedir}/resources</directory>
+				<filtering>false</filtering>
 			</resource>
 		</resources>
 	
 		<testResources>
 			<testResource>
 				<directory>${project.basedir}/test-resources</directory>
+				<filtering>false</filtering>
 			</testResource>
 		</testResources>
 
@@ -164,8 +177,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
-	<reporting>
-		<outputDirectory>site</outputDirectory>
-	</reporting>
 </project>
