@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.ironiacorp.introspector.MethodIntrospector;
 import com.ironiacorp.introspector.ObjectIntrospector;
 import com.ironiacorp.string.StringUtil;
 
@@ -66,9 +67,9 @@ public class DbMappings
 		for (Method m : methods) {
 			String key = null;
 			Object value = null;
-			if (m.getName().startsWith(ObjectIntrospector.GETTER)) {
+			if (m.getName().startsWith(MethodIntrospector.BeanMethodType.GETTER.prefix)) {
 				key = m.getName();
-				key = key.substring(ObjectIntrospector.GETTER.length());
+				key = key.substring(MethodIntrospector.BeanMethodType.GETTER.prefix.length());
 				value = StringUtil.findSimilar(fieldsMap.keySet(), key);
 				if (value != null) {
 					key = fieldsMap.get(value);
@@ -119,11 +120,11 @@ public class DbMappings
 		}
 		
 		for (Method m : methods) {
-			if (m.getName().startsWith(ObjectIntrospector.SETTER)) {
+			if (m.getName().startsWith(MethodIntrospector.BeanMethodType.SETTER.prefix)) {
 				String key = m.getName();
 				String field = null;
 				
-				key = key.substring(ObjectIntrospector.SETTER.length());
+				key = key.substring(MethodIntrospector.BeanMethodType.SETTER.prefix.length());
 				field = StringUtil.findSimilar(propertyFields.keySet(), key);
 				if (field != null) {
 					map.put(propertyFields.get(field), m);
@@ -167,11 +168,11 @@ public class DbMappings
 		}
 		
 		for (Method m : methods) {
-			if (m.getName().startsWith(ObjectIntrospector.GETTER)) {
+			if (m.getName().startsWith(MethodIntrospector.BeanMethodType.GETTER.prefix)) {
 				String key = m.getName();
 				String field = null;
 				
-				key = key.substring(ObjectIntrospector.GETTER.length());
+				key = key.substring(MethodIntrospector.BeanMethodType.GETTER.prefix.length());
 				field = StringUtil.findSimilar(propertyFields.keySet(), key);
 				if (field != null) {
 					map.put(propertyFields.get(field), m);

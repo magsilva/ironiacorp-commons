@@ -92,7 +92,8 @@ public abstract class GenericDAO<K extends Serializable, T> implements DAO<K, T>
 	public List<T> findByExample(T example)
 	{
 		ObjectIntrospector oi = new ObjectIntrospector();
-		return findByProperties(oi.mapBean(example));
+		oi.setObject(example);
+		return findByProperties(oi.map());
 	}
 	
 	public abstract List<T> findByProperties(Map<String, Object> properties);

@@ -5,7 +5,7 @@
 
 	<groupId>ironiacorp</groupId>
 	<artifactId>commons-persistence</artifactId>
-	<version>1.2.0</version>
+	<version>1.2.1</version>
 	<packaging>jar</packaging>
 
 	<name>Ironia-Persistence</name>
@@ -202,7 +202,7 @@
 		<dependency>
 			<groupId>ironiacorp</groupId>
 			<artifactId>commons-introspector</artifactId>
-			<version>[1.4.0,)</version>
+			<version>[1.5.0,)</version>
 		</dependency>
 
 		<dependency>
