@@ -95,22 +95,36 @@ public class ObjectIntrospectorTest
 	@Test
 	public void testIgnoredProperties()
 	{
+		bean = new DummyBean();
+		oi.setObject(bean);
 		Object[] expectedIgnoredProperties = oi.getPropertiesNameFromMethod();
 		Object[] ignoredProperties = oi.IGNORED_PROPERTIES;
 		assertTrue(ArrayUtil.equalIgnoreOrder(expectedIgnoredProperties, ignoredProperties));
 	}
 	
 	@Test
+	public void testGetPropertyValue()
+	{
+		bean = new DummyBean();
+		bean.setName("Test 1 2 3");
+		oi.setObject(bean);
+		Object result = oi.getProperty("name");
+		assertEquals("Test 1 2 3", result);
+	}
+	
+	@Test
 	public void testMapBean1()
 	{
-		Map mapping = oi.mapBean(bean);
+		oi.setObject(bean);
+		Map mapping = oi.map();
 		assertEquals(goodBeanMapping, mapping);
 	}
 
 	@Test
 	public void testMapBean2()
 	{
-		assertFalse(badBeanMapping.equals(oi.mapBean(bean)));
+		oi.setObject(bean);
+		assertFalse(badBeanMapping.equals(oi.map()));
 	}
 
 	
@@ -118,29 +132,8 @@ public class ObjectIntrospectorTest
 	@Test
 	public void testMapBeanUsingFieldsObject()
 	{
-		Map mapping = oi.mapBean(bean);
+		oi.setObject(bean);
+		Map mapping = oi.map();
 		assertEquals(goodBeanMapping, mapping);
 	}
-	
-	
-	/*
-	int baseNameSize = dir.getName().length();
-		String className = dir.getName().substring(baseNameSize);
-		className = className.replaceAll(File.separator, ReflectionUtil.PACKAGE_DELIMITER);
-		if (className.endsWith(ReflectionUtil.CLASS_FILE_EXTENSION)) {
-			className = className.substring(0, className.lastIndexOf(ReflectionUtil.CLASS_FILE_EXTENSION));
-		}
-		if (className.endsWith(ReflectionUtil.JAVA_FILE_EXTENSION)) {
-			className = className.substring(0, className.lastIndexOf(ReflectionUtil.JAVA_FILE_EXTENSION));
-		}
-		
-	 */
-	
-	@Ignore
-	@Test
-	public void testToString()
-	{
-		assertEquals("com.ironiacorp.Test", oi.toString("/arg", "/arg/com/ironiacorp/Test.java"));
-	}
-
 }

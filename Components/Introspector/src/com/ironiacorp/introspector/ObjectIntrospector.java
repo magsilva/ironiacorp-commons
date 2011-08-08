@@ -16,7 +16,6 @@
 
 package com.ironiacorp.introspector;
 
-import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -25,6 +24,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import com.ironiacorp.datastructure.array.ArrayUtil;
+import com.ironiacorp.introspector.MethodIntrospector.BeanMethodType;
 import com.ironiacorp.string.StringUtil;
 
 public class ObjectIntrospector
@@ -41,54 +41,71 @@ public class ObjectIntrospector
 	*/
 	
 	/**
-	 * Prefix for methods that read a JavaBean property.
-	 */
-	public static String GETTER = "get";
-	
-	/**
-	 * Prefix for methods that write a JavaBean property.
-	 */
-	public static String SETTER = "set";
-
-	/**
 	 * Suffix for class attributes that contains the name of a class property.
 	 */
-	public static String FIELD_IDENTIFIER = "_FIELD";
+	public static final String FIELD_IDENTIFIER = "_FIELD";
 	
 	/**
 	 * Properties to be ignored (actually default Java object's properties.
 	 */
-	public static String[] IGNORED_PROPERTIES = {
+	public static final String[] IGNORED_PROPERTIES = {
 		"class"
 	};
-
-	public String getPropertyNameFromMethod(Method m)
-	{
-		if (! m.getName().startsWith(GETTER)) {
-			throw new IllegalArgumentException("Method is not a property getter");
-		}
-		
-		String property = m.getName();
-		property = property.substring(GETTER.length());
-		property = property.substring(0, 1).toLowerCase() + property.substring(1);
 	
-		return property;
+	private Object object;
+
+	
+	
+	
+	public Object getObject()
+	{
+		return object;
 	}
 
-	
+
+	public void setObject(Object object)
+	{
+		this.object = object;
+	}
+
+
 	public String[] getPropertiesNameFromMethod()
 	{
 		ArrayList<String> props = new ArrayList<String>();
 		Object bean = new Object();
 		Method[] methods = bean.getClass().getMethods();
+		MethodIntrospector mi = new MethodIntrospector();
 		
 		for (Method m : methods) {
+			mi.setMethod(m);
 			try {
-				props.add(getPropertyNameFromMethod(m));
+				String property = mi.getPropertyName();
+				if (property != null) {
+					props.add(property);
+				}
 			} catch (IllegalArgumentException iae) {
 			}
 		}
 		return props.toArray(new String[0]);
+	}
+
+	
+	/**
+	 * Get property value of the object.
+	 * 
+	 * @param name Property name.
+	 * @return Property value.
+	 * @throws IllegalArgumentException if the object have not got the property.
+	 */
+	public Object getProperty(String name)
+	{
+		Method method = getGetter(name);
+		try {
+			Object result = method.invoke(object);
+			return result;
+		} catch (Exception e) {
+			throw new IllegalArgumentException();
+		}
 	}
 	
 	
@@ -100,22 +117,21 @@ public class ObjectIntrospector
 	 * 
 	 * @return The mapping.
 	 */
-	public Map<String, Object> mapBean(Object bean)
+	public Map<String, Object> map()
 	{
 		HashMap<String, Object> map = new HashMap<String, Object>();
-		
-		Method[] methods = bean.getClass().getMethods();
+		Method[] methods = object.getClass().getMethods();
 		for (Method m : methods) {
-			if (m.getName().startsWith(GETTER)) {
+			if (m.getName().startsWith(BeanMethodType.GETTER.prefix)) {
 				String key = m.getName();
-				String temp = key.substring(GETTER.length());
+				String temp = key.substring(BeanMethodType.GETTER.prefix.length());
 				key = temp.substring(0, 1).toLowerCase() + temp.substring(1);
 
 				// Actually, we should be using the getDefaultPropertiesName() method
 				// to get the properties to be ignored, but we are faster this way.
 				if (! ArrayUtil.has(IGNORED_PROPERTIES, key)) {
 					try {
-						Object value = m.invoke(bean, (Object [])null); 
+						Object value = m.invoke(object, (Object [])null); 
 						map.put(key, value);
 					} catch (IllegalAccessException iae) {
 					} catch (InvocationTargetException ite) {
@@ -124,60 +140,61 @@ public class ObjectIntrospector
 			}
 		}
 		return map;
+
 	}
 
-	public Map<String, Method> mapBeanPropertiesToGetMethods(Object bean)
+	
+	public Method getGetter(String property)
+	{
+		try {
+			Method method = object.getClass().getMethod(BeanMethodType.GETTER.prefix + property.substring(0, 1).toUpperCase() + property.substring(1));
+			return method;
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	public Method getSetter(String property)
+	{
+		try {
+			Method method = object.getClass().getMethod(BeanMethodType.SETTER.prefix + property.substring(0, 1).toUpperCase() + property.substring(1));
+			return method;
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	
+	public Map<String, Method> mapPropertiesToGetMethods()
 	{
 		HashMap<String, Method> map = new HashMap<String, Method>();
-		
-		Method[] methods = bean.getClass().getMethods();
+		Method[] methods = object.getClass().getMethods();
+		MethodIntrospector mi = new MethodIntrospector();
 		for (Method m : methods) {
-			if (m.getName().startsWith(GETTER)) {
-				String key = m.getName();
-				String temp = key.substring(GETTER.length());
-				key = temp.substring(0, 1).toLowerCase() + temp.substring(1);
+			mi.setMethod(m);
+			String key = mi.getPropertyName(BeanMethodType.GETTER);
+			if (key != null) {
 				map.put(key, m);
 			}
 		}
 		return map;
 	}
 
-	public Map<String, Method> mapBeanPropertiesToSetMethods(Object bean)
+	public Map<String, Method> mapPropertiesToSetMethods()
 	{
 		HashMap<String, Method> map = new HashMap<String, Method>();
-		
-		Method[] methods = bean.getClass().getMethods();
+		Method[] methods = object.getClass().getMethods();
+		MethodIntrospector mi = new MethodIntrospector();
 		for (Method m : methods) {
-			if (m.getName().startsWith(SETTER)) {
-				String key = m.getName();
-				String temp = key.substring(SETTER.length());
-				key = temp.substring(0, 1).toLowerCase() + temp.substring(1);
+			mi.setMethod(m);
+			String key = mi.getPropertyName(BeanMethodType.SETTER);
+			if (key != null) {
 				map.put(key, m);
 			}
 		}
 		return map;
 	}
 
-	
-	public String toString(File dir, File filename)
-	{
-		return toString(dir.getName(), filename.getName());
-	}
-	
-	public String toString(String dir, String filename)
-	{
-		int baseNameSize = dir.length();
-		String className = dir.substring(baseNameSize);
-		className = className.replaceAll(File.separator, ReflectionUtil.PACKAGE_DELIMITER);
-		if (className.endsWith(ReflectionUtil.CLASS_FILE_EXTENSION)) {
-			className = className.substring(0, className.lastIndexOf(ReflectionUtil.CLASS_FILE_EXTENSION));
-		}
-		if (className.endsWith(ReflectionUtil.JAVA_FILE_EXTENSION)) {
-			className = className.substring(0, className.lastIndexOf(ReflectionUtil.JAVA_FILE_EXTENSION));
-		}
-		
-		return className;
-	}
 	
 	/**
 	 * Check if a given object is empty. Emptiness is defined as follows:
@@ -220,23 +237,28 @@ public class ObjectIntrospector
 	 * @param src The object the data will be copied from.
 	 * @param dest The object the data will be copied to.
 	 */
-	public void sync(Object src, Object dest)
+	public void sync(Object dest)
 	{
-		Class<?> srcClass = src.getClass();
+		Map<String, Method> srcData;
+		Map<String, Method> destData;
+		ObjectIntrospector oi;
 		Class<?> destClass = dest.getClass();
-		if (srcClass != destClass) {
+		
+		if (object.getClass() != destClass) {
 			throw new IllegalArgumentException("Objects are incompatible");
 		}
 		
-		Map<String, Method> srcData = mapBeanPropertiesToGetMethods(src);
-		Map<String, Method> destData = mapBeanPropertiesToSetMethods(dest);
+		oi = new ObjectIntrospector();
+		oi.setObject(dest);
+		srcData = mapPropertiesToGetMethods();
+		destData = oi.mapPropertiesToSetMethods();
 		
 		for (String key : srcData.keySet()) {
 			Method srcGetMethod = srcData.get(key);
 			Method destSetMethod = destData.get(key);
 			Object args[] = new Object[1]; 
 			try {
-				args[0] = srcGetMethod.invoke(src, (Object[]) null);
+				args[0] = srcGetMethod.invoke(object, (Object[]) null);
 				destSetMethod.invoke(dest, args);
 			} catch (IllegalAccessException e) {
 			} catch (InvocationTargetException e) {
