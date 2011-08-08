@@ -85,6 +85,22 @@
 				<updatePolicy>never</updatePolicy>
 			</releases>
 		</repository>
+		
+		<repository>
+			<id>LabES repository</id>
+			<url>http://www.ironiacorp.com/Apps/Artifactory/repo</url>
+			<releases>
+				<updatePolicy>never</updatePolicy>
+			</releases>
+		</repository>
+		
+		<repository>
+			<id>CodeHaus</id>
+			<url>http://repository.codehaus.org</url>
+				<releases>
+				<updatePolicy>never</updatePolicy>
+			</releases>
+		</repository>
 	</repositories>
 
 	<dependencies>
@@ -93,6 +109,34 @@
 			<artifactId>junit</artifactId>
 			<version>[4.0,)</version>
 			<scope>test</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>ironiacorp</groupId>
+			<artifactId>commons-introspector</artifactId>
+			<version>[1.5.0,)</version>
+		</dependency>
+		
+		
+		<!--
+			SLP support 
+		-->
+		<dependency>
+			<groupId>org.livetribe.slp</groupId>
+			<artifactId>livetribe-slp</artifactId>
+			<version>2.1.1</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.sblim</groupId>
+			<artifactId>cim-client</artifactId>
+			<version>2.1.6</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>ch.ethz.iks.slp</groupId>
+			<artifactId>jslp</artifactId>
+			<version>[1.1.1,)</version>
 		</dependency>
 	</dependencies>
 
