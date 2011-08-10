@@ -144,6 +144,16 @@
 			<artifactId>commons-collections</artifactId>
 			<version>3.2.1</version>
 		</dependency>
+		<dependency>
+			<groupId>ironiacorp</groupId>
+			<artifactId>commons-native</artifactId>
+			<version>[1.0.0,)</version>
+		</dependency>
+		<dependency>
+			<groupId>ironiacorp</groupId>
+			<artifactId>commons-systeminfo</artifactId>
+			<version>[0.1.1,)</version>
+		</dependency>
 	</dependencies>
 
 	<build>

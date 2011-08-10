@@ -1,7 +1,5 @@
 /*
- * The baseCode project
- * 
- * Copyright (c) 2008 University of British Columbia
+ * Copyright (c) 2011 Marco Aurélio Graciotto Silva <magsilva@ironiacorp.com>
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +17,10 @@
 
 package com.ironiacorp.statistics.r;
 
+import java.io.File;
+
+import com.ironiacorp.nativelib.LibraryLoader;
+
 /**
  * Get a connection to R, somehow (if possible).
  * 
@@ -27,43 +29,61 @@ package com.ironiacorp.statistics.r;
  */
 public class RConnectionFactory
 {
+	public static final String DEFAULT_HOSTNAME = "localhost";
+	
+	private String hostname =  DEFAULT_HOSTNAME;
+	
+    public String getHostname()
+	{
+		return hostname;
+	}
+
+	public void setHostname(String hostname)
+	{
+		this.hostname = hostname;
+	}
+
+
+	/**
+     * @param hostName The host to use for rserve connections, used only for RServe
+     * @return
+     */
+    public RClient getRConnection()
+    {
+        RClient rc;
+        
+        rc = getRServeConnection();
+        if (rc == null) {
+        	rc = getJRIClient();
+        }
+        return rc;
+    }
+
+	
     /**
      * @param hostName The host to use for rserve connections, used only for RServe
      * @return
      */
-    public static RClient getRConnection( String hostName ) {
-
+    public RClient getRServeConnection()
+    {
         RClient rc = null;
-
         try {
-            rc = new RServeClient( hostName );
-        } catch ( Exception e ) {
-            // OK, just that RServe is not available.
+            rc = new RServeClient(hostname);
+        } catch (Exception e) {
         }
-
-        if ( rc == null ) {
-            rc = getJRIClient();
-            if ( rc != null ) {
-                return rc;
-            }
-        }
-
         return rc;
     }
 
     /**
-     * Get connection; if Rserve is used, connect to localhost.
-     * 
+     * Opens a connection to R using the native library.
      * @return
      */
-    public static RClient getRConnection() {
-        return getRConnection( "localhost" );
-    }
-
-    /**
-     * @return
-     */
-    private static RClient getJRIClient() {
+    public RClient getJRIClient()
+    {
+    	LibraryLoader loader = new LibraryLoader();
+    	loader.addDefaultLibraryPath();
+    	loader.addLibraryPath(new File("/usr/lib/R/site-library/rJava/jri/"));
+    	loader.load("jri");
         RClient j = new JRIClient();
         return j;
     }
