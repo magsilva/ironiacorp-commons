@@ -70,6 +70,15 @@ public class RConnectionFactory
         try {
             rc = new RServeClient(hostname);
         } catch (Exception e) {
+        	// Try once again if hostname == localhost
+        	if (DEFAULT_HOSTNAME.equals(hostname) || hostname == null) {
+        		try {
+        			RServe rserve = new RServe();
+        			rserve.start();
+                    rc = new RServeClient(hostname);
+        		} catch (Exception e2) {
+        		}
+        	}
         }
         return rc;
     }
