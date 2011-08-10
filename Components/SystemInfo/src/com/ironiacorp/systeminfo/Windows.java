@@ -23,6 +23,8 @@ public class Windows
 	public static final char UNIT_NAME_BEGIN = 'c';
     
 	public static final char UNIT_NAME_END = 'z';
+	
+	public static final String EXECUTABLE_PREFIX = ".exe";
 
 	
 	public boolean isSystemRoot(File file)
