@@ -90,8 +90,13 @@ public class RConnectionFactory
     public RClient getJRIClient()
     {
     	LibraryLoader loader = new LibraryLoader();
+    	String[] javaLibraryPath = System.getProperty("java.library.path").split(File.pathSeparator);
+    	
     	loader.addDefaultLibraryPath();
     	loader.addLibraryPath(new File("/usr/lib/R/site-library/rJava/jri/"));
+    	for (String path : javaLibraryPath) {
+    		loader.addLibraryPath(new File(path));
+    	}
     	loader.load("jri");
         RClient j = new JRIClient();
         return j;

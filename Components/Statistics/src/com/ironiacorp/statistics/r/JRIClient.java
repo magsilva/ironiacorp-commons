@@ -34,8 +34,8 @@ import com.ironiacorp.statistics.r.type.DoubleMatrixFactory;
 
 
 /**
- * R connection implementation that uses the dynamic library interface JRI. For this to work the user must have
- * libjri.so or jri.dll and libr.so in their java.library.path.
+ * R connection implementation that uses the dynamic library interface
+ * JRI (http://www.rforge.net/rJava/).
  * 
  * @author paul
  * @version $Id: JRIClient.java,v 1.3 2010/05/26 18:52:54 paul Exp $
