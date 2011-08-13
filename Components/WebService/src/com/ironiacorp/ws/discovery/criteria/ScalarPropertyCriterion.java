@@ -18,11 +18,17 @@ package com.ironiacorp.ws.discovery.criteria;
 
 import com.ironiacorp.introspector.ObjectIntrospector;
 
-public class ScalarPropertyCriterion<T> implements Criterion<T>
+public class ScalarPropertyCriterion implements Criterion<Object>
 {
 	private String propertyName;
 	
 	private Object propertyValue;
+	
+	public ScalarPropertyCriterion(String propertyName, String propertyValue)
+	{
+		setPropertyName(propertyName);
+		setPropertyValue(propertyValue);
+	}
 	
 	public String getPropertyName()
 	{
@@ -45,11 +51,17 @@ public class ScalarPropertyCriterion<T> implements Criterion<T>
 	}
 
 	@Override
-	public boolean satisfies(T subject)
+	public boolean satisfies(Object subject)
 	{
 		ObjectIntrospector oi = new ObjectIntrospector();
+		Object value = null;
+		
 		oi.setObject(subject);
-		Object value = oi.getProperty(propertyName);
+		try {
+			value = oi.getProperty(propertyName);
+		} catch (Exception e) {
+			return false;
+		}
 	
 		return (propertyValue == value) || propertyValue.equals(value);
 	}

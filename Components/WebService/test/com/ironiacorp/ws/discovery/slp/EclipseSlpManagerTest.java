@@ -14,14 +14,28 @@
  * limitations under the License.
  */
 
-package com.ironiacorp.ws.discovery;
+package com.ironiacorp.ws.discovery.slp;
 
-import java.util.Set;
+import static org.junit.Assert.*;
 
-import com.ironiacorp.ws.Service;
-import com.ironiacorp.ws.discovery.criteria.Criterion;
+import org.junit.Before;
+import org.junit.Test;
 
-public interface ServiceDiscoverer
+public class EclipseSlpManagerTest
 {
-	Set<Service> find(Criterion... criteria);
+	private EclipseSlpManager discoverer;
+	
+	@Before
+	public void setUp() throws Exception
+	{
+		discoverer = new EclipseSlpManager();
+	}
+
+	@Test
+	public void test()
+	{
+		discoverer.addScope("cmapdp");
+		discoverer.find();
+	}
+
 }

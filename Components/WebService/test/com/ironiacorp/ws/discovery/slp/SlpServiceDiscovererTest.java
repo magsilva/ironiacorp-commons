@@ -5,6 +5,8 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.ironiacorp.ws.discovery.criteria.ScalarPropertyCriterion;
+
 public class SlpServiceDiscovererTest
 {
 	private SlpServiceDiscoverer disco;
@@ -12,12 +14,16 @@ public class SlpServiceDiscovererTest
 	@Before
 	public void setUp() throws Exception
 	{
+		disco = new EclipseSlpManager();
 	}
 
 	@Test
 	public void testDiscovery() throws Exception
 	{
-		disco.find("cmapV3");
+		ScalarPropertyCriterion criterion1 = new ScalarPropertyCriterion("scope", "cmapdp");
+		ScalarPropertyCriterion criterion2 = new ScalarPropertyCriterion("name", "cmapV3");
+		
+		disco.find(criterion1, criterion2);
 	}
 
 }

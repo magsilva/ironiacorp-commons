@@ -16,7 +16,21 @@
 
 package com.ironiacorp.ws;
 
+import java.net.URL;
+
 public interface Service
 {
-
+	String getName();
+	
+	void setName(String name);
+	
+	
+	String getDescription();
+	
+	void setDescription(String description);
+	
+	
+	URL getLocation();
+	
+	void setLocation(URL url);
 }

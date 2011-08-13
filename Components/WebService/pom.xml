@@ -136,7 +136,13 @@
 		<dependency>
 			<groupId>ch.ethz.iks.slp</groupId>
 			<artifactId>jslp</artifactId>
-			<version>[1.1.1,)</version>
+			<version>[2.0.0,)</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>ironiacorp</groupId>
+			<artifactId>commons-errorhandler</artifactId>
+			<version>2.0.0</version>
 		</dependency>
 	</dependencies>
 
@@ -154,12 +160,14 @@
 		<resources>
 			<resource>
 				<directory>${project.basedir}/resources</directory>
+				<filtering>false</filtering>
 			</resource>
 		</resources>
 
 		<testResources>
 			<testResource>
 				<directory>${project.basedir}/test-resources</directory>
+				<filtering>false</filtering>
 			</testResource>
 		</testResources>
 
@@ -177,8 +185,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
-	<reporting>
-		<outputDirectory>site</outputDirectory>
-	</reporting>
 </project>

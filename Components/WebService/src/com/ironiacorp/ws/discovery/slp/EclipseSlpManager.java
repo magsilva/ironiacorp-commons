@@ -1,61 +1,111 @@
+/*
+ * Copyright (C) 2011 Marco Aurélio Graciotto Silva <magsilva@ironiacorp.com>
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.ironiacorp.ws.discovery.slp;
 
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
+
+import com.ironiacorp.ws.Service;
+import com.ironiacorp.ws.discovery.criteria.Criterion;
+import com.ironiacorp.ws.discovery.criteria.ScalarPropertyCriterion;
 
 import ch.ethz.iks.slp.Locator;
 import ch.ethz.iks.slp.ServiceLocationException;
-import ch.ethz.iks.slp.ServiceLocationManager;
 import ch.ethz.iks.slp.ServiceType;
+import ch.ethz.iks.slp.ServiceURL;
+import ch.ethz.iks.slp.impl.ServiceLocationManager;
 
 /**
  * Formely jSLP (http://jslp.sourceforge.net/), the code has been donated to
  * the Eclipse ECF Project.
  */
-public class EclipseSlpManager
+public class EclipseSlpManager implements SlpServiceDiscoverer
 {
-	/*
-	public void discoverServices(String serviceName) throws Exception
-	{
-		ServiceLocationEnumeration sle = null;
-		Locator locator = ServiceLocationManager.getLocator(new Locale("en"));
-		List<String> scopes = new ArrayList<String>();
-		scopes.add("default");
-		scopes.add("cmapdp");
-		sle = locator.findServiceTypes(null, scopes);
-		while (sle.hasMoreElements()) {
-			ServiceURL foundService = (ServiceURL) sle.nextElement();
-			System.out.println(foundService);
-		}
-		
-		// find all services of type "test" that have attribute "cool=yes"
-		sle = locator.findServices(new ch.ethz.iks.slp.ServiceType(serviceName), null, null);
-		while (sle.hasMoreElements()) {
-			ServiceURL foundService = (ServiceURL) sle.nextElement();
-			System.out.println(foundService);
-		}
-		
-		ServiceURL url = new ServiceURL("service:service-agent://10.6.208.61:4447");
-		System.out.println(url.getPort());
-		System.out.println(url.getServiceType().toString());
-	}
-	*/
+	private Set<String> scopes;
 	
-	public void discoverServices3(String serviceName) throws Exception
+	int port = SlpServiceDiscoverer.DEFAULT_PORT;
+
+	public EclipseSlpManager()
 	{
-		Locator locator = ServiceLocationManager.getLocator(Locale.ENGLISH);
-        try {
-                List<String> scopes = new ArrayList<String>();
-        		scopes.add("cmapdp");
-        		
-                Enumeration<?> enumeration = locator.findServices(new ServiceType(serviceName), scopes, null);
-                while (enumeration.hasMoreElements()) {
-                        System.out.println(enumeration.nextElement().toString());
-                }
-         } catch (ServiceLocationException e) {
-                e.printStackTrace();
-        }
+		scopes = new HashSet<String>();
+	}
+
+	@Override
+	public void addScope(String scope)
+	{
+		scopes.add(scope);
+	}
+
+	@Override
+	public void removeScope(String scope)
+	{
+		scopes.remove(scope);
+	}
+
+	@Override
+	public Set<String> getScopes()
+	{
+		return scopes;
+	}
+
+
+	@Override
+	public void setPort(int port)
+	{
+		if (port > 0) {
+			this.port = port;
+		}
+	}
+
+	@Override
+	public int getPort()
+	{
+		return port;
+	}
+	
+	public Set<Service> find(Criterion... criteria)
+	{
+		try {
+			ServiceLocationManager locationManager = new ServiceLocationManager();
+			Locator locator = locationManager.getLocator(Locale.ENGLISH);
+			List<String> scopeList = new ArrayList<String>(scopes);
+			ServiceType serviceType = null;
+			for (Criterion<?> criterion : criteria) {
+				if (criterion instanceof ScalarPropertyCriterion) {
+					ScalarPropertyCriterion scalarCriterion = (ScalarPropertyCriterion) criterion;
+					if ("name".equals(scalarCriterion.getPropertyName())) {
+						serviceType = new ServiceType((String) scalarCriterion.getPropertyValue());
+					}
+				}
+			}
+
+			Enumeration<?> enumeration = locator.findServices(serviceType, scopeList, null);
+			while (enumeration.hasMoreElements()) {
+				ServiceURL service = (ServiceURL) enumeration.nextElement();
+				System.out.println(service.toString());
+			}
+		} catch (ServiceLocationException e) {
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 }
