@@ -49,12 +49,11 @@ public class ScalarPropertyCriterionTest
 		}
 	}
 	
-	private ScalarPropertyCriterion<Object> criterion;
+	private ScalarPropertyCriterion criterion;
 	
 	@Before
 	public void setUp() throws Exception
 	{
-		criterion = new ScalarPropertyCriterion<Object>();
 	}
 
 	@Test
