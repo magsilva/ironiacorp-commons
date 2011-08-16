@@ -69,6 +69,29 @@ public final class ArrayUtil
 	}
 
 	/**
+	 * Check if an array has the given int.
+	 * 
+	 * @param array The array we will search into.
+	 * @param object The integer to be found.
+	 * 
+	 * @return True if the integer was found in the array, False otherwise.
+	 */
+	public static boolean has(final int[] array, final int object)
+	{
+		if (array == null) {
+			return false;
+		}
+		
+		for (int i : array) {
+			if (i == object) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	/**
 	 * Create a copy of an array. It will not do a deep copy (the primitive values
 	 * and object references are copied to the targed array, but the objects refereed
 	 * by both arrays will be the same).
