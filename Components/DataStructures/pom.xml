@@ -5,7 +5,7 @@
 
 	<groupId>ironiacorp</groupId>
 	<artifactId>commons-datastructures</artifactId>
-	<version>1.6.3</version>
+	<version>1.6.5</version>
 	<packaging>jar</packaging>
 
 	<name>Ironia-DataStructures</name>
@@ -95,10 +95,6 @@
 		</repository>
 	</repositories>
 
-	<properties>
-		<sonar.host.url>http://www.ironiacorp.com/Apps/Sonar</sonar.host.url>
-	</properties>
-
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -108,15 +104,15 @@
 		</dependency>
 		
 		<dependency>
-    		<groupId>org.mockito</groupId>
-    		<artifactId>mockito-core</artifactId>
-    		<version>[1.8.5,)</version>
-    		<scope>test</scope>
+    			<groupId>org.mockito</groupId>
+    			<artifactId>mockito-core</artifactId>
+    			<version>[1.8.5,)</version>
+    			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
 	<build>
-		<finalName>${artifactId}-${version}</finalName>
+		<finalName>${project.artifactId}-${project.version}</finalName>
 
 		<directory>target</directory>
 
@@ -125,6 +121,21 @@
 
 		<outputDirectory>target/classes</outputDirectory>
 		<testOutputDirectory>target/test-classes</testOutputDirectory>
+
+ 		<resources>
+ 			<resource>
+ 				<directory>${project.basedir}/resources</directory>
+				<filtering>false</filtering>
+ 			</resource>
+ 		</resources>
+ 
+ 		<testResources>
+ 			<testResource>
+ 				<directory>${project.basedir}/test-resources</directory>
+				<filtering>false</filtering>
+ 			</testResource>
+ 		</testResources>
+
 
 		<plugins>
 			<plugin>
@@ -140,8 +151,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
-	<reporting>
-		<outputDirectory>site</outputDirectory>
-	</reporting>
 </project>
