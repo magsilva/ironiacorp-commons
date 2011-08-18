@@ -69,7 +69,7 @@ public final class ArrayUtil
 	}
 
 	/**
-	 * Check if an array has the given int.
+	 * Check if an array has the given integer.
 	 * 
 	 * @param array The array we will search into.
 	 * @param object The integer to be found.
@@ -77,6 +77,52 @@ public final class ArrayUtil
 	 * @return True if the integer was found in the array, False otherwise.
 	 */
 	public static boolean has(final int[] array, final int object)
+	{
+		if (array == null) {
+			return false;
+		}
+		
+		for (int i : array) {
+			if (i == object) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+
+	/**
+	 * Check if an array has the given short integer.
+	 * 
+	 * @param array The array we will search into.
+	 * @param object The short integer to be found.
+	 * 
+	 * @return True if the integer was found in the array, False otherwise.
+	 */
+	public static boolean has(final short[] array, final short object)
+	{
+		if (array == null) {
+			return false;
+		}
+		
+		for (int i : array) {
+			if (i == object) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+
+	/**
+	 * Check if an array has the given short integer.
+	 * 
+	 * @param array The array we will search into.
+	 * @param object The short integer to be found.
+	 * 
+	 * @return True if the integer was found in the array, False otherwise.
+	 */
+	public static boolean has(final byte[] array, byte object)
 	{
 		if (array == null) {
 			return false;
