@@ -95,10 +95,6 @@
 		</repository>
 	</repositories>
 
-	<properties>
-		<sonar.host.url>http://www.ironiacorp.com/Apps/Sonar</sonar.host.url>
-	</properties>
-
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -106,10 +102,16 @@
 			<version>[4.7,)</version>
 			<scope>test</scope>
 		</dependency>
+		
+		<dependency>
+			<groupId>ironiacorp</groupId>
+			<artifactId>finder</artifactId>
+			<version>[0.1.0,)</version>
+		</dependency>
 	</dependencies>
 
 	<build>
-		<finalName>${artifactId}-${version}</finalName>
+		<finalName>${project.artifactId}-${project.version}</finalName>
 
 		<directory>target</directory>
 
@@ -133,8 +135,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
-	<reporting>
-		<outputDirectory>site</outputDirectory>
-	</reporting>
 </project>
