@@ -14,12 +14,15 @@
  * limitations under the License.
  */
 
-package com.ironiacorp.systeminfo;
+package com.ironiacorp.computer;
 
 import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import com.ironiacorp.computer.OperationalSystem;
+import com.ironiacorp.computer.OperationalSystemDetector;
 
 // TODO: use the list at http://lopica.sourceforge.net/os.html
 public class OperationalSystemDetectorTest

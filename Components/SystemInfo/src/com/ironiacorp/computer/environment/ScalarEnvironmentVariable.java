@@ -14,13 +14,19 @@
  * limitations under the License.
  */
 
-package com.ironiacorp.systeminfo;
+package com.ironiacorp.computer.environment;
 
-public enum OperationalSystem
+public abstract class ScalarEnvironmentVariable extends EnvironmentVariable<String>
 {
-	Linux,
-	MacOS,
-	Solaris,
-	Unix,
-	Windows,
+	public ScalarEnvironmentVariable(String name) {
+		super(name);
+		parseScalar(readScalar());
+	}
+
+	protected abstract String readScalar();
+	
+	protected void parseScalar(String value)
+	{
+       	 setValue(value);
+	}
 }

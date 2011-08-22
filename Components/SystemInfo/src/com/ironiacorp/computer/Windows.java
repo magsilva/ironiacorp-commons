@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.ironiacorp.systeminfo;
+package com.ironiacorp.computer;
 
 import java.io.File;
 
