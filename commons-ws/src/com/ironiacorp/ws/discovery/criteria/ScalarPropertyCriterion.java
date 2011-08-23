@@ -18,6 +18,7 @@ package com.ironiacorp.ws.discovery.criteria;
 
 import com.ironiacorp.introspector.ObjectIntrospector;
 
+
 public class ScalarPropertyCriterion implements Criterion<Object>
 {
 	private String propertyName;
@@ -29,6 +30,11 @@ public class ScalarPropertyCriterion implements Criterion<Object>
 		setPropertyName(propertyName);
 		setPropertyValue(propertyValue);
 	}
+
+	public ScalarPropertyCriterion()
+	{
+	}
+
 	
 	public String getPropertyName()
 	{

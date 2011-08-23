@@ -19,6 +19,7 @@ package com.ironiacorp.ws.discovery.criteria;
 import static org.junit.Assert.*;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class ScalarPropertyCriterionTest
@@ -62,6 +63,7 @@ public class ScalarPropertyCriterionTest
 		Dummy dummy = new Dummy();
 		dummy.setName("Test");
 		dummy.setNumber(123);
+		criterion = new ScalarPropertyCriterion();
 		criterion.setPropertyName("name");
 		criterion.setPropertyValue("Test");
 		assertTrue(criterion.satisfies(dummy));
@@ -73,6 +75,7 @@ public class ScalarPropertyCriterionTest
 		Dummy dummy = new Dummy();
 		dummy.setName("Abc");
 		dummy.setNumber(123);
+		criterion = new ScalarPropertyCriterion();
 		criterion.setPropertyName("name");
 		criterion.setPropertyValue("Test");
 		assertFalse(criterion.satisfies(dummy));
@@ -81,6 +84,7 @@ public class ScalarPropertyCriterionTest
 	@Test
 	public void testSatisfies_Fail_Null()
 	{
+		criterion = new ScalarPropertyCriterion();
 		criterion.setPropertyName("name");
 		criterion.setPropertyValue("Test");
 		assertFalse(criterion.satisfies(null));

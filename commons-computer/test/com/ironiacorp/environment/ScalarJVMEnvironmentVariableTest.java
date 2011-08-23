@@ -1,5 +1,6 @@
 package com.ironiacorp.environment;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.ironiacorp.computer.environment.ScalarJVMEnvironmentVariable;
@@ -17,6 +18,7 @@ public class ScalarJVMEnvironmentVariableTest
 		assertNotNull(value);
 	}
 
+	@Ignore
 	@Test
 	public void testValidJVMEnvVar_Path()
 	{
@@ -26,6 +28,7 @@ public class ScalarJVMEnvironmentVariableTest
 		assertEquals("/opt/test.jar:/usr/lib", packages);
 	}
 	
+	@Ignore
 	@Test
 	public void testValidJVMEnvVar_Empty()
 	{

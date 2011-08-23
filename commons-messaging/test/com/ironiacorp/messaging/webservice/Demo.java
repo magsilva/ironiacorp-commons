@@ -8,13 +8,13 @@ import org.codehaus.xfire.service.binding.ObjectServiceFactory;
 import org.codehaus.xfire.service.invoker.BeanInvoker;
 
 
-public class Teste
+public class Demo
 {
 	XFireHttpServer server;
 	
 	public static void main(String[] args)
 	{
-		Teste starter = new Teste();
+		Demo starter = new Demo();
 		try {
 			starter.start();
 		} catch (Exception ex) {

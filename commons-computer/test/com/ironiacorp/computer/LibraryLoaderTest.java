@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.ironiacorp.nativelib;
+package com.ironiacorp.computer;
 
 import static org.junit.Assert.*;
 

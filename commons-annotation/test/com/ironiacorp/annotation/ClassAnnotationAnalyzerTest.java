@@ -27,8 +27,7 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.ironiacorp.collection.ArrayUtil;
-
+import com.ironiacorp.datastructure.array.ArrayUtil;
 
 public class ClassAnnotationAnalyzerTest
 {

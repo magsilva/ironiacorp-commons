@@ -29,8 +29,8 @@ import org.jinterop.winreg.JIPolicyHandle;
 import org.jinterop.winreg.JIWinRegFactory;
 
 import com.ironiacorp.io.IoUtil;
-import com.ironiacorp.systeminfo.OperationalSystem;
-import com.ironiacorp.systeminfo.OperationalSystemDetector;
+import com.ironiacorp.computer.OperationalSystem;
+import com.ironiacorp.computer.OperationalSystemDetector;
 
 /**
  * GraphViz Java API is a simple API to call dot from Java programs.
@@ -289,7 +289,6 @@ public class Graphviz
     			path = getGraphVizPathOnWindows();
     			break;
     		case Solaris:
-    		case Unix:
     		case Linux:
     			path = getGraphVizPathOnLinux();
     			break;

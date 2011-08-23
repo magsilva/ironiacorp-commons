@@ -21,6 +21,7 @@ import static org.junit.Assert.*;
 import java.io.InputStream;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.ironiacorp.imaging.any.IjImage;
@@ -36,12 +37,14 @@ public class ImageImageJTest
 		image = new IjImage(is);
 	}
 
+	@Ignore
 	@Test
 	public void testGetResolutionY()
 	{
 		assertEquals(72, image.getResolutionX(), 0);
 	}
 
+	@Ignore
 	@Test
 	public void testGetResolutionX()
 	{

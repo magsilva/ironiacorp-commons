@@ -19,7 +19,7 @@ package com.ironiacorp.statistics.r;
 
 import java.io.File;
 
-import com.ironiacorp.nativelib.LibraryLoader;
+import com.ironiacorp.computer.LibraryLoader;
 
 /**
  * Get a connection to R, somehow (if possible).

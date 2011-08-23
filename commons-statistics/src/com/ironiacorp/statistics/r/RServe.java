@@ -19,9 +19,9 @@ package com.ironiacorp.statistics.r;
 
 import java.io.File;
 
-import com.ironiacorp.systeminfo.OperationalSystem;
-import com.ironiacorp.systeminfo.OperationalSystemDetector;
-import com.ironiacorp.systeminfo.Windows;
+import com.ironiacorp.computer.OperationalSystem;
+import com.ironiacorp.computer.OperationalSystemDetector;
+import com.ironiacorp.computer.Windows;
 
 /**
  * Rserve (http://www.rforge.net/Rserve/) is a TCP/IP server which allows

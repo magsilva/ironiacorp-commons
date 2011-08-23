@@ -3,6 +3,7 @@ package com.ironiacorp.ws.discovery.slp;
 import static org.junit.Assert.*;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.ironiacorp.ws.discovery.criteria.ScalarPropertyCriterion;
@@ -17,6 +18,7 @@ public class SlpServiceDiscovererTest
 		disco = new EclipseSlpManager();
 	}
 
+	@Ignore
 	@Test
 	public void testDiscovery() throws Exception
 	{

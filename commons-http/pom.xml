@@ -3,89 +3,32 @@
 >
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>ironiacorp</groupId>
+	<parent>
+		<groupId>ironiacorp</groupId>
+		<artifactId>commons</artifactId>
+		<version>3.0.0</version>
+	</parent>
 	<artifactId>commons-http</artifactId>
-	<version>1.2.6</version>
 	<packaging>jar</packaging>
 
-	<name>Ironia-Http</name>
+	<name>IroniaCorp-Commons-Http</name>
 	<description>HTTP related utilities</description>
 	<url>http://www.ironiacorp.com/products/commons/http</url>
 	<inceptionYear>2007</inceptionYear>
 
-	<organization>
-		<name>Ironia Corporation</name>
-		<url>http://www.ironiacorp.com</url>
-	</organization>
-
-	<licenses>
-		<license>
-			<name>The Apache Software License, Version 2.0</name>
-			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-			<distribution>repo</distribution>
-			<comments />
-		</license>
-	</licenses>
-
-	<developers>
-		<developer>
-			<id>magsilva</id>
-			<name>Marco Aurélio Graciotto Silva</name>
-			<email>magsilva@icmc.usp.br</email>
-			<url>http://www.icmc.usp.br/~magsilva/</url>
-			<organization>Ironia Corporation</organization>
-			<organizationUrl>http://www.ironiacorp.com</organizationUrl>
-			<timezone>+3</timezone>
-			<roles>
-				<role>Manager</role>
-				<role>Main developer</role>
-			</roles>
-		</developer>
-	</developers>
-
-	<issueManagement>
-		<system>Bugzilla</system>
-		<url>http://www.ironiacorp.com/Apps/Bugzilla/</url>
-	</issueManagement>
-
 	<scm>
-		<connection>scm:svn:https://www.ironiacorp.com/svn/projects/ironiacorp-commons/trunk/Components/Http</connection>
-		<developerConnection>scm:svn:https://www.ironiacorp.com/svn/projects/ironiacorp-commons/trunk/Components/Http</developerConnection>
-		<url>http://www.ironiacorp.com/Apps/WebSVN/wsvn/Active%20projects.ironiacorp-commons/trunk/Components/Http</url>
+		<connection>scm:svn:https://www.ironiacorp.com/svn/projects/ironiacorp-commons/trunk/commons-http</connection>
+		<developerConnection>scm:svn:https://www.ironiacorp.com/svn/projects/ironiacorp-commons/trunk/commons-http</developerConnection>
+		<url>http://www.ironiacorp.com/Apps/WebSVN/wsvn/Active%20projects.ironiacorp-commons/trunk/commons-http</url>
 	</scm>
 
 	<ciManagement>
 		<system>Hudson</system>
-		<url>http://www.ironiacorp.com/Apps/Hudson/job/IroniaCorp-Http/</url>
-		<notifiers>
-			<notifier>
-				<type>mail</type>
-				<sendOnError>true</sendOnError>
-				<sendOnFailure>true</sendOnFailure>
-				<sendOnSuccess>false</sendOnSuccess>
-				<sendOnWarning>true</sendOnWarning>
-				<address>magsilva@ironiacorp.com</address>
-			</notifier>
-		</notifiers>
+		<url>http://www.ironiacorp.com/Apps/Hudson/job/IroniaCorp-Commons-Http/</url>
 	</ciManagement>
 
-	<distributionManagement>
-		<repository>
-			<id>labes-pc-010808</id>
-			<name>labes-pc-010808</name>
-			<url>http://www.ironiacorp.com/Apps/Artifactory/libs-releases-local</url>
-		</repository>
-	</distributionManagement>
 
 	<repositories>
-		<repository>
-			<id>central</id>
-			<url>http://repo1.maven.org/maven2/</url>
-			<releases>
-				<updatePolicy>never</updatePolicy>
-			</releases>
-		</repository>
-		
 		<repository>
 			<id>CodeHaus</id>
 			<url>http://repository.codehaus.org</url>
@@ -93,36 +36,15 @@
 				<updatePolicy>never</updatePolicy>
 			</releases>
 		</repository>	
-		
-		<repository>
-			<id>LabES repository</id>
-			<url>http://www.ironiacorp.com/Apps/Artifactory/repo</url>
-			<releases>
-				<updatePolicy>never</updatePolicy>
-			</releases>
-		</repository>
 	</repositories>
 
-	<properties>
-		<sonar.host.url>http://www.ironiacorp.com/Apps/Sonar/</sonar.host.url>
-	</properties>
-
 	<dependencies>
-		<!-- Test related dependencies -->
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>[4.0,)</version>
-			<scope>test</scope>
-		</dependency>
-
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-server</artifactId>
 			<version>7.4.0.v20110414</version>
 			<scope>test</scope>
 		</dependency>
-		
 
 		<!-- HTTP Client 3.x -->
 		<dependency>
@@ -166,7 +88,7 @@
 		<dependency>
 			<groupId>ironiacorp</groupId>
 			<artifactId>commons-string</artifactId>
-			<version>[1.2.0,)</version>
+			<version>[3.0.0,)</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
@@ -174,39 +96,9 @@
 		<dependency>
 			<groupId>ironiacorp</groupId>
 			<artifactId>commons-io</artifactId>
-			<version>[1.1.0,)</version>
+			<version>[3.0.0,)</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>	
 	</dependencies>
-
-	<build>
-		<finalName>${project.artifactId}-${project.version}</finalName>
-
-		<directory>target</directory>
-
-		<sourceDirectory>src</sourceDirectory>
-		<testSourceDirectory>test</testSourceDirectory>
-
-		<outputDirectory>target/classes</outputDirectory>
-		<testOutputDirectory>target/test-classes</testOutputDirectory>
-
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<fork>true</fork>
-					<meminitial>128m</meminitial>
-					<maxmem>512m</maxmem>
-					<source>1.6</source>
-					<target>1.6</target>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
-
-	<reporting>
-		<outputDirectory>site</outputDirectory>
-	</reporting>
 </project>

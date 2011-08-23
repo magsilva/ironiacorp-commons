@@ -1,5 +1,8 @@
 package com.ironiacorp.spelling;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.gauner.jSpellCorrect.ToySpellingCorrector;
 
 // http://developer.gauner.org/jspellcorrect/
@@ -23,8 +26,10 @@ public class StatisticalSpellEngine implements SpellEngine
 		return word.equals(correction);
 	}
 
-	public String[] getSuggestions(String word)
+	public List<String> getSuggestions(String word)
 	{
-		return engine.correct(word);
+		List<String> sugestions = new ArrayList<String>();
+		sugestions.add(engine.correct(word));
+		return sugestions;
 	}
 }

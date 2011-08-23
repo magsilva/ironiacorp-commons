@@ -16,6 +16,7 @@
 
 package com.ironiacorp.email;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.ironiacorp.email.Recipient.Visibility;
@@ -47,6 +48,7 @@ public abstract class EmailDispatcherTest {
 		dispatcher.sendEmails(email);
 	}
 
+	@Ignore
 	@Test
 	public void testSendEmails_Gmail_SSL() {
 		Email email = new Email();

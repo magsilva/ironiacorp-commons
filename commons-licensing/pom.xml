@@ -8,7 +8,7 @@
 	<version>1.0.0</version>
 	<packaging>jar</packaging>
 
-	<name>Ironia-License</name>
+	<name>IroniaCorp-Commons-License</name>
 	<description>Licensing related utilities</description>
 	<url>http://www.ironiacorp.com/products/commons/license</url>
 	<inceptionYear>2007</inceptionYear>

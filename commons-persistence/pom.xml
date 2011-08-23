@@ -3,100 +3,32 @@
 >
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>ironiacorp</groupId>
+	<parent>
+		<groupId>ironiacorp</groupId>
+		<artifactId>commons</artifactId>
+		<version>3.0.0</version>
+	</parent>
 	<artifactId>commons-persistence</artifactId>
-	<version>1.2.1</version>
 	<packaging>jar</packaging>
 
-	<name>Ironia-Persistence</name>
+	<name>IroniaCorp-Commons-Persistence</name>
 	<description>Persistence classes</description>
 	<url>http://www.ironiacorp.com/products/commons/persistence</url>
 	<inceptionYear>2007</inceptionYear>
 
-	<organization>
-		<name>Ironia Corporation</name>
-		<url>http://www.ironiacorp.com</url>
-	</organization>
-
-	<licenses>
-		<license>
-			<name>The Apache Software License, Version 2.0</name>
-			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-			<distribution>repo</distribution>
-			<comments />
-		</license>
-	</licenses>
-
-	<developers>
-		<developer>
-			<id>magsilva</id>
-			<name>Marco Aurélio Graciotto Silva</name>
-			<email>magsilva@icmc.usp.br</email>
-			<url>http://www.icmc.usp.br/~magsilva/</url>
-			<organization>Ironia Corporation</organization>
-			<organizationUrl>http://www.ironiacorp.com</organizationUrl>
-			<timezone>+3</timezone>
-			<roles>
-				<role>Manager</role>
-				<role>Main developer</role>
-			</roles>
-		</developer>
-	</developers>
-
-	<issueManagement>
-		<system>Bugzilla</system>
-		<url>http://www.ironiacorp.com/Apps/Bugzilla/</url>
-	</issueManagement>
-
 	<scm>
-		<connection>scm:svn:https://www.ironiacorp.com/svn/projects/ironiacorp-commons/trunk/Components/Persistence</connection>
-		<developerConnection>scm:svn:https://www.ironiacorp.com/svn/projects/ironiacorp-commons/trunk/Components/Persistence</developerConnection>
-		<url>http://www.ironiacorp.com/Apps/WebSVN/wsvn/Active%20projects.ironiacorp-commons/trunk/Components/Persistence</url>
+		<connection>scm:svn:https://www.ironiacorp.com/svn/projects/ironiacorp-commons/trunk/commons-persistence</connection>
+		<developerConnection>scm:svn:https://www.ironiacorp.com/svn/projects/ironiacorp-commons/trunk/commons-prsistence</developerConnection>
+		<url>http://www.ironiacorp.com/Apps/WebSVN/wsvn/Active%20projects.ironiacorp-commons/trunk/commons-persistence</url>
 	</scm>
 
 	<ciManagement>
 		<system>Hudson</system>
-		<url>http://www.ironiacorp.com/Apps/Hudson/job/IroniaCorp-Persistence/</url>
-		<notifiers>
-			<notifier>
-				<type>mail</type>
-				<sendOnError>true</sendOnError>
-				<sendOnFailure>true</sendOnFailure>
-				<sendOnSuccess>false</sendOnSuccess>
-				<sendOnWarning>true</sendOnWarning>
-				<address>magsilva@icmc.usp.br</address>
-			</notifier>
-		</notifiers>
+		<url>http://www.ironiacorp.com/Apps/Hudson/job/IroniaCorp-Commons-Persistence/</url>
 	</ciManagement>
 
-	<distributionManagement>
-		<repository>
-			<id>labes-pc-010808</id>
-			<name>labes-pc-010808</name>
-			<url>http://www.ironiacorp.com/Apps/Artifactory/libs-releases-local</url>
-		</repository>
-	</distributionManagement>
-
-	<repositories>
-		<repository>
-			<id>repo1</id>
-			<url>http://repo1.maven.org/maven2/</url>
-			<releases>
-				<updatePolicy>never</updatePolicy>
-			</releases>
-		</repository>
-		
-		<repository>
-			<id>LabES repository</id>
-			<url>http://www.ironiacorp.com/Apps/Artifactory/repo</url>
-			<releases>
-				<updatePolicy>never</updatePolicy>
-			</releases>
-		</repository>
-	</repositories>
 
 	<properties>
-		<sonar.host.url>http://www.ironiacorp.com/Apps/Sonar/</sonar.host.url>
 		<org.hibernate.version>3.6.6.Final</org.hibernate.version>
 		<org.springframework.version>3.0.5.RELEASE</org.springframework.version>
 	</properties>
@@ -114,12 +46,12 @@
 		</dependency>
 		
 		<!-- HSQLDB -->
-        <dependency>
-            <groupId>org.hsqldb</groupId>
-            <artifactId>hsqldb</artifactId>
-            <version>[2.2.4,)</version>
-            <scope>test</scope>
-        </dependency>
+		<dependency>
+			<groupId>org.hsqldb</groupId>
+			<artifactId>hsqldb</artifactId>
+			<version>[2.2.4,)</version>
+			<scope>test</scope>
+		</dependency>
 		
 		
 		<!-- Database connection pool -->
@@ -152,19 +84,19 @@
 				
 		<!-- Hibernate -->
 		<dependency>
-    		<groupId>org.hibernate</groupId>
-    		<artifactId>hibernate-core</artifactId>
-    		<version>${org.hibernate.version}</version>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>${org.hibernate.version}</version>
 			<type>jar</type>
 		</dependency>
 
-        <dependency>
-        	<groupId>org.hibernate</groupId>
-        	<artifactId>hibernate-entitymanager</artifactId>
-        	<version>${org.hibernate.version}</version>
-        	<type>jar</type>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>${org.hibernate.version}</version>
+			<type>jar</type>
 			<scope>runtime</scope>
-        </dependency>		
+		</dependency>		
 		
 		
 		<!-- Spring Framework -->
@@ -187,7 +119,7 @@
 		<dependency>
 			<groupId>ironiacorp</groupId>
 			<artifactId>commons-configuration</artifactId>
-			<version>[1.0.0,)</version>
+			<version>[3.0.0,)</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
@@ -195,75 +127,33 @@
 		<dependency>
 			<groupId>ironiacorp</groupId>
 			<artifactId>commons-datastructures</artifactId>
-			<version>[1.6.3,)</version>
+			<version>[3.0.0,)</version>
+			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>ironiacorp</groupId>
 			<artifactId>commons-introspector</artifactId>
-			<version>[1.5.0,)</version>
+			<version>[3.0.0,)</version>
+			<type>jar</type>
+			<scope>compile</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>ironiacorp</groupId>
 			<artifactId>commons-errorhandler</artifactId>
-			<version>[1.0.0,)</version>
+			<version>[3.0.0,)</version>
 			<scope>runtime</scope>
+			<type>jar</type>
 		</dependency>
-		
-		<!--
-			Test related dependencies 
-		-->
+
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>[4.0,)</version>
-			<scope>test</scope>
-		</dependency>
-		
-			<dependency>
 			<groupId>ironiacorp</groupId>
 			<artifactId>commons-annotation</artifactId>
-			<version>[2.0.0,)</version>
+			<version>[3.0.0,)</version>
+			<type>jar</type>
+			<scope>compile</scope>
 		</dependency>
 	</dependencies>
-
-	<build>
-		<finalName>${project.artifactId}-${project.version}</finalName>
-
-		<directory>target</directory>
-
-		<sourceDirectory>src</sourceDirectory>
-		<testSourceDirectory>test</testSourceDirectory>
-
-		<outputDirectory>target/classes</outputDirectory>
-		<testOutputDirectory>target/test-classes</testOutputDirectory>
-
-		<resources>
-			<resource>
-				<directory>${project.basedir}/resources</directory>
-			</resource>
-		</resources>
-
-		<testResources>
-			<testResource>
-				<directory>${project.basedir}/test-resources</directory>
-			</testResource>
-		</testResources>
-		
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<fork>true</fork>
-					<meminitial>128m</meminitial>
-					<maxmem>512m</maxmem>
-					<source>1.6</source>
-					<target>1.6</target>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
 </project>

@@ -3,99 +3,33 @@
 >
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>ironiacorp</groupId>
-	<artifactId>commons-introspector</artifactId>
-	<version>1.0.0</version>
+	<parent>
+		<groupId>ironiacorp</groupId>
+		<artifactId>commons</artifactId>
+		<version>3.0.0</version>
+	</parent>
+	<artifactId>commons-messaging</artifactId>
 	<packaging>jar</packaging>
 
-	<name>Ironia-MessageBus</name>
+	<name>IroniaCorp-Commons-MessageBus</name>
 	<description>Utilities for messaging and web services</description>
 	<url>http://www.ironiacorp.com/products/commons/messaging</url>
 	<inceptionYear>2007</inceptionYear>
 
-	<organization>
-		<name>Ironia Corporation</name>
-		<url>http://www.ironiacorp.com</url>
-	</organization>
-
-	<licenses>
-		<license>
-			<name>The Apache Software License, Version 2.0</name>
-			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-			<distribution>repo</distribution>
-			<comments />
-		</license>
-	</licenses>
-
-	<developers>
-		<developer>
-			<id>magsilva</id>
-			<name>Marco Aurélio Graciotto Silva</name>
-			<email>magsilva@icmc.usp.br</email>
-			<url>http://www.icmc.usp.br/~magsilva/</url>
-			<organization>Ironia Corporation</organization>
-			<organizationUrl>http://www.ironiacorp.com</organizationUrl>
-			<timezone>+3</timezone>
-			<roles>
-				<role>Manager</role>
-				<role>Main developer</role>
-			</roles>
-		</developer>
-	</developers>
-
-	<issueManagement>
-		<system>Bugzilla</system>
-		<url>http://www.ironiacorp.com/Apps/Bugzilla/</url>
-	</issueManagement>
 
 	<scm>
-		<connection>https://www.ironiacorp.com/svn/projects/ironiacorp-commons/trunk/Components/MessageBus</connection>
-		<developerConnection>https://www.ironiacorp.com/svn/projects/ironiacorp-commons/trunk/Components/MessageBus</developerConnection>
-		<tag>trunk</tag>
-		<url>http://www.ironiacorp.com/Apps/WebSVN/wsvn/Active%20projects.ironiacorp-commons/trunk/Components/MessageBus</url>
+		<connection>https://www.ironiacorp.com/svn/projects/ironiacorp-commons/trunk/commons-messaging</connection>
+		<developerConnection>https://www.ironiacorp.com/svn/projects/ironiacorp-commons/trunk/commons-messaging</developerConnection>
+		<url>http://www.ironiacorp.com/Apps/WebSVN/wsvn/Active%20projects.ironiacorp-commons/trunk/commons-messaging</url>
 	</scm>
 
 	<ciManagement>
 		<system>Hudson</system>
-		<url>http://www.ironiacorp.com/Apps/Hudson/job/IroniaCorp-MessageBus</url>
-		<notifiers>
-			<notifier>
-				<type>mail</type>
-				<sendOnError>true</sendOnError>
-				<sendOnFailure>true</sendOnFailure>
-				<sendOnSuccess>false</sendOnSuccess>
-				<sendOnWarning>true</sendOnWarning>
-				<address>magsilva@icmc.usp.br</address>
-			</notifier>
-		</notifiers>
+		<url>http://www.ironiacorp.com/Apps/Hudson/job/IroniaCorp-Commons-Messaging</url>
 	</ciManagement>
 
-	<distributionManagement>
-		<repository>
-			<id>labes-pc-010808</id>
-			<name>labes-pc-010808</name>
-			<url>http://www.ironiacorp.com/Apps/Artifactory/libs-releases-local</url>
-		</repository>
-	</distributionManagement>
-
-	<repositories>
-		<repository>
-			<id>central</id>
-			<url>http://repo1.maven.org/maven2/</url>
-			<releases>
-				<updatePolicy>never</updatePolicy>
-			</releases>
-		</repository>
-	</repositories>
 
 	<dependencies>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>[4.0,)</version>
-			<scope>test</scope>
-		</dependency>
-
 		<dependency>
 		    <groupId>javax</groupId>
 		    <artifactId>javaee-api</artifactId>
@@ -109,34 +43,4 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-
-	<build>
-		<finalName>${project.artifactId}-${project.version}</finalName>
-
-		<directory>target</directory>
-
-		<sourceDirectory>src</sourceDirectory>
-		<testSourceDirectory>test</testSourceDirectory>
-
-		<outputDirectory>target/classes</outputDirectory>
-		<testOutputDirectory>target/test-classes</testOutputDirectory>
-
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<fork>true</fork>
-					<meminitial>128m</meminitial>
-					<maxmem>512m</maxmem>
-					<source>1.6</source>
-					<target>1.6</target>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
-
-	<reporting>
-		<outputDirectory>site</outputDirectory>
-	</reporting>
 </project>

@@ -1,4 +1,4 @@
-package com.ironiacorp.testing;
+package com.ironiacorp.patterns;
 
 import org.junit.Test;
 

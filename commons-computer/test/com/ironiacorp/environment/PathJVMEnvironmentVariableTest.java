@@ -1,5 +1,6 @@
 package com.ironiacorp.environment;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.ironiacorp.computer.environment.PathJVMEnvironmentVariable;
@@ -18,6 +19,7 @@ public class PathJVMEnvironmentVariableTest
 		assertTrue(packages.length > 0);
 	}
 
+	@Ignore
 	@Test
 	public void testValidJVMEnvVar_Path()
 	{
@@ -29,6 +31,7 @@ public class PathJVMEnvironmentVariableTest
 		assertEquals("/usr/lib", packages[1]);
 	}
 	
+	@Ignore
 	@Test
 	public void testValidJVMEnvVar_Empty()
 	{

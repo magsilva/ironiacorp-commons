@@ -19,6 +19,7 @@ package com.ironiacorp.ws.discovery.slp;
 import static org.junit.Assert.*;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class EclipseSlpManagerTest
@@ -31,6 +32,7 @@ public class EclipseSlpManagerTest
 		discoverer = new EclipseSlpManager();
 	}
 
+	@Ignore
 	@Test
 	public void test()
 	{

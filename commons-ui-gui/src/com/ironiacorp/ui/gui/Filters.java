@@ -1,23 +1,41 @@
-package com.ironiacorp.gui.windows;
+package com.ironiacorp.ui.gui;
 
 
 import java.io.File;
 import java.io.FileFilter;
 
-import com.ironiacorp.introspector.ReflectionUtil;
 
 public final class Filters
 {
-	public static final class ClassFileFilter extends javax.swing.filechooser.FileFilter implements FileFilter
+	public static final class FileExtensionFilter extends javax.swing.filechooser.FileFilter implements FileFilter
 	{
+		private String extension;
+		
+		private String description;
+		
+		public String getExtension()
+		{
+			return extension;
+		}
+
+		public void setExtension(String extension)
+		{
+			this.extension = extension;
+		}
+
+		public void setDescription(String description)
+		{
+			this.description = description;
+		}
+
 		public boolean accept(File filename)
 		{
-			return filename.getName().endsWith(ReflectionUtil.CLASS_FILE_EXTENSION);
+			return filename.getName().endsWith(extension);
 		}
 
 		public String getDescription()
 		{
-			return "Java bytecode (.class) files";
+			return description;
 		}
 	
 	}

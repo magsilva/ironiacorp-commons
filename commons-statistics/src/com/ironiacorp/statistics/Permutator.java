@@ -1,4 +1,4 @@
-package com.ironiacorp;
+package com.ironiacorp.statistics;
 
 import java.math.BigInteger;
 
@@ -20,8 +20,8 @@ public class Permutator<T>
 		this.data = data;
 		this.p = p;
 		
-		a = new int[n];
-		total = getFactorial(n);
+		// a = new int[n];
+		// total = getFactorial(n);
 		reset();
 	}
 
@@ -30,9 +30,9 @@ public class Permutator<T>
 	 */
 	public void reset()
 	{
-		for (int i = 0; i < a.length; i++) {
-			a[i] = i;
-		}
+		// for (int i = 0; i < a.length; i++) {
+		// 	a[i] = i;
+		// }
 		numLeft = new BigInteger(total.toString());
 	}
 
@@ -77,6 +77,7 @@ public class Permutator<T>
 	 */
 	public T[] getNext()
 	{
+		/*
 		if (numLeft.equals(total)) {
 			numLeft = numLeft.subtract(BigInteger.ONE);
 			return a;
@@ -114,5 +115,7 @@ public class Permutator<T>
 
 		numLeft = numLeft.subtract(BigInteger.ONE);
 		return a;
+		*/
+		return null;
 	}
 }
