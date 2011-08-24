@@ -1,0 +1,39 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
+>
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>ironiacorp</groupId>
+		<artifactId>commons</artifactId>
+		<version>3.0.0</version>
+	</parent>
+	<artifactId>commons-ecc</artifactId>
+	<packaging>jar</packaging>
+
+	<name>IroniaCorp-Commons-ECC</name>
+	<description>Error checking and correction utilities (mainly for educational purposes).</description>
+	<url>http://www.ironiacorp.com/products/commons-ecc</url>
+	<inceptionYear>2010</inceptionYear>
+
+	<ciManagement>
+		<system>Hudson</system>
+		<url>http://www.ironiacorp.com/Apps/Hudson/job/IroniaCorp-Commmons-ECC</url>
+	</ciManagement>
+
+	<scm>
+		<connection>scm:svn:https://www.ironiacorp.com/svn/projects/ironiacorp-commons/trunk/commons-ecc</connection>
+		<developerConnection>scm:svn:https://www.ironiacorp.com/svn/projects/ironiacorp-commons/trunk/commons-ecc</developerConnection>
+		<url>http://www.ironiacorp.com/Apps/WebSVN/wsvn/Active%20projects.ironiacorp-commons/trunk/commons-ecc/</url>
+	</scm>
+
+	<dependencies>
+		<dependency>
+			<groupId>ironiacorp</groupId>
+			<artifactId>commons-number</artifactId>
+			<version>[3.0.0,)</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+	</dependencies>
+</project>

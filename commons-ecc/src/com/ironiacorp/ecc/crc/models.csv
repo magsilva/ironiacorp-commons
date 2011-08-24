@@ -1,0 +1,20 @@
+name, width, polynom, reflect, xor in, reflect out, xor out
+crc-5, 5, 0x5, True, 0x1f, True, 0x1f
+crc-8, 8, 0x07, False, 0x00, False, 0x00
+dallas-1-wire, 8, 0x31, True, 0x00, True
+crc-15, 15, 0x4599, False, 0x000, False
+crc-16, 16, 0x8005, True, 0x0000, True
+crc-16-usb, 16, 0x8005, True, 0xffff, True
+ccitt, 16, 0x1021, False, 0xffff, False
+r-crc-16, 16, 0x0589, False, 0x0000, False
+kermit, 16, 0x1021, True, 0x0000, True
+x-25, 16, 0x1021, True, 0xffff, True
+xmodem, 16, 0x8408, True, 0x0000, True
+zmodem, 16, 0x1021, False, 0x0000, False
+crc-24, 24, 0x864cfb, False, 0xb704ce, False
+crc-32, 32, 0x04c11db7, True, 0xffffffff, True
+crc-32c, 32, 0x1edc6f41, True, 0xffffffff, True
+posix, 32, 0x04c11db7, False, 0x00000000, False
+jam, 32, 0x04c11db7, True, 0xffffffff, True
+xfer, 32, 0x000000af, False, 0x00000000, False
+crc-64, 64, 0x000000000000001b, True, 0x0000000000000000, True
