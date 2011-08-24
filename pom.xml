@@ -5,7 +5,7 @@
 	<artifactId>commons</artifactId>
 	<packaging>pom</packaging>
 
-	<version>3.0.1</version>
+	<version>3.0.2</version>
 	<name>IroniaCorp Commons</name>
 	<description>Generic utility classes, useful for many applications.</description>
 	<url>http://www.ironiacorp.com/products/commons</url>

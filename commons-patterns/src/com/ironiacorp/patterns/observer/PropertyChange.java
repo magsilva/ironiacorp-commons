@@ -14,9 +14,35 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-
 package com.ironiacorp.patterns.observer;
 
-public interface Change
+public class PropertyChange implements Change
 {
+	private final String property;
+	
+	private final Object previousValue;
+	
+	private final Object newValue;
+
+	public PropertyChange(String property, Object previousValue, Object newValue)
+	{
+		this.property = property;
+		this.previousValue = previousValue;
+		this.newValue = newValue;
+	}
+	
+	public String getProperty()
+	{
+		return property;
+	}
+
+	public Object getPreviousValue()
+	{
+		return previousValue;
+	}
+
+	public Object getNewValue()
+	{
+		return newValue;
+	}
 }

@@ -17,6 +17,17 @@ limitations under the License.
 
 package com.ironiacorp.patterns.observer;
 
-public interface Change
+public class ObjectChange implements Change
 {
+	private final Object object;
+	
+	public ObjectChange(Object object)
+	{
+		this.object = object;
+	}
+	
+	public Object getObject()
+	{
+		return object;
+	}
 }
