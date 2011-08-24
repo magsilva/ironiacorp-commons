@@ -180,6 +180,7 @@
 		<module>commons-configuration</module>
 		<module>commons-datastructures</module>
 		<module>commons-email</module>
+		<module>commons-ecc</module>
 		<module>commons-errorhandler</module>
 		<module>commons-graph</module>
 		<module>commons-http</module>
