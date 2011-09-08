@@ -21,11 +21,11 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.ironiacorp.computer.OperationalSystem;
+import com.ironiacorp.computer.OperationalSystemType;
 import com.ironiacorp.computer.OperationalSystemDetector;
 
 // TODO: use the list at http://lopica.sourceforge.net/os.html
-public class OperationalSystemDetectorTest
+public class OperationalSystemTypeDetectorTest
 {
 	private OperationalSystemDetector detector;
 
@@ -38,56 +38,56 @@ public class OperationalSystemDetectorTest
 	@Test
 	public void testDetectCurrentOS()
 	{
-		assertEquals(OperationalSystem.Linux, detector.detectCurrentOS());
+		assertEquals(OperationalSystemType.Linux, detector.detectCurrentOS());
 	}
 	
 	@Test
 	public void testDetectWindows95()
 	{
-		assertEquals(OperationalSystem.Windows, detector.detectOS("Windows 95"));
+		assertEquals(OperationalSystemType.Windows, detector.detectOS("Windows 95"));
 	}
 	
 	@Test
 	public void testDetectWindowsNT()
 	{
-		assertEquals(OperationalSystem.Windows, detector.detectOS("Windows NT"));
+		assertEquals(OperationalSystemType.Windows, detector.detectOS("Windows NT"));
 	}
 
 	@Test
 	public void testDetectWindowsCE()
 	{
-		assertEquals(OperationalSystem.Windows, detector.detectOS("Windows CE"));
+		assertEquals(OperationalSystemType.Windows, detector.detectOS("Windows CE"));
 	}
 
 	@Test
 	public void testDetectMacOS()
 	{
-		assertEquals(OperationalSystem.MacOS, detector.detectOS("Mac OS"));
+		assertEquals(OperationalSystemType.MacOS, detector.detectOS("Mac OS"));
 	}
 
 	@Test
 	public void testDetectMacOSX()
 	{
-		assertEquals(OperationalSystem.MacOS, detector.detectOS("Mac OS X"));
+		assertEquals(OperationalSystemType.MacOS, detector.detectOS("Mac OS X"));
 	}
 
 	@Test
 	public void testDetectDarwin()
 	{
-		assertEquals(OperationalSystem.MacOS, detector.detectOS("Darwin"));
+		assertEquals(OperationalSystemType.MacOS, detector.detectOS("Darwin"));
 	}
 
 	
 	@Test
 	public void testDetectLinux()
 	{
-		assertEquals(OperationalSystem.Linux, detector.detectOS("Linux"));
+		assertEquals(OperationalSystemType.Linux, detector.detectOS("Linux"));
 	}
 
 	@Test
 	public void testDetectSolaris()
 	{
-		assertEquals(OperationalSystem.Solaris, detector.detectOS("Solaris"));
+		assertEquals(OperationalSystemType.Solaris, detector.detectOS("Solaris"));
 	}
 }
 

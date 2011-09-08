@@ -16,43 +16,29 @@
 
 package com.ironiacorp.computer;
 
-import static org.junit.Assert.*;
+import java.util.regex.Pattern;
 
-import java.io.File;
-
-import org.junit.Before;
-import org.junit.Test;
-
-public class LibraryLoaderTest
+public enum OperationalSystemType
 {
-	private OperationalSystem os;
+	AIX("AIX", "^AIX", true),
+	HPUX("HP-UX", "^HP-UX", true),
+	Irix("Irix", "^Irix", true),
+	Linux("Linux", "^Linux", true),
+	MacOS("MacOS", "^(Mac|Darwin)", true),
+	OS2("OS/2", "^OS/2", false),
+	Solaris("Solaris", "^(Solaris|SunOS)", true),
+	Windows("Windows", "^Windows", false);
 	
+	public final String prettyName;
 	
-	@Before
-	public void setUp() throws Exception
-	{
-		os = new Unix();
-	}
-
-	@Test
-	public void testLoadFile_AlreadyLoaded()
-	{
-		assertNotNull(os.findLibrary("udev"));
-	}
-
-	@Test
-	public void testLoadFile_InvalidLibrary()
-	{
-		assertNull(os.findLibrary("abcdefgxyz"));
-	}
+	public final Pattern pattern;
 	
-	@Test
-	public void testLoadFile_ValidLibrary_SpecificPath()
+	public final boolean unixCompatible;
+	
+	private OperationalSystemType(String prettyName, String regex, boolean unixCompatible)
 	{
-		os.addLibrarySearchPath(new File("/usr/lib/R/site-library/rJava/jri"));
-		File library = os.findLibrary("jri");
-		assertNotNull(library);
-		os.loadLibrary(library);
+		this.prettyName = prettyName;
+		this.pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+		this.unixCompatible = unixCompatible;
 	}
-
 }

@@ -16,29 +16,56 @@
 
 package com.ironiacorp.computer;
 
-import java.util.regex.Pattern;
+import java.io.File;
+import java.util.List;
 
-public enum OperationalSystem
+public interface OperationalSystem
 {
-	AIX("AIX", "^AIX", true),
-	HPUX("HP-UX", "^HP-UX", true),
-	Irix("Irix", "^Irix", true),
-	Linux("Linux", "^Linux", true),
-	MacOS("MacOS", "^(Mac|Darwin)", true),
-	OS2("OS/2", "^OS/2", false),
-	Solaris("Solaris", "^(Solaris|SunOS)", true),
-	Windows("Windows", "^Windows", false);
+	void addExecutableSearchPath(File dir);
+
+	void removeExecutableSearchPath(File dir);
+
+	List<File> getExecutableSearchPath();
+
+	File findExecutable(String execName);
 	
-	public final String prettyName;
+	String getFullExecutableName(String execName);
 	
-	public final Pattern pattern;
+	boolean isExecutable(File execFile);
+
+	ProcessBuilder exec(File execFile);
 	
-	public final boolean unixCompatible;
+	ProcessBuilder exec(File execFile, List<String> parameters);
 	
-	private OperationalSystem(String prettyName, String regex, boolean unixCompatible)
-	{
-		this.prettyName = prettyName;
-		this.pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
-		this.unixCompatible = unixCompatible;
-	}
+
+	
+	void addLibrarySearchPath(File dir);
+	
+	void removeLibrarySearchPath(File dir);
+
+	List<File> getLibrarySearchPath();
+	
+	/**
+	 * Find a native system library.
+	 * 
+	 * @param library Library name (without any prefix or suffix). For instance,
+	 * to load the library 'libudev.so', use 'udev' as parameter.
+	 * 
+	 * @return Null if the library could not be found, otherwise it is the file
+	 * that matches the requested library.
+	 */
+	File findLibrary(String libName);
+	
+	String getFullLibraryName(String libName);
+	
+	boolean isLoadable(File libFile);
+
+	/**
+	 * Load a native system library.
+	 * 
+	 * @param libFile File for the native system library.
+	 * 
+	 * @throws IllegalArgumentException if library could not be loaded.
+	 */
+	void loadLibrary(File libFile);
 }

@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ironiacorp.computer.OperationalSystem;
+import com.ironiacorp.computer.OperationalSystemType;
 import com.ironiacorp.computer.OperationalSystemDetector;
 import com.ironiacorp.computer.environment.PathEnvironmentVariable;
 import com.ironiacorp.computer.environment.PathJVMEnvironmentVariable;
@@ -61,7 +61,7 @@ public class NativeLibraryLoader
 			}
 		}
 		
-		if (osDetector.detectCurrentOS() == OperationalSystem.Linux) {
+		if (osDetector.detectCurrentOS() == OperationalSystemType.Linux) {
 			path.add("/lib");
 			path.add("/usr/lib");
 			path.add("/usr/local/lib");
@@ -71,7 +71,7 @@ public class NativeLibraryLoader
 			}
 		}
 		
-		if (osDetector.detectCurrentOS() == OperationalSystem.Windows) {
+		if (osDetector.detectCurrentOS() == OperationalSystemType.Windows) {
 			path.add(System.getenv("windir"));
 			path.add(System.getenv("windir") + File.separator + "system");
 			path.add(System.getenv("windir") + File.separator + "system32");

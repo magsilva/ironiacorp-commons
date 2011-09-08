@@ -23,7 +23,7 @@ import java.io.File;
 import org.junit.Before;
 import org.junit.Test;
 
-public class LibraryLoaderTest
+public class FileExecutionTest
 {
 	private OperationalSystem os;
 	
@@ -35,24 +35,36 @@ public class LibraryLoaderTest
 	}
 
 	@Test
-	public void testLoadFile_AlreadyLoaded()
+	public void testFind()
 	{
-		assertNotNull(os.findLibrary("udev"));
+		assertNotNull(os.findExecutable("cal"));
 	}
 
 	@Test
+	public void testExec() throws Exception
+	{
+		File file = os.findExecutable("cal");
+		ProcessBuilder pb = os.exec(file);
+		Process process = pb.start();
+		int result = process.waitFor();
+		assertEquals(0, result);
+		assertEquals(0, process.exitValue());
+	}
+
+	
+	@Test
 	public void testLoadFile_InvalidLibrary()
 	{
-		assertNull(os.findLibrary("abcdefgxyz"));
+		assertNull(os.findExecutable("abcdefgxyz"));
 	}
 	
 	@Test
 	public void testLoadFile_ValidLibrary_SpecificPath()
 	{
-		os.addLibrarySearchPath(new File("/usr/lib/R/site-library/rJava/jri"));
-		File library = os.findLibrary("jri");
-		assertNotNull(library);
-		os.loadLibrary(library);
+		os.addExecutableSearchPath(new File("/usr/lib/R/site-library/rJava/jri"));
+		File file = os.findExecutable("run");
+		assertNotNull(file);
+		os.exec(file, null);
 	}
 
 }

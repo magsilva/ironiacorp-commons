@@ -17,35 +17,38 @@
 package com.ironiacorp.computer;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
-public class Windows
+public class Windows extends AbstractOperationalSystem
 {
 	public static final char UNIT_NAME_BEGIN = 'c';
     
 	public static final char UNIT_NAME_END = 'z';
 	
-	public static final String EXECUTABLE_PREFIX = ".exe";
+	public static final String DEFAULT_EXECUTABLE_EXTENSION = ".exe";
 
-	
+	public static final String DEFAULT_LIBRARY_EXTENSION = ".dll";
+
+	public final String[] DEFAULT_SYSTEM_DIRS = {
+		"system32",
+		"System32",
+		"SYSTEM32",
+		"system",
+		"System",
+		"SYSTEM",
+	};
+
 	public boolean isSystemRoot(File file)
 	{
-		final String[] systemDirNames = {
-			"system32",
-			"System32",
-			"SYSTEM32",
-			"system",
-			"System",
-			"SYSTEM",
-		};
-
 		if (file == null) {
 			return false;
 		}
 		
 		if (file.exists() && file.isDirectory()) {
-			for (String dirname : systemDirNames) {
+			for (String dirname : DEFAULT_SYSTEM_DIRS) {
 				File systemRoot = new File(file, dirname);
-				if (file.exists() && file.isDirectory()) {
+				if (systemRoot.exists() && systemRoot.isDirectory()) {
 					return true;
 				}
 			}
@@ -75,7 +78,7 @@ public class Windows
 		// Search for the system root in the available units
 	    for (char drive = UNIT_NAME_BEGIN; drive < UNIT_NAME_END; drive++) {
 	    	for (String dirname : defaultSystemRoot) {
-	    		root = new File(drive + ":\\" + "\\WINDOWS");
+	    		root = new File(drive + ":\\" + dirname);
 	    		if (isSystemRoot(root)) {
 	    			return root;	
 	    		}
@@ -83,5 +86,47 @@ public class Windows
 	    }
 
 	    return null;
+	}
+
+	@Override
+	public String getFullExecutableName(String execName)
+	{
+		return execName + DEFAULT_EXECUTABLE_EXTENSION;
+	}
+
+	@Override
+	public String getFullLibraryName(String libName)
+	{
+		return libName + DEFAULT_LIBRARY_EXTENSION;
+	}
+
+	@Override
+	protected List<File> getSystemExecutableSearchPath()
+	{
+		String currentSearchPath = System.getenv("PATH");
+		List<File> result = new ArrayList<File>();
+		for (String dirname : currentSearchPath.split(File.pathSeparator)) {
+			File dir = new File(dirname);
+			if (isValidPath(dir)) {
+				result.add(dir);
+			}
+		}
+		
+		return result;
+	}
+
+	@Override
+	protected List<File> getSystemLibrarySearchPath()
+	{
+		List<File> result = new ArrayList<File>();
+		File systemRoot = findSystemRoot();
+		for (String dirname : DEFAULT_SYSTEM_DIRS) {
+			File dir = new File(systemRoot, dirname);
+			if (isValidPath(dir)) {
+				result.add(dir);
+			}
+		}
+		
+		return result;
 	}
 }

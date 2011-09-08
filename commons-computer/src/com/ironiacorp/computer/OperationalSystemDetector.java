@@ -21,22 +21,22 @@ public class OperationalSystemDetector
 {
 	public boolean isWindows(final String os)
 	{
-		return OperationalSystem.Windows.pattern.matcher(os).find();
+		return OperationalSystemType.Windows.pattern.matcher(os).find();
 	}
 
 	public boolean isMac(final String os)
 	{
-		return OperationalSystem.MacOS.pattern.matcher(os).find();
+		return OperationalSystemType.MacOS.pattern.matcher(os).find();
 	}
 
 	public boolean isLinux(final String os)
 	{
-		return OperationalSystem.Linux.pattern.matcher(os).find();
+		return OperationalSystemType.Linux.pattern.matcher(os).find();
 	}
 	
-	public OperationalSystem detectOS(final String osName)
+	public OperationalSystemType detectOS(final String osName)
 	{
-		for (OperationalSystem os : OperationalSystem.values()) {
+		for (OperationalSystemType os : OperationalSystemType.values()) {
 			if (os.pattern.matcher(osName).find()) {
 				return os;
 			}
@@ -45,7 +45,7 @@ public class OperationalSystemDetector
 		return null;
 	}
 	
-	public OperationalSystem detectCurrentOS()
+	public OperationalSystemType detectCurrentOS()
 	{
 		final String osName = System.getProperty("os.name").toLowerCase();
 		return detectOS(osName);
