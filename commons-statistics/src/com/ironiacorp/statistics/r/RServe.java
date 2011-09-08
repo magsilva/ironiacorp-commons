@@ -86,18 +86,19 @@ public class RServe
 	}
 
 	
-	// TODO: Fix it. I don't know how and why, but this is not working.
+	// TODO: Add error logging (redirect the stderr to a stream that uses logging)
 	public Process start()
 	{
-		ComputerSystem computer = new ComputerSystem();
-		OperationalSystem os = computer.getCurrentOperationalSystem();
+		OperationalSystem os = ComputerSystem.getCurrentOperationalSystem();
 		ProcessBuilder pb;
 		File file;
 
 			
 		file = getRServeExecutable();
 		if (file != null) {
-			pb = os.exec(file);
+			List<String> parameters = new ArrayList<String>();
+			parameters.add("--vanilla");
+			pb = os.exec(file, parameters);
 			if 	(home != null) {
 				pb.environment().put("R_HOME", home);
 			}
@@ -112,6 +113,7 @@ public class RServe
 			List<String> parameters = new ArrayList<String>();
 			parameters.add("CMD");
 			parameters.add("Rserve");
+			parameters.add("--vanilla");
 			pb = os.exec(file, parameters);
 			if 	(home != null) {
 				pb.environment().put("R_HOME", home);
