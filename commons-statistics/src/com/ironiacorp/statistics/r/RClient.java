@@ -42,9 +42,9 @@ public interface RClient {
      * @param argName
      * @param arg
      */
-    public void assign( String argName, double[] arg );
+    void assign( String argName, double[] arg );
 
-    public List<String> stringListEval( String command );
+    List<String> stringListEval( String command );
 
     /**
      * Evaluates two way anova commands of the form
@@ -60,36 +60,33 @@ public interface RClient {
      * @param command
      * @return
      */
-    public Map<String, TwoWayAnovaResult> twoWayAnovaEval( String command, boolean withInteractions );
+    Map<String, TwoWayAnovaResult> twoWayAnovaEval(String command, boolean withInteractions);
 
-    public Map<String, OneWayAnovaResult> oneWayAnovaEval( String command );
+    Map<String, OneWayAnovaResult> oneWayAnovaEval(String command);
 
-    /*
-     * (non-Javadoc)
-     * @see org.rosuda.JRclient.Rconnection#assign(java.lang.String, int[])
-     */
-    public void assign( String arg0, int[] arg1 );
 
-    public void assign( String argName, String[] array );
+    void assign(String arg0, int[] arg1);
+
+    void assign(String argName, String[] array);
 
     /**
      * @param strings
      * @return the name of the factor generated.
      */
-    public String assignFactor( List<String> strings );
+    String assignFactor(List<String> strings);
 
     /**
      * @param factorName
      * @param list
      * @return the factor name
      */
-    public String assignFactor( String factorName, List<String> list );
+    String assignFactor(String factorName, List<String> list);
 
     /*
      * (non-Javadoc)
      * @see org.rosuda.JRclient.Rconnection#assign(java.lang.String, java.lang.String)
      */
-    public void assign( String sym, String ct );
+    void assign(String sym, String ct);
 
     /**
      * Assign a 2-d matrix.
@@ -97,7 +94,7 @@ public interface RClient {
      * @param matrix
      * @return the name of the variable by which the R matrix can be referred.
      */
-    public String assignMatrix( DoubleMatrix<?, ?> matrix );
+    String assignMatrix(DoubleMatrix<?, ?> matrix);
 
     /**
      * Assign a 2-d matrix.
@@ -106,7 +103,7 @@ public interface RClient {
      * @param rowNameExtractor
      * @return the name of the variable by which the R matrix can be referred.
      */
-    public String assignMatrix( DoubleMatrix<?, ?> matrix, Transformer rowNameExtractor );
+    String assignMatrix(DoubleMatrix<?, ?> matrix, Transformer rowNameExtractor);
 
     /**
      * Define a variable corresponding to a character array in the R context, given a List of Strings.
@@ -114,7 +111,7 @@ public interface RClient {
      * @param objects, which will be stringified if they are not strings.
      * @return the name of the variable in the R context.
      */
-    public String assignStringList( List<?> objects );
+    String assignStringList(List<?> objects);
 
     /**
      * Assign a 2-d matrix.
@@ -122,7 +119,7 @@ public interface RClient {
      * @param matrix
      * @return the name of the variable by which the R matrix can be referred.
      */
-    public String assignMatrix( double[][] matrix );
+    String assignMatrix(double[][] matrix);
 
     /**
      * Run a command that takes a double array as an argument and returns a boolean.
@@ -132,7 +129,7 @@ public interface RClient {
      * @param arg
      * @return
      */
-    public boolean booleanDoubleArrayEval( String command, String argName, double[] arg );
+    boolean booleanDoubleArrayEval(String command, String argName, double[] arg);
 
     /**
      * Run a command that has a single double array parameter, and returns a double array.
@@ -142,7 +139,7 @@ public interface RClient {
      * @param arg
      * @return
      */
-    public double[] doubleArrayDoubleArrayEval( String command, String argName, double[] arg );
+    double[] doubleArrayDoubleArrayEval(String command, String argName, double[] arg);
 
     /**
      * Run a command that returns a double array with no arguments.
@@ -150,7 +147,7 @@ public interface RClient {
      * @param command
      * @return
      */
-    public double[] doubleArrayEval( String command );
+    double[] doubleArrayEval(String command);
 
     /**
      * Run a command that takes two double array arguments and returns a double array.
@@ -162,8 +159,7 @@ public interface RClient {
      * @param arg2
      * @return
      */
-    public double[] doubleArrayTwoDoubleArrayEval( String command, String argName, double[] arg, String argName2,
-            double[] arg2 );
+    double[] doubleArrayTwoDoubleArrayEval(String command, String argName, double[] arg, String argName2, double[] arg2);
 
     /**
      * Run a command that takes two double arrays as arguments and returns a double value.
@@ -175,7 +171,7 @@ public interface RClient {
      * @param arg2
      * @return
      */
-    public double doubleTwoDoubleArrayEval( String command, String argName, double[] arg, String argName2, double[] arg2 );
+    double doubleTwoDoubleArrayEval(String command, String argName, double[] arg, String argName2, double[] arg2);
 
     /**
      * Evaluate any command and return a string
@@ -183,24 +179,24 @@ public interface RClient {
      * @param command
      * @return string
      */
-    public String stringEval( String command );
+    String stringEval(String command);
 
-    public int[] intArrayEval( String command );
+    int[] intArrayEval(String command);
 
-    public boolean loadLibrary( String libraryName );
+    boolean loadLibrary(String libraryName);
 
     /*
      * (non-Javadoc)
      * @see org.rosuda.JRclient.Rconnection#getLastError()
      */
-    public String getLastError();
+    String getLastError();
 
     /**
      * Remove a variable from the R namespace
      * 
      * @param variableName
      */
-    public void remove( String variableName );
+    void remove(String variableName);
 
     /**
      * Convert an object matrix into an R data frame. Columns that look numeric are treated as numbers. Booleans and
@@ -209,7 +205,7 @@ public interface RClient {
      * @param matrix
      * @return variable name in R-land.
      */
-    public String dataFrame( ObjectMatrix<String, String, Object> matrix );
+    String dataFrame(ObjectMatrix<String, String, Object> matrix);
 
     /**
      * Evaluate a command that returns a dataFrame
@@ -217,7 +213,7 @@ public interface RClient {
      * @param command
      * @return an ObjectMatrix representation of the data frame.
      */
-    public ObjectMatrix<String, String, Object> dataFrameEval( String command );
+    ObjectMatrix<String, String, Object> dataFrameEval(String command);
 
     /**
      * Get a matrix back out of the R context. Row and Column names are filled in for the resulting object, if they are
@@ -226,11 +222,13 @@ public interface RClient {
      * @param variableName
      * @return
      */
-    public DoubleMatrix<String, String> retrieveMatrix( String variableName );
+    DoubleMatrix<String, String> retrieveMatrix(String variableName);
 
-    public void voidEval( String command );
+    void voidEval(String command);
 
-    public boolean isConnected();
+    boolean connect();
+    
+    boolean isConnected();
 
     /**
      * Run lm with anova on all the rows of a matrix
@@ -241,8 +239,7 @@ public interface RClient {
      * @param names of the factors like {"f1", "f2"}.
      * @return map of row identifiers to populated LinearModelSummaries.
      */
-    public Map<String, LinearModelSummary> rowApplyLinearModel( String dataMatrixVarName, String modelFormula,
-            String[] factorNames );
+    Map<String, LinearModelSummary> rowApplyLinearModel(String dataMatrixVarName, String modelFormula, String[] factorNames);
 
     /**
      * Lower-level access to two-way ANOVA
@@ -253,8 +250,7 @@ public interface RClient {
      * @param includeInteraction
      * @return result with interaction term information null if includeInteraction = false
      */
-    public TwoWayAnovaResult twoWayAnova( double[] data, List<String> factor1, List<String> factor2,
-            boolean includeInteraction );
+    TwoWayAnovaResult twoWayAnova(double[] data, List<String> factor1, List<String> factor2, boolean includeInteraction);
 
     /**
      * Lower level access to linear model. Fairly simple. Factors are assigned in turn.
@@ -263,7 +259,7 @@ public interface RClient {
      * @param factors Map of factorNames to factors (which can be expressed as Strings or Doubles). If you care about
      *        the order the factors are introduced into the model, use a LinkedHashMap.
      */
-    public LinearModelSummary linearModel( double[] data, Map<String, List<?>> factors );
+    LinearModelSummary linearModel(double[] data, Map<String, List<?>> factors);
 
     /**
      * @param data
@@ -272,7 +268,7 @@ public interface RClient {
      *        are assumed to be in the same order as the data.
      * @return
      */
-    public LinearModelSummary linearModel( double[] data, ObjectMatrix<String, String, Object> design );
+    LinearModelSummary linearModel(double[] data, ObjectMatrix<String, String, Object> design);
 
     /**
      * Evaluate the given command
@@ -280,7 +276,7 @@ public interface RClient {
      * @param command
      * @return
      */
-    public abstract REXP eval( String command );
+    REXP eval(String command);
 
     /**
      * Lower-level access to a simple one-way ANOVA
@@ -289,7 +285,7 @@ public interface RClient {
      * @param factor
      * @return
      */
-    public OneWayAnovaResult oneWayAnova( double[] data, List<String> factor );
+    OneWayAnovaResult oneWayAnova(double[] data, List<String> factor);
 
     /**
      * @param listEntryType a hint about what type of object you want the list to contain. If you set this to be null,
@@ -297,6 +293,5 @@ public interface RClient {
      * @param command R command
      * @return
      */
-    public List<?> listEval( Class<?> listEntryType, String command );
-
+    List<?> listEval(Class<?> listEntryType, String command);
 }

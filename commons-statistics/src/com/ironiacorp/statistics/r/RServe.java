@@ -18,68 +18,110 @@
 package com.ironiacorp.statistics.r;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
+import com.ironiacorp.computer.ComputerSystem;
 import com.ironiacorp.computer.OperationalSystem;
-import com.ironiacorp.computer.OperationalSystemDetector;
-import com.ironiacorp.computer.Windows;
+
 
 /**
  * Rserve (http://www.rforge.net/Rserve/) is a TCP/IP server which allows
  * other programs to use facilities of R (www.r-project.org) from various
  * languages without the need to initialize R or link against R library.
  * Every connection has a separate workspace and working directory.
- * 
- * @author magsilva
- *
  */
 public class RServe
 {
+	private static final String DEFAULT_R_EXECUTABLE = "R";
+
+	private static final String DEFAULT_RSERVE_EXECUTABLE = "Rserve";
+
 	private static final String[] subdirs = {"library", "site-library"};
-
-	private File executable;
 	
-	public File getExecutable()
+	private String home;
+	
+	public String getHome()
 	{
-		return executable;
+		return home;
 	}
 
-	public void setExecutable(File executable)
+	public void setHome(String home)
 	{
-		this.executable = executable;
+		this.home = home;
 	}
-	
-	public void start()
+
+	protected File getRServeExecutable()
 	{
-		String rserveCmd = "R CMD Rserve";
+		OperationalSystem os = ComputerSystem.getCurrentOperationalSystem();
 		String rHome = System.getenv("R_HOME");
 		File rserveExecutable;
 		
 		if (rHome != null) {
 			StringBuilder sb = new StringBuilder();
-			OperationalSystemDetector detector = new OperationalSystemDetector();
-			OperationalSystem os = detector.detectCurrentOS();
 			for (String subdir : subdirs) {
 				sb.append(rHome);
 				sb.append(File.separator);
 				sb.append(subdir);
 				sb.append(File.separator);
 				sb.append("Rserve");
-				sb.append(File.separator);
-				sb.append("Rserve");
-				if (os == OperationalSystem.Windows) {
-					sb.append(Windows.EXECUTABLE_PREFIX);
-				}
-				rserveExecutable = new File(sb.toString());
+				os.addExecutableSearchPath(new File(sb.toString()));
 				sb.setLength(0);
-				if (rserveExecutable.exists() && rserveExecutable.isFile() && rserveExecutable.canExecute()) {
-					rserveCmd = rserveExecutable.getAbsolutePath();
-					break;
-				}
+			}
+		}
+			
+		rserveExecutable = os.findExecutable(DEFAULT_RSERVE_EXECUTABLE);
+
+		return rserveExecutable;
+	}
+
+	
+	protected File getRExecutable()
+	{
+		ComputerSystem computer = new ComputerSystem();
+		OperationalSystem os = computer.getCurrentOperationalSystem();
+		File rExecutable = os.findExecutable(DEFAULT_R_EXECUTABLE);
+
+		return rExecutable;
+	}
+
+	
+	// TODO: Fix it. I don't know how and why, but this is not working.
+	public Process start()
+	{
+		ComputerSystem computer = new ComputerSystem();
+		OperationalSystem os = computer.getCurrentOperationalSystem();
+		ProcessBuilder pb;
+		File file;
+
+			
+		file = getRServeExecutable();
+		if (file != null) {
+			pb = os.exec(file);
+			if 	(home != null) {
+				pb.environment().put("R_HOME", home);
+			}
+			try { 
+				return pb.start();
+			} catch (Exception e) {
 			}
 		}
 		
-		try {
-			Runtime.getRuntime().exec(rserveCmd);
-		} catch (Exception e) {}
+		file = getRExecutable();
+		if (file != null) {
+			List<String> parameters = new ArrayList<String>();
+			parameters.add("CMD");
+			parameters.add("Rserve");
+			pb = os.exec(file, parameters);
+			if 	(home != null) {
+				pb.environment().put("R_HOME", home);
+			}
+			try { 
+				return pb.start();
+			} catch (Exception e) {
+			}
+		}
+		
+		throw new UnsupportedOperationException("Could not start the R server");
     }
 }

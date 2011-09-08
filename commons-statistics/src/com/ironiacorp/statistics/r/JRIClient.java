@@ -39,29 +39,37 @@ import com.ironiacorp.statistics.r.type.DoubleMatrixFactory;
  * 
  * @author paul
  * @version $Id: JRIClient.java,v 1.3 2010/05/26 18:52:54 paul Exp $
- * @see RConnectionFactory
+ * @see RClientFactory
  */
-public class JRIClient extends AbstractRClient {
-
+public class JRIClient extends AbstractRClient
+{
     private static REngine connection = null;
 
-    static {
-        try {
-            /*
-             * The jri engine is static in JRIEngine, so this is okay.
-             */
-            connection = new JRIEngine();
-        } catch ( REngineException e ) {
-            throw new RuntimeException( "JRI could not be initilized" );
-        }
+    @Override
+    public boolean connect()
+    {
+    	if (! isConnected()) {
+            try {
+                connection = new JRIEngine();
+            } catch ( REngineException e ) {
+                throw new RuntimeException( "JRI could not be initilized" );
+            }
+        	return true;
+    	}
+
+    	return false;
+    }
+    
+    @Override
+    public boolean isConnected()
+    {
+    	return (connection != null);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see ubic.basecode.util.RClient#assign(java.lang.String, double[])
-     */
-    public void assign( String argName, double[] arg ) {
+    
+    @Override
+    public void assign(String argName, double[] arg)
+    {
         try {
             connection.assign( argName, arg );
         } catch ( REngineException e ) {
@@ -69,12 +77,9 @@ public class JRIClient extends AbstractRClient {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see ubic.basecode.util.RClient#assign(java.lang.String, int[])
-     */
-    public void assign( String arg0, int[] arg1 ) {
+    @Override
+    public void assign(String arg0, int[] arg1)
+    {
         try {
             connection.assign( arg0, arg1 );
         } catch ( REngineException e ) {
@@ -82,12 +87,9 @@ public class JRIClient extends AbstractRClient {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see ubic.basecode.util.RClient#assign(java.lang.String, java.lang.String)
-     */
-    public void assign( String sym, String ct ) {
+    @Override
+    public void assign(String sym, String ct)
+    {
         try {
             connection.assign( sym, ct );
         } catch ( REngineException e ) {
@@ -95,12 +97,9 @@ public class JRIClient extends AbstractRClient {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see ubic.basecode.util.RClient#assign(java.lang.String, java.lang.String[])
-     */
-    public void assign( String argName, String[] array ) {
+    @Override
+    public void assign(String argName, String[] array)
+    {
         try {
             connection.assign( argName, array );
         } catch ( REngineException e ) {
@@ -108,56 +107,21 @@ public class JRIClient extends AbstractRClient {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see ubic.basecode.util.RClient#getLastError()
-     */
-    public String getLastError() {
+    @Override
+    public String getLastError()
+    {
         return "Sorry, no information";
     }
 
-    public boolean isConnected() {
-        return true;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see ubic.basecode.util.RClient#retrieveMatrix(java.lang.String)
-     */
-    public DoubleMatrix<String, String> retrieveMatrix( String variableName ) {
-        REXP r = this.eval( variableName );
-        if (r == null)
-        	throw new IllegalArgumentException( variableName + " not found in R context" );
-
-        double[][] results;
-        try {
-            results = r.asDoubleMatrix();
-        } catch ( REXPMismatchException e ) {
-            throw new RuntimeException( e );
-        }
-
-        if (results == null)
-        	throw new RuntimeException( "Failed to get back matrix for variable " + variableName );
-
-        DoubleMatrix<String, String> resultObject = DoubleMatrixFactory.dense( results );
-
-        retrieveRowAndColumnNames( variableName, resultObject );
-        return resultObject;
-
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see ubic.basecode.util.RClient#voidEval(java.lang.String)
-     */
-    public void voidEval( String command ) {
+    @Override
+    public void voidEval(String command)
+    {
         eval( command );
     }
 
-    public REXP eval( String command ) {
+    @Override
+    public REXP eval(String command)
+    {
         REXP result;
         int key = connection.lock();
         try {
@@ -190,15 +154,32 @@ public class JRIClient extends AbstractRClient {
         }
     }
 
-    /**
-     * Get the dimnames associated with the matrix variable row and column names, if any, and assign them to the
-     * resultObject NamedMatrix
-     * 
-     * @param variableName a matrix in R
-     * @param resultObject corresponding NamedMatrix we are filling in.
-     */
-    private void retrieveRowAndColumnNames( String variableName, DoubleMatrix<String, String> resultObject ) {
-        REXP r1 = this.eval( "dimnames(" + variableName + ")" );
+    @Override
+    public DoubleMatrix<String, String> retrieveMatrix( String variableName ) {
+        REXP r = eval( variableName );
+        if (r == null)
+        	throw new IllegalArgumentException( variableName + " not found in R context" );
+
+        double[][] results;
+        try {
+            results = r.asDoubleMatrix();
+        } catch ( REXPMismatchException e ) {
+            throw new RuntimeException( e );
+        }
+
+        if (results == null)
+        	throw new RuntimeException( "Failed to get back matrix for variable " + variableName );
+
+        DoubleMatrix<String, String> resultObject = DoubleMatrixFactory.dense( results );
+
+        retrieveRowAndColumnNames( variableName, resultObject );
+        return resultObject;
+
+    }
+
+    @Override
+    protected void retrieveRowAndColumnNames( String variableName, DoubleMatrix<String, String> resultObject ) {
+        REXP r1 = eval( "dimnames(" + variableName + ")" );
         RList asList;
         try {
             asList = r1.asList();
@@ -242,5 +223,4 @@ public class JRIClient extends AbstractRClient {
             resultObject.setColumnNames( colNames );
         }
     }
-
 }

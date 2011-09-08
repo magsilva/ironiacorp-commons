@@ -38,27 +38,51 @@ import com.ironiacorp.statistics.r.type.DoubleMatrix;
  * @author pavlidis
  * @version $Id: RServeClient.java,v 1.10 2010/05/26 17:51:42 paul Exp $
  */
-public class RServeClient extends AbstractRClient {
-
-    /**
-     * 
+public class RServeClient extends AbstractRClient
+{
+	/**
+	 * Default hostname to connect to.
+	 */
+	public static final String DEFAULT_HOSTNAME = "localhost";
+	
+	/**
+     * Default port for RServe.
      */
-    private static final int DEFAULT_PORT = 6311;
-
+    public static final int DEFAULT_PORT = 6311;
+    
+    /**
+     * Maximum connections to try before giving up (and throw an exception).
+     */
     private static final int MAX_CONNECT_TRIES = 10;
 
+    /**
+     * Maximum tries to perform an evaluation (and throw an exception).
+     */
     private static final int MAX_EVAL_TRIES = 3;
 
+    /**
+     * Hostname to which we are connected to.
+     */
+	private String hostname = DEFAULT_HOSTNAME;
+	
+	/**
+	 * Default port to connect to.
+	 */
+	private int port = DEFAULT_PORT;
+	
+	/**
+	 * Connection established to the specified hostname.
+	 */
     private RConnection connection = null;
 
     /**
      * @param host
      * @throws IOException
      */
-    protected RServeClient( String host ) throws IOException {
-        if ( !connect( host, DEFAULT_PORT ) ) {
-            throw new IOException( "Could not connect to Rserve" );
-        }
+    protected RServeClient(String host)
+    {
+    	setHostname(host);
+    	connect();
     }
 
     /**
@@ -66,18 +90,145 @@ public class RServeClient extends AbstractRClient {
      * 
      * @throws IOException
      */
-    protected RServeClient() throws IOException {
-        if ( !connect() ) {
-            throw new IOException( "Could not connect to Rserve" );
+    protected RServeClient() throws IOException
+    {
+    	connect();
+    }
+
+    public String getHostname()
+	{
+		return hostname;
+	}
+
+    /**
+     * Defines a different hostname.
+     * 
+     * @param hostname Hostname or IP address of the R server.
+     * 
+     * @throws UnsupportedOperationException if it is already connected to a server (must disconnect
+     * before configuring a new hostname).
+     */
+	public void setHostname(String hostname)
+	{
+		if (isConnected()) {
+			throw new UnsupportedOperationException("You must disconnect before configuring a new hostname");
+		}
+		this.hostname = hostname;
+	}
+    
+	public int getPort()
+	{
+		return port;
+	}
+
+	/**
+	 * Define a new port for the R server that this object will connect to.
+	 * @param port Port number
+	 * 
+	 * @throws IllegalArgumentException if it is an invalid port.
+     * @throws UnsupportedOperationException if it is already connected to a server (must disconnect
+     * before configuring a new port).
+	 */
+	public void setPort(int port)
+	{
+		if (isConnected()) {
+			throw new UnsupportedOperationException("You must disconnect before configuring a new port address");
+		}
+		
+		if (port < 0 || port > 65535) {
+			throw new IllegalArgumentException("Invalid port: " + port);
+		}
+		this.port = port;
+	}
+
+	
+    /**
+     * Check if it is connected to an R server and, if not, try to establish a
+     * connection.
+     * 
+     * @throws UnsupportedOperationException if cannot connect.
+     */
+    private void checkConnection()
+    {
+        if (! isConnected()) {
+        	connect();
         }
     }
 
-    /*
+    /**
+     * Check if it is connected (but do not try to connect). 
+     */
+    public boolean isConnected()
+    {
+        if (connection != null && connection.isConnected()) {
+        	return true;
+        }
+        return false;
+    }
+
+    /**
+     * Disconnect from the server.
+     */
+    public void disconnect()
+    {
+        if (isConnected()) {
+        	// Attempt to release all memory used by this connection.
+            voidEval("rm(list=ls())");
+            
+        	connection.close();
+        }
+        connection = null;
+    }
+
+    @Override
+    public void finalize()
+    {
+        disconnect();
+    }
+    
+    /**
+     * Establish a connection to an R server.
+     * 
+     * @throws UnsupportedOperationException if cannot connect.
+     * 
+     * @return True if a new connection has established and False if it was
+     * already connected.
+     */
+    public boolean connect()
+    {
+    	RserveException exception = null;
+    	
+        if (isConnected()) {
+            return false;
+        }
+        
+        for (int i = 0; i < MAX_CONNECT_TRIES && ! isConnected(); i++) {
+        	try {
+        		Thread.sleep( 200 );
+        	} catch (InterruptedException e) {
+        	}
+        	
+            try {
+                connection = new RConnection(hostname, port);
+            } catch (RserveException e) {
+                exception = e;
+            }
+        }
+        
+        if (! isConnected()) {
+        	throw new IllegalArgumentException("Cannot connect to the R server at " + hostname, exception);
+        }
+        return true;
+    }
+
+	
+	/*
      * (non-Javadoc)
      * 
      * @see ubic.basecode.util.RClient#assign(java.lang.String, double[])
      */
-    public void assign( String argName, double[] arg ) {
+    public void assign( String argName, double[] arg )
+    {
         checkConnection();
 
         try {
@@ -85,7 +236,6 @@ public class RServeClient extends AbstractRClient {
         } catch ( REngineException e ) {
             throw new RuntimeException( e );
         }
-
     }
 
     /*
@@ -93,7 +243,8 @@ public class RServeClient extends AbstractRClient {
      * 
      * @see ubic.basecode.util.RClient#assign(java.lang.String, int[])
      */
-    public void assign( String arg0, int[] arg1 ) {
+    public void assign( String arg0, int[] arg1 )
+    {
         if ( StringUtils.isBlank( arg0 ) ) {
             throw new IllegalArgumentException( "Must supply valid variable name" );
         }
@@ -115,7 +266,8 @@ public class RServeClient extends AbstractRClient {
      * 
      * @see ubic.basecode.util.RClient#assign(java.lang.String, java.lang.String)
      */
-    public void assign( String sym, String ct ) {
+    public void assign( String sym, String ct )
+    {
         if ( StringUtils.isBlank( sym ) ) {
             throw new IllegalArgumentException( "Must supply valid variable name" );
         }
@@ -148,58 +300,29 @@ public class RServeClient extends AbstractRClient {
     }
 
     /**
-     * 
-     *
+     * Get last error message from R.
      */
-    public boolean connect() {
-        return connect( true );
-    }
-
-    public void disconnect() {
-        if ( connection != null && connection.isConnected() ) connection.close();
-        connection = null;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#finalize()
-     */
-    @Override
-    public void finalize() {
-        this.disconnect();
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see ubic.basecode.util.RClient#getLastError()
-     */
-    public String getLastError() {
+    public String getLastError()
+    {
         return connection.getLastError();
     }
 
-    /**
-     * 
-     */
-    public boolean isConnected() {
-        if ( connection != null && connection.isConnected() ) return true;
-        return false;
-    }
-
+   
     /*
      * (non-Javadoc)
      * 
      * @see ubic.basecode.util.RClient#retrieveMatrix(java.lang.String)
      */
-    public DoubleMatrix<String, String> retrieveMatrix( String variableName ) {
+    public DoubleMatrix<String, String> retrieveMatrix( String variableName )
+    {
         try {
             // REXP clr = this.eval( "class(" + variableName + ")" );
             // log.info( clr.asString() );
 
             // note that for some reason, asDoubleMatrix is returning a 1-d array. So I do this.
             REXP r = this.eval( "data.frame(t(" + variableName + "))" );
-            if ( r == null ) throw new IllegalArgumentException( variableName + " not found in R context" );
+            if ( r == null )
+            	throw new IllegalArgumentException( variableName + " not found in R context" );
 
             RList dataframe = r.asList();
             int numrows = dataframe.size();
@@ -213,13 +336,31 @@ public class RServeClient extends AbstractRClient {
             }
 
             DoubleMatrix<String, String> resultObject = new DenseDoubleMatrix<String, String>( results );
-
             retrieveRowAndColumnNames( variableName, resultObject );
             return resultObject;
         } catch ( REXPMismatchException e ) {
             throw new RuntimeException( "Failed to get back matrix for variable " + variableName, e );
         }
+    }
+    
 
+    /**
+     * @param variableName
+     * @param resultObject
+     * @throws REXPMismatchException
+     */
+    protected void retrieveRowAndColumnNames( String variableName, DoubleMatrix<String, String> resultObject ) {
+        List<String> rowNames = stringListEval( "dimnames(" + variableName + ")[1][[1]]" );
+
+        if ( rowNames.size() == resultObject.rows() ) {
+            resultObject.setRowNames( rowNames );
+        }
+
+        List<String> colNames = this.stringListEval( "dimnames(" + variableName + ")[2][[1]]" );
+
+        if ( colNames.size() == resultObject.columns() ) {
+            resultObject.setColumnNames( colNames );
+        }
     }
 
     /*
@@ -227,79 +368,14 @@ public class RServeClient extends AbstractRClient {
      * 
      * @see ubic.basecode.util.RClient#voidEval(java.lang.String)
      */
-    public void voidEval( String command ) {
+    public void voidEval( String command )
+    {
         if (command == null)
         	throw new IllegalArgumentException( "Null command" );
         this.checkConnection();
 
         eval( command );
 
-    }
-
-    /**
-     * 
-     */
-    private void checkConnection() {
-        if (!this.isConnected() ) {
-
-            /*
-             * This often won't work. Even if we reconnect, state will have been lost. However, under normal
-             * circumstances (over a local network) connection loss should be very rare.
-             */
-            boolean ok = false;
-            for ( int i = 0; i < MAX_CONNECT_TRIES; i++ ) {
-                try {
-                    Thread.sleep( 200 );
-                } catch ( InterruptedException e ) {
-                    return;
-                }
-                ok = this.connect();
-                if ( ok ) break;
-            }
-            if ( !ok ) {
-                throw new RuntimeException( "Not connected" );
-            }
-        }
-    }
-
-    /**
-     * @param host
-     * @param port
-     * @return
-     */
-    private boolean connect( String host, int port ) {
-        if ( connection != null && connection.isConnected() ) {
-            return true;
-        }
-        try {
-            connection = new RConnection( host, port );
-        } catch ( RserveException e ) {
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * @param beQuiet
-     */
-    private boolean connect( boolean beQuiet ) {
-        if ( connection != null && connection.isConnected() ) {
-            return true;
-        }
-        int tries = 3;
-        for ( int i = 0; i < tries; i++ ) {
-            try {
-                connection = new RConnection();
-                return true;
-            } catch ( RserveException e ) {
-                try {
-                    Thread.sleep( 100 );
-                } catch ( InterruptedException e1 ) {
-                    return false;
-                }
-            }
-        }
-        return false;
     }
 
     /*
@@ -353,24 +429,4 @@ public class RServeClient extends AbstractRClient {
             if ( lockValue != 0 ) connection.unlock( lockValue );
         }
     }
-
-    /**
-     * @param variableName
-     * @param resultObject
-     * @throws REXPMismatchException
-     */
-    private void retrieveRowAndColumnNames( String variableName, DoubleMatrix<String, String> resultObject ) {
-        List<String> rowNames = this.stringListEval( "dimnames(" + variableName + ")[1][[1]]" );
-
-        if ( rowNames.size() == resultObject.rows() ) {
-            resultObject.setRowNames( rowNames );
-        }
-
-        List<String> colNames = this.stringListEval( "dimnames(" + variableName + ")[2][[1]]" );
-
-        if ( colNames.size() == resultObject.columns() ) {
-            resultObject.setColumnNames( colNames );
-        }
-    }
-
 }

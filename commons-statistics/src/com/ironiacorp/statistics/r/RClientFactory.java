@@ -19,7 +19,8 @@ package com.ironiacorp.statistics.r;
 
 import java.io.File;
 
-import com.ironiacorp.computer.LibraryLoader;
+import com.ironiacorp.computer.ComputerSystem;
+import com.ironiacorp.computer.OperationalSystem;
 
 /**
  * Get a connection to R, somehow (if possible).
@@ -27,32 +28,19 @@ import com.ironiacorp.computer.LibraryLoader;
  * @author Paul
  * @version $Id: RConnectionFactory.java,v 1.2 2010/05/26 18:52:54 paul Exp $
  */
-public class RConnectionFactory
+public class RClientFactory
 {
-	public static final String DEFAULT_HOSTNAME = "localhost";
-	
-	private String hostname =  DEFAULT_HOSTNAME;
-	
-    public String getHostname()
-	{
-		return hostname;
-	}
-
-	public void setHostname(String hostname)
-	{
-		this.hostname = hostname;
-	}
-
-
 	/**
      * @param hostName The host to use for rserve connections, used only for RServe
      * @return
      */
-    public RClient getRConnection()
+    public RClient getClient()
     {
         RClient rc;
         
-        rc = getRServeConnection();
+        // Most reports on the Internet states that RServe is more reliable
+        // than JRI, thus we try the former first.
+        rc = getRServeClient();
         if (rc == null) {
         	rc = getJRIClient();
         }
@@ -64,22 +52,24 @@ public class RConnectionFactory
      * @param hostName The host to use for rserve connections, used only for RServe
      * @return
      */
-    public RClient getRServeConnection()
+    public RClient getRServeClient()
     {
-        RClient rc = null;
+    	RServeClient rc = null;
         try {
-            rc = new RServeClient(hostname);
+        	rc = new RServeClient();
+        	rc.connect();
         } catch (Exception e) {
-        	// Try once again if hostname == localhost
-        	if (DEFAULT_HOSTNAME.equals(hostname) || hostname == null) {
-        		try {
-        			RServe rserve = new RServe();
-        			rserve.start();
-                    rc = new RServeClient(hostname);
-        		} catch (Exception e2) {
-        		}
+        	// Try once again, now starting our own RServe
+       		try {
+       			RServe rserve = new RServe();
+       			rserve.start();
+       			rc = new RServeClient();
+       			rc.connect();
+       		} catch (Exception e2) {
+       			rc = null;
         	}
         }
+        
         return rc;
     }
 
@@ -89,16 +79,14 @@ public class RConnectionFactory
      */
     public RClient getJRIClient()
     {
-    	LibraryLoader loader = new LibraryLoader();
-    	String[] javaLibraryPath = System.getProperty("java.library.path").split(File.pathSeparator);
+    	OperationalSystem os = ComputerSystem.getCurrentOperationalSystem();
+    	File library;
     	
-    	loader.addDefaultLibraryPath();
-    	loader.addLibraryPath(new File("/usr/lib/R/site-library/rJava/jri/"));
-    	for (String path : javaLibraryPath) {
-    		loader.addLibraryPath(new File(path));
-    	}
-    	loader.load("jri");
+    	os.addLibrarySearchPath(new File("/usr/lib/R/site-library/rJava/jri/"));
+    	library = os.findLibrary("jri");
+    	os.loadLibrary(library);
         RClient j = new JRIClient();
+        
         return j;
     }
 }
