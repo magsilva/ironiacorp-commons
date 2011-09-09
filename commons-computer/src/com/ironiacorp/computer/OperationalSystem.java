@@ -37,7 +37,6 @@ public interface OperationalSystem
 	
 	ProcessBuilder exec(File execFile, List<String> parameters);
 	
-
 	
 	void addLibrarySearchPath(File dir);
 	

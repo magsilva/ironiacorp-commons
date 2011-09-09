@@ -31,6 +31,7 @@ import org.jinterop.winreg.JIWinRegFactory;
 import com.ironiacorp.io.IoUtil;
 import com.ironiacorp.computer.OperationalSystem;
 import com.ironiacorp.computer.OperationalSystemDetector;
+import com.ironiacorp.computer.OperationalSystemType;
 
 /**
  * GraphViz Java API is a simple API to call dot from Java programs.
@@ -282,7 +283,7 @@ public class Graphviz
     private String findGraphVizPath()
     {
     	OperationalSystemDetector detector = new OperationalSystemDetector();
-    	OperationalSystem os = detector.detectCurrentOS();
+    	OperationalSystemType os = detector.detectCurrentOS();
     	String path = null;
     	switch (os) {
     		case Windows:
@@ -414,7 +415,7 @@ public class Graphviz
 	public File run(String graphDescription, Filter filter, OutputFormat format, File outputFile)
 	{
 		OperationalSystemDetector detector = new OperationalSystemDetector();
-    	OperationalSystem os = detector.detectCurrentOS();
+    	OperationalSystemType os = detector.detectCurrentOS();
     	File binary;
     	File inputFile;
     	ArrayList<String> parameters = new ArrayList<String>();
