@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>ironiacorp</groupId>
 		<artifactId>commons</artifactId>
-		<version>3.0.0</version>
+		<version>${ironiacorp-commons.version}</version>
 	</parent>
 	<artifactId>commons-ws</artifactId>
 	<packaging>jar</packaging>
@@ -42,13 +42,13 @@
 		<dependency>
 			<groupId>ironiacorp</groupId>
 			<artifactId>commons-introspector</artifactId>
-			<version>[3.0.0,)</version>
+			<version>${ironiacorp-commons.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>ironiacorp</groupId>
 			<artifactId>commons-errorhandler</artifactId>
-			<version>[3.0.0,)</version>
+			<version>${ironiacorp-commons.version}</version>
 		</dependency>
 
 		
