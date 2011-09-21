@@ -9,11 +9,11 @@
 	</parent>
 
 	<artifactId>commons-annotation</artifactId>
+	<packaging>jar</packaging>
 	<name>IroniaCorp-Commons-Annotation</name>
 	<description>Annotation related utilities</description>
 	<url>http://www.ironiacorp.com/products/commons/annotation</url>
 	<inceptionYear>2007</inceptionYear>
-	<packaging>jar</packaging>
 
 	<scm>
 		<connection>scm:svn:https://www.ironiacorp.com/svn/projects/ironiacorp-commons/trunk/commons-annotation</connection>
