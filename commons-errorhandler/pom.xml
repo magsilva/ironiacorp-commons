@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>ironiacorp</groupId>
 		<artifactId>commons</artifactId>
-		<version>${ironiacorp-commons.version}</version>
+		<version>4.0.0</version>
 	</parent>
 	<artifactId>commons-errorhandler</artifactId>
 	<packaging>jar</packaging>

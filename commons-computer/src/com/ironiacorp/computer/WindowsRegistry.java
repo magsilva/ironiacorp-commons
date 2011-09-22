@@ -27,7 +27,15 @@ import java.net.JarURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLDecoder;
+import java.net.UnknownHostException;
 import java.util.*;
+
+import org.jinterop.dcom.common.IJIAuthInfo;
+import org.jinterop.dcom.common.JIDefaultAuthInfoImpl;
+import org.jinterop.dcom.common.JIException;
+import org.jinterop.winreg.IJIWinReg;
+import org.jinterop.winreg.JIPolicyHandle;
+import org.jinterop.winreg.JIWinRegFactory;
 
 import com.ice.jni.registry.NoSuchKeyException;
 import com.ice.jni.registry.RegistryException;
@@ -226,7 +234,13 @@ public class WindowsRegistry {
 		}
 	}
 	
-	public String getString(String keyName)
+	public String getString(String key, String value)
+	{
+		return getStringUsingRegEdit(key, value);
+	}
+	
+	
+	private String getStringUsingICE(String keyName)
 	{
 		int index = keyName.indexOf('\\');
 
@@ -239,8 +253,7 @@ public class WindowsRegistry {
 
 		RegistryKey topKey = getTopLevelKey(topKeyName);
 		if (topKey == null) {
-			throw new IllegalArgumentException("Toplevel key '" + topKeyName
-					+ "' could not be resolved");
+			throw new IllegalArgumentException("Toplevel key '" + topKeyName + "' could not be resolved");
 		}
 
 		int lastIndex = keyName.lastIndexOf("\\");
@@ -249,4 +262,57 @@ public class WindowsRegistry {
 		
 		return getString(topKey, keyName, valueName);
 	}
+	
+	
+    private String getStringUsingJInterop(String key)
+    {
+            String domain = "";
+            String username = "";
+            String password = "";
+            String dir = null;
+
+            // IJIWinReg winReg = JIWinRegFactory.getSingleTon().getWinreg(hostInfo, hostInfo.getHost(), true);
+            IJIAuthInfo authInfo = new JIDefaultAuthInfoImpl(domain, username, password);
+            try {
+                    IJIWinReg registry = JIWinRegFactory.getSingleTon().getWinreg(authInfo, domain, true);
+                    JIPolicyHandle policyHandle1 = registry.winreg_OpenHKLM();
+                    JIPolicyHandle policyHandle2 = registry.winreg_OpenKey(policyHandle1, key, IJIWinReg.KEY_READ);
+                    Object[] value = registry.winreg_QueryValue(policyHandle2, "InstallPath", 4096);
+                    dir = (String) value[0];
+                    registry.winreg_CloseKey(policyHandle2);
+                    registry.winreg_CloseKey(policyHandle1);
+            } catch (JIException e) {
+            } catch (UnknownHostException JavaDoc) {
+            }
+
+            return dir;
+    }
+    
+
+    /**
+     * Read GraphViz installation path using RegEdit.exe
+     * 
+     * @return Directory where GraphViz has been installed (and null if not found).
+     */
+    private String getStringUsingRegEdit(String key, String value)
+    {
+            final String REGQUERY_UTIL = "reg query ";
+            final String REGSTR_TOKEN = "REG_EXPAND_SZ";
+            final String COMPUTER_WINDOWS_GRAPHVIZ_FOLDER = REGQUERY_UTIL + "\"" + key + "\"" + "/v " + value;
+
+            try {
+                    Process process = Runtime.getRuntime().exec(COMPUTER_WINDOWS_GRAPHVIZ_FOLDER);
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+                    process.waitFor();
+                    String result = reader.readLine();
+                    int p = result.indexOf(REGSTR_TOKEN);
+                    if (p == -1) {
+                            return null;
+                    } else {
+                            return result.substring(p + REGSTR_TOKEN.length()).trim();
+                    }
+            } catch (Exception e) {
+                    return null;
+            }
+    }
 }

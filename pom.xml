@@ -5,7 +5,7 @@
 	<artifactId>commons</artifactId>
 	<packaging>pom</packaging>
 
-	<version>${ironiacorp-commons.version}</version>
+	<version>4.0.0</version>
 	<name>IroniaCorp Commons</name>
 	<description>Generic utility classes, useful for many applications.</description>
 	<url>http://www.ironiacorp.com/products/commons</url>
@@ -79,14 +79,6 @@
 
 	<repositories>
 		<repository>
-			<id>central</id>
-			<url>http://repo1.maven.org/maven2/</url>
-			<releases>
-				<updatePolicy>never</updatePolicy>
-			</releases>
-		</repository>
-		
-		<repository>
 			<id>LabES repository</id>
 			<url>http://www.ironiacorp.com/Apps/Artifactory/repo</url>
 			<releases>
@@ -109,13 +101,13 @@
 	<build>
 		<finalName>${project.artifactId}-${project.version}</finalName>
 
-		<directory>target</directory>
+		<directory>${project.basedir}/target</directory>
 
-		<sourceDirectory>src</sourceDirectory>
-		<testSourceDirectory>test</testSourceDirectory>
+		<sourceDirectory>${project.basedir}/src</sourceDirectory>
+		<testSourceDirectory>${project.basedir}/test</testSourceDirectory>
 
-		<outputDirectory>target/classes</outputDirectory>
-		<testOutputDirectory>target/test-classes</testOutputDirectory>
+		<outputDirectory>${project.build.directory}/target/classes</outputDirectory>
+		<testOutputDirectory>${project.build.directory}/target/test-classes</testOutputDirectory>
 
 		<resources>
 			<resource>
@@ -202,8 +194,5 @@
 		<module>commons-ws</module>
 		<module>commons-xml</module>
 	</modules>
-	<properties>
-		<ironiacorp-commons.version>3.0.2</ironiacorp-commons.version>
-	</properties>
 </project>
 

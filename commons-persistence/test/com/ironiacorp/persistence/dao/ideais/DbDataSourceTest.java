@@ -57,7 +57,8 @@ public class DbDataSourceTest
 		invalidConf = conf;
 		conf.setProperty(DbDataSource.DBMS, unknownDbms);
 	}
-	
+
+	@Ignore	
 	@Test
 	public void testGetDriverName()
 	{
@@ -70,7 +71,7 @@ public class DbDataSourceTest
 		DbDataSource.getDriverName(unknownDbms);
 	}
 
-	
+	@Ignore	
 	@Test
 	public void testGetConnectionString() {
 		assertEquals(DbDataSource.getConnectionString(knownDbms), knownConnectionString);

@@ -20,6 +20,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ironiacorp.io.IoUtil;
+
 public class Windows extends AbstractOperationalSystem
 {
 	public static final char UNIT_NAME_BEGIN = 'c';
@@ -128,5 +130,16 @@ public class Windows extends AbstractOperationalSystem
 		}
 		
 		return result;
+	}
+	
+	@Override
+	public File findExecutable(String exec)
+	{
+		String fileExtension = IoUtil.getExtension(exec);
+		if (fileExtension == null || fileExtension.isEmpty()) {
+			exec = exec + DEFAULT_EXECUTABLE_EXTENSION;
+		}
+		
+		return super.findExecutable(exec);
 	}
 }

@@ -16,22 +16,18 @@
 
 package com.ironiacorp.graph.layout;
 
-import java.io.*;
-import java.net.UnknownHostException;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import org.jinterop.dcom.common.IJIAuthInfo;
-import org.jinterop.dcom.common.JIDefaultAuthInfoImpl;
-import org.jinterop.dcom.common.JIException;
-import org.jinterop.winreg.IJIWinReg;
-import org.jinterop.winreg.JIPolicyHandle;
-import org.jinterop.winreg.JIWinRegFactory;
-
 import com.ironiacorp.io.IoUtil;
+import com.ironiacorp.computer.ComputerSystem;
 import com.ironiacorp.computer.OperationalSystem;
-import com.ironiacorp.computer.OperationalSystemDetector;
-import com.ironiacorp.computer.OperationalSystemType;
+import com.ironiacorp.computer.Windows;
+import com.ironiacorp.computer.WindowsRegistry;
 
 /**
  * GraphViz Java API is a simple API to call dot from Java programs.
@@ -50,7 +46,7 @@ import com.ironiacorp.computer.OperationalSystemType;
  * gv.writeGraphToFile(gv.getGraph(gv.getDotSource()), out);
  * </pre>
  */
-public class Graphviz
+public class Graphviz implements Layout
 {
 	/**
 	 * Layouts implemented by GraphViz.
@@ -95,14 +91,6 @@ public class Graphviz
 			this.name = name;
 		}
 	}
-
-	/**
-	 * Default path for GraphViz in Unix systems.
-	 */
-	public static final String[] DEFAULT_UNIX_PATH = {
-		"/usr/bin",
-		"/usr/local/bin",
-	};
 	
 	/**
 	 * Default path for GraphViz in Windows systems.
@@ -114,11 +102,11 @@ public class Graphviz
 		"C:\\Program Files\\Graphviz2.28\\bin\\",
 	};
 	
-	/**
-	 * Default extension of executable file in Windows.
-	 */
-	public static final String DEFAULT_WINDOWS_EXTENSION = ".exe";
+	private static final String DEFAULT_WINDOWS_REGISTRY_KEY = "Software\\Software\\AT&T Research Labs\\Graphviz\\";
 	
+	private static final String DEFAULT_WINDOWS_REGISTRY_VALUE = "InstallPath";
+
+		
 	/**
 	 * Default filter (layout) to be used by GraphViz.
 	 */
@@ -139,140 +127,15 @@ public class Graphviz
 	 */
 	private ArrayList<String> defaultParameters;
 	
-	/**
-	 * Find GraphViz on Windows systems.
-	 * 
-	 * @return Directory where GraphViz has been installed.
-	 */
-    private String getGraphVizPathOnWindows()
-    {
-        String path = null;
-        
-        // Try to access Windows's registry using native access.
-        try {
-        	path = getGraphVizPathOnWindowsUsingNativeAccess();
-        	if (path != null) {
-        		return path;
-        	}
-        } catch (Exception e) {
-        }
-
-        // Try to access Windows's registry using RegEdit.exe
-        try {
-        	path = getGraphVizPathOnWindowsUsingRegEdit();
-        	if (path != null) {
-        		return path;
-        	}
-        } catch (Exception e) {
-        }
-
-        // Last resort: try to find GraphViz in the usual places.
-       	path = getGraphVizPathOnWindowsUsingLuckyCharm();
-        
-        return path;
-    }
-
-
-    /**
-     * Read GraphViz installation path using native access.
-     * 
-     * @return Directory where GraphViz has been installed (and null if not found).
-     */
-    // TODO: Refactor and move this to IroniaCorp-Commons-SystemInfo
-    private String getGraphVizPathOnWindowsUsingNativeAccess()
-    {
-            String domain = "";
-            String username = "";
-            String password = "";
-            String key = "Software\\Software\\AT&T Research Labs\\Graphviz\\";
-            String dir = null;
-
-            // IJIWinReg winReg = JIWinRegFactory.getSingleTon().getWinreg(hostInfo, hostInfo.getHost(), true);
-            IJIAuthInfo authInfo = new JIDefaultAuthInfoImpl(domain, username, password);
-            try {
-                    IJIWinReg registry = JIWinRegFactory.getSingleTon().getWinreg(authInfo, domain, true);
-                    JIPolicyHandle policyHandle1 = registry.winreg_OpenHKLM();
-                    JIPolicyHandle policyHandle2 = registry.winreg_OpenKey(policyHandle1, key, IJIWinReg.KEY_READ);
-                    Object[] value = registry.winreg_QueryValue(policyHandle2, "InstallPath", 4096);
-                    dir = (String) value[0];
-                    registry.winreg_CloseKey(policyHandle2);
-                    registry.winreg_CloseKey(policyHandle1);
-            } catch (JIException e) {
-            } catch (UnknownHostException JavaDoc) {
-            }
-
-            return dir;
-    }
-
-    /**
-     * Read GraphViz installation path using RegEdit.exe
-     * 
-     * @return Directory where GraphViz has been installed (and null if not found).
-     */
-    // TODO: Refactor and move this to IroniaCorp-Commons-SystemInfo
-    private String getGraphVizPathOnWindowsUsingRegEdit()
-    {
-            final String REGQUERY_UTIL = "reg query ";
-            final String REGSTR_TOKEN = "REG_EXPAND_SZ";
-            final String COMPUTER_WINDOWS_GRAPHVIZ_FOLDER = REGQUERY_UTIL + "\"HKLM\\SOFTWARE\\AT&T Research Labs\\Graphviz\" /v InstallPath";
-
-            try {
-                    Process process = Runtime.getRuntime().exec(COMPUTER_WINDOWS_GRAPHVIZ_FOLDER);
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-                    process.waitFor();
-                    String result = reader.readLine();
-                    int p = result.indexOf(REGSTR_TOKEN);
-                    if (p == -1) {
-                            return null;
-                    } else {
-                            return result.substring(p + REGSTR_TOKEN.length()).trim();
-                    }
-            } catch (Exception e) {
-                    return null;
-            }
-    }
-
-    /**
-     * Try to find GraphViz in the usual places.
-     * 
-     * @return Directory where GraphViz has been installed (and null if not found).
-     */
-    private String getGraphVizPathOnWindowsUsingLuckyCharm()
-    {
-    	for (String dir : DEFAULT_WINDOWS_PATH) {
-    		File file = new File(dir, DEFAULT_FILTER.name + DEFAULT_WINDOWS_EXTENSION);
-    		if (file.exists()) {
-    			return dir;
-    		}
-    	}
-    	return null;
-    }
-
     
     /**
-	 * Find GraphViz on Linux systems.
+	 * Find GraphViz.
 	 * 
 	 * @return Directory where GraphViz has been installed.
 	 */
-    private String getGraphVizPathOnLinux()
+    private File findGraphVizExecutable()
     {
-    	for (String dir : DEFAULT_UNIX_PATH) {
-    		File file = new File(dir, DEFAULT_FILTER.name);
-    		if (file.exists()) {
-    			return dir;
-    		}
-    	}
-    	return null;
-    }
-	
-    /**
-	 * Find GraphViz on MacOS systems.
-	 * 
-	 * @return Directory where GraphViz has been installed.
-	 */
-    private String getGraphVizPathOnMacOS()
-    {
-    	return getGraphVizPathOnLinux();
+		return findGraphVizExecutable(DEFAULT_FILTER);
     }
     
     /**
@@ -280,41 +143,25 @@ public class Graphviz
 	 * 
 	 * @return Directory where GraphViz has been installed.
 	 */
-    private String findGraphVizPath()
+    private File findGraphVizExecutable(Filter filter)
     {
-    	OperationalSystemDetector detector = new OperationalSystemDetector();
-    	OperationalSystemType os = detector.detectCurrentOS();
-    	String path = null;
-    	switch (os) {
-    		case Windows:
-    			path = getGraphVizPathOnWindows();
-    			break;
-    		case Solaris:
-    		case Linux:
-    			path = getGraphVizPathOnLinux();
-    			break;
-    		case MacOS:
-    			path = getGraphVizPathOnMacOS();
-    			break;    			
+    	OperationalSystem os = ComputerSystem.getCurrentOperationalSystem();
+    	os.addExecutableSearchPath(binaryBasedir);
+    	
+    	if (os instanceof Windows) {
+    		WindowsRegistry registry = new WindowsRegistry();
+    		String keyValue = registry.getString(DEFAULT_WINDOWS_REGISTRY_KEY, DEFAULT_WINDOWS_REGISTRY_VALUE);
+    		if (keyValue != null && ! keyValue.trim().isEmpty()) {
+    			File path = new File(keyValue);
+    			if (path.isDirectory()) {
+    				os.addExecutableSearchPath(path);
+    			}
+    		}
     	}
-
-    	return path;
+    	
+    	return os.findExecutable(filter.name);
     }
     
-    /**
-     * Set the directory where GraphViz has been installed.
-     * 
-     * @param file Directory where GraphViz has been installed.
-     */
-	private void setBinaryBasedir(File file)
-	{
-		if (file != null && file.exists() && file.isDirectory()) {
-			binaryBasedir = file;
-		} else {
-			throw new IllegalArgumentException("Invalid file: " + file.getAbsolutePath());
-		}
-	}
-
     
     /**
 	 * Create the GraphViz runner. We will try to find where GraphViz has been installed in the
@@ -324,12 +171,9 @@ public class Graphviz
 	 */
 	public Graphviz()
 	{
-		String path = findGraphVizPath();
-    	if (path == null) {
-    		throw new UnsupportedOperationException(new FileNotFoundException("Cannot find GraphViz."));
-    	}
-    	
-    	setBinaryBasedir(new File(path));
+		File file = findGraphVizExecutable();
+		File dir = file.getParentFile();
+		setBinaryBasedir(dir);
     	defaultParameters = new ArrayList<String>();
 	}
 	
@@ -343,6 +187,15 @@ public class Graphviz
 	{
 		setBinaryBasedir(file);
     	defaultParameters = new ArrayList<String>();
+	}
+	
+	private void setBinaryBasedir(File path)
+	{
+		if (path == null || ! path.isDirectory()) {
+    		throw new UnsupportedOperationException(new FileNotFoundException("Cannot find GraphViz."));
+    	}
+
+    	binaryBasedir = path;
 	}
 	
 	/**
@@ -414,8 +267,6 @@ public class Graphviz
 	 */
 	public File run(String graphDescription, Filter filter, OutputFormat format, File outputFile)
 	{
-		OperationalSystemDetector detector = new OperationalSystemDetector();
-    	OperationalSystemType os = detector.detectCurrentOS();
     	File binary;
     	File inputFile;
     	ArrayList<String> parameters = new ArrayList<String>();
@@ -424,14 +275,7 @@ public class Graphviz
     		throw new IllegalArgumentException(new NullPointerException());
     	}
     	
-		switch (os) {
-			case Windows:
-				binary = new File(binaryBasedir, filter.name + DEFAULT_WINDOWS_EXTENSION);
-				break;
-			default:
-				binary = new File(binaryBasedir, filter.name);
-		}
-		
+    	binary = findGraphVizExecutable(filter);
 		inputFile = IoUtil.createTempFile();
 		parameters.add(0, binary.getAbsolutePath());
 		parameters.add("-o" + outputFile.getAbsolutePath());
