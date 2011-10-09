@@ -38,12 +38,17 @@ public class RClientFactory
     {
         RClient rc;
         
-        // Most reports on the Internet states that RServe is more reliable
-        // than JRI, thus we try the former first.
-        rc = getRServeClient();
-        if (rc == null) {
-        	rc = getJRIClient();
+        try {
+	        // Most reports on the Internet states that RServe is more reliable
+	        // than JRI, thus we try the former first.
+	        rc = getRServeClient();
+	        if (rc == null) {
+	        	rc = getJRIClient();
+	        }
+        } catch (Exception e) {
+        	rc = null;
         }
+        
         return rc;
     }
 
