@@ -16,6 +16,10 @@
 
 package com.ironiacorp.errorhandler;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 /**
  * Application error (thrown as an exception).
  */
@@ -33,17 +37,17 @@ public class Error extends RuntimeException
 	private Object object;
 	
 	/**
-	 * Error message.
+	 * Error messages.
 	 */
-	private ErrorMessage message;
-
+	private List<ErrorMessage> messages;
+	
 	/**
 	 * Configure the accountable object
 	 * 
 	 * @param object Accountable object.
 	 * @throws IllegalArgumentException if it's an invalid object (null).
 	 */
-	private void setObject(Object object)
+	public void setObject(Object object)
 	{
 		if (object == null) {
 			throw new IllegalArgumentException("Invalid object (if you are in doubt, simply use 'this').", new NullPointerException());
@@ -58,14 +62,27 @@ public class Error extends RuntimeException
 	 * @throws IllegalArgumentException if it's an invalid message (null) or without a proper implementation of
 	 * 'toString'.
 	 */
-	private void setMessage(ErrorMessage message)
+	public void setMessage(ErrorMessage message)
 	{
 		if (message == null || message.toString() == null) {
 			throw new IllegalArgumentException("Invalid error message", new NullPointerException());
 		}
-		this.message = message;
+		
+		messages.add(message);
 	}
 
+
+	/**
+	 * Create a new application error exception.
+	 * 
+	 * @param object Accountable object (usually the object where the exception was first captured).
+	 */
+	public Error(Object object)
+	{
+		setObject(object);
+		messages = new ArrayList<ErrorMessage>(1);
+	}
+	
 	/**
 	 * Create a new application error exception.
 	 * 
@@ -74,10 +91,10 @@ public class Error extends RuntimeException
 	 */
 	public Error(Object object, ErrorMessage message)
 	{
-		setObject(object);
+		this(object);
 		setMessage(message);
 	}
-	
+
 	/**
 	 * Get simple error message.
 	 * 
@@ -86,7 +103,17 @@ public class Error extends RuntimeException
 	@Override
 	public String getMessage()
 	{
-		return message.toString();
+		StringBuilder sb = new StringBuilder();
+		Iterator<ErrorMessage> i = messages.iterator();
+		while (i.hasNext()) {
+			ErrorMessage e = i.next();
+			sb.append(e.toString());
+			if (i.hasNext()) {
+				sb.append("\n");
+			}
+		}
+		
+		return sb.toString();
 	}
 	
 	/**
@@ -96,7 +123,21 @@ public class Error extends RuntimeException
 	 */
 	public ErrorMessage getErrorMessage()
 	{
-		return message;
+		if (messages.size() == 0) {
+			return null;
+		}
+		
+		return messages.get(0);
+	}
+	
+	/**
+	 * Get detailed error message.
+	 * 
+	 * @return (Full) error message.
+	 */
+	public List<ErrorMessage> getErrorMessages()
+	{
+		return messages;
 	}
 	
 	/**
