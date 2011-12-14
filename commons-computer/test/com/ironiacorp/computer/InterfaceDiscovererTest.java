@@ -65,6 +65,12 @@ public class InterfaceDiscovererTest
 			if ("eth0".equals(nic.getDisplayName())) {
 				return;
 			}
+			if ("em0".equals(nic.getDisplayName())) {
+				return;
+			}
+			if ("wlan0".equals(nic.getDisplayName())) {
+				return;
+			}
 		}
 		fail();
 	}

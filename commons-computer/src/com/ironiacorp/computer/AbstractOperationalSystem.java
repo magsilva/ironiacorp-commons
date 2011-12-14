@@ -19,6 +19,9 @@ package com.ironiacorp.computer;
 import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.regex.Pattern;
+
+import com.ironiacorp.io.Filesystem;
 
 public abstract class AbstractOperationalSystem implements OperationalSystem 
 {
@@ -181,13 +184,16 @@ public abstract class AbstractOperationalSystem implements OperationalSystem
 	public File findLibrary(String libName)
 	{
 		String fullname = getFullLibraryName(libName);
+		Filesystem fs = new Filesystem();
     	for (File dir : getLibrarySearchPath()) {
-    		File file = new File(dir, fullname);
-    		try {
-    			loadLibrary(file);
-    			return file;
-    		} catch (IllegalArgumentException e) {
-   			}
+    		List<File> files = fs.find(dir, 0, Pattern.compile(fullname + "(\\.(\\d+))?"));
+    		for (File file : files) {
+	    		try {
+	    			loadLibrary(file);
+	    			return file;
+	    		} catch (IllegalArgumentException e) {
+	   			}
+    		}
     	}
     	
     	return null;

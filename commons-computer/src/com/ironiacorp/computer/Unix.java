@@ -56,11 +56,12 @@ public class Unix extends AbstractOperationalSystem
 	{
 		return DEFAULT_LIBRARY_PREFIX + libName + DEFAULT_LIBRARY_EXTENSION;	
 	}
-		
+	// x86_64-linux-gnu
 	@Override
 	protected List<File> getSystemLibrarySearchPath()
 	{
-		String arch = System.getProperty("os.arch");
+		ComputerArchitectureDetector archDetector = new ComputerArchitectureDetector();
+		ComputerArchitecture arch = archDetector.detectCurrentArchitecture();
 		String dataModel = System.getProperty("sun.arch.data.model");
 		String currentSearchPath = System.getenv("LD_LIBRARY_PATH");
 		List<String> rawResult = new ArrayList<String>();
@@ -73,10 +74,12 @@ public class Unix extends AbstractOperationalSystem
 			}
 		}
 		
-		for (String path : currentSearchPath.split(File.pathSeparator)) {
-			File dir = new File(path);
-			if (isValidPath(dir)) {
-				rawResult.add(path);
+		if (currentSearchPath != null) {
+			for (String path : currentSearchPath.split(File.pathSeparator)) {
+				File dir = new File(path);
+				if (isValidPath(dir)) {
+					rawResult.add(path);
+				}
 			}
 		}
 		
@@ -88,18 +91,12 @@ public class Unix extends AbstractOperationalSystem
 			}
 			
 			// Plain path + os.arch and flavours
-			dir = new File(dirname + File.separator + arch + "-linux-gnu");
+			dir = new File(dirname + File.separator + arch.toString() + "-linux-gnu");
 			if (isValidPath(dir)) {
 				result.add(dir);
 			}
-			if (arch.equals("amd64")) {
-				dir = new File(dirname + File.separator + "x86_64" + "-linux-gnu");
-				if (isValidPath(dir)) {
-					result.add(dir);
-				}
-			}
-			if (arch.equals("x86_64")) {
-				dir = new File(dirname + File.separator + "amd64" + "-linux-gnu");
+			for (String acronym : arch.acronyms) {
+				dir = new File(dirname + File.separator + acronym + "-linux-gnu");
 				if (isValidPath(dir)) {
 					result.add(dir);
 				}

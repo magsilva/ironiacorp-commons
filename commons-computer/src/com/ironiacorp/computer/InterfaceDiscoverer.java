@@ -27,7 +27,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeSet;
 
 public class InterfaceDiscoverer
 {
@@ -70,7 +69,7 @@ public class InterfaceDiscoverer
 	public Set<InetAddress> getAddresses(NetworkInterface ni)
 	{
 		Enumeration<InetAddress> addresses = ni.getInetAddresses();
-		Set<InetAddress> validAddresses = new TreeSet<InetAddress>();
+		Set<InetAddress> validAddresses = new HashSet<InetAddress>();
 
 		while (addresses.hasMoreElements()) {
 			InetAddress address = addresses.nextElement();
