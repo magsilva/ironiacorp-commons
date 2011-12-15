@@ -17,16 +17,18 @@ limitations under the License.
 package com.ironiacorp.xml;
 
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.apache.xml.serialize.OutputFormat;
-import org.apache.xml.serialize.XMLSerializer;
 import org.w3c.dom.Document;
+import org.w3c.dom.bootstrap.DOMImplementationRegistry;
+import org.w3c.dom.ls.DOMImplementationLS;
+import org.w3c.dom.ls.LSOutput;
+import org.w3c.dom.ls.LSSerializer;
 import org.xml.sax.SAXException;
 
 
@@ -71,13 +73,21 @@ public final class XMLUtil
 	 */
 	public static void saveXML(Document document, File file)
 	{
-		XMLSerializer serializer = new XMLSerializer();
 		try {
+			DOMImplementationRegistry registry = DOMImplementationRegistry.newInstance();
+			DOMImplementationLS impl = (DOMImplementationLS)registry.getDOMImplementation("LS");
+			LSSerializer writer = impl.createLSSerializer();
+			FileOutputStream fos = new FileOutputStream(file);
+			LSOutput lso = impl.createLSOutput();
+			lso.setByteStream(fos);
+			writer.write(document, lso);
+			/*
 			OutputFormat of = new OutputFormat(document, "ISO-8859-1", true);
 			serializer.setOutputFormat(of);
 			serializer.setOutputCharStream(new FileWriter(file));
 			serializer.serialize(document);
-		} catch (IOException e) {
+			*/
+		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 	}
