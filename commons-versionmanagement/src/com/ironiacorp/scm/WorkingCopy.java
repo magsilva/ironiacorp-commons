@@ -1,85 +1,22 @@
-/*
-Wiki/RE - A requirements engineering wiki
-Copyright (C) 2005 Marco Aurélio Graciotto Silva
+package com.ironiacorp.scm;
 
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
-(at your option) any later version.
+import java.io.File;
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-*/
-
-package net.sf.ideais.repository;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-/**
- * Dummy software configuration that does absolutely nothing.
- * 
- * @author Marco Aurélio Graciotto Silva
- */
-public class DummyRepositoryTransaction extends RepositoryTransaction
+public class WorkingCopy
 {
-	/**
-	* Commons Logging instance.
-	*/
-	private static Log log = LogFactory.getLog( DummyRepositoryTransaction.class );
+	private File workDir;
 
-	/**
-	* Create the repository transaction to access the Subversion.
-	* 
-	* @param project ProjectIF to use to retrieve the configuration items.
-	* @param user UserIF to be used to access the repository.
-	* 
-	* @throws RepositoryTransactionError If the URL is invalid or the user's
-	* configuration directory could not be created.
-	*/
-	public DummyRepositoryTransaction(SourceCodeRepository repository)
-	{
-		super(repository);
-		log.debug( "Initialization" );
+	public File getWorkDir() {
+		return workDir;
 	}
 
+	public void setWorkDir(File workDir) {
+		this.workDir = workDir;
+	}
 	
 	/**
-	 * Checkout a copy of the project's repository.
-	 * 
-	 * @throws RepositoryTransactionError If an error occurred when checking out
-	 * the files.
-	 */
-	public void checkout()
-	{
-		super.checkout();
-	}
-
-	/**
-	 * Checkout a copy of the project's repository. The version is ignored.
-	 * 
-	 * @param version This should be the version to retrieve. This repository
-	 * does not support versions.
-	 * 
-	 * @throws RepositoryTransactionError If an error occurred when checking out
-	 * the files.
-	 */
-	public void checkout( String version )
-	{
-		super.checkout( version );
-	}
-
-
-	/**
 	 * Add a file or directory to the project's repository. If a directory is
-	 * used as parameter, all the files and subdirs are added. Well, a dummy
-	 * repository haven't much work to do about this.
+	 * used as parameter, all the files and subdirs are added. 
 	 * 
 	 * @param path The file or directory to be added.
 	 * 
@@ -88,9 +25,28 @@ public class DummyRepositoryTransaction extends RepositoryTransaction
 	 */
 	public void add( String path )
 	{
-		super.add( path );
+		_check();
+		log.debug( "Add " + path );
 	}
-
+	
+	/**
+	 * Add a file or directory to the project's repository. If a directory is
+	 * used as parameter and "recurse" is true, all the files and subdirs will
+	 * be added. 
+	 * 
+	 * @param path The file or directory to be added.
+	 * @param recurse If the files and subdirectories within the directory
+	 * must be added.
+	 * 
+	 * @throws RepositoryTransactionError If an error occurred when adding the
+	 * file(s).
+	 */
+	public void add( String path, boolean recurse )
+	{
+		_check();
+		log.debug( "Recursive add " + path );
+	}
+	
 	/**
 	 * Remove a file or directory from the project's repository. If a directory
 	 * is used as parameter, all the files and subdirs are removed. 
@@ -102,7 +58,8 @@ public class DummyRepositoryTransaction extends RepositoryTransaction
 	 */
 	public void remove( String path )
 	{
-		super.remove( path );
+		_check();
+		log.debug( "Remove " + path );
 	}
 	
 	/**
@@ -117,7 +74,8 @@ public class DummyRepositoryTransaction extends RepositoryTransaction
 	 */
 	public void revert( String path )
 	{
-		super.revert( path );
+		_check();
+		log.debug( "Revert " + path );
 	}
 
 	/**
@@ -133,7 +91,9 @@ public class DummyRepositoryTransaction extends RepositoryTransaction
 	 */
 	public ConfigurationItem[] info( String path )
 	{
-		return super.info( path );
+		_check();
+		log.debug( "Info " + path );
+		return null;
 	}
 
 	/**
@@ -148,9 +108,10 @@ public class DummyRepositoryTransaction extends RepositoryTransaction
 	 */
 	public void update( String path )
 	{
-		super.update( path );
+		_check();
+		log.debug( "Update " + path );
 	}
-
+	
 	/**
 	 * Update a file or directory to the request version. If a directory is
 	 * used as parameter, all the files and subdirs are updated. 
@@ -163,7 +124,8 @@ public class DummyRepositoryTransaction extends RepositoryTransaction
 	 */
 	public void update( String path, String version )
 	{
-		super.update( path, version );
+		_check();
+		log.debug( "Update " + path + " to version " + version );
 	}
 	
 	/**
@@ -178,7 +140,8 @@ public class DummyRepositoryTransaction extends RepositoryTransaction
 	 */
 	public void branch( String srcPath, String destPath )
 	{
-		super.branch( srcPath, destPath );
+		_check();
+		log.debug( "Branch " + srcPath + " -> " + destPath );
 	}
 
 	/**
@@ -194,7 +157,9 @@ public class DummyRepositoryTransaction extends RepositoryTransaction
 	 */
 	public String diff( String srcPath, String destPath )
 	{
-		return super.diff( srcPath, destPath );
+		_check();
+		log.debug( "Diff " + srcPath + " and " + destPath );
+		return null;
 	}
 	
 	/**
@@ -211,7 +176,9 @@ public class DummyRepositoryTransaction extends RepositoryTransaction
 	 */	
 	public String diff( String path, String version1, String version2 )
 	{
-		return super.diff( path, version1, version2 );
+		_check();
+		log.debug( "Diff " + path + " (" + version1 + " -> " + version2 + ")" );
+		return null;
 	}
 
 	/**
@@ -231,34 +198,10 @@ public class DummyRepositoryTransaction extends RepositoryTransaction
 	 */	
 	public String diff( String srcPath, String version1, String destPath, String version2 )
 	{
-		return super.diff( srcPath, version1, destPath, version2 );
-	}
-
-	/**
-	 * Commit the modifications made to the workcopy.
-	 * 
-	 * @param changelog Description of the changes made to the repository.
-	 * 
-	 * @throws RepositoryTransactionError If an error occurred when commiting
-	 * the files.
-	 */	
-	public void commit( String changelog )
-	{
-		super.commit( changelog );
-	}
-	
-	/**
-	 * Abort (rollback) the modifications made to the workcopy.
-	 */	
-	public void abort()
-	{
-		super.abort();
-	}
-
-
-	public TransactionStatus getStatus()
-	{
-		// TODO Auto-generated method stub
+		_check();
+		log.debug( "Diff " + srcPath + " (" + version1 + ") -> " + destPath + " (" + version2 + ")" );
 		return null;
 	}
+
+
 }

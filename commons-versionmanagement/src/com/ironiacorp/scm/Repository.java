@@ -16,35 +16,60 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 Copyright (C) 2005 Marco Aurélio Graciotto Silva <magsilva@gmail.com>
 */
 
-package net.sf.ideais.repository;
+package com.ironiacorp.scm;
 
-import java.util.concurrent.atomic.AtomicInteger;
+import java.io.File;
+
+import com.ironiacorp.credentials.Credential;
+
 
 /**
- * The IdFactory generate unique ids for transactions.
+ * Interface for repository access.
  * 
  * @author Marco Aurélio Graciotto Silva
  */
-public final class TransactionIdFactory
+public interface Repository
 {
 	/**
-	 * We really don't want an instance of this class, so we create this
-	 * private constructor.
+	 * Get the location (address) for this repository (an URL, e.g.).
+	 * 
+	 * @return The repository address.
 	 */
-	private TransactionIdFactory()
-	{
-	}
+	String getLocation();
+
+	/**
+	 * Set the location of the repository.
+	 * 
+	 * @param location
+	 */
+	void setLocation(String location);
+
 	
 	/**
-	 * Transactions counter.
+	 * Set credential required to access the repository.
 	 */
-	private static final AtomicInteger idFactory = new AtomicInteger( 0 );
+	void setCredential(Credential<?> credential);
+	
 	
 	/**
-	 * Return an unique id for the transaction.
+	 * Get credential used to access the repository.
+	 * @return
 	 */
-	public static int nextId()
-	{
-		return idFactory.incrementAndGet();
-	}
+	Credential<?> getCredential();
+
+
+	/**
+	 * Get a working copy for the given repository 
+
+	 * @return Working copy.
+	 */
+	WorkingCopy checkout(File workDir);
+	
+	/**
+	 * Get a working copy for the given repository 
+	 *
+	 * @return Working copy.
+	 */
+	void init();
+
 }

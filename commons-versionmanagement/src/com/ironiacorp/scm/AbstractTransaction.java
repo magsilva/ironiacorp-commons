@@ -16,7 +16,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 Copyright (C) 2007 Marco Aurélio Graciotto Silva <magsilva@gmail.com>
 */
 
-package net.sf.ideais.repository;
+package com.ironiacorp.scm;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

@@ -17,49 +17,36 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-package net.sf.ideais.repository;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+package com.ironiacorp.scm;
 
 /**
  * Exception launched when a anomaly is detected when creating or executing
- * a transaction.
+ * a repository transaction.
  * 
  * This exception should encapsulate the exception that triggered the real
- * transaction error (if any).
+ * transaction error.
  * 
  * @author Marco Aurélio Graciotto Silva
  */
-public class TransactionError extends RuntimeException
+public class RepositoryTransactionError extends RuntimeException
 {
-	/**
-	* Commons Logging instance.
-	*/
-	private static Log log = LogFactory.getLog( TransactionError.class );
-	
-	/**
-	 * The versionUID for the TransactionError exception.
-	 */
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @param message The key for the message about this error class.
-	 * @param cause The exception that triggered the transaction error.
+	 * @param cause The exception that triggered the repository error.
 	 */
-	public TransactionError( String message )
+	public RepositoryTransactionError( String message )
 	{
 		super( message );
-		log.error( message );
 	}
 
 	/**
 	 * @param message The key for the message about this error class.
-	 * @param cause The exception that triggered the transaction error.
+	 * @param cause The exception that triggered the repository error.
 	 */
-	public TransactionError( String message, Throwable cause )
+	public RepositoryTransactionError( String message, Throwable cause )
 	{
 		super( message, cause );
-		log.error( message, cause );
 	}
 }

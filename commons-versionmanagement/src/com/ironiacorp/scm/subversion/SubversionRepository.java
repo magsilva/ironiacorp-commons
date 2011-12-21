@@ -16,9 +16,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 Copyright (C) 2005 Marco Aurélio Graciotto Silva <magsilva@gmail.com>
 */
 
-package net.sf.ideais.repository;
+package com.ironiacorp.scm.subversion;
 
-import net.sf.ideais.repository.RepositoryError;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -27,6 +26,9 @@ import org.tigris.subversion.javahl.InputInterface;
 import org.tigris.subversion.javahl.OutputInterface;
 import org.tigris.subversion.javahl.Revision;
 import org.tigris.subversion.javahl.SVNAdmin;
+
+import com.ironiacorp.scm.AbstractRepository;
+import com.ironiacorp.scm.RepositoryError;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -52,11 +54,6 @@ public class SubversionRepository extends AbstractRepository
 	 * Commons Logging instance.
 	 */
 	private static Log log = LogFactory.getLog(SubversionRepository.class);
-
-	/**
-	 * Type identifier string.
-	 */
-	public static final String TYPE = "svn";
 
 	/**
 	 * Internal class which implements the OutputInterface to write the data to a file. This class

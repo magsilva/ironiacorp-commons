@@ -17,7 +17,7 @@ Copyright (C) 2005 Marco Aurélio Graciotto Silva <magsilva@gmail.com>
 */
 
 
-package net.sf.ideais.repository;
+package com.ironiacorp.scm.subversion;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -28,9 +28,14 @@ import java.net.URL;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.tigris.subversion.javahl.*;
+import org.tigris.subversion.javahl.Status;
 
 import com.ironiacorp.io.IoUtil;
-
+import com.ironiacorp.scm.ConfigurationItem;
+import com.ironiacorp.scm.RepositoryTransaction;
+import com.ironiacorp.scm.RepositoryTransactionError;
+import com.ironiacorp.scm.Repository;
+import com.ironiacorp.scm.TransactionStatus;
 
 /**
  * Subversion (http://subversion.tigris.org) is a software configuration
@@ -108,7 +113,7 @@ public class SubversionRepositoryTransaction extends RepositoryTransaction
 	* @throws RepositoryTransactionError If the URL is invalid or the user's
 	* configuration directory could not be created.
 	*/
-	public SubversionRepositoryTransaction(SourceCodeRepository repository)
+	public SubversionRepositoryTransaction(Repository repository)
 	{
 		super(repository);
 		client = new SVNClientSynchronized();
@@ -332,15 +337,14 @@ public class SubversionRepositoryTransaction extends RepositoryTransaction
 		super.info( path );
 		try {
 			ArrayList<ConfigurationItem> items = new ArrayList<ConfigurationItem>();
-			Status[] overallStatus = client.status( path, true, false, true );
+			org.tigris.subversion.javahl.Status[] overallStatus = client.status( path, true, false, true );
 
-			for ( Status status : overallStatus ) {
+			for (Status status : overallStatus ) {
 				Info info = client.info( status.getPath() );
 				ConfigurationItem ci = new ConfigurationItem( info.getName() );
 				ci.setVersion( Long.toString( info.getCopyRev() ) );
 				ci.setAuthor( info.getAuthor() );
-				int svnStatus = status.getTextStatus();
-				switch ( svnStatus ) {
+				switch (status.getTextStatus()) {
 					case StatusKind.added:
 						ci.setStatus( ConfigurationItem.Status.ADDED );
 						break;

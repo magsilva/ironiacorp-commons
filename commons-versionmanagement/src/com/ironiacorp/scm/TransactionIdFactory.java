@@ -13,12 +13,38 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-Copyright (C) 2007 Marco Aurélio Graciotto Silva <magsilva@gmail.com>
+Copyright (C) 2005 Marco Aurélio Graciotto Silva <magsilva@gmail.com>
 */
 
-package net.sf.ideais.repository;
+package com.ironiacorp.scm;
 
-public enum TransactionStatus
+import java.util.concurrent.atomic.AtomicInteger;
+
+/**
+ * The IdFactory generate unique ids for transactions.
+ * 
+ * @author Marco Aurélio Graciotto Silva
+ */
+public final class TransactionIdFactory
 {
-
+	/**
+	 * We really don't want an instance of this class, so we create this
+	 * private constructor.
+	 */
+	private TransactionIdFactory()
+	{
+	}
+	
+	/**
+	 * Transactions counter.
+	 */
+	private static final AtomicInteger idFactory = new AtomicInteger( 0 );
+	
+	/**
+	 * Return an unique id for the transaction.
+	 */
+	public static int nextId()
+	{
+		return idFactory.incrementAndGet();
+	}
 }

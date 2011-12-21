@@ -1,7 +1,4 @@
 /*
-Wiki/RE - A requirements engineering wiki
-Copyright (C) 2005 Marco Aurélio Graciotto Silva
-
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2 of the License, or
@@ -15,46 +12,56 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+Copyright (C) 2005 Marco Aurélio Graciotto Silva <magsilva@gmail.com>
 */
 
-package net.sf.ideais.repository;
+
+package com.ironiacorp.scm.fs;
 
 import java.io.File;
-
+import java.io.IOException;
+import java.util.concurrent.atomic.AtomicLong;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.ironiacorp.io.IoUtil;
+import com.ironiacorp.scm.ConfigurationItem;
+import com.ironiacorp.scm.RepositoryTransaction;
+import com.ironiacorp.scm.RepositoryTransactionError;
+import com.ironiacorp.scm.Repository;
+import com.ironiacorp.scm.TransactionStatus;
 
 /**
- * Abstract class for a repository transaction. A repository transaction is an
- * abstraction to encapsulate the access to a project's repository (usually held
- * within a software configuration management system like CVS or Subversion).
+ * Dummy software configuration just save the files. Actually, there's no
+ * software configuration at all.
+ * 
+ * TODO: Create a FilesystemClient and delegate to it most of the repository actions,
+ * pretty much like the SVNClient. Maybe this could be even a fork of a RCSClient (jCVS?).
+ * 
+ * @author Marco Aurélio Graciotto Silva
  */
-public abstract class RepositoryTransaction extends AbstractTransaction
+public class FilesystemRepositoryTransaction extends RepositoryTransaction
 {
-	protected SourceCodeRepository repository;
+	/**
+	 * The directory where the project's files, shared by all users, is saved.
+	 */
+	private String repdir;
 	
-	protected boolean completed;
 
 	/**
-	 * The directory where the local workcopy's file will be saved.
+	 * Counter used by createTempFile.
 	 */
-	protected String workdir;
-	
-	/**
-	 * The changelog.
-	 */
-	protected String changelog;
-	
+	private static AtomicLong counter = new AtomicLong( Double.doubleToLongBits( Math.random() ) );
+
 	/**
 	* Commons Logging instance.
 	*/
-	private static Log log = LogFactory.getLog( RepositoryTransaction.class );
+	private static Log log = LogFactory.getLog( FilesystemRepositoryTransaction.class );
 
 	/**
-	* Create the repository transaction.
+	* Create the repository transaction to access the Subversion.
 	* 
 	* @param project ProjectIF to use to retrieve the configuration items.
 	* @param user UserIF to be used to access the repository.
@@ -62,39 +69,23 @@ public abstract class RepositoryTransaction extends AbstractTransaction
 	* @throws RepositoryTransactionError If the URL is invalid or the user's
 	* configuration directory could not be created.
 	*/
-	public RepositoryTransaction(SourceCodeRepository repository)
+	public FilesystemRepositoryTransaction(Repository repository)
 	{
-		super();
-		log.debug( "Initialization" );
-		this.repository = repository;
-		String tmpdir = System.getProperty( "java.io.tmpdir" );
-		if ( tmpdir != null ) {
-			tmpdir += File.separator;
-		}
-		setWorkdir( tmpdir + repository.getShortName() + File.separator + getId() );
+		super(repository);
+		setRepdir(repository.getLocation());
 	}
 
 	/**
-	 * Get the workdir.
+	 * Set the repository directory. The directory will be created if it does
+	 * not exist.
 	 * 
-	 * @return The directory where the local workcopy files are saved.
-	 */
-	public String getWorkdir()
-	{
-		return this.workdir;
-	}
-
-	
-	/**
-	 * Set the workdir. The directory will be created if it does not exist.
-	 * 
-	 * @param workdir Directory name to be used as work directory.
+	 * @param repdir Directory that holds the project's files.
 	 * 
 	 * @throws RepositoryTransactionError If the directory cannot be used.
 	 */
-	protected void setWorkdir( String workdir )
+	protected void setRepdir( String repdir )
 	{
-		File dir = new File( workdir );
+		File dir = new File( repdir );
 		if ( dir.exists() && ! dir.isDirectory() ) {
 			throw new RepositoryTransactionError( "exception.repositoryTransaction.invalidWorkdir" );	
 		}
@@ -104,52 +95,53 @@ public abstract class RepositoryTransaction extends AbstractTransaction
 		} catch ( SecurityException se ) {
 			throw new RepositoryTransactionError( "exception.repositoryTransaction.invalidWorkdir" );
 		}
-		this.workdir = dir.getAbsolutePath() + File.separator;
-	}
-
-	/**
-	 * Check if an action can be made upon the repository by this transaction.
-	 * 
-	 * @throws RepositoryTransactionError If the transaction has been completed (either
-	 * by commiting or rolling it back).
-	 */
-	private void _check()
-	{
-		if ( completed ) {
-			throw new RepositoryTransactionError( "exception.repositoryTransaction.transactionCompleted" );
-		}
+		this.repdir = repdir;
 	}
 	
-	
 	/**
-	 * Checkout a recent (HEAD) copy of the project's repository.
+	 * Checkout a copy of the project's repository.
 	 * 
 	 * @throws RepositoryTransactionError If an error occurred when checking out
 	 * the files.
 	 */
 	public void checkout()
 	{
-		_check();
-		log.debug( "Checkout" );
+		_checkout();
 	}
-	
+
 	/**
-	 * Checkout a copy of the project's repository at the given version.
+	 * Checkout a copy of the project's repository. The version is ignored.
 	 * 
-	 * @param version The version (the Subversion revision) to be retrieved.
+	 * @param version This should be the version to retrieve. This repository
+	 * does not support versions.
 	 * 
 	 * @throws RepositoryTransactionError If an error occurred when checking out
 	 * the files.
 	 */
 	public void checkout( String version )
 	{
-		_check();
-		log.debug( "Checkout " + version );
+		_checkout();
+	}
+
+	/**
+	 * Checkout a copy of the project's repository.
+	 * 
+	 * @throws RepositoryTransactionError If an error occurred when checking out
+	 * the files.
+	 */
+	private void _checkout()
+	{
+		try {
+			IoUtil.copyDir(repdir, workdir, true );
+		} catch ( IOException e ) {
+			throw new RepositoryTransactionError( "exception.repositoryTransaction.checkout", e );
+		}
 	}
 
 	/**
 	 * Add a file or directory to the project's repository. If a directory is
-	 * used as parameter, all the files and subdirs are added. 
+	 * used as parameter, all the files and subdirs are added. Well, a dummy
+	 * repository haven't much work to do about this.
 	 * 
 	 * @param path The file or directory to be added.
 	 * 
@@ -158,28 +150,8 @@ public abstract class RepositoryTransaction extends AbstractTransaction
 	 */
 	public void add( String path )
 	{
-		_check();
-		log.debug( "Add " + path );
 	}
-	
-	/**
-	 * Add a file or directory to the project's repository. If a directory is
-	 * used as parameter and "recurse" is true, all the files and subdirs will
-	 * be added. 
-	 * 
-	 * @param path The file or directory to be added.
-	 * @param recurse If the files and subdirectories within the directory
-	 * must be added.
-	 * 
-	 * @throws RepositoryTransactionError If an error occurred when adding the
-	 * file(s).
-	 */
-	public void add( String path, boolean recurse )
-	{
-		_check();
-		log.debug( "Recursive add " + path );
-	}
-	
+
 	/**
 	 * Remove a file or directory from the project's repository. If a directory
 	 * is used as parameter, all the files and subdirs are removed. 
@@ -191,8 +163,6 @@ public abstract class RepositoryTransaction extends AbstractTransaction
 	 */
 	public void remove( String path )
 	{
-		_check();
-		log.debug( "Remove " + path );
 	}
 	
 	/**
@@ -207,8 +177,18 @@ public abstract class RepositoryTransaction extends AbstractTransaction
 	 */
 	public void revert( String path )
 	{
-		_check();
-		log.debug( "Revert " + path );
+		File file = new File( path );
+		try {
+			if ( file.isDirectory() ) {
+				IoUtil.copyDir( repdir + File.separator + path,
+					workdir + File.separator + path );
+			} else {
+				IoUtil.copyFile( repdir + File.separator + path,
+					workdir + File.separator + path );
+			}
+		} catch ( IOException e ) {
+			throw new RepositoryTransactionError( "exception.repositoryTransaction.revert", e );
+		}
 	}
 
 	/**
@@ -224,8 +204,27 @@ public abstract class RepositoryTransaction extends AbstractTransaction
 	 */
 	public ConfigurationItem[] info( String path )
 	{
-		_check();
-		log.debug( "Info " + path );
+		/*
+		try {
+			ArrayList<ConfigurationItem> items = new ArrayList<ConfigurationItem>();
+			for ( File file : Io.find( path ) ) {
+				ConfigurationItem ci = new ConfigurationItem( file.getName() );
+				ci.setVersion( "" );
+				ci.setAuthor( "" );
+				// ci.setStatus( ConfigurationItem.Status.ADDED );
+				// ci.setStatus( ConfigurationItem.Status.REMOVED );
+				// ci.setStatus( ConfigurationItem.Status.IGNORED );
+				// ci.setStatus( ConfigurationItem.Status.INCOMPLETE );
+				// ci.setStatus( ConfigurationItem.Status.MISSING );
+				// ci.setStatus( ConfigurationItem.Status.MODIFIED );
+				// ci.setStatus( ConfigurationItem.Status.NORMAL );
+				items.add( ci );
+			}
+			return (ConfigurationItem[])items.toArray();
+		} catch ( IOException e ) {
+			throw new RepositoryTransactionError( "exception.repositoryTransaction.info", e );
+		}
+		*/
 		return null;
 	}
 
@@ -241,10 +240,9 @@ public abstract class RepositoryTransaction extends AbstractTransaction
 	 */
 	public void update( String path )
 	{
-		_check();
-		log.debug( "Update " + path );
+		_update( path );
 	}
-	
+
 	/**
 	 * Update a file or directory to the request version. If a directory is
 	 * used as parameter, all the files and subdirs are updated. 
@@ -257,10 +255,29 @@ public abstract class RepositoryTransaction extends AbstractTransaction
 	 */
 	public void update( String path, String version )
 	{
-		_check();
-		log.debug( "Update " + path + " to version " + version );
+		_update( path );
 	}
 	
+	/**
+	 * Update a file or directory to the requested revision. If a directory is
+	 * used as parameter, all the files and subdirs are updated. 
+	 * 
+	 * @param path The file or directory to be updated.
+	 * @param revision The revision to update to.
+	 * 
+	 * @throws RepositoryTransactionError If an error occurred when updating
+	 * the file(s).
+	 */
+	private void _update( String path )
+	{
+		/*
+		try {
+		} catch ( IOException e ) {
+			throw new RepositoryTransactionError( "exception.repositoryTransaction.update", e );
+		}
+		*/
+	}
+
 	/**
 	 * Create a branch. 
 	 * 
@@ -273,8 +290,12 @@ public abstract class RepositoryTransaction extends AbstractTransaction
 	 */
 	public void branch( String srcPath, String destPath )
 	{
-		_check();
-		log.debug( "Branch " + srcPath + " -> " + destPath );
+		/*
+		try {
+		} catch ( IOException e ) {
+			throw new RepositoryTransactionError( "exception.repositoryTransaction.branch", e );
+		}
+		*/
 	}
 
 	/**
@@ -290,8 +311,12 @@ public abstract class RepositoryTransaction extends AbstractTransaction
 	 */
 	public String diff( String srcPath, String destPath )
 	{
-		_check();
-		log.debug( "Diff " + srcPath + " and " + destPath );
+		/*
+		try {
+		} catch ( IOException e ) {
+			throw new RepositoryTransactionError( "exception.repositoryTransaction.diff", e );
+		}
+		*/
 		return null;
 	}
 	
@@ -309,9 +334,7 @@ public abstract class RepositoryTransaction extends AbstractTransaction
 	 */	
 	public String diff( String path, String version1, String version2 )
 	{
-		_check();
-		log.debug( "Diff " + path + " (" + version1 + " -> " + version2 + ")" );
-		return null;
+		return diff( path, version1, path, version2 );
 	}
 
 	/**
@@ -331,8 +354,12 @@ public abstract class RepositoryTransaction extends AbstractTransaction
 	 */	
 	public String diff( String srcPath, String version1, String destPath, String version2 )
 	{
-		_check();
-		log.debug( "Diff " + srcPath + " (" + version1 + ") -> " + destPath + " (" + version2 + ")" );
+		/*
+		try {
+		} catch ( IOException e ) {
+			throw new RepositoryTransactionError( "exception.repositoryTransaction.diff", e );
+		}
+		*/
 		return null;
 	}
 
@@ -346,90 +373,24 @@ public abstract class RepositoryTransaction extends AbstractTransaction
 	 */	
 	public void commit( String changelog )
 	{
-		_check();
-		addChangelog( changelog );
-		log.debug( "Commit " + this.changelog );
-		if ( workdir != null ) {
-			IoUtil.removeDir(workdir);
+		/*
+		try {
+		} catch ( IOException e ) {
+			throw new RepositoryTransactionError( "exception.repositoryTransaction.commit", e );
 		}
-		completed = true;
+		*/
 	}
-	
-	/**
-	 * Commit the modifications made to the workcopy.
-	 * 
-	 * @param changelog Description of the changes made to the repository.
-	 * 
-	 * @throws RepositoryTransactionError If an error occurred when commiting
-	 * the files.
-	 */	
-	public void commit()
-	{
-		_check();
-		log.debug( "Commit" );
-		commit( null );
-	}
-	
 	
 	/**
 	 * Abort (rollback) the modifications made to the workcopy.
 	 */	
 	public void abort()
 	{
-		_check();
-		log.debug( "Rollback" );
-		if ( workdir != null ) {
-			IoUtil.removeDir(workdir);
-		}
-		completed = true;
 	}
 
-	/**
-	 * Check if the transaction has already been completed.
-	 * 
-	 * @return True if the transaction has completed, false otherwise.
-	 */
-	public boolean isCompleted()
+	public TransactionStatus getStatus()
 	{
-		return this.completed;
-	}
-
-	/**
-	 * Get the current changelog for this transaction.
-	 * 
-	 * @return The current changelog.
-	 */
-	public String getChangelog()
-	{
-		_check();
-		return ( changelog == null ) ? "" : changelog;
-	}
-
-	/**
-	 * Set a new changelog for this transaction.
-	 * 
-	 * @param changelog The new changelog.
-	 */
-	public void setChangelog( String changelog )
-	{
-		_check();
-		log.debug( "Set changelog to " + changelog );
-		this.changelog = changelog;
-	}
-
-	/**
-	 * Add a new changelog line for this transaction.
-	 * 
-	 * @param changelog The new changelog line.
-	 */
-	public void addChangelog( String changelog )
-	{
-		_check();
-		log.debug( "Added the following message to the changelog: " + changelog );
-		if ( this.changelog == null || this.changelog.length() == 0 ) {
-			this.changelog = changelog;
-		} else  {
-			this.changelog += "\n" + changelog;
-		}
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

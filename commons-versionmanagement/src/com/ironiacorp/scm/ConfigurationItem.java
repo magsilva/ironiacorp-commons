@@ -17,7 +17,7 @@ Copyright (C) 2005 Marco Aurélio Graciotto Silva <magsilva@gmail.com>
 */
 
 
-package net.sf.ideais.repository;
+package com.ironiacorp.scm;
 
 /**
  * Common data format for configuration item descriptions. Every SCM employ

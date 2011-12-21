@@ -16,25 +16,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 Copyright (C) 2007 Marco Aurélio Graciotto Silva <magsilva@gmail.com>
 */
 
-package net.sf.ideais.repository;
+package com.ironiacorp.scm;
 
-public enum SubversionProtocol
+public enum TransactionStatus
 {
-	FILE	("file://"),
-	HTTP	("http://"),
-	HTTPS	("https://"),
-	SVN		("svn://"),
-	SVNSSH	("svn+ssh://");
-	
-	private String protocol;
 
-	SubversionProtocol(String protocol)
-	{
-		this.protocol = protocol;
-	}
-	
-	public String toString()
-	{
-		return protocol;
-	}
 }

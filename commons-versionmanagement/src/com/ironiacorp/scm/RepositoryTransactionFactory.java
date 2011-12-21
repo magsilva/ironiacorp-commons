@@ -17,7 +17,9 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-package net.sf.ideais.repository;
+package com.ironiacorp.scm;
+
+import com.ironiacorp.scm.subversion.SubversionRepositoryTransaction;
 
 
 /**
@@ -58,7 +60,7 @@ public final class RepositoryTransactionFactory
 	 * the transaction (repository type not supported or fatal error when
 	 * initializing the transacton).
 	 */
-	public static RepositoryTransaction createRepositoryTransaction(SourceCodeRepository repository)
+	public static RepositoryTransaction createRepositoryTransaction(Repository repository)
 	{
 		RepositoryTransaction tx = null;
 		if ( repository == null ) {

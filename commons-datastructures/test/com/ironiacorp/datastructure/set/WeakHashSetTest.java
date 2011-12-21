@@ -23,6 +23,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class WeakHashSetTest
@@ -105,6 +106,7 @@ public class WeakHashSetTest
 		assertFalse(set.isEmpty());
 	}
 	
+	@Ignore
 	@Test
 	public void testRefresh()
 	{

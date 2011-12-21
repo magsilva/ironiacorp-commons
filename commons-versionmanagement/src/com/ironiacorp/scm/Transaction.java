@@ -16,13 +16,12 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 Copyright (C) 2005 Marco Aurélio Graciotto Silva <magsilva@gmail.com>
 */
 
-package net.sf.ideais.repository;
+package com.ironiacorp.scm;
 
 /**
  * TransactionIF interface. It's an abstraction for an application transaction
- * that can span accross several (but not too many) requests.
- * 
- * @author Marco Aurélio Graciotto Silva
+ * that can span across several (but not too many) requests.
+
  */
 public interface Transaction
 {
