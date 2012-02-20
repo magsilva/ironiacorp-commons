@@ -61,8 +61,8 @@ public class FileExecutionTest
 	@Test
 	public void testLoadFile_ValidLibrary_SpecificPath()
 	{
-		os.addExecutableSearchPath(new File("/usr/lib/R/site-library/rJava/jri"));
-		File file = os.findExecutable("run");
+		os.addExecutableSearchPath(new File("/lib"));
+		File file = os.findExecutable("ld-linux.so.2");
 		assertNotNull(file);
 		os.exec(file, null);
 	}

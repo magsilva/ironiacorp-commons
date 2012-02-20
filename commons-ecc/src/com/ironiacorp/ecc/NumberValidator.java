@@ -1,4 +1,4 @@
-package com.ironiacorp;
+package com.ironiacorp.ecc;
 
 public class NumberValidator
 {

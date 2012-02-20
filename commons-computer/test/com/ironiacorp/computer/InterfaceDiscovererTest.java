@@ -24,6 +24,7 @@ import java.net.NetworkInterface;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -60,15 +61,18 @@ public class InterfaceDiscovererTest
 	{
 		Set<NetworkInterface> nics = id.discoverNics();
 		Iterator<NetworkInterface> i = nics.iterator();
+		Pattern ethPattern = Pattern.compile("eth\\d+");
+		Pattern emPattern = Pattern.compile("em\\d+");
+		Pattern wlanPattern = Pattern.compile("wlan\\d+");
 		while (i.hasNext()) {
 			NetworkInterface nic = i.next();
-			if ("eth0".equals(nic.getDisplayName())) {
+			if (ethPattern.matcher(nic.getDisplayName()).matches()) {
 				return;
 			}
-			if ("em0".equals(nic.getDisplayName())) {
+			if (emPattern.matcher(nic.getDisplayName()).matches()) {
 				return;
 			}
-			if ("wlan0".equals(nic.getDisplayName())) {
+			if (wlanPattern.matcher(nic.getDisplayName()).matches()) {
 				return;
 			}
 		}

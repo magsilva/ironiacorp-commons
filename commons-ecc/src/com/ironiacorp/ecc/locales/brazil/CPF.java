@@ -1,4 +1,4 @@
-package com.ironiacorp.locale.brazil;
+package com.ironiacorp.ecc.locales.brazil;
 
 import com.ironiacorp.ecc.Module11;
 

@@ -27,8 +27,9 @@ import org.tigris.subversion.javahl.OutputInterface;
 import org.tigris.subversion.javahl.Revision;
 import org.tigris.subversion.javahl.SVNAdmin;
 
+import com.ironiacorp.credentials.Credential;
 import com.ironiacorp.scm.AbstractRepository;
-import com.ironiacorp.scm.RepositoryError;
+import com.ironiacorp.scm.WorkingCopy;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -208,29 +209,18 @@ public class SubversionRepository extends AbstractRepository
 			if (dir.isDirectory() && dir.canRead() && dir.canWrite()) {
 				url = "file://" + url;
 			} else {
-				throw new RepositoryError("exception.repository.invalidLocation");
+				throw new IllegalArgumentException("exception.repository.invalidLocation");
 			}
 		} else {
 			try {
 				new URL(url);
 
 			} catch (MalformedURLException e) {
-				throw new RepositoryError("exception.repository.invalidLocation", e);
+				throw new IllegalArgumentException("exception.repository.invalidLocation", e);
 			}
 		}
 
 		super.setLocation(url);
-	}
-
-	/**
-	 * Get the repository type (svn, cvs, etc). The repository type must be supported/registered at
-	 * RepositoryTransactionFactory.
-	 * 
-	 * @return The repository type.
-	 */
-	public String getType()
-	{
-		return TYPE;
 	}
 
 	/**
@@ -248,7 +238,7 @@ public class SubversionRepository extends AbstractRepository
 			}
 		} catch (MalformedURLException e) {
 			// This will never happen, as the location is always checked when first set.
-			throw new RepositoryError("exception.repository.invalidLocation", e);
+			throw new IllegalArgumentException("exception.repository.invalidLocation", e);
 		}
 
 		return null;
@@ -284,22 +274,20 @@ public class SubversionRepository extends AbstractRepository
 
 			svnAdmin.dispose();
 		} catch (ClientException e) {
-			throw new RepositoryError("exception.repository.init", e);
+			throw new IllegalArgumentException("exception.repository.init", e);
 		}
 	}
 
 	/**
 	 * Dump the repository to a file.
 	 * 
-	 * @return The file with the dump.
+	 * @param dumpFilename The file with the dump.
 	 * @throws RepositoryError
 	 *             If the location is not an URL with the "file" protocol or an error occurs while
 	 *             dumping the repository.
 	 */
-	public File dump()
+	public void dump(File dumpFilename)
 	{
-		File dumpFilename = super.dump();
-
 		if (getLocalPath() == null) {
 			throw new UnsupportedOperationException("exception.repository.dump");
 		}
@@ -312,11 +300,10 @@ public class SubversionRepository extends AbstractRepository
 			svnAdmin.dump(getLocalPath(), dump, errors, Revision.START, Revision.HEAD, true);
 
 			svnAdmin.dispose();
-			return dumpFilename;
 		} catch (IOException e) {
-			throw new RepositoryError("exception.repository.dump", e);
+			throw new IllegalArgumentException("exception.repository.dump", e);
 		} catch (ClientException e) {
-			throw new RepositoryError("exception.repository.dump", e);
+			throw new IllegalArgumentException("exception.repository.dump", e);
 		}
 
 	}
@@ -330,8 +317,6 @@ public class SubversionRepository extends AbstractRepository
 	 */
 	public void load(File dump)
 	{
-		super.load(dump);
-
 		if (getLocalPath() == null) {
 			throw new UnsupportedOperationException("exception.repository.load");
 		}
@@ -345,9 +330,9 @@ public class SubversionRepository extends AbstractRepository
 
 			svnAdmin.dispose();
 		} catch (IOException e) {
-			throw new RepositoryError("exception.repository.load", e);
+			throw new IllegalArgumentException("exception.repository.load", e);
 		} catch (ClientException e) {
-			throw new RepositoryError("exception.repository.load", e);
+			throw new IllegalArgumentException("exception.repository.load", e);
 		}
 	}
 
@@ -381,5 +366,17 @@ public class SubversionRepository extends AbstractRepository
 
 		Class.forName("org.tigris.subversion.javahl.SVNAdmin");
 		return true;
+	}
+
+	@Override
+	public void setCredential(Credential<?> credential) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public WorkingCopy checkout(File workDir) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

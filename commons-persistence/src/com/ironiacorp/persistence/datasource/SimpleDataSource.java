@@ -98,10 +98,4 @@ class SimpleDataSource extends Reference implements DataSource
 			throw new SQLException("Unable to unwrap to " + iface.toString());
 		}
 	}
-
-	@Override
-	public Logger getParentLogger() throws SQLFeatureNotSupportedException {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }

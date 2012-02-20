@@ -49,6 +49,9 @@ public class RServeTest
 	{
 		OperationalSystem os = ComputerSystem.getCurrentOperationalSystem();
 		os.addExecutableSearchPath(new File("/usr/lib/R/site-library/Rserve"));
+		os.addExecutableSearchPath(new File("/usr/lib64/R/library/Rserve"));
+		os.addExecutableSearchPath(new File("/usr/lib/R/site-library/Rserve"));
+		os.addExecutableSearchPath(new File("/usr/lib64/R/library/Rserve"));
 		assertNotNull(rserve.getRServeExecutable());
 	}
 

@@ -1,7 +1,7 @@
-package com.ironiacorp.locale.brazil;
+package com.ironiacorp.ecc.locales.brazil;
 
-import com.ironiacorp.NumberValidator;
 import com.ironiacorp.ecc.Module10;
+import com.ironiacorp.ecc.NumberValidator;
 
 public class PISPASEP
 {

@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class EqualsTesting
+public abstract class EqualsTesting
 {
 	private Object o1;
 	
