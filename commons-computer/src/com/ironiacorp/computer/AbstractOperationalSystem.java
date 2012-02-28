@@ -188,10 +188,8 @@ public abstract class AbstractOperationalSystem implements OperationalSystem
     	for (File dir : getLibrarySearchPath()) {
     		List<File> files = fs.find(dir, 0, Pattern.compile(fullname + "(\\.(\\d+))?"));
     		for (File file : files) {
-	    		try {
-	    			loadLibrary(file);
+	    		if (isLoadable(file)) {
 	    			return file;
-	    		} catch (IllegalArgumentException e) {
 	   			}
     		}
     	}
