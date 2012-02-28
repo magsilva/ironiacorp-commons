@@ -62,6 +62,17 @@ public class SingleElementSet<E> implements Set<E>
 		}
 	};
 	
+	public SingleElementSet()
+	{
+		super();
+	}
+
+	public SingleElementSet(E e)
+	{
+		super();
+		add(e);
+	}
+	
 	@Override
 	public int size() {
 		return element == null ? 0 : 1;

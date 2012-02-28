@@ -22,6 +22,12 @@ public class SingleElementSetTest {
 	}
 
 	@Test
+	public void testConstructor() {
+		set = new SingleElementSet<String>("test");
+		assertTrue(set.contains("test"));
+	}
+	
+	@Test
 	public void testSize_Empty() {
 		assertEquals(0, set.size());
 	}
