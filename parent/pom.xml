@@ -5,7 +5,7 @@
 	<artifactId>commons</artifactId>
 	<packaging>pom</packaging>
 
-	<version>4.0.0</version>
+	<version>5.0.0-SNAPSHOT</version>
 	<name>IroniaCorp Commons</name>
 	<description>Generic utility classes, useful for many applications.</description>
 	<url>http://www.ironiacorp.com/products/commons</url>
@@ -167,34 +167,34 @@
 	</build>
 
 	<modules>
-		<module>commons-annotation</module>
-		<module>commons-computer</module>
-		<module>commons-configuration</module>
-		<module>commons-datastructures</module>
-		<module>commons-email</module>
-		<module>commons-ecc</module>
-		<module>commons-errorhandler</module>
-		<module>commons-graph</module>
-		<module>commons-http</module>
-		<module>commons-imaging</module>
-		<module>commons-introspector</module>
-		<module>commons-io</module>
-		<module>commons-licensing</module>
-		<module>commons-messaging</module>
-		<module>commons-naming</module>
-		<module>commons-number</module>
-		<module>commons-patterns</module>
-		<module>commons-persistence</module>
-		<module>commons-security</module>
-		<module>commons-spelling</module>
-		<module>commons-statistics</module>
-		<module>commons-string</module>
-		<module>commons-ui-gui</module>
+		<module>../commons-annotation</module>
+		<module>../commons-computer</module>
+		<module>../commons-configuration</module>
+		<module>../commons-datastructures</module>
+		<module>../commons-email</module>
+		<module>../commons-ecc</module>
+		<module>../commons-errorhandler</module>
+		<module>../commons-graph</module>
+		<module>../commons-http</module>
+		<module>../commons-imaging</module>
+		<module>../commons-introspector</module>
+		<module>../commons-io</module>
+		<module>../commons-licensing</module>
+		<module>../commons-messaging</module>
+		<module>../commons-naming</module>
+		<module>../commons-number</module>
+		<module>../commons-patterns</module>
+		<module>../commons-persistence</module>
+		<module>../commons-security</module>
+		<module>../commons-spelling</module>
+		<module>../commons-statistics</module>
+		<module>../commons-string</module>
+		<module>../commons-ui-gui</module>
 		<!--
-		<module>commons-versionmanagement</module>
+		<module>../commons-versionmanagement</module>
 		-->
-		<module>commons-ws</module>
-		<module>commons-xml</module>
+		<module>../commons-ws</module>
+		<module>../commons-xml</module>
 	</modules>
 </project>
 
