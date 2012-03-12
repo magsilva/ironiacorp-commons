@@ -29,6 +29,20 @@
 	</ciManagement>
 
 	<dependencies>
+		<!-- 
+			For every new XML/XSL dependency here, check whether its dependencies include
+			xmlParserAPIs (artifactId) from xerces (groupId). If yes, add an exclusion
+			rule, as follows:
+			
+			<exclusions>
+				<exclusion>
+					<groupId>xerces</groupId>
+					<artifactId>xmlParserAPIs</artifactId>
+				</exclusion>
+			</exclusions>
+			
+			For more information regarding this issue, read http://swordsystems.com/2011/06/29/xerces-and-xml-api-dependency-hell/
+		-->
 		<dependency>
 			<groupId>net.sf.saxon</groupId>
 			<artifactId>saxon-he</artifactId>
@@ -39,7 +53,7 @@
 		<dependency>
 			<groupId>xerces</groupId>
 			<artifactId>xercesImpl</artifactId>
-			<version>2.10.0</version>
+			<version>[2.11.0,)</version>
 			<scope>runtime</scope>
 		</dependency>
 	</dependencies>
