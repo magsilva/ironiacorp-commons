@@ -10,6 +10,10 @@
 	<description>Generic utility classes, useful for many applications.</description>
 	<url>http://www.ironiacorp.com/products/commons</url>
 
+	<properties>
+		<ironiacorp.commons.version>5.0.0-SNAPSHOT</ironiacorp.commons.version>
+	</properties>
+
 	<inceptionYear>2007</inceptionYear>
 
 	<organization>
@@ -71,10 +75,16 @@
 
 	<distributionManagement>
 		<repository>
-			<id>labes-pc-010808</id>
-			<name>labes-pc-010808</name>
+			<id>labes-icmc-usp</id>
+			<name>labes-icmc-usp</name>
 			<url>http://www.ironiacorp.com/Apps/Artifactory/libs-releases-local</url>
 		</repository>
+
+		<snapshotRepository>
+			<id>labes-icmc-usp</id>
+			<name>labes-icmc.usp</name>
+			<url>http://www.ironiacorp.com/Apps/Artifactory/libs-snapshot-local</url>
+		</snapshotRepository>
 	</distributionManagement>
 
 	<repositories>

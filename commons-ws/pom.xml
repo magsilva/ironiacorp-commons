@@ -43,13 +43,13 @@
 		<dependency>
 			<groupId>ironiacorp</groupId>
 			<artifactId>commons-introspector</artifactId>
-			<version>4.0.0</version>
+			<version>${ironiacorp.commons.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>ironiacorp</groupId>
 			<artifactId>commons-errorhandler</artifactId>
-			<version>4.0.0</version>
+			<version>${ironiacorp.commons.version}</version>
 		</dependency>
 
 		

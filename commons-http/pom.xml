@@ -89,13 +89,13 @@
 		<dependency>
 			<groupId>ironiacorp</groupId>
 			<artifactId>commons-string</artifactId>
-			<version>4.0.0</version>
+			<version>${ironiacorp.commons.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>ironiacorp</groupId>
 			<artifactId>commons-io</artifactId>
-			<version>4.0.0</version>
+			<version>${ironiacorp.commons.version}</version>
 		</dependency>	
 	</dependencies>
 </project>

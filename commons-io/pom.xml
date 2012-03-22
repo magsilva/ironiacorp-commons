@@ -33,13 +33,13 @@
 		<dependency>
 			<groupId>ironiacorp</groupId>
 			<artifactId>commons-string</artifactId>
-			<version>4.0.0</version>
+			<version>${ironiacorp.commons.version}</version>
 		</dependency>
 
 		<dependency>
-			<groupId>org.ostermiller</groupId>
-			<artifactId>utils</artifactId>
-			<version>1.07.00</version>
+			<groupId>com.ostermiller</groupId>
+			<artifactId>ostermillerutils</artifactId>
+			<version>[1.08.02,)</version>
 		</dependency>
 	</dependencies>
 </project>
