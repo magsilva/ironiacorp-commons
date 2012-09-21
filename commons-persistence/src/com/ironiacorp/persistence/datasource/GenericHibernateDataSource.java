@@ -26,8 +26,8 @@ import java.util.Properties;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.connection.ConnectionProvider;
-import org.hibernate.connection.ConnectionProviderFactory;
+// import org.hibernate.connection.ConnectionProvider;
+// import org.hibernate.connection.ConnectionProviderFactory;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.tool.hbm2ddl.DatabaseMetadata;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
@@ -198,19 +198,19 @@ public abstract class GenericHibernateDataSource implements DataSource
 	{
 		Dialect dialect = Dialect.getDialect(hibernateConfig.getProperties());
         Properties props = new Properties();
-        ConnectionProvider connectionProvider = null;
+//        ConnectionProvider connectionProvider = null;
         DatabaseMetadata dm = null;
 
         props.putAll(dialect.getDefaultProperties());
         props.putAll(hibernateConfig.getProperties());
-        connectionProvider = ConnectionProviderFactory.newConnectionProvider(props);
+ /*       connectionProvider = ConnectionProviderFactory.newConnectionProvider(props);
         
         try {
         	dm = new DatabaseMetadata(connectionProvider.getConnection(), dialect);
         } catch ( SQLException e ) {
         	log.debug("Could not get database DDL script", e);
         }
-				
+	*/			
 		String[] script = hibernateConfig.generateSchemaUpdateScript(dialect, dm);
 		return ArrayUtil.toString( script );
 	}

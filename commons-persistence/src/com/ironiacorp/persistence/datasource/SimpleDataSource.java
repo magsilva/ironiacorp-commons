@@ -17,6 +17,8 @@ import javax.naming.Reference;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.SQLFeatureNotSupportedException;
+import java.util.logging.Logger;
 import java.io.PrintWriter;
 
 
@@ -95,6 +97,12 @@ class SimpleDataSource extends Reference implements DataSource
 		} catch (ClassCastException cce) {
 			throw new SQLException("Unable to unwrap to " + iface.toString());
 		}
+	}
+
+	@Override
+	public Logger getParentLogger() throws SQLFeatureNotSupportedException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	

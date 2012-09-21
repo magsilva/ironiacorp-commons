@@ -1,5 +1,6 @@
 package com.ironiacorp.io;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
@@ -16,38 +17,36 @@ public class BitInputStream {
 	short currentByte;
 	int bitReady;	// which bit do we retrieve next. 8 for MSB, 1 for LSB, 0 for load next
 	
-	private BitInputStream() {}
-	
 	public BitInputStream(InputStream is) {
 		thisStream = is;
 		bitReady = 0;
 	}
 	
-	public boolean getBoolean() throws java.io.IOException {
+	public boolean getBoolean() throws IOException {
 		return getBits(1) != 0 ? true : false;
 	}
 	
-	public byte getByte() throws java.io.IOException {
+	public byte getByte() throws IOException {
 		return (byte)getBits(8);
 	}
 	
-	public short getShort() throws java.io.IOException {
+	public short getShort() throws IOException {
 		return (short)getBits(16);
 	}
 	
-	public int getInt() throws java.io.IOException {
+	public int getInt() throws IOException {
 		return (int)getBits(32);
 	}
 	
-	public long getLong() throws java.io.IOException {
+	public long getLong() throws IOException {
 		return (long)getBits(64);
 	}
 	
-	public void getArray(short[] b) throws java.io.IOException {
+	public void getArray(short[] b) throws IOException {
 		getArray(b, b.length * 8);
 	}
 	
-	public void getArray(short[] b, int numBits) throws java.io.IOException {
+	public void getArray(short[] b, int numBits) throws IOException {
 		int idx = 0;
 		if (numBits > b.length*8) {
 			numBits = b.length*8;
@@ -61,11 +60,11 @@ public class BitInputStream {
 		}
 	}
 	
-	public void getArray(byte[] b) throws java.io.IOException {
+	public void getArray(byte[] b) throws IOException {
 		getArray(b, b.length * 8);
 	}
 	
-	public void getArray(byte[] b, int numBits) throws java.io.IOException {
+	public void getArray(byte[] b, int numBits) throws IOException {
 		int idx = 0;
 		if (numBits > b.length*8) {
 			numBits = b.length*8;
@@ -79,7 +78,7 @@ public class BitInputStream {
 		}
 	}
 	
-	public long getBits(int numBits)  throws java.io.IOException {
+	public long getBits(int numBits)  throws IOException {
 		long result = 0;	// work with long to get as many digits of accuracy as possible
 		while(numBits > 0) {
 			// No more data left, so refill buffer
@@ -109,7 +108,7 @@ public class BitInputStream {
 		return result;
 	}
 		
-	short getNextByte() throws java.io.IOException {
+	short getNextByte() throws IOException {
 		// This casting ensures we can get unsigned data out
 		return (short)(0xff & (int)thisStream.read());
 	}
@@ -119,9 +118,9 @@ public class BitInputStream {
 	//
 	/**
 	 * This loads in all the bytes requested into a newly created data
-	 * stream, that can be interogated later. 
+	 * stream, that can be interrogated later. 
 	 */
-	public BitInputStream getStreamBlock(int numBytes) throws java.io.IOException {
+	public BitInputStream getStreamBlock(int numBytes) throws IOException {
 		byte[] data = new byte[numBytes];
 		
 		getArray(data);

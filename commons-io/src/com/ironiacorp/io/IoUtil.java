@@ -275,14 +275,12 @@ public final class IoUtil
 		FileInputStream srcFileStream = new FileInputStream(srcFilename);
 		FileOutputStream destFileStream = new FileOutputStream(destFilename);
 		byte[] buffer = new byte[BUFFER_SIZE];
-		int position = 0;
 		int bytes;
 
 		do {
 			bytes = srcFileStream.read(buffer, 0, buffer.length);
 			if (bytes != -1) {
 				destFileStream.write(buffer, 0, bytes);
-				position += bytes;
 			}
 		} while (bytes != -1);
 

@@ -43,7 +43,7 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hibernate.util.DTDEntityResolver;
+// import org.hibernate.util.DTDEntityResolver;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -117,7 +117,7 @@ public final class HibernateConfigurationUtil
 			// the current implementation fails on it.
 			// factory.setSchema( null );
 			parser = factory.newDocumentBuilder();
-			parser.setEntityResolver(new DTDEntityResolver());
+//			parser.setEntityResolver(new DTDEntityResolver());
 			config = parser.parse(configFile);
 		} catch (Exception e) {
 			log.debug("Error loading the configuration: ", e);

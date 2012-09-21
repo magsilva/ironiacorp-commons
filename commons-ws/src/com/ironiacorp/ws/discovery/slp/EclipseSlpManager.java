@@ -31,7 +31,7 @@ import ch.ethz.iks.slp.Locator;
 import ch.ethz.iks.slp.ServiceLocationException;
 import ch.ethz.iks.slp.ServiceType;
 import ch.ethz.iks.slp.ServiceURL;
-import ch.ethz.iks.slp.impl.ServiceLocationManager;
+// import ch.ethz.iks.slp.impl.ServiceLocationManager;
 
 /**
  * Formely jSLP (http://jslp.sourceforge.net/), the code has been donated to
@@ -83,6 +83,7 @@ public class EclipseSlpManager implements SlpServiceDiscoverer
 	
 	public Set<Service> find(Criterion... criteria)
 	{
+		/*
 		try {
 			ServiceLocationManager locationManager = new ServiceLocationManager();
 			Locator locator = locationManager.getLocator(Locale.ENGLISH);
@@ -105,6 +106,7 @@ public class EclipseSlpManager implements SlpServiceDiscoverer
 		} catch (ServiceLocationException e) {
 			e.printStackTrace();
 		}
+		*/
 
 		return null;
 	}

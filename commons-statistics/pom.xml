@@ -33,21 +33,27 @@
 		<dependency>
 			<groupId>org.rosuda</groupId>
 			<artifactId>rengine</artifactId>
-			<version>2011-03-20</version>
+			<version>[1.7.0,)</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.rosuda</groupId>
 			<artifactId>rserve-engine</artifactId>
-			<version>2011-03-20</version>
+			<version>[1.7.0,)</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.rosuda</groupId>
+			<artifactId>jri</artifactId>
+			<version>[0.9.4,)</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>org.rosuda</groupId>
-			<artifactId>jri</artifactId>
-			<version>0.8.8</version>
+			<artifactId>jri-engine</artifactId>
+			<version>[0.9.4,)</version>
 		</dependency>
-		
+	
 		<dependency>
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>

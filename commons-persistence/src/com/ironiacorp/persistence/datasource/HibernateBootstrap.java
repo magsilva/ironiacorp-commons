@@ -22,8 +22,8 @@ package com.ironiacorp.persistence.datasource;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.connection.ConnectionProvider;
-import org.hibernate.connection.ConnectionProviderFactory;
+// import org.hibernate.connection.ConnectionProvider;
+// import org.hibernate.connection.ConnectionProviderFactory;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.hbm2ddl.SchemaUpdate;
@@ -222,19 +222,19 @@ public class HibernateBootstrap
 	{
 		Dialect dialect = Dialect.getDialect(config.getProperties());
 		Properties props = new Properties();
-		ConnectionProvider connectionProvider = null;
+//		ConnectionProvider connectionProvider = null;
 		DatabaseMetadata dm = null;
 
 		props.putAll(dialect.getDefaultProperties());
 		props.putAll(config.getProperties());
-		connectionProvider = ConnectionProviderFactory.newConnectionProvider(props);
+/*		connectionProvider = ConnectionProviderFactory.newConnectionProvider(props);
 
 		try {
 			dm = new DatabaseMetadata(connectionProvider.getConnection(), dialect);
 		} catch (SQLException e) {
 			log.debug("Could not get database DDL script", e);
 		}
-
+*/
 		String[] script = config.generateSchemaUpdateScript(dialect, dm);
 		return ArrayUtil.toString(script);
 	}

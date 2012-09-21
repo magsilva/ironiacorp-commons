@@ -16,8 +16,13 @@
 
 package com.ironiacorp.introspector;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.lang.reflect.Modifier;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -208,6 +213,20 @@ public final class ReflectionUtil
 				JarFile jar = null;
 				try {
 					jar = new JarFile(path);
+					Enumeration<JarEntry> entries = jar.entries();
+					while (entries.hasMoreElements()) {
+						JarEntry entry = entries.nextElement();
+						if (! entry.isDirectory() && clazz.getName().equals(entry.getName())) {
+							InputStream is = jar.getInputStream(entry);
+							byte[] data = new byte[(int) entry.getSize()];
+							Class<?> clazzEntry;
+							try {
+								is.read(data);
+								clazzEntry = (Class<?>) toObject(is);
+								result.add(clazzEntry);
+							} catch (IOException ioe) {}
+						}
+					}
 				} catch (IOException e) {
 				}
 	//			classes = ReflectionUtil.findClasses(jar, clazz);
@@ -381,4 +400,45 @@ public final class ReflectionUtil
 
 		return isInstanceOf(classes, object.getClass());
 	}
+	
+	public static byte[] toByteArray (Object obj)
+	{
+	  byte[] bytes = null;
+	  ByteArrayOutputStream bos = new ByteArrayOutputStream();
+	  try {
+	    ObjectOutputStream oos = new ObjectOutputStream(bos); 
+	    oos.writeObject(obj);
+	    oos.flush(); 
+	    oos.close(); 
+	    bos.close();
+	    bytes = bos.toByteArray ();
+	  }
+	  catch (IOException ex) {
+	    //TODO: Handle the exception
+	  }
+	  return bytes;
+	}
+	    
+	public static Object toObject (byte[] bytes)
+	{
+		ByteArrayInputStream bis = new ByteArrayInputStream (bytes);
+	    return toObject(bis);
+	}
+
+	public static Object toObject (InputStream is)
+	{
+	  Object obj = null;
+	  try {
+	    ObjectInputStream ois = new ObjectInputStream(is);
+	    obj = ois.readObject();
+	  }
+	  catch (IOException ex) {
+	    //TODO: Handle the exception
+	  }
+	  catch (ClassNotFoundException ex) {
+	    //TODO: Handle the exception
+	  }
+	  return obj;
+	}
+	
 }

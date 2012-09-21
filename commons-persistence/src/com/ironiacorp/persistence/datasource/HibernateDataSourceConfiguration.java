@@ -41,7 +41,7 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import org.hibernate.util.DTDEntityResolver;
+// import org.hibernate.util.DTDEntityResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -118,7 +118,7 @@ public class HibernateDataSourceConfiguration
 			// the current implementation fails on it.
 			// factory.setSchema( null );
 			parser = factory.newDocumentBuilder();
-			parser.setEntityResolver(new DTDEntityResolver());
+// 			parser.setEntityResolver(new DTDEntityResolver());
 			config = parser.parse(configFile);
 		} catch (Exception e) {
 			log.debug("Error loading the configuration: ", e);

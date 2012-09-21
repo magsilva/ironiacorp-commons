@@ -1,5 +1,6 @@
 package com.ironiacorp.io;
 
+import java.io.IOException;
 import java.io.OutputStream;
 
 /**
@@ -14,15 +15,13 @@ public class BitOutputStream {
 	short currentByte;
 	int bitReady;	// which bit do we write into next. 8 for MSB, 1 for LSB, 0 for load next
 	
-	private BitOutputStream() {}
-	
 	public BitOutputStream(OutputStream os) {
 		thisOutStream = os;
 		bitReady = 8;
 		currentByte = 0;
 	}
 
-	public void putBits(long value, int numBits) throws java.io.IOException {
+	public void putBits(long value, int numBits) throws IOException {
 		// We need the 'numBits' LSB from value
 		while(numBits > 0) {
 			if (numBits > bitReady) {
@@ -49,11 +48,11 @@ public class BitOutputStream {
 		return bitReady == 8 ? true : false;
 	}
 	
-	public void flushToByte() throws java.io.IOException {
+	public void flushToByte() throws IOException {
 		flush();
 	}
 	
-	protected void flush() throws java.io.IOException {
+	protected void flush() throws IOException {
 		thisOutStream.write(currentByte);
 		bitReady = 8;
 		currentByte = 0;
