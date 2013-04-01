@@ -19,6 +19,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 package com.ironiacorp.scm;
 
+import com.ironiacorp.scm.subversion.SubversionRepository;
 import com.ironiacorp.scm.subversion.SubversionRepositoryTransaction;
 
 
@@ -66,9 +67,8 @@ public final class RepositoryTransactionFactory
 		if ( repository == null ) {
 			throw new RepositoryTransactionError( "exception.repositoryTransaction.projectWithoutRepository" );
 		}
-		String type = repository.getType();
 		try {
-			if ( type.equals( "svn" ) ) {
+			if ( repository instanceof SubversionRepository) {
 				tx = new SubversionRepositoryTransaction(repository);
 			}
 		} catch ( Exception e ) {

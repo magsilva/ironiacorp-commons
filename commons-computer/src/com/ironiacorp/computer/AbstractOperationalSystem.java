@@ -115,7 +115,7 @@ public abstract class AbstractOperationalSystem implements OperationalSystem
 		ProcessBuilder pb;
 		if (parameters != null) {
 			parameters.add(0, execFile.getAbsolutePath());
-			pb = new ProcessBuilder(parameters.toArray(new String[0]));
+			pb = new ProcessBuilder(parameters.toArray(new String[parameters.size()]));
 		} else {
 			pb = new ProcessBuilder(execFile.getAbsolutePath());
 		}

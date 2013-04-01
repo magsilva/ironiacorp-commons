@@ -51,13 +51,6 @@
 		<url>http://www.ironiacorp.com/Apps/Bugzilla/</url>
 	</issueManagement>
 
-	<scm>
-		<connection>scm:svn:https://www.ironiacorp.com/svn/projects/ironiacorp-commons/trunk/</connection>
-		<developerConnection>scm:svn:https://www.ironiacorp.com/svn/projects/ironiacorp-commons/trunk</developerConnection>
-		<url>http://www.ironiacorp.com/Apps/WebSVN/wsvn/Active%20projects.ironiacorp-commons/trunk</url>
-	</scm>
-
-
 	<ciManagement>
 		<system>Hudson</system>
 		<url>http://www.ironiacorp.com/Apps/Hudson/job/IroniaCorp-Commons/</url>
@@ -74,19 +67,6 @@
 	</ciManagement>
 
 	<distributionManagement>
-		<!--
-		<repository>
-			<id>labes-icmc-usp</id>
-			<name>labes-icmc-usp</name>
-			<url>http://www.ironiacorp.com/Apps/Artifactory/libs-releases-local</url>
-		</repository>
-
-		<snapshotRepository>
-			<id>labes-icmc-usp</id>
-			<name>labes-icmc.usp</name>
-			<url>http://www.ironiacorp.com/Apps/Artifactory/libs-snapshot-local</url>
-		</snapshotRepository>
-		-->
 		<repository>
 			<id>ironiacorp.com</id>
 			<name>Ironia Corporation</name>
@@ -98,7 +78,6 @@
 			<name>Ironia Corporation</name>
 			<url>dav:http://www.ironiacorp.com/repo/maven2/snapshot</url>
 		</snapshotRepository>
-
 	</distributionManagement>
 
 	<repositories>

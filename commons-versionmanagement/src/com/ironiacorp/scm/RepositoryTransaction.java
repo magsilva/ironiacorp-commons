@@ -40,6 +40,8 @@ public abstract class RepositoryTransaction extends AbstractTransaction
 
 	protected Repository repository;
 	
+	protected File workdir;
+	
 	protected boolean completed;
 
 	/**
@@ -78,7 +80,7 @@ public abstract class RepositoryTransaction extends AbstractTransaction
 	 * 
 	 * @return The directory where the local workcopy files are saved.
 	 */
-	public String getWorkdir()
+	public File getWorkdir()
 	{
 		return this.workdir;
 	}
@@ -103,7 +105,7 @@ public abstract class RepositoryTransaction extends AbstractTransaction
 		} catch ( SecurityException se ) {
 			throw new RepositoryTransactionError( "exception.repositoryTransaction.invalidWorkdir" );
 		}
-		this.workdir = dir.getAbsolutePath() + File.separator;
+		this.workdir = new File(dir.getAbsolutePath() + File.separator);
 	}
 
 	/**
@@ -241,5 +243,56 @@ public abstract class RepositoryTransaction extends AbstractTransaction
 		} else  {
 			this.changelog += "\n" + changelog;
 		}
+	}
+
+	public void add(String path) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void branch(String srcPath, String destPath) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public String diff(String srcPath, String version1, String destPath, String version2) {
+		return null;
+		
+	}
+
+	public String diff(String path, String version1, String version2) {
+		return null;
+		// TODO Auto-generated method stub
+		
+	}
+
+	public String diff(String srcPath, String destPath) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void remove(String path) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void revert(String path) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void update(String path, String version) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void update(String path) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public ConfigurationItem[] info(String path) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

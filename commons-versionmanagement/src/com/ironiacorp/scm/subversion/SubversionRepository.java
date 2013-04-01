@@ -369,13 +369,12 @@ public class SubversionRepository extends AbstractRepository
 	}
 
 	@Override
-	public void setCredential(Credential<?> credential) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public WorkingCopy checkout(File workDir) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public String getShortName() {
 		// TODO Auto-generated method stub
 		return null;
 	}

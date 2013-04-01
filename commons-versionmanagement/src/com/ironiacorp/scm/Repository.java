@@ -72,4 +72,6 @@ public interface Repository
 	 */
 	void init();
 
+	String getShortName();
+
 }

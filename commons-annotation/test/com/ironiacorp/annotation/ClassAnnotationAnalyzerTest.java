@@ -45,8 +45,6 @@ public class ClassAnnotationAnalyzerTest
 	
 	private ClassAnnotationAnalyzer classAnalyzer;
 	
-	private FieldAnnotationAnalyzer fieldAnalyzer;
-	
 	private DummyClass bean;
 	
 	
@@ -87,7 +85,6 @@ public class ClassAnnotationAnalyzerTest
 		invalidAnnotation = DummyDummyAnnotation.class;
 		
 		classAnalyzer = new ClassAnnotationAnalyzer();
-		fieldAnalyzer = new FieldAnnotationAnalyzer();
 	}
 
 	@Test

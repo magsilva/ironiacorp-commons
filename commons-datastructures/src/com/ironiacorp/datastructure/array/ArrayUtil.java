@@ -22,7 +22,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -37,14 +39,47 @@ public final class ArrayUtil
 	private ArrayUtil()
 	{
 	}
-	
+
+	/**
+	 * Remove duplicated entries from an array.
+	 */
+	public static Object[] unique(Object[] objects)
+	{
+		Set<Object> set = new HashSet<Object>(objects.length);
+		for (Object o1 : objects) {
+			if (! set.contains(o1)) {
+				set.add(o1);
+			}
+		}
+		return set.toArray();
+	}
+
+
+	/**
+	 * Create a product of objects.
+	 */
+	public static ArrayList<Object[]> product(Object[] objects)
+	{
+		objects = ArrayUtil.unique(objects);
+		ArrayList<Object[]> permutation = new ArrayList<Object[]>(objects.length * objects.length);
+		for (Object o1 : objects) {
+			Object[] tuple = new Object[2];
+			permutation.add(tuple);
+			tuple[1] = o1;
+			for (Object o2 : objects) {
+				tuple[2] = o2;
+			}
+		}
+		return permutation;
+	}
+
 	/**
 	 * Check if an array has the given object. If the object is 'null', it will
 	 * always return False
-	 * 
+	 *
 	 * @param array The array we will search into.
 	 * @param object The object to be found.
-	 * 
+	 *
 	 * @return True if the object was found in the array, False otherwise.
 	 */
 	public static boolean has(final Object[] array, final Object object)
@@ -52,7 +87,7 @@ public final class ArrayUtil
 		if (array == null) {
 			return false;
 		}
-		
+
 		for (Object temp : array) {
 			if (temp == null) {
 				if (object == null) {
@@ -64,16 +99,16 @@ public final class ArrayUtil
 				}
 			}
 		}
-		
+
 		return false;
 	}
 
 	/**
 	 * Check if an array has the given integer.
-	 * 
+	 *
 	 * @param array The array we will search into.
 	 * @param object The integer to be found.
-	 * 
+	 *
 	 * @return True if the integer was found in the array, False otherwise.
 	 */
 	public static boolean has(final int[] array, final int object)
@@ -81,22 +116,22 @@ public final class ArrayUtil
 		if (array == null) {
 			return false;
 		}
-		
+
 		for (int i : array) {
 			if (i == object) {
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
 
 	/**
 	 * Check if an array has the given short integer.
-	 * 
+	 *
 	 * @param array The array we will search into.
 	 * @param object The short integer to be found.
-	 * 
+	 *
 	 * @return True if the integer was found in the array, False otherwise.
 	 */
 	public static boolean has(final short[] array, final short object)
@@ -104,22 +139,22 @@ public final class ArrayUtil
 		if (array == null) {
 			return false;
 		}
-		
+
 		for (int i : array) {
 			if (i == object) {
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
 
 	/**
 	 * Check if an array has the given short integer.
-	 * 
+	 *
 	 * @param array The array we will search into.
 	 * @param object The short integer to be found.
-	 * 
+	 *
 	 * @return True if the integer was found in the array, False otherwise.
 	 */
 	public static boolean has(final byte[] array, byte object)
@@ -127,23 +162,23 @@ public final class ArrayUtil
 		if (array == null) {
 			return false;
 		}
-		
+
 		for (int i : array) {
 			if (i == object) {
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
-	
+
 	/**
 	 * Create a copy of an array. It will not do a deep copy (the primitive values
 	 * and object references are copied to the targed array, but the objects refereed
 	 * by both arrays will be the same).
-	 * 
+	 *
 	 * @param array Array to be copied.
-	 * 
+	 *
 	 * @return Duplicated array.
 	 */
 	public static Object[] dup(final Object[] array)
@@ -151,12 +186,12 @@ public final class ArrayUtil
 		if (array == null) {
 			throw new IllegalArgumentException(new NullPointerException());
 		}
-		
+
 		final Object[] dupArray = new Object[array.length];
 		System.arraycopy(array, 0, dupArray, 0, array.length);
 		return dupArray;
 	}
-	
+
 	public static boolean equalIgnoreOrder(final Object[] array1, final Object[] array2)
 	{
 		final class HashComparator<T> implements Comparator<T>
@@ -165,10 +200,10 @@ public final class ArrayUtil
 			 * Compares its two arguments for ordering. Returns a negative integer, zero,
 			 * or a positive integer as the first argument is less than, equal to, or
 			 * greater than the second.
-			 * 
+			 *
 			 * We use this comparator because it does not depends upon any specific object
 			 * property. Any Java object has an hashCode().
-			 * 
+			 *
 			 * Note: this comparator imposes orderings that are inconsistent with equals.
 			 */
 			public int compare(final T o1, final T o2)
@@ -182,11 +217,11 @@ public final class ArrayUtil
 				if (o1 != null && o2 == null) {
 					return 1;
 				}
-				
+
 				return (o1.hashCode() - o2.hashCode());
 			}
 		}
-		
+
 		if (array1 == null && array2 != null) {
 			return false;
 		}
@@ -196,26 +231,26 @@ public final class ArrayUtil
 		if (array1 == null && array2 == null) {
 			return true;
 		}
-		
+
 		if (array1.length != array2.length) {
 			return false;
 		}
-		
+
 		final Object[] sortedArray1 = dup(array1);
 		final Object[] sortedArray2 = dup(array2);
 		Arrays.sort(sortedArray1, new HashComparator<Object>());
 		Arrays.sort(sortedArray2, new HashComparator<Object>());
-		
+
 		return Arrays.equals(sortedArray1, sortedArray2);
 	}
 
-	
+
 	/**
 	 * Find an object in the array that is an instance of the given targetClass.
-	 * 
+	 *
 	 * @param array Array we must look into.
 	 * @param targetClass Class that we must match.
-	 * 
+	 *
 	 * @return The object (if found) or null otherwise.
 	 */
 	public static Object find(final Object[] array, final Class<?> targetClass)
@@ -223,22 +258,22 @@ public final class ArrayUtil
 		if (array == null || targetClass == null) {
 			throw new IllegalArgumentException(new NullPointerException());
 		}
-		
+
 		for (Object o : array) {
 			if (o instanceof Object && o.getClass().equals(targetClass)) {
 				return o;
 			}
 		}
-		
+
 		return null;
 	}
 
 	/**
 	 * Find the string index within a given array.
-	 * 
+	 *
 	 * @param array Array to be searched.
 	 * @param str String to be found.
-	 * 
+	 *
 	 * @return The index for the string within the array or -1 if the
 	 * string couldn't be found.
 	 */
@@ -247,36 +282,36 @@ public final class ArrayUtil
 		if (array == null) {
 			return -1;
 		}
-		
+
 		int i;
 		for (i = 0; i < array.length && ! array[i].equals(str); i++);
 
 		if (i == array.length) {
 			i = -1;
 		}
-		
+
 		return i;
 	}
-	
+
 	/**
 	 * Convert a Array to a single String. It will use a new line character ("\n")
 	 * as separator.
-	 * 
+	 *
 	 * @param arg The array to be converted.
-	 * 
+	 *
 	 * @return The string.
 	 */
 	public static String toString(final Object[] array)
 	{
 		return ArrayUtil.toString(array, "\n");
 	}
-	
+
 	/**
 	 * Convert a Array to a single String.
-	 * 
+	 *
 	 * @param arg The array to be converted
 	 * @param separator The string to be used to separate each array item.
-	 * 
+	 *
 	 * @return The string.
 	 */
 	public static String toString(final Object[] arg, final String separator)
@@ -284,7 +319,7 @@ public final class ArrayUtil
 		if (separator == null) {
 			throw new IllegalArgumentException("The separator string cannot be null");
 		}
-		
+
 		final StringBuffer sb = new StringBuffer();
 		for (Object o : arg) {
 			if (o != null) {
@@ -297,13 +332,13 @@ public final class ArrayUtil
 		}
 		return sb.toString();
 	}
-	
+
 	/**
 	 * Remove null values from an array.
-	 * 
+	 *
 	 * @param <T> Array type.
 	 * @param array Array to be cleaned.
-	 * 
+	 *
 	 * @return Cleant array.
 	 */
 	@SuppressWarnings("unchecked")
@@ -312,17 +347,17 @@ public final class ArrayUtil
 		if (array == null) {
 			throw new IllegalArgumentException(new NullPointerException());
 		}
-		
+
 		int nonNullCount = 0;
 		int i = 0;
 		Object[] result;
-		
+
 		for (Object obj : array) {
 			if (obj != null) {
 				nonNullCount++;
 			}
 		}
-		
+
 		result = (T[])java.lang.reflect.Array.newInstance(array.getClass().getComponentType(), nonNullCount);
 		for (Object obj : array) {
 			if (obj != null) {
@@ -330,22 +365,23 @@ public final class ArrayUtil
 				i++;
 			}
 		}
-			
+
 		return (T[])result;
 	}
-	
+
 	/**
 	 * Shortcut to create an array of objects.
-	 * 
+	 *
 	 * @param <T> The type of the objects to be stored in the array
 	 * @param elements The objects to save into the array.
 	 * @return The array.
 	 */
-    public static <T> T[] array(final T... elements)
+    @SafeVarargs
+	public static <T> T[] array(final T... elements)
     {
     	return elements;
     }
-    
+
     /**
      * Create a collection using an array.
      */

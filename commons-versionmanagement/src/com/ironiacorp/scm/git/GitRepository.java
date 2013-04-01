@@ -60,4 +60,11 @@ public class GitRepository extends AbstractRepository
 			throw new IllegalArgumentException("Could not clone the repository", ioe);
 		}
 	}
+
+
+	@Override
+	public String getShortName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

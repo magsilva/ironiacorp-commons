@@ -415,6 +415,17 @@ public final class IoUtil
 	public static void removeDir(String dirname)
 	{
 		File dir = new File(dirname);
+		removeDir(dir);
+	}
+
+	/**
+	 * Remove a directory and all of it's content.
+	 * 
+	 * @param dirname
+	 *            The directory to be removed
+	 */
+	public static void removeDir(File dir)
+	{
 		if (dir.isDirectory()) {
 			File[] listing = dir.listFiles();
 			for (File file : listing) {
@@ -427,6 +438,7 @@ public final class IoUtil
 		}
 	}
 
+	
 	public static File createTempDir() throws IOException
 	{
 		String randomPrefix = new RandPass(RandPass.LOWERCASE_LETTERS_AND_NUMBERS_ALPHABET).getPass(8);

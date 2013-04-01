@@ -21,8 +21,11 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ironiacorp.computer.ComputerArchitecture;
+import com.ironiacorp.computer.ComputerArchitectureDetector;
 import com.ironiacorp.computer.ComputerSystem;
 import com.ironiacorp.computer.OperationalSystem;
+import com.ironiacorp.computer.OperationalSystemType;
 
 
 /**
@@ -69,7 +72,7 @@ public class RServe
 				sb.setLength(0);
 			}
 		}
-			
+		
 		rserveExecutable = os.findExecutable(DEFAULT_RSERVE_EXECUTABLE);
 
 		return rserveExecutable;

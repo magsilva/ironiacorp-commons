@@ -126,8 +126,8 @@ public class SubversionRepositoryTransaction extends RepositoryTransaction
 				"exception.repositoryTransaction.transactionInitialization", e );
 		}
 		setUrl( repository.getLocation() );
-		setUsername( repository.getUsername() );
-		setPassword( repository.getPassword() );
+		// setUsername( repository.getUsername() );
+		// setPassword( repository.getPassword() );
 		
 		client.notification2( notifier );
 	}
@@ -216,7 +216,7 @@ public class SubversionRepositoryTransaction extends RepositoryTransaction
 	private void _checkout( Revision revision )
 	{
 		try {
-            client.checkout( url, workdir, revision, true );
+            client.checkout( url, workdir.toString(), revision, true );
 		} catch ( ClientException e ) {
 			log.debug( e.getMessage() );
 			throw new RepositoryTransactionError( "exception.repositoryTransaction.checkout", e );
@@ -558,8 +558,8 @@ public class SubversionRepositoryTransaction extends RepositoryTransaction
 	public void commit( String changelog )
 	{
 		try {
-			String[] paths = { workdir };
-			client.resolved( workdir, true );
+			String[] paths = { workdir.toString() };
+			client.resolved( workdir.toString(), true );
 			client.commit( paths, changelog, true );
 			client.dispose();
 			IoUtil.removeDir(workdir);

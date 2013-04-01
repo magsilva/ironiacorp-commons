@@ -114,8 +114,7 @@ public abstract class HttpJobRunnerTest
 	
 	@Test
 	public void testSingle() throws URISyntaxException {
-		HttpJob job = new HttpJob(HttpMethod.GET, new URI(
-				"http://www.icmc.usp.br/~magsilva/index.html"));
+		HttpJob job = new HttpJob(HttpMethod.GET, new URI("http://www.icmc.usp.br/~magsilva/index.html"));
 		runner.addJob(job);
 		runner.run();
 		HttpMethodResult result = job.getResult();
@@ -127,14 +126,12 @@ public abstract class HttpJobRunnerTest
 
 	@Test
 	public void testManyDifferentRequests() throws URISyntaxException {
-		runner.addJob(new HttpJob(HttpMethod.GET, new URI("http://www.icmc.usp.br/~magsilva/index.html")));
 		runner.addJob(new HttpJob(HttpMethod.GET, new URI("http://www.google.com")));
 		runner.addJob(new HttpJob(HttpMethod.GET, new URI("http://www.uol.com.br")));
 		runner.addJob(new HttpJob(HttpMethod.GET, new URI("http://www.terra.com.br")));
 		runner.addJob(new HttpJob(HttpMethod.GET, new URI("http://www.ig.com.br")));
 		runner.addJob(new HttpJob(HttpMethod.GET, new URI("http://www.globo.com")));
-		runner.addJob(new HttpJob(HttpMethod.GET, new URI("http://www.odiariomaringa.com.br")));
-		runner.addJob(new HttpJob(HttpMethod.GET, new URI("http://www.freshmeat.net")));
+		runner.addJob(new HttpJob(HttpMethod.GET, new URI("http://maringa.odiario.com")));
 		runner.addJob(new HttpJob(HttpMethod.GET, new URI("http://www.slashdot.org")));
 		runner.run();
 	}
@@ -162,16 +159,14 @@ public abstract class HttpJobRunnerTest
 		long totalTime1;
 		long totalTime2;
 
-		runner.addJob(new HttpJob(HttpMethod.GET, new URI(
-				"http://www.freshmeat.net")));
+		runner.addJob(new HttpJob(HttpMethod.GET, new URI("http://www.freecode.net")));
 		beforeTime = System.currentTimeMillis();
 		runner.run();
 		afterTime = System.currentTimeMillis();
 		totalTime1 = afterTime - beforeTime;
 
 		for (int i = 0; i < 10; i++) {
-			runner.addJob(new HttpJob(HttpMethod.GET, new URI(
-					"http://www.freshmeat.net")));
+			runner.addJob(new HttpJob(HttpMethod.GET, new URI("http://www.freecode.net")));
 		}
 		beforeTime = System.currentTimeMillis();
 		runner.run();

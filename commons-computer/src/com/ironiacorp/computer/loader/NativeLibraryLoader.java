@@ -2,10 +2,21 @@ package com.ironiacorp.computer.loader;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.file.FileSystems;
+import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.PathMatcher;
+import java.nio.file.Paths;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.ironiacorp.computer.OperationalSystemType;
 import com.ironiacorp.computer.OperationalSystemDetector;
@@ -15,6 +26,90 @@ import com.ironiacorp.computer.environment.PathSystemEnvironmentVariable;
 
 public class NativeLibraryLoader
 {
+	public class GlobFileFinder extends SimpleFileVisitor<Path>
+	{
+		private final PathMatcher matcher;
+
+		private Set<Path> paths = new LinkedHashSet<Path>();
+		
+		GlobFileFinder(String pattern) {
+			matcher = FileSystems.getDefault().getPathMatcher("glob:" + pattern);
+		}
+
+		// Compares the glob pattern against the file or directory name.
+		void find(Path file) {
+			Path name = file.getFileName();
+			if (name != null && matcher.matches(name)) {
+				FileInputStream fis = null;
+				InputStreamReader isr = null;
+				BufferedReader br = null;
+				try {
+					fis = new FileInputStream(name.toFile());
+					isr = new InputStreamReader(fis, "UTF-8");
+					br = new BufferedReader(isr);
+					String line = null;
+					while ((line = br.readLine()) != null) {
+						if (line.startsWith("include")) {
+							String pattern = line.replaceFirst("include ", "");
+							GlobFileFinder finder = new GlobFileFinder(pattern);
+							Files.walkFileTree(Paths.get("/etc"), finder);
+							for (Path path : finder.paths) {
+								paths.add(path);
+							}
+						} else {
+							String[] pathNames = line.split(": \t,");
+							for (String path : pathNames) {
+								paths.add(Paths.get(path));
+							}
+						}
+					
+					}
+				} catch (IOException e) {
+				} finally {
+					try {
+						if (br != null) {
+							br.close();
+						}
+					} catch (IOException e1) {
+					}
+					try {
+						if (isr != null) {
+							isr.close();
+						}
+					} catch (IOException e1) {
+					}
+					try {
+						if (fis != null) {
+							fis.close();
+						}
+					} catch (IOException e1) {
+					}
+				}
+			}
+		}
+
+		// Invoke the pattern matching
+		// method on each file.
+		@Override
+		public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
+			find(file);
+			return FileVisitResult.CONTINUE;
+		}
+
+		// Invoke the pattern matching
+		// method on each directory.
+		@Override
+		public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) {
+			find(dir);
+			return FileVisitResult.CONTINUE;
+		}
+
+		@Override
+		public FileVisitResult visitFileFailed(Path file, IOException exc) {
+			return FileVisitResult.CONTINUE;
+		}
+	}
+	
 	private String[] getJavaLibraryLocationProperties()
 	{
 		String[] properties = {
@@ -33,20 +128,17 @@ public class NativeLibraryLoader
 	
 	private String[] parseLinuxLDConf(String filename)
 	{
-		List<String> directories = new ArrayList<String>();
+		LinkedHashSet<String> directories = new LinkedHashSet<String>();
 		try {
-			BufferedReader br = new BufferedReader(new FileReader("/etc/ld.so.conf"));
-			String line = null;
-			while ((line = br.readLine()) != null) {
-				if (line.startsWith("include")) {
-					String pattern = line.replaceFirst("include ", "");
-//					directories.addAll(c);
-				}
+			GlobFileFinder finder = new GlobFileFinder("ld.so.conf");
+			Files.walkFileTree(Paths.get("/etc"), finder);
+			for (Path path : finder.paths) {
+				directories.add(path.toString());
 			}
 		} catch (IOException e) {
 		}
 		
-		return directories.toArray(new String[0]);
+		return directories.toArray(new String[directories.size()]);
 	}
 		
 	private String[] getLibraryPath()
@@ -84,7 +176,7 @@ public class NativeLibraryLoader
 			}
 		}
 		
-		return path.toArray(new String[0]);
+		return path.toArray(new String[path.size()]);
 	}
 	
 	/**

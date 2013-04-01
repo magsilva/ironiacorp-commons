@@ -132,7 +132,7 @@ public class FilesystemRepositoryTransaction extends RepositoryTransaction
 	private void _checkout()
 	{
 		try {
-			IoUtil.copyDir(repdir, workdir, true );
+			IoUtil.copyDir(repdir, workdir.toString(), true );
 		} catch ( IOException e ) {
 			throw new RepositoryTransactionError( "exception.repositoryTransaction.checkout", e );
 		}

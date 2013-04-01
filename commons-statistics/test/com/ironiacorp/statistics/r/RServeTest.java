@@ -51,7 +51,9 @@ public class RServeTest
 		os.addExecutableSearchPath(new File("/usr/lib/R/site-library/Rserve"));
 		os.addExecutableSearchPath(new File("/usr/lib64/R/library/Rserve"));
 		os.addExecutableSearchPath(new File("/usr/lib/R/site-library/Rserve"));
+		os.addExecutableSearchPath(new File("/usr/lib/R/bin"));
 		os.addExecutableSearchPath(new File("/usr/lib64/R/library/Rserve"));
+		os.addExecutableSearchPath(new File("/usr/lib64/R/bin"));
 		assertNotNull(rserve.getRServeExecutable());
 	}
 

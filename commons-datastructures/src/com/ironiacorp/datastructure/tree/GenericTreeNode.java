@@ -13,6 +13,7 @@ import java.util.regex.Pattern;
 public class GenericTreeNode<T> {
 
     public T data;
+
     public List<GenericTreeNode<T>> children;
 
     public GenericTreeNode() {

@@ -94,6 +94,7 @@ public class LimitedCollection<T> implements Collection<T>
 		return collection.toArray();
 	}
 
+	@SuppressWarnings("hiding")
 	public <T> T[] toArray(T[] a)
 	{
 		return collection.toArray(a);

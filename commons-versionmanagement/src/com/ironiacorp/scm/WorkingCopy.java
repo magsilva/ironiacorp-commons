@@ -2,8 +2,12 @@ package com.ironiacorp.scm;
 
 import java.io.File;
 
+import org.slf4j.Logger;
+
 public class WorkingCopy
 {
+	private static Logger log;
+	
 	private File workDir;
 
 	public File getWorkDir() {
@@ -25,7 +29,6 @@ public class WorkingCopy
 	 */
 	public void add( String path )
 	{
-		_check();
 		log.debug( "Add " + path );
 	}
 	
@@ -43,7 +46,6 @@ public class WorkingCopy
 	 */
 	public void add( String path, boolean recurse )
 	{
-		_check();
 		log.debug( "Recursive add " + path );
 	}
 	
@@ -58,7 +60,6 @@ public class WorkingCopy
 	 */
 	public void remove( String path )
 	{
-		_check();
 		log.debug( "Remove " + path );
 	}
 	
@@ -74,7 +75,6 @@ public class WorkingCopy
 	 */
 	public void revert( String path )
 	{
-		_check();
 		log.debug( "Revert " + path );
 	}
 
@@ -91,7 +91,6 @@ public class WorkingCopy
 	 */
 	public ConfigurationItem[] info( String path )
 	{
-		_check();
 		log.debug( "Info " + path );
 		return null;
 	}
@@ -108,7 +107,6 @@ public class WorkingCopy
 	 */
 	public void update( String path )
 	{
-		_check();
 		log.debug( "Update " + path );
 	}
 	
@@ -124,7 +122,6 @@ public class WorkingCopy
 	 */
 	public void update( String path, String version )
 	{
-		_check();
 		log.debug( "Update " + path + " to version " + version );
 	}
 	
@@ -140,7 +137,6 @@ public class WorkingCopy
 	 */
 	public void branch( String srcPath, String destPath )
 	{
-		_check();
 		log.debug( "Branch " + srcPath + " -> " + destPath );
 	}
 
@@ -157,7 +153,6 @@ public class WorkingCopy
 	 */
 	public String diff( String srcPath, String destPath )
 	{
-		_check();
 		log.debug( "Diff " + srcPath + " and " + destPath );
 		return null;
 	}
@@ -176,7 +171,6 @@ public class WorkingCopy
 	 */	
 	public String diff( String path, String version1, String version2 )
 	{
-		_check();
 		log.debug( "Diff " + path + " (" + version1 + " -> " + version2 + ")" );
 		return null;
 	}
@@ -198,7 +192,6 @@ public class WorkingCopy
 	 */	
 	public String diff( String srcPath, String version1, String destPath, String version2 )
 	{
-		_check();
 		log.debug( "Diff " + srcPath + " (" + version1 + ") -> " + destPath + " (" + version2 + ")" );
 		return null;
 	}
