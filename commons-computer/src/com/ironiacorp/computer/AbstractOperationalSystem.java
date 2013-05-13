@@ -196,4 +196,14 @@ public abstract class AbstractOperationalSystem implements OperationalSystem
     	
     	return null;
 	}
+	
+	public String getNickname()
+	{
+		return getType().nickname;
+	}
+	
+	public String getNickname(ComputerArchitecture arch)
+	{
+		return getType().nickname + arch.width;
+	}
 }

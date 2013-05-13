@@ -24,6 +24,8 @@ import com.ironiacorp.io.IoUtil;
 
 public class Windows extends AbstractOperationalSystem
 {
+	public static final OperationalSystemType type = OperationalSystemType.Windows;
+	
 	public static final char UNIT_NAME_BEGIN = 'c';
     
 	public static final char UNIT_NAME_END = 'z';
@@ -141,5 +143,10 @@ public class Windows extends AbstractOperationalSystem
 		}
 		
 		return super.findExecutable(exec);
+	}
+	
+	@Override
+	public OperationalSystemType getType() {
+		return type;
 	}
 }

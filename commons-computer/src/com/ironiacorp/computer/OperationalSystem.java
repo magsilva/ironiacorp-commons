@@ -67,4 +67,10 @@ public interface OperationalSystem
 	 * @throws IllegalArgumentException if library could not be loaded.
 	 */
 	void loadLibrary(File libFile);
+	
+	OperationalSystemType getType();
+	
+	public String getNickname();
+	
+	public String getNickname(ComputerArchitecture arch);
 }

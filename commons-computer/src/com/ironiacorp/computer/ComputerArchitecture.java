@@ -21,18 +21,21 @@ import java.util.regex.Pattern;
 
 public enum ComputerArchitecture
 {
-	x86("x86", "^(x86|i386|i486|i586|i686)", new String[] {"x86", "i386", "i486", "i586", "i686"}),
-	x86_64("x86-64", "^(AMD64|IA-32e|EM64T|Intel 64|x86-64|x64)", new String[] {"x86_64", "amd64"});
+	x86("x86", 32, "^(x86|i386|i486|i586|i686)", new String[] {"x86", "i386", "i486", "i586", "i686"}),
+	x86_64("x86-64", 64, "^(AMD64|IA-32e|EM64T|Intel 64|x86-64|x64)", new String[] {"x86_64", "amd64"});
 	
 	public final String prettyName;
+	
+	public final int width;
 	
 	public final Pattern pattern;
 	
 	public final String[] acronyms;
 	
-	private ComputerArchitecture(String prettyName, String regex, String[] acronyms)
+	private ComputerArchitecture(String prettyName, int width, String regex, String[] acronyms)
 	{
 		this.prettyName = prettyName;
+		this.width = width;
 		this.pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
 		this.acronyms = acronyms;
 	}

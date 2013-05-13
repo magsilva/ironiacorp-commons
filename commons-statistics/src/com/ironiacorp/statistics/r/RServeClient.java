@@ -407,7 +407,7 @@ public class RServeClient extends AbstractRClient
                     return r;
 
                 } catch ( RserveException e ) {
-                    ex = new RuntimeException( "Error excecuting " + command + ": " + e.getMessage(), e );
+                    ex = new RuntimeException( "Error executing the command below: " + e.getMessage() + "\n---\n" + command + "\n---\n", e );
                 } catch ( REXPMismatchException e ) {
                     throw new RuntimeException( "Error processing apparent error object returned by " + command + ": "  + e.getMessage(), e );
                 }

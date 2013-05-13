@@ -134,4 +134,9 @@ public class Unix extends AbstractOperationalSystem
 
 		return result;
 	}
+	
+	@Override
+	public OperationalSystemType getType() {
+		return type;
+	}
 }
