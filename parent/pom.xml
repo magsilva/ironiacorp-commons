@@ -68,22 +68,15 @@
 
 	<distributionManagement>
 		<repository>
-			<id>ironiacorp.com</id>
-			<name>Ironia Corporation</name>
-			<url>dav:http://www.ironiacorp.com/repo/maven2/stable</url>
+			<id>IroniaCorp</id>
+			<url>dav:http://www.ironiacorp.com/repo/maven2</url>
 		</repository>
-
-		<snapshotRepository>
-			<id>ironiacorp.com</id>
-			<name>Ironia Corporation</name>
-			<url>dav:http://www.ironiacorp.com/repo/maven2/snapshot</url>
-		</snapshotRepository>
 	</distributionManagement>
 
 	<repositories>
 		<repository>
-			<id>LabES repository</id>
-			<url>http://www.ironiacorp.com/repo/maven2/stable</url>
+			<id>IroniaCorp</id>
+			<url>http://www.ironiacorp.com/repo/maven2</url>
 			<releases>
 				<updatePolicy>never</updatePolicy>
 			</releases>
@@ -129,7 +122,7 @@
 			<extension>
 				<groupId>org.apache.maven.wagon</groupId>
 				<artifactId>wagon-webdav-jackrabbit</artifactId>
-				<version>2.2</version>
+				<version>2.4</version>
 			</extension>
 
 			<extension>

@@ -17,17 +17,6 @@
 	<url>http://www.ironiacorp.com/products/commons/imaging</url>
 	<inceptionYear>2007</inceptionYear>
 
-	<scm>
-		<connection>scm:svn:https://www.ironiacorp.com/svn/projects/ironiacorp-commons/trunk/commons-imaging</connection>
-		<developerConnection>scm:svn:https://www.ironiacorp.com/svn/projects/ironiacorp-commons/trunk/commons-imaging</developerConnection>
-		<url>http://www.ironiacorp.com/Apps/WebSVN/wsvn/Active%20projects.ironiacorp-commons/trunk/commons-imaging</url>
-	</scm>
-
-	<ciManagement>
-		<system>Hudson</system>
-		<url>http://www.ironiacorp.com/Apps/Hudson/job/IroniaCorp-Commons-Imaging/</url>
-	</ciManagement>
-
         <repositories>
                 <repository>
                         <id>imagej.releases</id>
@@ -75,9 +64,9 @@
 		-->
 
 		<dependency>
-			<groupId>rsbweb.nih.gov</groupId>
-			<artifactId>ij</artifactId>
-			<version>1.45</version>
+			<groupId>gov.nih.imagej</groupId>
+			<artifactId>imagej</artifactId>
+			<version>[1.46,)</version>
 			<type>jar</type>
 		</dependency>
 	</dependencies>

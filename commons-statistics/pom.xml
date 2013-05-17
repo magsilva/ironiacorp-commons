@@ -17,18 +17,6 @@
 	<url>http://www.ironiacorp.com/products/commons/statistics</url>
 	<inceptionYear>2011</inceptionYear>
 
-	<scm>
-		<connection>https://www.ironiacorp.com/svn/projects/ironiacorp-commons/trunk/commons-statistics</connection>
-		<developerConnection>https://www.ironiacorp.com/svn/projects/ironiacorp-commons/trunk/commons-statistics</developerConnection>
-		<url>http://www.ironiacorp.com/Apps/WebSVN/wsvn/Active%20projects.ironiacorp-commons/trunk/commons-statistics</url>
-	</scm>
-
-	<ciManagement>
-		<system>Hudson</system>
-		<url>http://www.ironiacorp.com/Apps/Hudson/job/IroniaCorp-Commons-Statistics/</url>
-	</ciManagement>
-
-
 	<dependencies>
 		<dependency>
 			<groupId>org.rosuda</groupId>
@@ -67,7 +55,7 @@
 		</dependency>
 		
 		<dependency>
-			<groupId>mtj</groupId>
+			<groupId>com.googlecode.matrix-toolkits-java</groupId>
 			<artifactId>mtj</artifactId>
 			<version>0.9.14</version>
 		</dependency>

@@ -45,10 +45,12 @@
 		-->
 		<dependency>
 			<groupId>net.sf.saxon</groupId>
-			<artifactId>saxon-he</artifactId>
-			<version>[9.4.0.3,)</version>
-			<scope>runtime</scope>
+			<artifactId>Saxon-HE</artifactId>
+			<version>[9.4.0.7,)</version>
+			<scope>compile</scope>
 		</dependency> 
+
+
 
 		<dependency>
 			<groupId>xerces</groupId>
