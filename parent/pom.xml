@@ -74,6 +74,14 @@
 	</distributionManagement>
 
 	<repositories>
+                <repository>
+                        <id>repo1</id>
+                        <url>http://repo1.maven.org/maven2/</url>
+                        <releases>
+                                <updatePolicy>never</updatePolicy>
+                        </releases>
+                </repository>
+
 		<repository>
 			<id>IroniaCorp</id>
 			<url>http://www.ironiacorp.com/repo/maven2</url>
