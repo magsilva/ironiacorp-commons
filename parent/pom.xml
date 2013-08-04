@@ -205,6 +205,8 @@
 		<module>../commons-number</module>
 		<module>../commons-patterns</module>
 		<module>../commons-persistence</module>
+		<module>../commons-persistence-hibernate</module>
+		<module>../commons-persistence-mysql</module>
 		<module>../commons-security</module>
 		<module>../commons-spelling</module>
 		<module>../commons-statistics</module>
@@ -215,8 +217,6 @@
 		-->
 		<module>../commons-ws</module>
 		<module>../commons-xml</module>
-		<module>commons-persistence-hibernate</module>
-		<module>commons-persistence-mysql</module>
 	</modules>
 </project>
 
