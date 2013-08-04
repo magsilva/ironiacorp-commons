@@ -17,6 +17,7 @@
 	<url>http://www.ironiacorp.com/products/commons/imaging</url>
 	<inceptionYear>2007</inceptionYear>
 
+	<!--
         <repositories>
                 <repository>
                         <id>imagej.releases</id>
@@ -27,6 +28,7 @@
                         <url>http://maven.imagej.net/content/repositories/snapshots</url>
                 </repository>
         </repositories>
+	-->
 
 	<dependencies>
 		<dependency>

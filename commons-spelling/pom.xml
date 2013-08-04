@@ -17,27 +17,16 @@
 	<url>http://www.ironiacorp.com/products/commons/spelling</url>
 	<inceptionYear>2007</inceptionYear>
 
-	<scm>
-		<connection>https://www.ironiacorp.com/svn/projects/ironiacorp-commons/trunk/commons-spelling</connection>
-		<developerConnection>https://www.ironiacorp.com/svn/projects/ironiacorp-commons/trunk/commons-spelling</developerConnection>
-		<url>http://www.ironiacorp.com/Apps/WebSVN/wsvn/Active%20projects.ironiacorp-commons/trunk/commons-spelling</url>
-	</scm>
-
-	<ciManagement>
-		<system>Hudson</system>
-		<url>http://www.ironiacorp.com/Apps/Hudson/job/IroniaCorp-Commons-Spelling</url>
-	</ciManagement>
-
-
 	<dependencies>
 		<dependency>
 			<groupId>ironiacorp</groupId>
 			<artifactId>commons-io</artifactId>
-			<version>4.0.0</version>
+			<version>5.0.0-SNAPSHOT</version>
 		</dependency>
 
 
 		<!-- http://developer.gauner.org/jspellcorrect/ -->
+		<!--
 		<dependency>
 			<groupId>org.gauner</groupId>
 			<artifactId>jspellcorrect</artifactId>
@@ -45,6 +34,7 @@
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
+		-->
 		
 		<dependency>
 			<groupId>net.sf.jazzy</groupId>

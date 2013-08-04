@@ -22,10 +22,11 @@ import java.util.concurrent.Callable;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpVersion;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.protocol.ExecutionContext;
-import org.apache.http.protocol.HttpContext;
+import org.apache.http.client.protocol.HttpClientContext;
+import org.apache.http.params.CoreProtocolPNames;
 
 import com.ironiacorp.http.HttpJob;
 import com.ironiacorp.http.HttpMethodResult;
@@ -36,16 +37,18 @@ public class GetRequest implements Callable<HttpJob>
 
 	private final HttpClient httpClient;
 
-	private final HttpContext context;
+	private final HttpClientContext context;
 	
 	private HttpGet getMethod;
 
-	public GetRequest(HttpClient httpClient, HttpContext context, HttpJob job)
+	public GetRequest(HttpClient httpClient, HttpClientContext context, HttpJob job)
 	{
 		this.httpClient = httpClient; 
 		this.context = context;
 		this.job = job;
 		this.getMethod = new HttpGet(job.getUri());
+		this.getMethod.getParams().setParameter(CoreProtocolPNames.PROTOCOL_VERSION, HttpVersion.HTTP_1_1);
+		this.getMethod.getParams().setBooleanParameter(CoreProtocolPNames.USE_EXPECT_CONTINUE, false);
 	}
 
 	public HttpJob call()
@@ -58,7 +61,7 @@ public class GetRequest implements Callable<HttpJob>
 	        	InputStream inputStream = entity.getContent();
 	        	if (inputStream != null) {
 	        		HttpMethodResult result = new HttpMethodResult();
-	        	    HttpHost currentHost = (HttpHost) context.getAttribute(ExecutionContext.HTTP_TARGET_HOST);
+	        	    HttpHost currentHost = context.getTargetHost();
 	    			result.setContent(inputStream);
 	        		result.setStatusCode(response.getStatusLine().getStatusCode());
 	        	    result.setHost(currentHost.getHostName());

@@ -24,6 +24,7 @@ import java.util.Map;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.persistence.FlushModeType;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TransactionRequiredException;
@@ -42,6 +43,16 @@ public class JPA_DAO<K extends Serializable, E> extends GenericDAO<K, E>
 	
 	private boolean autoCommit = false;
 	
+	public static final FlushModeType DEFAULT_FLUSHMODE = FlushModeType.COMMIT;
+	
+	private FlushModeType flushMode = DEFAULT_FLUSHMODE;
+	
+	public JPA_DAO(Class<K> keyClass, Class<E> entityClass, FlushModeType flushMode)
+	{
+		super(keyClass, entityClass);
+		this.flushMode = flushMode;
+	}
+	
 	public JPA_DAO(Class<K> keyClass, Class<E> entityClass)
 	{
 		super(keyClass, entityClass);
@@ -55,6 +66,7 @@ public class JPA_DAO<K extends Serializable, E> extends GenericDAO<K, E>
 	public void setEntityManager(EntityManager entityManager)
 	{
 		this.entityManager = entityManager;
+		entityManager.setFlushMode(flushMode);
 	}
 	
 	public boolean isAutoCommit()
@@ -77,7 +89,7 @@ public class JPA_DAO<K extends Serializable, E> extends GenericDAO<K, E>
 
 	private void checkTransactionEnd()
 	{
-		EntityTransaction tx =entityManager.getTransaction();
+		EntityTransaction tx = entityManager.getTransaction();
 		if (autoCommit) {
 			try {
 				tx.commit();
@@ -88,7 +100,6 @@ public class JPA_DAO<K extends Serializable, E> extends GenericDAO<K, E>
 		}
 	}
 
-	
 	@Override
 	public void persist(E entity)
 	{
@@ -237,5 +248,17 @@ public class JPA_DAO<K extends Serializable, E> extends GenericDAO<K, E>
 		}
 		
 		return query.getResultList();
+	}
+	
+	public void close()
+	{
+		try {
+			// Must flush before clearing, otherwise changes will be lost
+			entityManager.flush();
+			entityManager.clear();
+			entityManager.close();
+		} catch (Exception e) {
+			throw new UnsupportedOperationException(e);
+		}
 	}
 }

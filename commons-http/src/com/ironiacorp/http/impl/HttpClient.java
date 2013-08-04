@@ -23,13 +23,23 @@ import com.ironiacorp.http.HttpJob;
 
 public class HttpClient
 {
-
+	protected boolean concurrency = true;
+	
 	protected List<HttpJob> jobs;
 
 	public HttpClient() {
 		jobs = new ArrayList<HttpJob>();
 	}
 
+	public boolean isConcurrencyEnabled() {
+		return concurrency;
+	}
+
+	public void setConcurrency(boolean concurrency) {
+		this.concurrency = concurrency;
+	}
+
+	
 	public void addJob(HttpJob job) {
 		boolean added = false;
 		

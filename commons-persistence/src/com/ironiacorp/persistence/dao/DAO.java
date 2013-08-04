@@ -16,6 +16,7 @@
 
 package com.ironiacorp.persistence.dao;
 
+import java.io.Closeable;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
@@ -42,7 +43,7 @@ import java.util.Map;
  * @param <K> Primary key for the object.
  * @param <E> Object to be persisted.
  */
-public interface DAO<K extends Serializable, E>
+public interface DAO<K extends Serializable, E> extends Closeable
 {
 	/**
 	 * Persist and manage an object.

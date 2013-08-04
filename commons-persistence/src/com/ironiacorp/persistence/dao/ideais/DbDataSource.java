@@ -275,13 +275,15 @@ public class DbDataSource implements DataSource
     		conn = DriverManager.getConnection(
     				String.format(connString, hostname, database, username, password));
     		
-    		// Work around a MySQL bug with PreparedStatements (bug 15).
+    		// TODO: Work around a MySQL bug with PreparedStatements (bug 15).
+    		/* FIX:
     		if (dbms.equals("mysql")) {
     			com.mysql.jdbc.Connection mysqlConn = (com.mysql.jdbc.Connection)conn;
     			if (mysqlConn.versionMeetsMinimum(5, 0, 0)) {
     				mysqlConn.setUseServerPrepStmts(false);
     			}
     		}
+    		*/
     	} catch (SQLException e) {
     		// ExceptionUtil.dumpException(e);
     	}

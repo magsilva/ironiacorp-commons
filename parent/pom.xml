@@ -215,6 +215,8 @@
 		-->
 		<module>../commons-ws</module>
 		<module>../commons-xml</module>
+		<module>commons-persistence-hibernate</module>
+		<module>commons-persistence-mysql</module>
 	</modules>
 </project>
 

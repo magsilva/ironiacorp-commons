@@ -3,8 +3,6 @@ package com.ironiacorp.spelling;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.gauner.jSpellCorrect.ToySpellingCorrector;
-
 // http://developer.gauner.org/jspellcorrect/
 // http://www.norvig.com/spell-correct.html
 public class StatisticalSpellEngine implements SpellEngine

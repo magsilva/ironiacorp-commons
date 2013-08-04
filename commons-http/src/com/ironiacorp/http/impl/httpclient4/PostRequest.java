@@ -18,7 +18,6 @@
 package com.ironiacorp.http.impl.httpclient4;
 
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -28,12 +27,9 @@ import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.protocol.ExecutionContext;
-import org.apache.http.protocol.HTTP;
-import org.apache.http.protocol.HttpContext;
 
 import com.ironiacorp.http.HttpJob;
 import com.ironiacorp.http.HttpMethodResult;
@@ -45,13 +41,13 @@ public class PostRequest implements Callable<HttpJob>
 
 	private final HttpClient httpClient;
 
-	private final HttpContext context;
+	private final HttpClientContext context;
 	
 	private HttpPost method;
 	
 	private List<NameValuePair> parameters;
 
-	public PostRequest(HttpClient httpClient, HttpContext context, HttpJob job)
+	public PostRequest(HttpClient httpClient, HttpClientContext context, HttpJob job)
 	{
 		this.httpClient = httpClient; 
 		this.context = context;
@@ -77,10 +73,6 @@ public class PostRequest implements Callable<HttpJob>
 	{
         HttpResponse response = null;
         HttpEntity entity = null;
-		try {
-			method.setEntity(new UrlEncodedFormEntity(parameters, HTTP.UTF_8));
-		} catch (UnsupportedEncodingException e) {
-		}
 
 		try {
 	        response = httpClient.execute(method, context);
@@ -90,7 +82,7 @@ public class PostRequest implements Callable<HttpJob>
 	        	InputStream inputStream = entity.getContent();
 	        	if (inputStream != null) {
 	        		HttpMethodResult result = new HttpMethodResult();
-	        	    HttpHost currentHost = (HttpHost) context.getAttribute(ExecutionContext.HTTP_TARGET_HOST);
+	        	    HttpHost currentHost = context.getTargetHost();
 	    			result.setContent(inputStream);
 	        		result.setStatusCode(response.getStatusLine().getStatusCode());
 
