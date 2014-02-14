@@ -30,6 +30,10 @@ public class Unix extends AbstractOperationalSystem
 
 	public static final String DEFAULT_LIBRARY_PREFIX = "lib";
 	
+	public static final String PATH_SEPARATOR = ":";
+	
+	public static final String DIRECTORY_SEPARATOR = "/";
+	
 	/**
 	 * Default path for GraphViz in Unix systems.
 	 */
@@ -138,5 +142,15 @@ public class Unix extends AbstractOperationalSystem
 	@Override
 	public OperationalSystemType getType() {
 		return type;
+	}
+	
+	@Override
+	public String getDirectorySeparator() {
+		return DIRECTORY_SEPARATOR;
+	}
+	
+	@Override
+	public String getPathSeparator() {
+		return PATH_SEPARATOR;
 	}
 }
