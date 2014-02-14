@@ -28,8 +28,15 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
 import java.nio.channels.FileChannel;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 
 import com.Ostermiller.util.RandPass;
@@ -51,6 +58,11 @@ public final class IoUtil
 
 	public static int BUFFER_SIZE = 8192;
 
+	public static String getExtension(File file)
+	{
+		return getExtension(file.getName());
+	}
+	
 	public static String getExtension(String filename)
 	{
 		if (filename == null) {
@@ -717,11 +729,16 @@ public final class IoUtil
 
 		return false;
 	}
-	
-	public static String dumpFileAsString(String filename) throws IOException
+
+	public static String dumpAsString(InputStream is) throws IOException
+	{
+		return dumpAsString(is, Charset.defaultCharset());
+	}
+
+	public static String dumpAsString(InputStream is, Charset encoding) throws IOException
 	{
 		StringBuilder sb = new StringBuilder();
-		BufferedReader in = new BufferedReader(new FileReader(filename));
+		BufferedReader in = new BufferedReader(new InputStreamReader(is, encoding));
 		char[] buf = new char[IoUtil.BUFFER_SIZE];
 		int numRead = 0;
 		while ((numRead = in.read(buf)) != -1) {
@@ -729,6 +746,19 @@ public final class IoUtil
 		}
 		in.close();
 		return sb.toString();
+	}
+
+	public static String dumpAsString(File file) throws IOException
+	{
+		return dumpAsString(file, Charset.defaultCharset());
+	}
+	
+	public static String dumpAsString(File file, Charset encoding) throws IOException
+	{
+		Path path = Paths.get(file.getAbsolutePath());
+		byte[] encodedData = Files.readAllBytes(path);
+		CharBuffer data = encoding.decode(ByteBuffer.wrap(encodedData));
+		return data.toString();
 	}
 	
 	public static String getDefaultTempBasedir()
