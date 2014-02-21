@@ -6,7 +6,7 @@ import com.ironiacorp.math.matrix.solver.Matrix;
 import com.ironiacorp.math.matrix.solver.Solver;
 
 
-public class UjmpSolver<T> implements Solver<T>
+public class UjmpSolver<T extends Number> implements Solver<T>
 {
 	private Solve<org.ujmp.core.Matrix> solver = Solve.MATRIXSQUARELARGEMULTITHREADED;
 

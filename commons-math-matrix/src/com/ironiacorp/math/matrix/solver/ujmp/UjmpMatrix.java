@@ -30,6 +30,8 @@ public abstract class UjmpMatrix<T extends Number> implements Matrix<T>
 		}
 		
 		this.matrixType = matrixType;
+		throw new UnsupportedOperationException();
+		/*
 		switch (this.matrixType) {
 			case SPARSE:
 				ujmpMatrix = org.ujmp.core.MatrixFactory.sparse(this.matrixValueType, numRows, numColumns);
@@ -41,6 +43,7 @@ public abstract class UjmpMatrix<T extends Number> implements Matrix<T>
 				ujmpMatrix = org.ujmp.core.MatrixFactory.dense(this.matrixValueType, numRows, numColumns);
 
 		}
+		*/
 	}
 	
 	protected UjmpMatrix(org.ujmp.core.Matrix matrix)
@@ -72,20 +75,14 @@ public abstract class UjmpMatrix<T extends Number> implements Matrix<T>
 	}
 	
 	@Override
-	public long getNumCol()
+	public long getCols()
 	{
 		return ujmpMatrix.getColumnCount();
 	}
 
 	@Override
-	public long getNumRow()
+	public long getRows()
 	{
 		return ujmpMatrix.getRowCount();
-	}
-
-	@Override
-	public Object getRealImplementation()
-	{
-		return ujmpMatrix;
 	}
 }

@@ -42,8 +42,8 @@ public class IjImage implements Image
 	public IjImage(InputStream is)
 	{
 		Opener imageOpener = new Opener();
-		this.image = imageOpener.openImage(is);
 		init();
+		throw new UnsupportedOperationException();
 	}
 	
 	private void init()

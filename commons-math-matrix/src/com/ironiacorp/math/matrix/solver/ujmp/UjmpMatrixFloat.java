@@ -32,13 +32,13 @@ public class UjmpMatrixFloat extends UjmpMatrix<Float>
 	}
 
 	@Override
-	public long getNumCol()
+	public long getCols()
 	{
 		return ujmpMatrix.getColumnCount();
 	}
 
 	@Override
-	public long getNumRow()
+	public long getRows()
 	{
 		return ujmpMatrix.getRowCount();
 	}
@@ -47,5 +47,69 @@ public class UjmpMatrixFloat extends UjmpMatrix<Float>
 	public Object getRealImplementation()
 	{
 		return ujmpMatrix;
+	}
+
+	@Override
+	public MatrixType getType() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean isSquared() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public com.ironiacorp.math.matrix.solver.Matrix<Float> multiply(
+			com.ironiacorp.math.matrix.solver.Matrix<Float> matrix) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public com.ironiacorp.math.matrix.solver.Matrix<Float> multiply(Float scalar) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public com.ironiacorp.math.matrix.solver.Matrix<Float> divide(Float scalar) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public com.ironiacorp.math.matrix.solver.Matrix<Float> sum(
+			com.ironiacorp.math.matrix.solver.Matrix<Float> matrix) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public com.ironiacorp.math.matrix.solver.Matrix<Float> subtract(
+			com.ironiacorp.math.matrix.solver.Matrix<Float> matrix) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public com.ironiacorp.math.matrix.solver.Matrix<Float> transpose(
+			com.ironiacorp.math.matrix.solver.Matrix<Float> matrix) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public com.ironiacorp.math.matrix.solver.Matrix<Float> pow(int e) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public com.ironiacorp.math.matrix.solver.Matrix<Float> invert() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

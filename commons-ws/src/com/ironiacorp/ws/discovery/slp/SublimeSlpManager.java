@@ -19,15 +19,16 @@ package com.ironiacorp.ws.discovery.slp;
 import java.util.Enumeration;
 import java.util.Locale;
 import java.util.Vector;
-
+/*
 import org.sblim.slp.Locator;
 import org.sblim.slp.ServiceLocationException;
 import org.sblim.slp.ServiceLocationManager;
-
+*/
 public class SublimeSlpManager
 {
 	public void discoverServices2(String serviceName) throws Exception
 	{
+		/*
 		try {
 			Locator locator = ServiceLocationManager.getLocator(Locale.ENGLISH);
 			Vector<String> scopes = new Vector<String>();
@@ -43,5 +44,6 @@ public class SublimeSlpManager
 		} catch (ServiceLocationException e) {
 			e.printStackTrace();
 		}
+		*/
 	}
 }

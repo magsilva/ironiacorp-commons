@@ -29,4 +29,6 @@ public interface Matrix<T extends Number> extends Cloneable
 	Matrix<T> pow(int e);
 	
 	Matrix<T> invert();
+
+	Object getRealImplementation();
 }

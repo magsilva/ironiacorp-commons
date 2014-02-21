@@ -116,4 +116,10 @@ public class PexMatrix<T extends Number> implements Matrix<T>
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public Object getRealImplementation() {
+		// TODO Auto-generated method stub
+		return this;
+	}
 }
