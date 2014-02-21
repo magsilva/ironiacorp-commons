@@ -30,6 +30,7 @@ import java.util.concurrent.Future;
 import javax.net.ssl.SSLContext;
 
 import org.apache.http.Consts;
+import org.apache.http.HttpConnectionFactory;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.CookieStore;
@@ -43,21 +44,20 @@ import org.apache.http.config.RegistryBuilder;
 import org.apache.http.config.SocketConfig;
 import org.apache.http.config.SocketConfig.Builder;
 import org.apache.http.conn.DnsResolver;
-import org.apache.http.conn.HttpConnectionFactory;
-import org.apache.http.conn.ManagedHttpClientConnection;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
-import org.apache.http.conn.socket.PlainSocketFactory;
+import org.apache.http.conn.socket.PlainConnectionSocketFactory;
 import org.apache.http.conn.ssl.BrowserCompatHostnameVerifier;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.conn.ssl.SSLContexts;
-import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.apache.http.conn.ssl.X509HostnameVerifier;
+import org.apache.http.impl.DefaultBHttpClientConnection;
+import org.apache.http.impl.DefaultBHttpClientConnectionFactory;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.DefaultHttpResponseParserFactory;
-import org.apache.http.impl.conn.ManagedHttpClientConnectionFactory;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.impl.conn.SystemDefaultDnsResolver;
 import org.apache.http.impl.io.DefaultHttpRequestWriterFactory;
@@ -88,16 +88,17 @@ public class HttpJobRunnerHttpClient4 extends HttpClient implements HttpJobRunne
 	{
 		HttpMessageWriterFactory<HttpRequest> requestWriterFactory = new DefaultHttpRequestWriterFactory();
 		HttpMessageParserFactory<HttpResponse> responseParserFactory = new DefaultHttpResponseParserFactory();
-		HttpConnectionFactory<ManagedHttpClientConnection> connFactory = new ManagedHttpClientConnectionFactory(requestWriterFactory, responseParserFactory);
+		ConnectionConfig cconfig = ConnectionConfig.DEFAULT;
+		HttpConnectionFactory<DefaultBHttpClientConnection> connFactory = new DefaultBHttpClientConnectionFactory(cconfig, requestWriterFactory, responseParserFactory);
 
 		DnsResolver dnsResolver = new SystemDefaultDnsResolver();
 		SSLContext sslcontext = SSLContexts.createSystemDefault();
 		X509HostnameVerifier hostnameVerifier = new BrowserCompatHostnameVerifier();
 		RegistryBuilder<ConnectionSocketFactory> socketFactoryRegistryBuilder = RegistryBuilder.<ConnectionSocketFactory>create();
-		socketFactoryRegistryBuilder.register("http", PlainSocketFactory.INSTANCE);
-		socketFactoryRegistryBuilder.register("https",new SSLSocketFactory(sslcontext, hostnameVerifier));
+		socketFactoryRegistryBuilder.register("http", PlainConnectionSocketFactory.getSocketFactory());
+		socketFactoryRegistryBuilder.register("https", SSLConnectionSocketFactory.getSocketFactory());
 		Registry<ConnectionSocketFactory> socketFactoryRegistry = socketFactoryRegistryBuilder.build();
-		PoolingHttpClientConnectionManager connManager = new PoolingHttpClientConnectionManager(socketFactoryRegistry, connFactory, dnsResolver);
+		PoolingHttpClientConnectionManager connManager = new PoolingHttpClientConnectionManager(socketFactoryRegistry, dnsResolver);
 		connManager.setMaxTotal(100);
 		
 		// Setup socket configuration
