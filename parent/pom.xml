@@ -198,6 +198,7 @@
 		<module>../commons-imaging</module>
 		<module>../commons-introspector</module>
 		<module>../commons-io</module>
+		<module>../commons-java</module>
 		<module>../commons-licensing</module>
 		<module>../commons-math-matrix</module>
 		<module>../commons-messaging</module>

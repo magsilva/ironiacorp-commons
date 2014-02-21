@@ -70,7 +70,12 @@ public interface OperationalSystem
 	
 	OperationalSystemType getType();
 	
-	public String getNickname();
+	String getNickname();
 	
-	public String getNickname(ComputerArchitecture arch);
+	String getNickname(ComputerArchitecture arch);
+	
+	String getPathSeparator();
+	
+	String getDirectorySeparator();
+	
 }

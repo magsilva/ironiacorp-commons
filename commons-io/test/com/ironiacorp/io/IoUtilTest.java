@@ -319,7 +319,7 @@ public class IoUtilTest
 	@Test(expected=IllegalArgumentException.class)
 	public void testGetExtension_Invalid()
 	{
-		IoUtil.getExtension(null);
+		IoUtil.getExtension( (File) null);
 	}
 	
 	@Test(expected=IllegalArgumentException.class)

@@ -33,6 +33,10 @@ public class Windows extends AbstractOperationalSystem
 	public static final String DEFAULT_EXECUTABLE_EXTENSION = ".exe";
 
 	public static final String DEFAULT_LIBRARY_EXTENSION = ".dll";
+	
+	public static final String PATH_SEPARATOR = ";";
+	
+	public static final String DIRECTORY_SEPARATOR = "\\";
 
 	public final String[] DEFAULT_SYSTEM_DIRS = {
 		"system32",
@@ -148,5 +152,15 @@ public class Windows extends AbstractOperationalSystem
 	@Override
 	public OperationalSystemType getType() {
 		return type;
+	}
+	
+	@Override
+	public String getDirectorySeparator() {
+		return DIRECTORY_SEPARATOR;
+	}
+	
+	@Override
+	public String getPathSeparator() {
+		return PATH_SEPARATOR;
 	}
 }
