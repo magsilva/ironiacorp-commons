@@ -1,4 +1,5 @@
-package javatools.datatypes;
+package com.ironiacorp.datastructure;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -6,7 +7,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import javatools.administrative.D;
 /** 
 This class is part of the Java Tools (see http://mpii.de/yago-naga/javatools).
 It is licensed under the Creative Commons Attribution License 
@@ -479,47 +479,4 @@ public class SparseVector implements Serializable, Cloneable {
   public SparseVector clone() {
     return(new SparseVector(this));    
   }
-  
-  /** Test method */
-  public static void main(String[] argv) throws Exception {
-    /*FileLines l=new FileLines("c:\\fabian\\temp\\georgiana\\allCLUTO-TREC6_NOISEKM701-all-docs-terms-normalized.dat","Loading file");
-    String firstLine=l.next();
-    int num=Integer.parseInt(firstLine.substring(0,firstLine.indexOf(' ')));
-    SparseVector[] vectors=new SparseVector[num];
-    for(int i=0;i<num;i++) {
-      String line=l.next();
-      line="9 "+(line.replaceAll(" (\\d)\\.",":$1."));
-      vectors[i]=new SparseVector(line);      
-    }
-    l.close();
-    SparseVector[] centers=new SparseVector[37];
-    for(int i=0;i<centers.length;i++) centers[i]=vectors[i];
-    kMeans(vectors,centers,cosineDistance,0.1,Integer.MAX_VALUE);
-    Announce.progressStart("Writing results",centers.length);
-    Writer out=new BufferedWriter(new FileWriter("c:\\fabian\\temp\\georgiana\\centers2.txt"));    
-    for(int i=0;i<centers.length;i++) {      
-      D.writeln(out, centers[i].toString());
-      D.writeln(out,"");
-      Announce.progressAt(i);
-    }
-    out.close();
-    Announce.progressDone();*/
-    
-    SparseVector v1a=new SparseVector(2,10,14);
-    SparseVector v1b=new SparseVector(3,10,18);    
-    SparseVector v2a=new SparseVector(4,20,30);
-    SparseVector v2b=new SparseVector(5,25,32);
-    SparseVector v3a=new SparseVector(6,20,10);
-    SparseVector v3b=new SparseVector(7,23,12);    
-    SparseVector c1=new SparseVector(8,15,13);
-    SparseVector c2=new SparseVector(9,15,14);
-    SparseVector[] centers=new SparseVector[]{c1,c2};
-    SparseVector[] dots=new SparseVector[]{v1a,v1b,v2a,v2b,v3a,v3b};
-    D.p(visualize(dots,centers));
-    D.p("Press a key to move the centroids (the 8 and 9) according to k-means.");
-    D.r();    
-    kMeans(dots, centers, eucledianDistance, 0.1, 10);
-    D.p(visualize(dots,centers));
-  }
-
 }

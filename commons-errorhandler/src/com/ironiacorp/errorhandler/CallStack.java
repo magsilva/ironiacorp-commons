@@ -27,7 +27,8 @@ public class CallStack
 	{
 		callstack = new Stack<StackTraceElement>();
 		// Alternatives: Thread.currentThread().getStackTrace(), new Throwable().getStackTrace()
-		StackTraceElement[] ste = new Throwable.getStackTrace();
+		// StackTraceElement[] ste = new Throwable.getStackTrace();
+		StackTraceElement[] ste = Thread.currentThread().getStackTrace();
 		for (int i = ste.length - 1; i != 0; i--) {
 			callstack.push(ste[i]);
 		}
@@ -86,11 +87,4 @@ public class CallStack
     callstack.pop();
     return(this);
   }
-
-  /** Test routine */
-  public static void main(String[] args) {
-    D.p(new CallStack());
-    D.p(here());
-  }
-
 }

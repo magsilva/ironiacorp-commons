@@ -1,4 +1,4 @@
-package javatools.datatypes;
+package com.ironiacorp.datastructure;
 
 import java.io.Closeable;
 import java.util.ArrayList;
@@ -7,7 +7,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import javatools.administrative.D;
 /** 
 This class is part of the Java Tools (see http://mpii.de/yago-naga/javatools).
 It is licensed under the Creative Commons Attribution License 
@@ -242,16 +241,5 @@ public abstract class PeekIterator<T> implements Iterator<T>, Iterable<T>, Close
     }
     res.setCharAt(0, '[');
     return(res.append("]"));
-  }
-
-  /** test routine*/
-  public static void main(String[] args) throws Exception {
-    PeekIterator<Integer> it=new SimplePeekIterator<Integer>(1,2,3,4);
-    D.p(it.peek());
-    D.p(it.peek());
-    D.p(it.next());
-    D.p(it.peek());
-    D.p(it.peek());    
-  }
-    
+  }   
 }
