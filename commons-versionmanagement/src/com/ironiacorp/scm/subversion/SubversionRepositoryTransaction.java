@@ -562,7 +562,7 @@ public class SubversionRepositoryTransaction extends RepositoryTransaction
 			client.resolved( workdir.toString(), true );
 			client.commit( paths, changelog, true );
 			client.dispose();
-			IoUtil.removeDir(workdir);
+			fs.removeDir(workdir);
 		} catch ( ClientException e ) {
 			log.debug( e.getMessage() );
 			throw new RepositoryTransactionError( "exception.repositoryTransaction.commit", e );

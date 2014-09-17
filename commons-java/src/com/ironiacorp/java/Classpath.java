@@ -4,7 +4,9 @@ import java.io.File;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 
+import com.ironiacorp.computer.ComputerSystem;
 import com.ironiacorp.computer.OperationalSystem;
+import com.ironiacorp.computer.Filesystem;
 import com.ironiacorp.io.IoUtil;
 
 public class Classpath
@@ -32,7 +34,9 @@ public class Classpath
 		if (path.isDirectory()) {
 			isValidPath = true;
 		} else if (path.isFile()) {
-			fileExtension = IoUtil.getExtension(path.getName());
+			OperationalSystem os = ComputerSystem.getCurrentOperationalSystem();
+			Filesystem fs = os.getFilesystem();
+			fileExtension = fs.getExtension(path.getName());
 			if (fileExtension.equals(Java.JAR_PACKAGE_EXTENSION) || fileExtension.equals(Java.ZIP_PACKAGE_EXTENSION)) {
 				isValidPath = true;
 			}

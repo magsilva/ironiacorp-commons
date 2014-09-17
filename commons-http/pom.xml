@@ -95,6 +95,11 @@
 			<groupId>ironiacorp</groupId>
 			<artifactId>commons-io</artifactId>
 			<version>${ironiacorp.commons.version}</version>
-		</dependency>	
+		</dependency>
+		<dependency>
+			<groupId>ironiacorp</groupId>
+			<artifactId>commons-computer</artifactId>
+			<version>${ironiacorp.commons.version}</version>
+		</dependency>
 	</dependencies>
 </project>

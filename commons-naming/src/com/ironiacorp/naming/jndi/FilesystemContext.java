@@ -30,6 +30,9 @@ import javax.naming.NameParser;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 
+import com.ironiacorp.computer.ComputerSystem;
+import com.ironiacorp.computer.Filesystem;
+import com.ironiacorp.computer.OperationalSystem;
 import com.ironiacorp.io.IoUtil;
 
 public class FilesystemContext implements Context
@@ -59,11 +62,9 @@ public class FilesystemContext implements Context
 	
 	public FilesystemContext(Hashtable<?, ?> environment) throws NamingException
 	{
-		try {
-			baseDir = IoUtil.createTempDir();
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
+		OperationalSystem os = ComputerSystem.getCurrentOperationalSystem();
+		Filesystem fs = os.getFilesystem();
+		baseDir = fs.createTempDir();
 		
 		// Create initial context
 		Hashtable<String, String> env = new Hashtable<String, String>();

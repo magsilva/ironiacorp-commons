@@ -25,6 +25,7 @@ import java.util.Arrays;
 
 import com.ironiacorp.io.IoUtil;
 import com.ironiacorp.computer.ComputerSystem;
+import com.ironiacorp.computer.Filesystem;
 import com.ironiacorp.computer.OperationalSystem;
 import com.ironiacorp.computer.Windows;
 import com.ironiacorp.computer.WindowsRegistry;
@@ -252,7 +253,9 @@ public class Graphviz implements Layout
 	 */
 	public File run(String graphDescription, Filter filter, OutputFormat format)
 	{
-    	File outputFile = IoUtil.createTempFile();
+		OperationalSystem os = ComputerSystem.getCurrentOperationalSystem();
+		Filesystem fs = os.getFilesystem();
+    	File outputFile = fs.createTempFile();
     	return run(graphDescription, filter, format, outputFile);
 	}
 	
@@ -276,7 +279,9 @@ public class Graphviz implements Layout
     	}
     	
     	binary = findGraphVizExecutable(filter);
-		inputFile = IoUtil.createTempFile();
+		OperationalSystem os = ComputerSystem.getCurrentOperationalSystem();
+		Filesystem fs = os.getFilesystem();
+		inputFile = fs.createTempFile();
 		parameters.add(0, binary.getAbsolutePath());
 		parameters.add("-o" + outputFile.getAbsolutePath());
 		parameters.add("-T" + format.name);

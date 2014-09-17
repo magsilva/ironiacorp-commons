@@ -24,6 +24,9 @@ import java.io.File;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.ironiacorp.computer.ComputerSystem;
+import com.ironiacorp.computer.Filesystem;
+import com.ironiacorp.computer.OperationalSystem;
 import com.ironiacorp.io.IoUtil;
 
 /**
@@ -43,6 +46,9 @@ public abstract class RepositoryTransaction extends AbstractTransaction
 	protected File workdir;
 	
 	protected boolean completed;
+	
+	protected Filesystem fs;
+
 
 	/**
 	 * The directory where the local workcopy's file will be saved.
@@ -68,6 +74,10 @@ public abstract class RepositoryTransaction extends AbstractTransaction
 		super();
 		log.debug( "Initialization" );
 		this.repository = repository;
+		OperationalSystem os = ComputerSystem.getCurrentOperationalSystem();
+		fs = os.getFilesystem();
+
+
 		String tmpdir = System.getProperty("java.io.tmpdir");
 		if ( tmpdir != null ) {
 			tmpdir += File.separator;
@@ -162,7 +172,7 @@ public abstract class RepositoryTransaction extends AbstractTransaction
 		addChangelog( changelog );
 		log.debug( "Commit " + this.changelog );
 		if ( workdir != null ) {
-			IoUtil.removeDir(workdir);
+			fs.removeDir(workdir);
 		}
 		completed = true;
 	}
@@ -191,7 +201,7 @@ public abstract class RepositoryTransaction extends AbstractTransaction
 		_check();
 		log.debug( "Rollback" );
 		if ( workdir != null ) {
-			IoUtil.removeDir(workdir);
+			fs.removeDir(workdir);
 		}
 		completed = true;
 	}

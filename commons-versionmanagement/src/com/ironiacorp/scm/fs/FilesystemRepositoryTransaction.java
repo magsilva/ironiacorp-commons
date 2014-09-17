@@ -26,6 +26,9 @@ import java.util.concurrent.atomic.AtomicLong;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.ironiacorp.computer.ComputerSystem;
+import com.ironiacorp.computer.Filesystem;
+import com.ironiacorp.computer.OperationalSystem;
 import com.ironiacorp.io.IoUtil;
 import com.ironiacorp.scm.ConfigurationItem;
 import com.ironiacorp.scm.RepositoryTransaction;
@@ -132,7 +135,7 @@ public class FilesystemRepositoryTransaction extends RepositoryTransaction
 	private void _checkout()
 	{
 		try {
-			IoUtil.copyDir(repdir, workdir.toString(), true );
+			fs.copyDir(repdir, workdir.toString(), true );
 		} catch ( IOException e ) {
 			throw new RepositoryTransactionError( "exception.repositoryTransaction.checkout", e );
 		}
@@ -180,10 +183,10 @@ public class FilesystemRepositoryTransaction extends RepositoryTransaction
 		File file = new File( path );
 		try {
 			if ( file.isDirectory() ) {
-				IoUtil.copyDir( repdir + File.separator + path,
+				fs.copyDir( repdir + File.separator + path,
 					workdir + File.separator + path );
 			} else {
-				IoUtil.copyFile( repdir + File.separator + path,
+				fs.copyFile( repdir + File.separator + path,
 					workdir + File.separator + path );
 			}
 		} catch ( IOException e ) {

@@ -22,6 +22,9 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.ironiacorp.computer.ComputerSystem;
+import com.ironiacorp.computer.Filesystem;
+import com.ironiacorp.computer.OperationalSystem;
 import com.ironiacorp.io.IoUtil;
 
 /**
@@ -171,7 +174,9 @@ public class HttpMethodResult
 
 		cacheContent();
 
-		return IoUtil.toFile(new ByteArrayInputStream(contentCache));
+		OperationalSystem os = ComputerSystem.getCurrentOperationalSystem();
+		Filesystem fs = os.getFilesystem();
+		return IoUtil.toFile(new ByteArrayInputStream(contentCache), fs.createTempFile());
 	}
 	
 	/**

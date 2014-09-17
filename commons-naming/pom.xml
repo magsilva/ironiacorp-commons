@@ -32,7 +32,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>ironiacorp</groupId>
-			<artifactId>commons-io</artifactId>
+			<artifactId>commons-computer</artifactId>
 			<version>${ironiacorp.commons.version}</version>
 		</dependency>
 	</dependencies>

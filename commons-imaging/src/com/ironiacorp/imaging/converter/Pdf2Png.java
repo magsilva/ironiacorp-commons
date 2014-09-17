@@ -38,7 +38,6 @@ public class Pdf2Png implements Converter
 		return null;
 	}
 	
-	@Override
 	public File convert(Image[] files) {
 		File outfile = os.getFilesystem().createTempFile();
 		List<String> parameters = new ArrayList<String>();
@@ -49,9 +48,11 @@ public class Pdf2Png implements Converter
 			parameters.add("center");
 		}
 		parameters.add("-adjoin");
-		for (String file : files) {
+		/*
+		for (File file : files) {
 			parameters.add(file);
 		}
+		*/
 		parameters.add(outfile.toString());
 		os.exec(imConvertExec, parameters);
 		
@@ -62,6 +63,12 @@ public class Pdf2Png implements Converter
 	public boolean setAlphaChannel() {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public File convert(File image) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
