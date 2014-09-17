@@ -200,7 +200,6 @@ public class Unix extends AbstractOperationalSystem
 				for (int i = 0; i < results.size(); i++) {
 					String uriPath = results.get(0).toString();
 					try {
-						// file:/var/home/magsilva/.m2/repository/pex/lspsolver/1.1.0/lspsolver-1.1.0.jar!/liblspsolver.x86_64.so
 						URI uri = new URI(uriPath.replace("%20", " "));
 						library = new File(uri.getSchemeSpecificPart());
 						if (! library.exists()) {
@@ -224,6 +223,6 @@ public class Unix extends AbstractOperationalSystem
 			}
 		}
 		
-    	return null;
+	    	return null;
 	}
 }

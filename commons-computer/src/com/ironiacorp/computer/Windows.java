@@ -17,8 +17,24 @@
 package com.ironiacorp.computer;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLDecoder;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
+
+import com.ironiacorp.computer.environment.PathEnvironmentVariable;
+import com.ironiacorp.computer.environment.PathSystemEnvironmentVariable;
+import com.ironiacorp.computer.filesystem.JavaResourceFinder;
+import com.ironiacorp.computer.loader.LDConfigParser;
 
 public class Windows extends AbstractOperationalSystem
 {
@@ -31,6 +47,8 @@ public class Windows extends AbstractOperationalSystem
 	public static final String DEFAULT_EXECUTABLE_EXTENSION = ".exe";
 
 	public static final String DEFAULT_LIBRARY_EXTENSION = ".dll";
+
+	public static final String DEFAULT_LIBRARY_PREFIX = "";
 	
 	public static final String PATH_SEPARATOR = ";";
 	
@@ -162,5 +180,50 @@ public class Windows extends AbstractOperationalSystem
 	@Override
 	public String getPathSeparator() {
 		return PATH_SEPARATOR;
+	}
+
+	@Override
+	public File findLibrary(String libName)
+	{
+		File library = super.findExecutable(libName);
+		if (library != null) {
+			return library;
+		}
+		
+		// Try to find library in the classpath
+		JavaResourceFinder finder = new JavaResourceFinder();
+		ComputerArchitectureDetector archDetector = new ComputerArchitectureDetector();
+		ComputerArchitecture arch = archDetector.detectCurrentArchitecture();
+		for (String acronym : arch.acronyms) {
+			String libnameWithArch = DEFAULT_LIBRARY_PREFIX + libName + "." + acronym + DEFAULT_LIBRARY_EXTENSION;
+			List<URL> results = finder.find(libnameWithArch);
+			if (results.size() > 0) {
+				for (int i = 0; i < results.size(); i++) {
+					String uriPath = results.get(0).toString();
+					try {
+						URI uri = new URI(uriPath.replace("%20", " "));
+						library = new File(uri.getSchemeSpecificPart());
+						if (! library.exists()) {
+							InputStream is = Unix.class.getResourceAsStream("/" + libnameWithArch);
+							OperationalSystem os = ComputerSystem.getCurrentOperationalSystem();
+							Filesystem filesystem = os.getFilesystem();
+							Path libraryPath;
+							library = filesystem.createTempFile(DEFAULT_LIBRARY_PREFIX, DEFAULT_LIBRARY_EXTENSION);
+							libraryPath = library.toPath();
+							library.delete();
+							Files.copy(is, libraryPath);
+							library.deleteOnExit();
+
+						}
+						return library;
+					} catch (Exception e) {
+						System.out.println("Error loading library: " + library);
+						System.out.println(e.getMessage());
+					}
+				}
+			}
+		}
+		
+	    	return null;
 	}
 }
