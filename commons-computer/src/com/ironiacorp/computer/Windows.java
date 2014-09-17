@@ -20,8 +20,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ironiacorp.io.IoUtil;
-
 public class Windows extends AbstractOperationalSystem
 {
 	public static final OperationalSystemType type = OperationalSystemType.Windows;
@@ -122,7 +120,8 @@ public class Windows extends AbstractOperationalSystem
 		
 		return result;
 	}
-
+	
+	
 	@Override
 	protected List<File> getSystemLibrarySearchPath()
 	{
@@ -141,7 +140,8 @@ public class Windows extends AbstractOperationalSystem
 	@Override
 	public File findExecutable(String exec)
 	{
-		String fileExtension = IoUtil.getExtension(exec);
+		Filesystem fs = getFilesystem();
+		String fileExtension = fs.getExtension(exec);
 		if (fileExtension == null || fileExtension.isEmpty()) {
 			exec = exec + DEFAULT_EXECUTABLE_EXTENSION;
 		}

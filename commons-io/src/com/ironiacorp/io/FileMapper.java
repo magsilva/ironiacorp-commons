@@ -48,20 +48,15 @@ public class FileMapper
 			throw new IllegalArgumentException("Final position out of range");
 		}
 		
-		FileInputStream fis = null;
+		
 		FileChannel fc = null;
 		MappedByteBuffer buffer = null;
 		
-		try {
-			fis = new FileInputStream(file);
+		try (FileInputStream fis = new FileInputStream(file)) {;
+			fc = fis.getChannel();
+			buffer = fc.map(mode, initPos, length);
 		} catch (FileNotFoundException e) {
 			assert false : "File does not exist";
-		}
-		
-		fc = fis.getChannel();
-		
-		try {
-			buffer = fc.map(mode, initPos, length);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}

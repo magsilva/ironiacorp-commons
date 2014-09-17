@@ -49,9 +49,8 @@ public class LibraryLoaderTest
 	@Test
 	public void testLoadFile_ValidLibrary_SpecificPath()
 	{
-		os.addLibrarySearchPath(new File("/usr/lib/R/site-library/rJava/jri"));
-		os.addLibrarySearchPath(new File("/usr/lib64/R/library/rJava/jri/"));
-		File library = os.findLibrary("jri");
+		os.addLibrarySearchPath(new File(getClass().getProtectionDomain().getCodeSource().getLocation().getFile() + "com/ironiacorp/computer/loader"));
+		File library = os.findLibrary("shellsort");
 		assertNotNull(library);
 		os.loadLibrary(library);
 	}

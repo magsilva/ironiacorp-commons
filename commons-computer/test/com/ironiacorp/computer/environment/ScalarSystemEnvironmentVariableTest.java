@@ -1,4 +1,4 @@
-package com.ironiacorp.environment;
+package com.ironiacorp.computer.environment;
 
 import static org.junit.Assert.*;
 
@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import com.ironiacorp.computer.environment.PathSystemEnvironmentVariable;
 
-public class PathSystemEnvironmentVariableTest
+public class ScalarSystemEnvironmentVariableTest
 {
 	/**
 	 * PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin
@@ -28,15 +28,13 @@ public class PathSystemEnvironmentVariableTest
 	
 	@Ignore
 	@Test
-	public void testValidEnvVar_Empty()
+	public void testValidEnvVar_DoesNotExists()
 	{
 		PathSystemEnvironmentVariable var = new PathSystemEnvironmentVariable("EMPTY");
-		String[] paths = var.getValue();
-		assertNotNull(paths);
-		assertEquals("", paths[0]);
+		assertEquals("", var.getValue());
 	}
 	
-	@Test
+	@Test(expected=IllegalArgumentException.class)
 	public void testInvalidEnvVar()
 	{
 		PathSystemEnvironmentVariable var = new PathSystemEnvironmentVariable("PATHAFLKJAJSL");

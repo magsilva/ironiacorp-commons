@@ -17,7 +17,7 @@ limitations under the License.
 Copyright (C) 2011 Marco Aurélio Graciotto Silva <magsilva@ironiacorp.com>
 */
 
-package com.ironiacorp.io;
+package com.ironiacorp.computer.filesystem;
 
 import static org.junit.Assert.*;
 

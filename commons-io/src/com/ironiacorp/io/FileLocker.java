@@ -63,16 +63,18 @@ public class FileLocker
 			} else {
 				randomFile = new RandomAccessFile(file, "rw");
 			}
+			channel = randomFile.getChannel();
+			lock = channel.lock(initPosition, length, shared);
+		
 		} catch (FileNotFoundException e) {
 			assert false : "File does not exist";
-		}
-		
-		channel = randomFile.getChannel();
-		
-		try {
-			lock = channel.lock(initPosition, length, shared);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
+		} finally {
+			try {
+				randomFile.close();
+			} catch (IOException e) {
+			}
 		}
 		return lock;
 	}

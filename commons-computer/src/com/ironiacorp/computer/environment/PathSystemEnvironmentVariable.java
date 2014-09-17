@@ -24,6 +24,10 @@ public class PathSystemEnvironmentVariable extends PathEnvironmentVariable
 
 	protected String readPath()
 	{
-		 return System.getenv(name);
+		String value = System.getenv(name);
+		if (value == null) {
+			throw new IllegalArgumentException("Environment variable has not been defined");
+		}
+		return value; 
 	}
 }

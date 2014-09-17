@@ -29,16 +29,30 @@
 	</ciManagement>
 
 	<dependencies>
-		<dependency>
-			<groupId>ironiacorp</groupId>
-			<artifactId>finder</artifactId>
-			<version>[0.1.0,)</version>
-		</dependency>
 		
 		<dependency>
 			<groupId>org.kohsuke.jinterop</groupId>
 			<artifactId>j-interop</artifactId>
 			<version>2.0.5</version>
 		</dependency>
+
+		<dependency>
+			<groupId>com.ostermiller</groupId>
+			<artifactId>ostermillerutils</artifactId>
+			<version>[1.08.02,)</version>
+		</dependency>
+	
+		<dependency>
+			<groupId>ironiacorp</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>[5.0.0-SNAPSHOT,)</version>
+		</dependency>
+	
+		<dependency>
+			<groupId>com.trustice</groupId>
+			<artifactId>jnireg</artifactId>
+			<version>3.1.3</version>
+		</dependency>
+		
 	</dependencies>
 </project>

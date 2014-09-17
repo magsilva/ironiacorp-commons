@@ -1,6 +1,5 @@
-package com.ironiacorp.io;
 /*
-Copyright (C) 2005 Camila Kozlowski Della Corte <camilakoz@gmail.com>
+Copyright (C) 2009 Marco Aurélio Graciotto Silva <magsilva@ironiacorp.com>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -15,22 +14,16 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+package com.ironiacorp.computer.filesystem;
 
 
 import java.io.File;
 import java.io.FilenameFilter;
 
-public class ExtensionFilter implements FilenameFilter
+public class DirectoryFilter implements FilenameFilter
 {
-	private String extension;
-
-	public ExtensionFilter(String extension)
-	{
-		this.extension = extension;
-	}
-
 	public boolean accept(File dir, String name)
 	{
-		return (name.endsWith(extension));
+		return dir.isDirectory();
 	}
 }

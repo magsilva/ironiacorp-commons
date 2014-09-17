@@ -21,26 +21,20 @@ package com.ironiacorp.io;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileDescriptor;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
-import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
-
-import com.Ostermiller.util.RandPass;
-import com.ironiacorp.string.StringUtil;
 
 /**
  * Methods useful for file manipulations (what a shame Java doesn't have them in
@@ -58,583 +52,6 @@ public final class IoUtil
 
 	public static int BUFFER_SIZE = 8192;
 
-	public static String getExtension(File file)
-	{
-		return getExtension(file.getName());
-	}
-	
-	public static String getExtension(String filename)
-	{
-		if (filename == null) {
-			throw new IllegalArgumentException(new NullPointerException());
-		}
-		
-		int index = filename.lastIndexOf('.');
-
-		if (index == -1) {
-			return "";
-		}
-
-		return filename.substring(index + 1);
-	}
-
-	/**
-	 * Replace the extension of a file for a new one.
-	 * @param filename File name.
-	 * @param extension New extension.
-	 * @return File name with new extension.
-	 */
-	public static String replaceExtension(String filename, String extension)
-	{
-		if (filename == null) {
-			throw new IllegalArgumentException(new NullPointerException());
-		}
-			
-		if (extension == null) {
-			extension = "";
-		} else if (extension.length() > 0 && extension.charAt(0) != '.') {
-			extension = "." + extension;
-		}
-		
-		int index = filename.lastIndexOf('.');
-		if (index == -1) {
-			return filename + extension;
-		} else {
-			return filename.substring(0, index) + extension;
-		}
-	}
-	
-	/**
-	 * Create a directory (any missing parent directory is created too).
-	 * 
-	 * @param dir
-	 *            The directory to be created.
-	 */
-	public static File createDir(String dir)
-	{
-		if (dir == null) {
-			throw new IllegalArgumentException(new NullPointerException());
-		}
-		if (dir.isEmpty()) {
-			throw new IllegalArgumentException("Cannot create a directory with no name");
-		}
-		
-		File file = new File(dir);
-		return createDir(file);
-	}
-
-
-	/**
-	 * Create a directory (any missing parent directory is created too).
-	 * 
-	 * @param dir
-	 *            The directory to be created.
-	 */
-	public static File createDir(File file)
-	{
-		if (file == null) {
-			throw new IllegalArgumentException(new NullPointerException());
-		}
-
-		if (file.isDirectory()) {
-			return file;
-		}
-		boolean result = file.mkdirs();
-		if (result == false) {
-			throw new UnsupportedOperationException("Error creating directory");
-		}
-
-		
-		return file;
-	}
-	
-	/**
-	 * Create a a file.
-	 * 
-	 * @param dirname
-	 *            The directory where the file must reside.
-	 * @param filename
-	 *            The file to be created.
-	 */
-	public static File createFile(String dirname, String filename) throws IOException
-	{
-		File dir = createDir(dirname);
-		return createFile(dir, filename);
-	}
-
-	/**
-	 * Create a a file.
-	 * 
-	 * @param dirname
-	 *            The directory where the file must reside.
-	 * @param filename
-	 *            The file to be created.
-	 */
-	public static File createFile(File dir, String filename) throws IOException
-	{
-		if (dir == null) {
-			throw new IllegalArgumentException("Invalid directory");
-		}
-		if (filename == null) {
-			throw new IllegalArgumentException("Invalid filename");
-		}
-
-		dir.mkdirs();
-		File file = new File(dir, filename);
-		file.createNewFile();
-		return file;
-	}
-
-	/**
-	 * Move a file.
-	 * 
-	 * @param src
-	 *            Source file.
-	 * @param dest
-	 *            Destination file.
-	 */
-	public static void moveFile(String src, String dest) throws IOException
-	{
-		if (src == null || dest == null) {
-			throw new IllegalArgumentException(new NullPointerException());
-		}
-		if (src.isEmpty() || dest.isEmpty()) {
-			throw new IllegalArgumentException();
-		}
-
-		File srcFile = new File(src);
-		File destFile = new File(dest);
-		moveFile(srcFile, destFile);
-	}
-
-	/**
-	 * Move a file.
-	 * 
-	 * @param src
-	 *            Source file.
-	 * @param dest
-	 *            Destination file.
-	 */
-	public static void moveFile(File src, File dest) throws IOException
-	{
-		if (src == null || dest == null) {
-			throw new IllegalArgumentException(new NullPointerException());
-		}
-
-		if (src.equals(dest)) {
-			throw new IllegalArgumentException("Destination is the same file as the target");
-		}
-		
-		if (! src.exists()) {
-			throw new IllegalArgumentException("Source file does not exist");
-		}
-		
-		boolean result = src.renameTo(dest);
-		if (! result) {
-			copyFile(src.getAbsolutePath(), dest.getAbsolutePath());
-			src.delete();
-		}
-	}
-
-	/**
-	 * Sync a file stream to disk.
-	 * 
-	 * @param fileStream
-	 *            The file stream to be synchronized to disk.
-	 */
-	public static void syncFile(FileOutputStream fileStream)
-	{
-		if (fileStream == null) {
-			throw new IllegalArgumentException(new NullPointerException());
-		}
-		try {
-			FileDescriptor fd = fileStream.getFD();
-			fileStream.flush();
-			// Block until the system buffers have been written to disk.
-			fd.sync();
-		} catch (IOException e) {
-			throw new UnsupportedOperationException(e);
-		}
-	}
-
-	/**
-	 * Copy the source file to the destination file.
-	 * 
-	 * @param srcFilename
-	 *            The source filename.
-	 * @param destFilename
-	 *            The destination filename.
-	 */
-	public static void copyFile(File srcFile, File destFile) throws IOException
-	{
-		copyFile(srcFile.getAbsolutePath(), destFile.getAbsolutePath());
-	}
-	
-	/**
-	 * Copy the source file to the destination file.
-	 * 
-	 * @param srcFilename
-	 *            The source filename.
-	 * @param destFilename
-	 *            The destination filename.
-	 */
-	public static void copyFile(String srcFilename, String destFilename) throws IOException
-	{
-		if (! new File(srcFilename).exists()) {
-			throw new IOException();
-		}
-
-		FileInputStream srcFileStream = new FileInputStream(srcFilename);
-		FileOutputStream destFileStream = new FileOutputStream(destFilename);
-		byte[] buffer = new byte[BUFFER_SIZE];
-		int bytes;
-
-		do {
-			bytes = srcFileStream.read(buffer, 0, buffer.length);
-			if (bytes != -1) {
-				destFileStream.write(buffer, 0, bytes);
-			}
-		} while (bytes != -1);
-
-		srcFileStream.close();
-		destFileStream.close();
-	}
-
-	/**
-	 * Copy the source file to the destination file (using Java NIO).
-	 * 
-	 * @param srcFilename
-	 *            The source filename.
-	 * @param destFilename
-	 *            The destination filename.
-	 */
-	public static void copyFile2(String srcFilename, String destFilename) throws IOException
-	{
-		if (! new File(srcFilename).exists()) {
-			throw new IOException();
-		}
-
-		FileInputStream srcFileStream = new FileInputStream(srcFilename);
-		FileOutputStream destFileStream = new FileOutputStream(destFilename);
-		FileChannel srcChannel = srcFileStream.getChannel();
-		FileChannel destChannel = destFileStream.getChannel();
-		srcChannel.transferTo(0, srcChannel.size(), destChannel);
-		srcFileStream.close();
-		destFileStream.close();
-	}
-	
-	/**
-	 * Copy the files in the source directory to the destination directory.
-	 * 
-	 * @param srcDir
-	 *            The source directory.
-	 * @param destDir
-	 *            The destination directory.
-	 */
-	public static void copyDir(String srcDirName, String destDirName) throws IOException
-	{
-		copyDir(srcDirName, destDirName, false);
-	}
-
-	/**
-	 * Copy the files in the source directory to the destination directory.
-	 * 
-	 * @param srcDir
-	 *            The source directory.
-	 * @param destDir
-	 *            The destination directory.
-	 * @param recurse
-	 *            Enable the recursive copy of directories.
-	 */
-	public static void copyDir(String srcDirName, String destDirName, boolean recurse) throws IOException
-	{
-		File srcDir = new File(srcDirName);
-		File destDir = new File(destDirName);
-
-		copyDir(srcDir, destDir, recurse);
-	}
-
-	/**
-	 * Copy the files in the source directory to the destination directory.
-	 * 
-	 * @param srcDir
-	 *            The source directory.
-	 * @param destDir
-	 *            The destination directory.
-	 * @param recurse
-	 *            Enable the recursive copy of directories.
-	 */
-	public static void copyDir(File srcDir, File destDir, boolean recurse) throws IOException
-	{
-		if (! srcDir.isDirectory()) {
-			throw new IllegalArgumentException("Source directory isn't a directory");
-		}
-		
-		if (destDir.exists()) {
-			if (! destDir.isDirectory()) {
-				throw new IllegalArgumentException("Destination isn't a directory");
-			}
-		} else {
-			boolean result = destDir.mkdirs();
-			if (result == false) {
-				throw new IllegalArgumentException("Destination directory could not be created");
-			}
-		}
-		
-		File[] files = srcDir.listFiles();
-		for (File file : files) {
-			if (file.isDirectory()) {
-				copyDir(file, new File(destDir.getAbsolutePath() + File.separator + file.getName()), recurse);
-			} else {
-				copyFile(file, new File(destDir.getAbsolutePath() + File.separator + file.getName()));
-			}
-		}
-	}
-
-	/**
-	 * Remove a file or a directory.
-	 */
-	public static void remove(String path)
-	{
-		File file = new File(path);
-		if (file.isDirectory()) {
-			removeDir(path);
-		} else if (file.isFile()) {
-			removeFile(path);
-		}
-	}
-
-	/**
-	 * Remove a file.
-	 * 
-	 * @param filename
-	 *            The file to be removed
-	 */
-	public static void removeFile(String filename)
-	{
-		File file = new File(filename);
-		if (file.isFile()) {
-			file.delete();
-		}
-	}
-
-	/**
-	 * Remove a directory and all of it's content.
-	 * 
-	 * @param dirname
-	 *            The directory to be removed
-	 */
-	public static void removeDir(String dirname)
-	{
-		File dir = new File(dirname);
-		removeDir(dir);
-	}
-
-	/**
-	 * Remove a directory and all of it's content.
-	 * 
-	 * @param dirname
-	 *            The directory to be removed
-	 */
-	public static void removeDir(File dir)
-	{
-		if (dir.isDirectory()) {
-			File[] listing = dir.listFiles();
-			for (File file : listing) {
-				if (file.isDirectory()) {
-					removeDir(file.getAbsolutePath());
-				}
-				file.delete();
-			}
-			dir.delete();
-		}
-	}
-
-	
-	public static File createTempDir() throws IOException
-	{
-		String randomPrefix = new RandPass(RandPass.LOWERCASE_LETTERS_AND_NUMBERS_ALPHABET).getPass(8);
-		return IoUtil.createTempDir(randomPrefix);
-	}
-
-	/**
-	 * Create a temporary directory.
-	 * 
-	 * @param prefix
-	 *            Prefix for the directory to be created.
-	 * @return Temporary directory.
-	 * @throws IOException
-	 */
-	public static File createTempDir(String prefix)
-	{
-		return IoUtil.createTempDir(prefix, "");
-	}
-
-	/**
-	 * Create a temporary directory.
-	 * 
-	 * @param prefix
-	 *            Prefix for the directory to be created.
-	 * @param suffix
-	 *            Sufix for the directory to be created.
-	 * 
-	 * @return Temporary directory.
-	 * @throws IOException
-	 */
-	public static File createTempDir(String prefix, String suffix)
-	{
-		return IoUtil.createTempDir(prefix, suffix, null);
-	}
-
-	/**
-	 * Create a temporary directory.
-	 * 
-	 * @param prefix
-	 *            Prefix for the directory to be created.
-	 * @param suffix
-	 *            Sufix for the directory to be created.
-	 * @param directory
-	 *            Directory where the temporary directory should be created
-	 *            into.
-	 * 
-	 * @return Temporary directory.
-	 * @throws IOException
-	 */
-	public static File createTempDir(String prefix, String suffix, String baseDirName)
-	{
-		final int MAX_ATTEMPTS = 50;
-
-		if (prefix == null) {
-			throw new IllegalArgumentException(new NullPointerException());
-		}
-		
-		if (baseDirName == null) {
-			baseDirName = IoUtil.getDefaultTempBasedir();
-		}
-		
-		if (StringUtil.isEmpty(baseDirName)) {
-			throw new RuntimeException("Could not create a temporary directory.");
-		}
-		if (! baseDirName.endsWith(File.separator)) {
-			baseDirName += File.separator;
-		}
-		File baseDir = new File(baseDirName);
-		if (! baseDir.exists()) {
-			throw new IllegalArgumentException("Invalid base dir");
-		}
-
-		for (int i = 0; i < MAX_ATTEMPTS; i++) {
-			try {
-				File file = File.createTempFile(prefix, suffix, baseDir);
-				String name = file.getAbsolutePath();
-				file.delete();
-				file = new File(name);
-				file.mkdirs();
-				return file;
-			} catch (IOException e) {
-			}
-		}
-
-		// throw new RuntimeException("Could not create a temporary
-		// directory.");
-		return null;
-	}
-
-	/**
-	 * Create a temporary file.
-	 * 
-	 * @return Temporary directory.
-	 * @throws IOException
-	 */
-	public static File createTempFile()
-	{
-		String randomPrefix = new RandPass(RandPass.LOWERCASE_LETTERS_AND_NUMBERS_ALPHABET).getPass(8);
-		return IoUtil.createTempFile(randomPrefix);
-	}
-	
-	
-	/**
-	 * Create a temporary file.
-	 * 
-	 * @param prefix
-	 *            Prefix for the directory to be created.
-	 * 
-	 * @return Temporary directory.
-	 * @throws IOException
-	 */
-	public static File createTempFile(String filePrefix)
-	{
-		return IoUtil.createTempFile(filePrefix, null);
-	}
-	
-	/**
-	 * Create a temporary file.
-	 * 
-	 * @param prefix
-	 *            Prefix for the directory to be created.
-	 * @param suffix
-	 *            Sufix for the directory to be created.
-	 * 
-	 * @return Temporary directory.
-	 * @throws IOException
-	 */
-	public static File createTempFile(String filePrefix, String fileSuffix)
-	{
-		final int MAX_ATTEMPTS = 50;
-		
-		if (filePrefix == null) {
-			throw new IllegalArgumentException(new NullPointerException());
-		}
-
-		for (int i = 0; i < MAX_ATTEMPTS; i++) {
-			try {
-				File tempFile = File.createTempFile(filePrefix, fileSuffix);
-				return tempFile;
-			} catch (IOException e) {
-			}
-		}
-
-		// throw new RuntimeException("Could not create a temporary
-		// directory.");
-		return null;
-	}
-
-	/**
-	 * Create a temporary file.
-	 * 
-	 * @param prefix
-	 *            Prefix for the directory to be created.
-	 * @param suffix
-	 *            Sufix for the directory to be created.
-	 * 
-	 * @return Temporary directory.
-	 * @throws IOException
-	 */
-	public static File createTempFile(String filePrefix, String fileSuffix, String dirPrefix)
-	{
-		final int MAX_ATTEMPTS = 50;
-
-		if (dirPrefix == null) {
-			throw new IllegalArgumentException(new NullPointerException("Invalid base dir"));
-		}
-		
-		File baseDir = new File(dirPrefix);
-		if (! baseDir.exists()) {
-			throw new IllegalArgumentException("Invalid base dir");
-		}
-
-		for (int i = 0; i < MAX_ATTEMPTS; i++) {
-			try {
-				File tempFile = File.createTempFile(filePrefix, fileSuffix, baseDir);
-				return tempFile;
-			} catch (IOException e) {
-			}
-		}
-
-		// throw new RuntimeException("Could not create a temporary
-		// directory.");
-		return null;
-	}
 
 	/**
 	 * Dump a file content to an array of bytes.
@@ -668,66 +85,37 @@ public final class IoUtil
 			return false;
 		}
 
-		FileInputStream f1Stream;
-		FileInputStream f2Stream;
-		try {
-			f1Stream = new FileInputStream(f1);
-			f2Stream = new FileInputStream(f2);
-		} catch (FileNotFoundException e) {
-			throw new IllegalArgumentException("Files do not exist");
-		}
+		
+		try (
+			FileInputStream f1Stream = new FileInputStream(f1);
+			FileInputStream f2Stream = new FileInputStream(f2);
+		) {
+			byte[] buffer1 = new byte[BUFFER_SIZE];
+			byte[] buffer2 = new byte[BUFFER_SIZE];
+			int bytesRead1 = 0;
+			int bytesRead2 = 0;
+			boolean result = true;
 
-		byte[] buffer1 = new byte[BUFFER_SIZE];
-		byte[] buffer2 = new byte[BUFFER_SIZE];
-		int bytesRead1 = 0;
-		int bytesRead2 = 0;
-		boolean result = true;
-
-		do {
-			try {
+			do {
 				bytesRead1 = f1Stream.read(buffer1, 0, buffer1.length);
 				bytesRead2 = f2Stream.read(buffer2, 0, buffer2.length);
-			} catch (IOException e) {
-				throw new IllegalArgumentException("Error reading from files");
-			}
+				if (bytesRead1 != bytesRead2) {
+					result = false;
+					break;
+				}
+				if (!Arrays.equals(buffer1, buffer2)) {
+					result = false;
+					break;
+				}
+			} while (bytesRead1 != -1 && bytesRead2 != -1);
 
-			if (bytesRead1 != bytesRead2) {
-				result = false;
-				break;
-			}
-			if (!Arrays.equals(buffer1, buffer2)) {
-				result = false;
-				break;
-			}
-		} while (bytesRead1 != -1 && bytesRead2 != -1);
-
-		try {
-			f1Stream.close();
-			f2Stream.close();
+			return result;
+		
+		} catch (FileNotFoundException e) {
+			throw new IllegalArgumentException("Files do not exist");
 		} catch (IOException e) {
-		}
-
-		return result;
-	}
-
-	// TODO: implement a Java version of fdupes
-	public static void removeDuplicates(File dir1)
-	{
-	}
-
-	public static boolean isAbsoluteFilename(String filename)
-	{
-		if (filename.substring(0, 1).equals(File.separator)) {
-			return true;
-		}
-
-		if (System.getProperty("os.name").startsWith("Windows")) {
-			if (filename.substring(0, 3).matches("[a-zA-Z]:" + File.separator)) {
-				return true;
-			}
-		}
-
-		return false;
+			throw new IllegalArgumentException("Error reading from files");
+		} 
 	}
 
 	public static String dumpAsString(InputStream is) throws IOException
@@ -761,10 +149,6 @@ public final class IoUtil
 		return data.toString();
 	}
 	
-	public static String getDefaultTempBasedir()
-	{
-		return System.getProperty("java.io.tmpdir");
-	}
 	
 	public static void copyStream(InputStream in, OutputStream out) throws IOException
 	{
@@ -788,12 +172,6 @@ public final class IoUtil
 			return null;
 		}
 		return outputStream.toByteArray();
-	}
-	
-	public static File toFile(InputStream is)
-	{
-		File file = IoUtil.createTempFile("inputstream-", ".tmp");
-		return toFile(is, file);
 	}
 	
 	public static File toFile(InputStream is, File file)

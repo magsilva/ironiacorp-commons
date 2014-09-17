@@ -1,4 +1,4 @@
-package com.ironiacorp.environment;
+package com.ironiacorp.computer.environment;
 
 import org.junit.Ignore;
 import org.junit.Test;

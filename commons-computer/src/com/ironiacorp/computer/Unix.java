@@ -17,8 +17,24 @@
 package com.ironiacorp.computer;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLDecoder;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
+
+import com.ironiacorp.computer.environment.PathEnvironmentVariable;
+import com.ironiacorp.computer.environment.PathSystemEnvironmentVariable;
+import com.ironiacorp.computer.filesystem.JavaResourceFinder;
+import com.ironiacorp.computer.loader.LDConfigParser;
 
 public class Unix extends AbstractOperationalSystem
 {
@@ -60,6 +76,7 @@ public class Unix extends AbstractOperationalSystem
 	{
 		return DEFAULT_LIBRARY_PREFIX + libName + DEFAULT_LIBRARY_EXTENSION;	
 	}
+	
 	// x86_64-linux-gnu
 	@Override
 	protected List<File> getSystemLibrarySearchPath()
@@ -67,7 +84,6 @@ public class Unix extends AbstractOperationalSystem
 		ComputerArchitectureDetector archDetector = new ComputerArchitectureDetector();
 		ComputerArchitecture arch = archDetector.detectCurrentArchitecture();
 		String dataModel = System.getProperty("sun.arch.data.model");
-		String currentSearchPath = System.getenv("LD_LIBRARY_PATH");
 		List<String> rawResult = new ArrayList<String>();
 		List<File> result = new ArrayList<File>();
 
@@ -77,16 +93,26 @@ public class Unix extends AbstractOperationalSystem
 				rawResult.add(path);
 			}
 		}
-		
-		if (currentSearchPath != null) {
-			for (String path : currentSearchPath.split(File.pathSeparator)) {
+
+		// Add paths from LD_LIBRARY_PATH
+		try {
+			PathEnvironmentVariable libraryPathEnvVar = new PathSystemEnvironmentVariable("LD_LIBRARY_PATH");
+			for (String path : libraryPathEnvVar.getValue()) {
 				File dir = new File(path);
 				if (isValidPath(dir)) {
 					rawResult.add(path);
 				}
 			}
+		} catch (IllegalArgumentException e) {}
+
+		LDConfigParser ldParser = new LDConfigParser();
+		for (String path : ldParser.parse()) {
+			File dir = new File(path);
+			if (isValidPath(dir)) {
+				rawResult.add(path);
+			}
 		}
-		
+
 		for (String dirname : rawResult) {
 			// Plain path + data model (32 or 64)
 			File dir = new File(dirname + dataModel);
@@ -152,5 +178,52 @@ public class Unix extends AbstractOperationalSystem
 	@Override
 	public String getPathSeparator() {
 		return PATH_SEPARATOR;
+	}
+	
+	
+	@Override
+	public File findLibrary(String libName)
+	{
+		File library = super.findExecutable(libName);
+		if (library != null) {
+			return library;
+		}
+		
+		// Try to find library in the classpath
+		JavaResourceFinder finder = new JavaResourceFinder();
+		ComputerArchitectureDetector archDetector = new ComputerArchitectureDetector();
+		ComputerArchitecture arch = archDetector.detectCurrentArchitecture();
+		for (String acronym : arch.acronyms) {
+			String libnameWithArch = DEFAULT_LIBRARY_PREFIX + libName + "." + acronym + DEFAULT_LIBRARY_EXTENSION;
+			List<URL> results = finder.find(libnameWithArch);
+			if (results.size() > 0) {
+				for (int i = 0; i < results.size(); i++) {
+					String uriPath = results.get(0).toString();
+					try {
+						// file:/var/home/magsilva/.m2/repository/pex/lspsolver/1.1.0/lspsolver-1.1.0.jar!/liblspsolver.x86_64.so
+						URI uri = new URI(uriPath.replace("%20", " "));
+						library = new File(uri.getSchemeSpecificPart());
+						if (! library.exists()) {
+							InputStream is = Unix.class.getResourceAsStream("/" + libnameWithArch);
+							OperationalSystem os = ComputerSystem.getCurrentOperationalSystem();
+							Filesystem filesystem = os.getFilesystem();
+							Path libraryPath;
+							library = filesystem.createTempFile(DEFAULT_LIBRARY_PREFIX, DEFAULT_LIBRARY_EXTENSION);
+							libraryPath = library.toPath();
+							library.delete();
+							Files.copy(is, libraryPath);
+							library.deleteOnExit();
+
+						}
+						return library;
+					} catch (Exception e) {
+						System.out.println("Error loading library: " + library);
+						System.out.println(e.getMessage());
+					}
+				}
+			}
+		}
+		
+    	return null;
 	}
 }

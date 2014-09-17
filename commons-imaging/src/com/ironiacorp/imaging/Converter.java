@@ -23,5 +23,7 @@ public interface Converter
 {
 	File convert(Image image);
 	
+	File convert(File image);
+	
 	boolean setAlphaChannel();
 }

@@ -18,6 +18,7 @@ package com.ironiacorp.computer;
 
 import java.io.File;
 import java.util.List;
+import java.util.Map;
 
 public interface OperationalSystem
 {
@@ -37,6 +38,7 @@ public interface OperationalSystem
 	
 	ProcessBuilder exec(File execFile, List<String> parameters);
 	
+	ProcessBuilder exec(File execFile, List<String> parameters, Map<String, String> env);
 	
 	void addLibrarySearchPath(File dir);
 	
@@ -78,4 +80,9 @@ public interface OperationalSystem
 	
 	String getDirectorySeparator();
 	
+	Filesystem getFilesystem();
+	
+	void setEnvironmentVariable(String name, String value);
+	
+	String getEnvironmentVariable(String name);
 }

@@ -34,8 +34,8 @@
 		<developer>
 			<id>magsilva</id>
 			<name>Marco Aurélio Graciotto Silva</name>
-			<email>magsilva@icmc.usp.br</email>
-			<url>http://www.icmc.usp.br/~magsilva/</url>
+			<email>magsilva@gmail.com</email>
+			<url>http://www.ironiacorp.com/</url>
 			<organization>Ironia Corporation</organization>
 			<organizationUrl>http://www.ironiacorp.com</organizationUrl>
 			<timezone>+3</timezone>
@@ -45,11 +45,6 @@
 			</roles>
 		</developer>
 	</developers>
-
-	<issueManagement>
-		<system>Bugzilla</system>
-		<url>http://www.ironiacorp.com/Apps/Bugzilla/</url>
-	</issueManagement>
 
 	<ciManagement>
 		<system>Hudson</system>
