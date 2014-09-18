@@ -259,7 +259,7 @@ public abstract class AbstractOperationalSystem implements OperationalSystem
     		}
     		
     		// Also try with short name
-    		files = fs.find(dir, 0, Pattern.compile(libName + "(\\.(\\d+))?"));
+    		files = fs.find(dir, 0, Pattern.compile(libName + "(\\.(\\d+))?" + getDefaultLibrarySuffix()));
     		for (File file : files) {
 	    		if (isLoadable(file)) {
 	    			return file;

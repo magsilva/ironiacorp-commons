@@ -27,6 +27,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -196,33 +197,42 @@ public class Unix extends AbstractOperationalSystem
 		for (String acronym : arch.acronyms) {
 			String libnameWithArch = DEFAULT_LIBRARY_PREFIX + libName + "." + acronym + DEFAULT_LIBRARY_EXTENSION;
 			List<URL> results = finder.find(libnameWithArch);
-			if (results.size() > 0) {
-				for (int i = 0; i < results.size(); i++) {
-					String uriPath = results.get(0).toString();
-					try {
-						URI uri = new URI(uriPath.replace("%20", " "));
-						library = new File(uri.getSchemeSpecificPart());
-						if (! library.exists()) {
-							InputStream is = Unix.class.getResourceAsStream("/" + libnameWithArch);
-							OperationalSystem os = ComputerSystem.getCurrentOperationalSystem();
-							Filesystem filesystem = os.getFilesystem();
-							Path libraryPath;
-							library = filesystem.createTempFile(DEFAULT_LIBRARY_PREFIX, DEFAULT_LIBRARY_EXTENSION);
-							libraryPath = library.toPath();
-							library.delete();
-							Files.copy(is, libraryPath);
-							library.deleteOnExit();
+			Iterator<URL> i = results.iterator();
+			while (i.hasNext()) {
+				String uriPath = i.next().toString();
+				try {
+					URI uri = new URI(uriPath.replace("%20", " "));
+					library = new File(uri.getSchemeSpecificPart());
+					if (! library.exists()) {
+						InputStream is = Unix.class.getResourceAsStream("/" + libnameWithArch);
+						OperationalSystem os = ComputerSystem.getCurrentOperationalSystem();
+						Filesystem filesystem = os.getFilesystem();
+						Path libraryPath;
+						library = filesystem.createTempFile(DEFAULT_LIBRARY_PREFIX, DEFAULT_LIBRARY_EXTENSION);
+						libraryPath = library.toPath();
+						library.delete();
+						Files.copy(is, libraryPath);
+						library.deleteOnExit();
 
-						}
-						return library;
-					} catch (Exception e) {
-						System.out.println("Error loading library: " + library);
-						System.out.println(e.getMessage());
 					}
+					return library;
+				} catch (Exception e) {
+					System.out.println("Error loading library: " + library);
+					System.out.println(e.getMessage());
 				}
 			}
 		}
 		
 	    	return null;
+	}
+
+	@Override
+	public String getDefaultLibraryPrefix() {
+		return DEFAULT_LIBRARY_PREFIX;
+	}
+
+	@Override
+	public String getDefaultLibrarySuffix() {
+		return DEFAULT_LIBRARY_EXTENSION;
 	}
 }

@@ -55,4 +55,13 @@ public class LibraryLoaderTest
 		os.loadLibrary(library);
 	}
 
+	@Test
+	public void testLoadFile_ValidLibrary_SpecificPath_ShortName()
+	{
+		os.addLibrarySearchPath(new File(getClass().getProtectionDomain().getCodeSource().getLocation().getFile() + "com/ironiacorp/computer/loader"));
+		File library = os.findLibrary("shellsort");
+		assertNotNull(library);
+		os.loadLibrary(library);
+	}
+	
 }

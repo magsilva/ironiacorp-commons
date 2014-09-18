@@ -57,6 +57,10 @@ public interface OperationalSystem
 	 */
 	File findLibrary(String libName);
 	
+	String getDefaultLibraryPrefix();
+	
+	String getDefaultLibrarySuffix();
+	
 	String getFullLibraryName(String libName);
 	
 	boolean isLoadable(File libFile);
