@@ -184,7 +184,7 @@ public class Unix extends AbstractOperationalSystem
 	@Override
 	public File findLibrary(String libName)
 	{
-		File library = super.findExecutable(libName);
+		File library = super.findLibrary(libName);
 		if (library != null) {
 			return library;
 		}
