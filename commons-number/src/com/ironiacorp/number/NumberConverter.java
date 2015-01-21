@@ -41,6 +41,43 @@ public class NumberConverter
 		return result;
 	}
 
+	/**
+	 * Extracted from http://snippets.dzone.com/posts/show/93
+	 */
+	public static byte[] toBigEndianByteArray(long value)
+	{
+		byte[] result = new byte[] {
+			(byte) (value >>> 56),
+			(byte) (value >>> 48),
+			(byte) (value >>> 40),
+			(byte) (value >>> 32),
+			(byte) (value >>> 24),
+			(byte) (value >>> 16),
+			(byte) (value >>> 8),
+			(byte) value
+		};
+		return result;
+	}
+
+	/**
+	 * Extracted from http://snippets.dzone.com/posts/show/93
+	 */
+	public static byte[] toLittleEndianByteArray(long value)
+	{
+		byte[] result = new byte[] {
+			(byte) value,
+			(byte) (value >>> 8),
+			(byte) (value >>> 16),
+			(byte) (value >>> 24),
+			(byte) (value >>> 32),
+			(byte) (value >>> 40),
+			(byte) (value >>> 48),
+			(byte) (value >>> 56),
+		};
+		return result;
+	}
+
+
 	
 	public static int fromBigEndiantoInt(byte[] array)
 	{
