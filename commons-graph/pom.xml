@@ -14,52 +14,9 @@
 
 	<name>IroniaCorp-Commons-Graph</name>
 	<description>Graph manipulation and visualization utilities</description>
-	<url>http://www.ironiacorp.com/products/commons/graph</url>
 	<inceptionYear>2011</inceptionYear>
 
-	<scm>
-		<connection>scm:svn:https://www.ironiacorp.com/svn/projects/ironiacorp-commons/trunk/commons-graph</connection>
-		<developerConnection>scm:svn:https://www.ironiacorp.com/svn/projects/ironiacorp-commons/trunk/commons-graph</developerConnection>
-		<url>http://www.ironiacorp.com/Apps/WebSVN/wsvn/Active%20projects.ironiacorp-commons/trunk/commons-graph</url>
-	</scm>
-
-	<ciManagement>
-		<system>Hudson</system>
-		<url>http://www.ironiacorp.com/Apps/Hudson/job/IroniaCorp-Commons-Graph/</url>
-	</ciManagement>
-
-	<repositories>
-		<repository>
-			<id>CodeHaus</id>
-			<url>http://repository.codehaus.org</url>
-				<releases>
-				<updatePolicy>never</updatePolicy>
-			</releases>
-		</repository>	
-	</repositories>
-
 	<dependencies>
-
-		<!--	
-		<dependency>
-			<groupId>org.jinterop</groupId>
-			<artifactId>j-interop</artifactId>
-			<version>2.0.8</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.jinterop</groupId>
-			<artifactId>j-interop-deps</artifactId>
-			<version>2.0.8</version>
-		</dependency>
-		-->
-
-		<dependency>
-			<groupId>org.kohsuke.jinterop</groupId>
-			<artifactId>j-interop</artifactId>
-			<version>2.0.8-kohsuke-1</version>
-		</dependency>
-            		
 		<dependency>
 			<groupId>ironiacorp</groupId>
 			<artifactId>commons-errorhandler</artifactId>
