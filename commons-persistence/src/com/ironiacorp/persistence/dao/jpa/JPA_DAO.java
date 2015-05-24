@@ -210,6 +210,7 @@ public class JPA_DAO<K extends Serializable, E> extends GenericDAO<K, E>
 		}
 	}
 
+	// TODO: use JPA Criteria API instead of a query (http://www.tutorialspoint.com/jpa/jpa_criteria_api.htm)
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<E> findByProperties(Map<String, Object> properties)

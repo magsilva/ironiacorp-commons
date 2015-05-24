@@ -1,7 +1,4 @@
 /*
-Wiki/RE - A requirements engineering wiki
-Copyright (C) 2005 Marco Aurélio Graciotto Silva
-
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2 of the License, or
@@ -15,9 +12,12 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- */
+
+Copyright (C) 2005 Marco Aurelio Graciotto Silva <magsilva@gmail.com>
+*/
 
 package com.ironiacorp.persistence.datasource;
+
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -42,8 +42,6 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 // import org.hibernate.util.DTDEntityResolver;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -57,33 +55,26 @@ import org.w3c.dom.Node;
  * @author Marco Aurélio Graciotto Silva
  * 
  */
-public class HibernateDataSourceConfiguration
+public final class HibernateConfigurationUtil
 {
-	/**
-	 * Commons Logging instance.
-	 */
-	private static Logger log = LoggerFactory.getLogger(HibernateDataSourceConfiguration.class);
-
 	private String contextPath;
 
-	private static final String configFileSufix = File.separator + "WEB-INF" + File.separator + "classes"
+	private static String configFileSufix = File.separator + "WEB-INF" + File.separator + "classes"
 			+ File.separator + "hibernate.cfg.xml";
 
 	private Map<String, String> preferences;
 
 	private Document config;
 
-	public static final String JDBC_TYPE = "JDBC";
-	public static final String JNDI_TYPE = "JNDI";
+	public static String JDBC_TYPE = "JDBC";
+	public static String JNDI_TYPE = "JNDI";
 
 	/**
 	 * 
 	 */
-	public HibernateDataSourceConfiguration(String contextPath)
+	public HibernateConfigurationUtil(String contextPath)
 	{
-		super();
 		this.contextPath = contextPath;
-		log.debug("Context path set to " + this.contextPath);
 
 		this.preferences = new HashMap<String, String>();
 		preferences.put("connection.driver_class", null);
@@ -108,7 +99,6 @@ public class HibernateDataSourceConfiguration
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder parser = null;
 
-		log.debug("Loading configuration from file " + configFile.getAbsolutePath());
 		try {
 			factory.setValidating(true);
 			factory.setNamespaceAware(false);
@@ -118,10 +108,10 @@ public class HibernateDataSourceConfiguration
 			// the current implementation fails on it.
 			// factory.setSchema( null );
 			parser = factory.newDocumentBuilder();
-// 			parser.setEntityResolver(new DTDEntityResolver());
+//			parser.setEntityResolver(new DTDEntityResolver());
 			config = parser.parse(configFile);
 		} catch (Exception e) {
-			log.debug("Error loading the configuration: ", e);
+			throw new RuntimeException(e);
 		}
 		NodeList propertiesNodes = config.getElementsByTagName("property");
 		for (int i = 0; i < propertiesNodes.getLength(); i++) {
@@ -189,7 +179,9 @@ public class HibernateDataSourceConfiguration
 			Transformer t = TransformerFactory.newInstance().newTransformer();
 			t.transform(new DOMSource(config), new StreamResult(configFile));
 		} catch (TransformerConfigurationException tce) {
+			throw new RuntimeException(tce);
 		} catch (TransformerException te) {
+			throw new RuntimeException(te);
 		}
 
 	}
@@ -207,7 +199,6 @@ public class HibernateDataSourceConfiguration
 	 */
 	public void setDialect(String dialect)
 	{
-		log.debug("Set the dialect to " + dialect);
 		preferences.put("dialect", dialect);
 	}
 
@@ -219,10 +210,10 @@ public class HibernateDataSourceConfiguration
 	public String getDataSourceType()
 	{
 		if (preferences.containsKey("connection.driver_class")) {
-			return HibernateDataSourceConfiguration.JNDI_TYPE;
+			return HibernateConfigurationUtil.JNDI_TYPE;
 		}
 		if (preferences.containsKey("hibernate.connection.datasource")) {
-			return HibernateDataSourceConfiguration.JDBC_TYPE;
+			return HibernateConfigurationUtil.JDBC_TYPE;
 		}
 		return null;
 	}
@@ -243,7 +234,6 @@ public class HibernateDataSourceConfiguration
 	 */
 	public void setJDBCDriver(String driver)
 	{
-		log.debug("Set the JDBC driver to " + driver);
 		preferences.remove("hibernate.connection.datasource");
 		preferences.put("connection.driver_class", driver);
 	}
@@ -264,7 +254,6 @@ public class HibernateDataSourceConfiguration
 	 */
 	public void setDataSourceName(String name)
 	{
-		log.debug("Set the JNDI data source name to " + name);
 		preferences.remove("connection.driver_class");
 		preferences.put("hibernate.connection.datasource", name);
 	}
@@ -286,7 +275,6 @@ public class HibernateDataSourceConfiguration
 	 */
 	public void setURL(String url)
 	{
-		log.debug("Set the URL to " + url);
 		preferences.put("connection.url", url);
 	}
 
@@ -312,15 +300,14 @@ public class HibernateDataSourceConfiguration
 	 */
 	public void setUsername(String username)
 	{
-		log.debug("Set the username to " + username);
 
 		preferences.remove("connection.username");
 		preferences.remove("hibernate.connection.username");
 
-		if (getDataSourceType().equals(HibernateDataSourceConfiguration.JNDI_TYPE)) {
+		if (getDataSourceType().equals(HibernateConfigurationUtil.JNDI_TYPE)) {
 			preferences.put("hibernate.connection.username", username);
 		}
-		if (getDataSourceType().equals(HibernateDataSourceConfiguration.JDBC_TYPE)) {
+		if (getDataSourceType().equals(HibernateConfigurationUtil.JDBC_TYPE)) {
 			preferences.put("connection.username", username);
 		}
 	}
@@ -347,15 +334,13 @@ public class HibernateDataSourceConfiguration
 	 */
 	public void setPassword(String password)
 	{
-		log.debug("Set the password");
-
 		preferences.remove("connection.password");
 		preferences.remove("hibernate.connection.password");
 
-		if (getDataSourceType().equals(HibernateDataSourceConfiguration.JNDI_TYPE)) {
+		if (getDataSourceType().equals(HibernateConfigurationUtil.JNDI_TYPE)) {
 			preferences.put("hibernate.connection.password", password);
 		}
-		if (getDataSourceType().equals(HibernateDataSourceConfiguration.JDBC_TYPE)) {
+		if (getDataSourceType().equals(HibernateConfigurationUtil.JDBC_TYPE)) {
 			preferences.put("connection.password", password);
 		}
 	}
@@ -461,7 +446,8 @@ public class HibernateDataSourceConfiguration
 		dialects.put("org.hibernate.dialect.SAPDBDialect", "resource.hibernateDialect.SAPDB");
 		dialects.put("org.hibernate.dialect.SQLServerDialect", "resource.hibernateDialect.SQLServer");
 		dialects.put("org.hibernate.dialect.SybaseDialect", "resource.hibernateDialect.Sybase");
-		dialects.put("org.hibernate.dialect.SybaseAnywhereDialect", "resource.hibernateDialect.SybaseAnywhere");
+		dialects.put("org.hibernate.dialect.SybaseAnywhereDialect",
+				"resource.hibernateDialect.SybaseAnywhere");
 		return dialects;
 	}
 }

@@ -53,7 +53,7 @@ public class JpaDaoHsqldbTest
             fail("Exception during HSQL database startup.");
         }
         try {
-            emFactory = Persistence.createEntityManagerFactory("testPU1");
+            emFactory = Persistence.createEntityManagerFactory("testPU");
             em = emFactory.createEntityManager();
         } catch (Exception ex) {
             ex.printStackTrace();
