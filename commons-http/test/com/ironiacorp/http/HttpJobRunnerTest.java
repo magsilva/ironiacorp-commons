@@ -114,7 +114,7 @@ public abstract class HttpJobRunnerTest
 	
 	@Test
 	public void testSingle() throws URISyntaxException {
-		HttpJob job = new HttpJob(HttpMethod.GET, new URI("http://www.icmc.usp.br/~magsilva/index.html"));
+		HttpJob job = new HttpJob(HttpMethod.GET, new URI("http://www.magsilva.pro.br/index.html"));
 		runner.addJob(job);
 		runner.run();
 		HttpMethodResult result = job.getResult();
@@ -175,7 +175,9 @@ public abstract class HttpJobRunnerTest
 
 		// assertTrue((10 * totalTime1) > totalTime2);
 	}
-	
+
+	// FIXME: Convert this to use Jetty
+	@Ignore	
 	@Test
 	public void testPost() throws Exception
 	{

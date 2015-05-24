@@ -58,8 +58,8 @@ class GetRequest implements Callable<HttpJob>
 		HTTPRequest request = new HTTPRequest(uri);
 		HTTPResponse response = null; 
 		try {
-			response = cache.doCachedRequest(request);
-	        Payload payload = response.getPayload();
+			response = cache.execute(request);
+		        Payload payload = response.getPayload();
 		        
 	        if (payload != null && payload.isAvailable()) {
 	        	InputStream inputStream = payload.getInputStream();

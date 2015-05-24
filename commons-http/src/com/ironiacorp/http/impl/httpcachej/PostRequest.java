@@ -80,20 +80,20 @@ class PostRequest implements Callable<HttpJob>
 		request = request.payload(formPayload);
 		
 		try {
-			response = cache.doCachedRequest(request);
-	        Payload payload = response.getPayload();
+			response = cache.execute(request);
+		        Payload payload = response.getPayload();
 		        
-	        if (payload != null && payload.isAvailable()) {
-	        	InputStream inputStream = payload.getInputStream();
-	        	if (inputStream != null) {
-	        		HttpMethodResult result = new HttpMethodResult();
-        			result.setContent(inputStream);
-	        		result.setStatusCode(response.getStatus().getCode());
-	        		job.setResult(result);
+		        if (payload != null && payload.isAvailable()) {
+	        		InputStream inputStream = payload.getInputStream();
+	        		if (inputStream != null) {
+		        		HttpMethodResult result = new HttpMethodResult();
+       		 			result.setContent(inputStream);
+		        		result.setStatusCode(response.getStatus().getCode());
+	        			job.setResult(result);
 				}
-	        }
+	        	}
 		} catch (Exception e) {
 		}
-        return job;
+	        return job;
 	}
 }
