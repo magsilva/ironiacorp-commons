@@ -14,75 +14,43 @@
 
 	<name>IroniaCorp-Commons-Http</name>
 	<description>HTTP related utilities</description>
-	<url>http://www.ironiacorp.com/products/commons/http</url>
 	<inceptionYear>2007</inceptionYear>
-
-	<scm>
-		<connection>scm:svn:https://www.ironiacorp.com/svn/projects/ironiacorp-commons/trunk/commons-http</connection>
-		<developerConnection>scm:svn:https://www.ironiacorp.com/svn/projects/ironiacorp-commons/trunk/commons-http</developerConnection>
-		<url>http://www.ironiacorp.com/Apps/WebSVN/wsvn/Active%20projects.ironiacorp-commons/trunk/commons-http</url>
-	</scm>
-
-	<ciManagement>
-		<system>Hudson</system>
-		<url>http://www.ironiacorp.com/Apps/Hudson/job/IroniaCorp-Commons-Http/</url>
-	</ciManagement>
-
-
-	<repositories>
-		<repository>
-			<id>CodeHaus</id>
-			<url>http://repository.codehaus.org</url>
-			<releases>
-				<updatePolicy>never</updatePolicy>
-			</releases>
-		</repository>	
-	</repositories>
 
 	<dependencies>
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-server</artifactId>
-			<version>7.4.0.v20110414</version>
+			<version>9.2.10.v20150310</version>
 			<scope>test</scope>
-		</dependency>
-
-		<!-- HTTP Client 3.x -->
-		<dependency>
-			<groupId>commons-httpclient</groupId>
-			<artifactId>commons-httpclient</artifactId>
-			<version>[3.1,)</version>
 		</dependency>
 
 		<!-- HTTP Client 4.x -->
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
-			<version>[4.3,)</version>
+			<version>[4.4.1,)</version>
 		</dependency>
 
 		<!-- HttpCache4J -->
 		<dependency>
 			<groupId>org.codehaus.httpcache4j</groupId>
 			<artifactId>httpcache4j-core</artifactId>
-			<version>3.2</version>
+			<version>[4.1,)</version>
 			<scope>compile</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.codehaus.httpcache4j.resolvers</groupId>
 			<artifactId>resolvers-commons-httpclient</artifactId>
-			<version>3.2</version>
-			<type>jar</type>
-			<scope>compile</scope>
+			<version>[4.1,)</version>
 		</dependency>
-		
+	
 		<dependency>
-			<groupId>commons-lang</groupId>
-			<artifactId>commons-lang</artifactId>
-			<version>[2.6,)</version>
+			<groupId>org.codehaus.httpcache4j.resolvers</groupId>
+			<artifactId>resolvers-httpcomponents-httpclient</artifactId>
+			<version>[4.1,)</version>
+			<scope>runtime</scope>
 		</dependency>
-
 
 		<!-- IroniaCorp Commons -->
 		<dependency>
