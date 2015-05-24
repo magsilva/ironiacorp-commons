@@ -13,19 +13,7 @@
 	<packaging>jar</packaging>
 	<name>IroniaCorp-Commons-Annotation</name>
 	<description>Annotation related utilities</description>
-	<url>http://www.ironiacorp.com/products/commons/annotation</url>
 	<inceptionYear>2007</inceptionYear>
-
-	<scm>
-		<connection>scm:svn:https://www.ironiacorp.com/svn/projects/ironiacorp-commons/trunk/commons-annotation</connection>
-		<developerConnection>scm:svn:https://www.ironiacorp.com/svn/projects/ironiacorp-commons/trunk/commons-annotation</developerConnection>
-		<url>http://www.ironiacorp.com/Apps/WebSVN/wsvn/Active%20projects.ironiacorp-commons/trunk/commons-annotation/</url>
-	</scm>
-
-	<ciManagement>
-		<system>Hudson</system>
-		<url>http://www.ironiacorp.com/Apps/Hudson/job/IroniaCorp-Commons-Annotation/</url>
-	</ciManagement>
 
 	<dependencies>
 		<dependency>
@@ -33,7 +21,7 @@
 			<artifactId>commons-datastructures</artifactId>
 			<version>${ironiacorp.commons.version}</version>
 			<type>jar</type>
-			<scope>compile</scope>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 </project>
