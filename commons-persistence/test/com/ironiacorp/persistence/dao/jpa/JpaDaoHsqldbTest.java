@@ -35,7 +35,8 @@ import com.ironiacorp.persistence.example.Person;
 
 import static org.junit.Assert.*;
 
-public class JpaDaoHsqldbTest
+
+public abstract class JpaDaoHsqldbTest
 {
     private EntityManagerFactory emFactory;
 
