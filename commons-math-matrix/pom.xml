@@ -14,7 +14,6 @@
 
 	<name>IroniaCorp-Commons-Math-Matrix</name>
 	<description>Utilities for matrix processing.</description>
-	<url>http://www.ironiacorp.com/products/commons/math-matrix</url>
 	<inceptionYear>2010</inceptionYear>
 	
 	<dependencies>
