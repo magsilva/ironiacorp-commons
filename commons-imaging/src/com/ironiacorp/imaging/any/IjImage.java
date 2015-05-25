@@ -24,7 +24,11 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.InputStream;
 
+import com.ironiacorp.computer.ComputerSystem;
+import com.ironiacorp.computer.OperationalSystem;
+import com.ironiacorp.computer.Filesystem;
 import com.ironiacorp.imaging.Image;
+import com.ironiacorp.io.IoUtil;
 
 public class IjImage implements Image
 {
@@ -42,8 +46,12 @@ public class IjImage implements Image
 	public IjImage(InputStream is)
 	{
 		Opener imageOpener = new Opener();
+		OperationalSystem os = ComputerSystem.getCurrentOperationalSystem();
+                Filesystem fs = os.getFilesystem();
+		File file = fs.createTempFile();
+		IoUtil.toFile(is, file);
+		this.image = imageOpener.openImage(file.getAbsolutePath());
 		init();
-		throw new UnsupportedOperationException();
 	}
 	
 	private void init()
