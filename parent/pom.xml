@@ -186,8 +186,8 @@
 		<module>../commons-computer</module>
 		<module>../commons-configuration</module>
 		<module>../commons-datastructures</module>
-		<module>../commons-email</module>
 		<module>../commons-ecc</module>
+		<module>../commons-email</module>
 		<module>../commons-errorhandler</module>
 		<module>../commons-graph</module>
 		<module>../commons-http</module>
@@ -196,22 +196,24 @@
 		<module>../commons-io</module>
 		<module>../commons-java</module>
 		<module>../commons-licensing</module>
+		<module>../commons-math</module>
 		<module>../commons-math-matrix</module>
 		<module>../commons-messaging</module>
 		<module>../commons-naming</module>
 		<module>../commons-number</module>
 		<module>../commons-patterns</module>
 		<module>../commons-persistence</module>
+		<!--
 		<module>../commons-persistence-hibernate</module>
+		-->
 		<module>../commons-persistence-mysql</module>
+		<module>../commons-regexp</module>
 		<module>../commons-security</module>
 		<module>../commons-spelling</module>
 		<module>../commons-statistics</module>
 		<module>../commons-string</module>
 		<module>../commons-ui-gui</module>
-		<!--
 		<module>../commons-versionmanagement</module>
-		-->
 		<module>../commons-ws</module>
 		<module>../commons-xml</module>
 	</modules>
