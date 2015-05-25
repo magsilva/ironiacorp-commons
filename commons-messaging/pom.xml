@@ -14,21 +14,7 @@
 
 	<name>IroniaCorp-Commons-MessageBus</name>
 	<description>Utilities for messaging and web services</description>
-	<url>http://www.ironiacorp.com/products/commons/messaging</url>
 	<inceptionYear>2007</inceptionYear>
-
-
-	<scm>
-		<connection>https://www.ironiacorp.com/svn/projects/ironiacorp-commons/trunk/commons-messaging</connection>
-		<developerConnection>https://www.ironiacorp.com/svn/projects/ironiacorp-commons/trunk/commons-messaging</developerConnection>
-		<url>http://www.ironiacorp.com/Apps/WebSVN/wsvn/Active%20projects.ironiacorp-commons/trunk/commons-messaging</url>
-	</scm>
-
-	<ciManagement>
-		<system>Hudson</system>
-		<url>http://www.ironiacorp.com/Apps/Hudson/job/IroniaCorp-Commons-Messaging</url>
-	</ciManagement>
-
 
 	<dependencies>
 		<dependency>
