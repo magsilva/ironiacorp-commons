@@ -97,7 +97,11 @@ public class RClientFactory
     	os.addLibrarySearchPath(new File("/usr/lib64/R/site-library/rJava/jri/"));
     	os.addLibrarySearchPath(new File("/usr/lib64/R/library/rJava/jri/"));
     	library = os.findLibrary("jri");
-    	os.loadLibrary(library);
+	try {
+	    	os.loadLibrary(library);
+	} catch (Exception e) {
+		throw new UnsupportedOperationException("Could not load library for JRI");
+	}
         RClient j = new JRIClient();
         
         return j;
