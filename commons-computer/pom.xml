@@ -14,22 +14,9 @@
 
 	<name>IroniaCorp-Commons-Computer</name>
 	<description>Tools to gather system information.</description>
-	<url>http://www.ironiacorp.com/products/commons/computer</url>
 	<inceptionYear>2011</inceptionYear>
 
-	<scm>
-		<connection>scm:svn:https://www.ironiacorp.com/svn/projects/ironiacorp-commons/trunk/commons-computer</connection>
-		<developerConnection>scm:svn:https://www.ironiacorp.com/svn/projects/ironiacorp-commons/trunk/commons-computer</developerConnection>
-		<url>http://www.ironiacorp.com/Apps/WebSVN/wsvn/Active%20projects.ironiacorp-commons/trunk/commons-computer</url>
-	</scm>
-
-	<ciManagement>
-		<system>Hudson</system>
-		<url>http://www.ironiacorp.com/Apps/Hudson/job/IroniaCorp-Commons-Computer</url>
-	</ciManagement>
-
 	<dependencies>
-		
 		<dependency>
 			<groupId>org.kohsuke.jinterop</groupId>
 			<artifactId>j-interop</artifactId>
