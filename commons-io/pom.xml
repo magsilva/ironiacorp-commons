@@ -14,27 +14,13 @@
 
 	<name>IroniaCorp-Commons-IO</name>
 	<description>IO utilities</description>
-	<url>http://www.ironiacorp.com/products/commons/io</url>
 	<inceptionYear>2007</inceptionYear>
-
-	<scm>
-		<connection>https://www.ironiacorp.com/svn/projects/ironiacorp-commons/trunk/commons-io</connection>
-		<developerConnection>https://www.ironiacorp.com/svn/projects/ironiacorp-commons/trunk/commons-io</developerConnection>
-		<url>http://www.ironiacorp.com/Apps/WebSVN/wsvn/Active%20projects.ironiacorp-commons/trunk/commons-io</url>
-	</scm>
-
-	<ciManagement>
-		<system>Hudson</system>
-		<url>http://www.ironiacorp.com/Apps/Hudson/job/IroniaCorp-Commons-IO/</url>
-	</ciManagement>
-
 
 	<dependencies>
 		<dependency>
 			<groupId>ironiacorp</groupId>
 			<artifactId>commons-string</artifactId>
-			<version>5.0.0-SNAPSHOT</version>
+			<version>${ironiacorp.commons.version}</version>
 		</dependency>
-
 	</dependencies>
 </project>
