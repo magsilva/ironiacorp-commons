@@ -14,19 +14,7 @@
 
 	<name>IroniaCorp-Commons-ECC</name>
 	<description>Error checking and correction utilities (mainly for educational purposes).</description>
-	<url>http://www.ironiacorp.com/products/commons-ecc</url>
 	<inceptionYear>2010</inceptionYear>
-
-	<ciManagement>
-		<system>Hudson</system>
-		<url>http://www.ironiacorp.com/Apps/Hudson/job/IroniaCorp-Commmons-ECC</url>
-	</ciManagement>
-
-	<scm>
-		<connection>scm:svn:https://www.ironiacorp.com/svn/projects/ironiacorp-commons/trunk/commons-ecc</connection>
-		<developerConnection>scm:svn:https://www.ironiacorp.com/svn/projects/ironiacorp-commons/trunk/commons-ecc</developerConnection>
-		<url>http://www.ironiacorp.com/Apps/WebSVN/wsvn/Active%20projects.ironiacorp-commons/trunk/commons-ecc/</url>
-	</scm>
 
 	<dependencies>
 		<dependency>
