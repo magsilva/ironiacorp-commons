@@ -64,23 +64,24 @@ public class InterfaceDiscovererTest
 		Pattern ethPattern = Pattern.compile("eth\\d+");
 		Pattern emPattern = Pattern.compile("em\\d+");
 		Pattern wlanPattern = Pattern.compile("wlan\\d+");
-		Pattern wlan2Pattern = Pattern.compile("wlp\\d+");
+		Pattern wlan2Pattern = Pattern.compile("wlp\\d+s\\d+");
 		Pattern virtualNicPattern = Pattern.compile("virbr\\d+");
 		while (i.hasNext()) {
 			NetworkInterface nic = i.next();
-			if (ethPattern.matcher(nic.getDisplayName()).matches()) {
+			String nicName = nic.getDisplayName();
+			if (ethPattern.matcher(nicName).matches()) {
 				return;
 			}
-			if (emPattern.matcher(nic.getDisplayName()).matches()) {
+			if (emPattern.matcher(nicName).matches()) {
 				return;
 			}
-			if (wlanPattern.matcher(nic.getDisplayName()).matches()) {
+			if (wlanPattern.matcher(nicName).matches()) {
 				return;
 			}
-			if (wlan2Pattern.matcher(nic.getDisplayName()).matches()) {
+			if (wlan2Pattern.matcher(nicName).matches()) {
 				return;
 			}
-			if (virtualNicPattern.matcher(nic.getDisplayName()).matches()) {
+			if (virtualNicPattern.matcher(nicName).matches()) {
 				return;
 			}
 		}
