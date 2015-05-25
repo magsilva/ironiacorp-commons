@@ -14,32 +14,9 @@
 
 	<name>IroniaCorp-Commons-WebServices</name>
 	<description>Web services related utilities</description>
-	<url>http://www.ironiacorp.com/products/commons/ws</url>
 	<inceptionYear>2007</inceptionYear>
 
-	<scm>
-		<connection>https://www.ironiacorp.com/svn/projects/ironiacorp-commons/trunk/commons-ws</connection>
-		<developerConnection>https://www.ironiacorp.com/svn/projects/ironiacorp-commons/trunk/commons-ws</developerConnection>
-		<url>http://www.ironiacorp.com/Apps/WebSVN/wsvn/Active%20projects.ironiacorp-commons/trunk/commons-ws</url>
-	</scm>
-
-	<ciManagement>
-		<system>Hudson</system>
-		<url>http://www.ironiacorp.com/Apps/Hudson/job/IroniaCorp-Commons-WebService/</url>
-	</ciManagement>
-
-
-	<repositories>
-		<repository>
-			<id>CodeHaus</id>
-			<url>http://repository.codehaus.org</url>
-				<releases>
-				<updatePolicy>never</updatePolicy>
-			</releases>
-		</repository>
-	</repositories>
-
-	<dependencies>
+		<dependencies>
 		<dependency>
 			<groupId>ironiacorp</groupId>
 			<artifactId>commons-introspector</artifactId>
@@ -75,6 +52,5 @@
 			<version>[2.1.12,)</version>
 		</dependency>
 		 -->
-		
 	</dependencies>
 </project>
