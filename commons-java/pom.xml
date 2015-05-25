@@ -20,7 +20,7 @@
 		<dependency>
 			<groupId>ironiacorp</groupId>
 			<artifactId>commons-computer</artifactId>
-			<version>[5.0.0-SNAPSHOT,)</version>
+			<version>${ironiacorp.commons.version}</version>
 		</dependency>
 	</dependencies>
 </project>
