@@ -14,20 +14,8 @@
 
 	<name>IroniaCorp-Commons-String</name>
 	<description>String utilities</description>
-	<url>http://www.ironiacorp.com/products/commons/string</url>
 	<inceptionYear>2007</inceptionYear>
 
-	<scm>
-		<connection>scm:svn:https://www.ironiacorp.com/svn/projects/ironiacorp-commons/trunk/commons-string</connection>
-		<developerConnection>scm:svn:https://www.ironiacorp.com/svn/projects/ironiacorp-commons/trunk/commons-string</developerConnection>
-		<url>http://www.ironiacorp.com/Apps/WebSVN/wsvn/Active%20projects.ironiacorp-commons/trunk/commons-string</url>
-	</scm>
-
-	<ciManagement>
-		<system>Hudson</system>
-		<url>http://www.ironiacorp.com/Apps/Hudson/IroniaCorp-Commons-String</url>
-	</ciManagement>
-	
 	<dependencies>
 		<!--
 			String similarity metrics 
