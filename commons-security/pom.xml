@@ -14,17 +14,5 @@
 
 	<name>IroniaCorp-Commons-Security</name>
 	<description>Security related utilities</description>
-	<url>http://www.ironiacorp.com/products/commons/security</url>
 	<inceptionYear>2007</inceptionYear>
-
-	<scm>
-		<connection>scm:svn:https://www.ironiacorp.com/svn/projects/ironiacorp-commons/trunk/commons-security</connection>
-		<developerConnection>scm:svn:https://www.ironiacorp.com/svn/projects/ironiacorp-commons/trunk/commons-security</developerConnection>
-		<url>http://www.ironiacorp.com/Apps/WebSVN/wsvn/Active%20projects.ironiacorp-commons/trunk/commons-security</url>
-	</scm>
-
-	<ciManagement>
-		<system>Hudson</system>
-		<url>http://www.ironiacorp.com/Apps/Hudson/job/IroniaCorp-Commons-Security/</url>
-	</ciManagement>
 </project>
