@@ -1,0 +1,8 @@
+Requirements:
+* R
+* Rserve
+* JRI
+
+Installation instructions:
+As root, execute R and the following command: install.packages("Rserve, rJava")
+

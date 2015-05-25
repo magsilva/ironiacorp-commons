@@ -14,7 +14,6 @@
 
 	<name>IroniaCorp-Commons-Statistics</name>
 	<description>Statistics elated utilities</description>
-	<url>http://www.ironiacorp.com/products/commons/statistics</url>
 	<inceptionYear>2011</inceptionYear>
 
 	<dependencies>
