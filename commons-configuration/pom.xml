@@ -13,17 +13,5 @@
 
 	<name>IroniaCorp-Commons-Configuration</name>
 	<description>Configuration classes</description>
-	<url>http://www.ironiacorp.com/products/commons/configuration</url>
 	<inceptionYear>2007</inceptionYear>
-
-	<scm>
-		<connection>scm:svn:https://www.ironiacorp.com/svn/projects/ironiacorp-commons/trunk/commons-configuration</connection>
-		<developerConnection>scm:svn:https://www.ironiacorp.com/svn/projects/ironiacorp-commons/trunk/commons-configuration</developerConnection>
-		<url>http://www.ironiacorp.com/Apps/WebSVN/wsvn/Active%20projects.ironiacorp-commons/trunk/commons-configuration</url>
-	</scm>
-
-	<ciManagement>
-		<system>Hudson</system>
-		<url>http://www.ironiacorp.com/Apps/Hudson/job/IroniaCorp-Commons-Configuration/</url>
-	</ciManagement>
 </project>
