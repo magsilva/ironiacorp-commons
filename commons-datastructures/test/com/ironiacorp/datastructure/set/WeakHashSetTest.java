@@ -43,9 +43,19 @@ public class WeakHashSetTest
 		set.add("test2");
 		Iterator<String> i = set.iterator();
 		assertTrue(i.hasNext());
-		assertEquals("test1", i.next());
+		String data1 = i.next();
+		if (! "test1".equals(data1) && ! "test2".equals(data1)) {
+			fail();
+		}
 		assertTrue(i.hasNext());
-		assertEquals("test2", i.next());
+		String data2 = i.next();
+		if (! "test1".equals(data2) && ! "test2".equals(data2)) {
+			fail();
+		} else {
+			if (data1.equals(data2)) {
+				fail();
+			}
+		}
 		assertFalse(i.hasNext());
 	}
 	
@@ -56,13 +66,23 @@ public class WeakHashSetTest
 		set.add("test2");
 		Iterator<String> i = set.iterator();
 		assertTrue(i.hasNext());
-		assertEquals("test1", i.next());
+		String data1 = i.next();
+		if (! "test1".equals(data1) && ! "test2".equals(data1)) {
+			fail();
+		}
 		i.remove();
-		assertFalse(set.contains("test1"));
+		assertFalse(set.contains(data1));
 		assertTrue(i.hasNext());
-		assertEquals("test2", i.next());
+		String data2 = i.next();
+		if (! "test1".equals(data2) && ! "test2".equals(data2)) {
+			fail();
+		} else {
+			if (data1.equals(data2)) {
+				fail();
+			}
+		}
 		i.remove();
-		assertFalse(set.contains("test2"));
+		assertFalse(set.contains(data2));
 		assertFalse(i.hasNext());
 	}
 
