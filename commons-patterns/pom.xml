@@ -14,17 +14,5 @@
 
 	<name>IroniaCorp-Commons-Patterns</name>
 	<description>Implementation for software design patterns.</description>
-	<url>http://www.ironiacorp.com/products/commons/patterns</url>
 	<inceptionYear>2008</inceptionYear>
-
-	<scm>
-		<connection>scm:svn:https://www.ironiacorp.com/svn/projects/ironiacorp-commons/trunk/commons-patterns</connection>
-		<developerConnection>scm:svn:https://www.ironiacorp.com/svn/projects/ironiacorp-commons/trunk/commons-patterns</developerConnection>
-		<url>http://www.ironiacorp.com/Apps/WebSVN/wsvn/Active%20projects.ironiacorp-commons/trunk/commons-patterns</url>
-	</scm>
-
-	<ciManagement>
-		<system>Hudson</system>
-		<url>http://www.ironiacorp.com/Apps/Hudson/job/IroniaCorp-Commons-Patterns/</url>
-	</ciManagement>
 </project>
