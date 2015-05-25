@@ -7,12 +7,14 @@
   </parent>
   <artifactId>commons-persistence-mysql</artifactId>
   <name>Common persistence classes that uses MySQL</name>
+
   <dependencies>
   	<dependency>
   		<groupId>ironiacorp</groupId>
   		<artifactId>commons-persistence</artifactId>
-  		<version>5.0.0-SNAPSHOT</version>
+  		<version>${ironiacorp.commons.version}</version>
   	</dependency>
+
   	<dependency>
   		<groupId>mysql</groupId>
   		<artifactId>mysql-connector-java</artifactId>
