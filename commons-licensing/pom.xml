@@ -14,18 +14,5 @@
 	<packaging>jar</packaging>
 	<name>IroniaCorp-Commons-License</name>
 	<description>Licensing related utilities</description>
-	<url>http://www.ironiacorp.com/products/commons/license</url>
 	<inceptionYear>2007</inceptionYear>
-
-
-	<scm>
-		<connection>https://www.ironiacorp.com/svn/projects/ironiacorp-commons/trunk/commons-license</connection>
-		<developerConnection>https://www.ironiacorp.com/svn/projects/ironiacorp-commons/trunk/commons-license</developerConnection>
-		<url>http://www.ironiacorp.com/Apps/WebSVN/wsvn/Active%20projects.ironiacorp-commons/trunk/commons-license</url>
-	</scm>
-
-	<ciManagement>
-		<system>Hudson</system>
-		<url>http://www.ironiacorp.com/Apps/Hudson/job/IroniaCorp-Commons-License/</url>
-	</ciManagement>
 </project>
