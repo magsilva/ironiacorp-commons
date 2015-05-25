@@ -13,21 +13,8 @@
 	<packaging>jar</packaging>
 	<name>IroniaCorp-Commons-DataStructures</name>
 	<description>Popular data structures</description>
-	<url>http://www.ironiacorp.com/products/commons/datastructures</url>
 	<inceptionYear>2010</inceptionYear>
 
-	<scm>
-		<connection>scm:svn:https://www.ironiacorp.com/svn/projects/ironiacorp-commons/trunk/commons-datastructures</connection>
-		<developerConnection>scm:svn:https://www.ironiacorp.com/svn/projects/ironiacorp-commons/trunk/commons-datastructures</developerConnection>
-		<url>http://www.ironiacorp.com/Apps/WebSVN/wsvn/Active%20projects.ironiacorp-commons/trunk/commons-datastructures</url>
-	</scm>
-
-	<ciManagement>
-		<system>Hudson</system>
-		<url>http://www.ironiacorp.com/Apps/Hudson/job/IroniaCorp-Commons-DataStructures/</url>
-	</ciManagement>
-
-	
 	<dependencies>
 		<dependency>
     			<groupId>org.mockito</groupId>
