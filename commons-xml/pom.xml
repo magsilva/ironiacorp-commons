@@ -14,19 +14,7 @@
 
 	<name>IroniaCorp-Commons-XML</name>
 	<description>XML related utilities</description>
-	<url>http://www.ironiacorp.com/products/commons/xml</url>
 	<inceptionYear>2007</inceptionYear>
-
-	<scm>
-		<connection>scm:svn:https://www.ironiacorp.com/svn/projects/ironiacorp-commons/trunk/commons-xml</connection>
-		<developerConnection>scm:svn:https://www.ironiacorp.com/svn/projects/ironiacorp-commons/trunk/commons-xml</developerConnection>
-		<url>http://www.ironiacorp.com/Apps/WebSVN/wsvn/Active%20projects.ironiacorp-commons/trunk/commons-xml</url>
-	</scm>
-
-	<ciManagement>
-		<system>Hudson</system>
-		<url>http://www.ironiacorp.com/Apps/Hudson/job/IroniaCorp-Commons-XML/</url>
-	</ciManagement>
 
 	<dependencies>
 		<!-- 
@@ -49,8 +37,6 @@
 			<version>[9.4.0.7,)</version>
 			<scope>compile</scope>
 		</dependency> 
-
-
 
 		<dependency>
 			<groupId>xerces</groupId>
