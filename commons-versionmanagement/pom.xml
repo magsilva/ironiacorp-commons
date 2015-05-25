@@ -14,19 +14,7 @@
 
 	<name>Ironia-VersionManagement</name>
 	<description>Version management utilities</description>
-	<url>http://www.ironiacorp.com/products/commons/versionmanagement</url>
 	<inceptionYear>2007</inceptionYear>
-
-	<scm>
-		<connection>scm:svn:https://www.ironiacorp.com/svn/projects/ironiacorp-commons/trunk/commons-versionmanagement</connection>
-		<developerConnection>scm:svn:https://www.ironiacorp.com/svn/projects/ironiacorp-commons/trunk/commons-versionmanagement</developerConnection>
-		<url>http://www.ironiacorp.com/Apps/WebSVN/wsvn/Active%20projects.ironiacorp-commons/trunk/commons-versionmanagement</url>
-	</scm>
-
-	<ciManagement>
-		<system>Hudson</system>
-		<url>http://www.ironiacorp.com/Apps/Hudson/job/IroniaCorp-Commons-VersionManagement</url>
-	</ciManagement>
 
 	<repositories>
 		<repository>
@@ -39,13 +27,13 @@
 		<dependency>
 			<groupId>ironiacorp</groupId>
 			<artifactId>commons-computer</artifactId>
-			<version>5.0.0-SNAPSHOT</version>
+			<version>${ironiacorp.commons.version}</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>ironiacorp</groupId>
 			<artifactId>commons-errorhandler</artifactId>
-			<version>5.0.0-SNAPSHOT</version>
+			<version>${ironiacorp.commons.version}</version>
 		</dependency>
 		
 		<dependency>
@@ -69,7 +57,7 @@
 		<dependency>
 			<groupId>ironiacorp</groupId>
 			<artifactId>commons-security</artifactId>
-			<version>5.0.0-SNAPSHOT</version>
+			<version>${ironiacorp.commons.version}</version>
 		</dependency>
 	</dependencies>
 </project>
