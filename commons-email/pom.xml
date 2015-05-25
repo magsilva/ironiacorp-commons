@@ -14,25 +14,13 @@
 
 	<name>IroniaCorp-Commons-Email</name>
 	<description>Email classes</description>
-	<url>http://www.ironiacorp.com/products/commons/email</url>
 	<inceptionYear>2007</inceptionYear>
-
-	<scm>
-		<connection>scm:svn:https://www.ironiacorp.com/svn/projects/ironiacorp-commons/trunk/commons-email</connection>
-		<developerConnection>scm:svn:https://www.ironiacorp.com/svn/projects/ironiacorp-commons/trunk/commons-email</developerConnection>
-		<url>http://www.ironiacorp.com/Apps/WebSVN/wsvn/Active%20projects.ironiacorp-commons/trunk/commons-email</url>
-	</scm>
-
-	<ciManagement>
-		<system>Hudson</system>
-		<url>http://www.ironiacorp.com/Apps/Hudson/job/IroniaCorp-Commons-Email</url>
-	</ciManagement>
 
 	<dependencies>
 		<dependency>
 			<groupId>javax.mail</groupId>
 			<artifactId>mail</artifactId>
-			<version>1.4.1</version>
+			<version>1.4.7</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
@@ -40,7 +28,7 @@
 		<dependency>
 			<groupId>commons-net</groupId>
 			<artifactId>commons-net</artifactId>
-			<version>[3.0.1,)</version>
+			<version>[3.3,)</version>
 			<scope>compile</scope>
 		</dependency>
 		
