@@ -20,6 +20,7 @@ import java.io.InputStream;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.Callable;
 
 import org.codehaus.httpcache4j.HTTPRequest;
@@ -81,10 +82,9 @@ class PostRequest implements Callable<HttpJob>
 		
 		try {
 			response = cache.execute(request);
-		        Payload payload = response.getPayload();
-		        
-		        if (payload != null && payload.isAvailable()) {
-	        		InputStream inputStream = payload.getInputStream();
+		        Optional<Payload> payload = response.getPayload();
+		        if (payload.isPresent()) {
+	        		InputStream inputStream = payload.get().getInputStream();
 	        		if (inputStream != null) {
 		        		HttpMethodResult result = new HttpMethodResult();
        		 			result.setContent(inputStream);
