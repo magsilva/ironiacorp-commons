@@ -16,7 +16,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 Copyright (C) 2005 Marco Aurelio Graciotto Silva <magsilva@gmail.com>
 */
 
-package com.ironiacorp.persistence.datasource;
+package com.ironiacorp.persistence.hibernate;
 
 
 import java.util.ArrayList;

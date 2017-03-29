@@ -29,7 +29,7 @@ import org.hibernate.cfg.Configuration;
 // import org.hibernate.connection.ConnectionProvider;
 // import org.hibernate.connection.ConnectionProviderFactory;
 import org.hibernate.dialect.Dialect;
-import org.hibernate.tool.hbm2ddl.DatabaseMetadata;
+// import org.hibernate.tool.hbm2ddl.DatabaseMetadata;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.hbm2ddl.SchemaUpdate;
 
@@ -193,6 +193,7 @@ public abstract class GenericHibernateDataSource implements DataSource
 
 	/**
 	 * Get the DDL script to update the database.
+	 * TODO: http://stackoverflow.com/questions/10607196/how-to-get-database-metadata-from-entity-manager
 	 */
 	public String getUpdateDDLScript()
 	{
