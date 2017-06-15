@@ -18,9 +18,11 @@
 package com.ironiacorp.http.impl.httpclient4;
 
 import org.junit.Before;
+import org.junit.Ignore;
 
 import com.ironiacorp.http.HttpJobRunnerTest;
 
+@Ignore
 public class HttpJobRunnerHttpClient4Test extends HttpJobRunnerTest
 {
 	@Before

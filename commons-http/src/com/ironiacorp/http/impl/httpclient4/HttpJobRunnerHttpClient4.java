@@ -69,6 +69,7 @@ import com.ironiacorp.http.HttpJobRunner;
 import com.ironiacorp.http.HttpMethod;
 import com.ironiacorp.http.impl.HttpClient;
 
+//TODO: update and fix
 public class HttpJobRunnerHttpClient4 extends HttpClient implements HttpJobRunner
 {
 	private int maxThreadsCount = 3;

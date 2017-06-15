@@ -22,15 +22,14 @@ import java.util.concurrent.Callable;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
-import org.apache.http.HttpVersion;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.protocol.HttpClientContext;
-import org.apache.http.params.CoreProtocolPNames;
 
 import com.ironiacorp.http.HttpJob;
 import com.ironiacorp.http.HttpMethodResult;
 
+// TODO: update and fix
 public class GetRequest implements Callable<HttpJob>
 {
 	private HttpJob job;
@@ -47,8 +46,6 @@ public class GetRequest implements Callable<HttpJob>
 		this.context = context;
 		this.job = job;
 		this.getMethod = new HttpGet(job.getUri());
-		this.getMethod.getParams().setParameter(CoreProtocolPNames.PROTOCOL_VERSION, HttpVersion.HTTP_1_1);
-		this.getMethod.getParams().setBooleanParameter(CoreProtocolPNames.USE_EXPECT_CONTINUE, false);
 	}
 
 	public HttpJob call()
