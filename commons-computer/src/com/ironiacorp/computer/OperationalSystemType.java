@@ -20,14 +20,14 @@ import java.util.regex.Pattern;
 
 public enum OperationalSystemType
 {
-	AIX("AIX", "aix", "^AIX", true),
-	HPUX("HP-UX", "hpux", "^HP-UX", true),
-	Irix("Irix", "irix", "^Irix", true),
-	Linux("Linux", "linux", "^Linux", true),
-	MacOS("MacOS", "darwin", "^(Mac|Darwin)", true),
-	OS2("OS/2", "os2", "^OS/2", false),
-	Solaris("Solaris", "solaris", "^(Solaris|SunOS)", true),
-	Windows("Windows", "win", "^Windows", false);
+	AIX("AIX", "aix", "^AIX", true, null),
+	HPUX("HP-UX", "hpux", "^HP-UX", true, null),
+	Irix("Irix", "irix", "^Irix", true, null),
+	Linux("Linux", "linux", "^Linux", true, new Unix()),
+	MacOS("MacOS", "darwin", "^(Mac|Darwin)", true, new Unix()),
+	OS2("OS/2", "os2", "^OS/2", false, null),
+	Solaris("Solaris", "solaris", "^(Solaris|SunOS)", true, null),
+	Windows("Windows", "win", "^Windows", false, new Windows());
 	
 	public final String prettyName;
 	
@@ -37,11 +37,14 @@ public enum OperationalSystemType
 	
 	public final boolean unixCompatible;
 	
-	private OperationalSystemType(String prettyName, String nickname, String regex, boolean unixCompatible)
+	public final OperationalSystem os;
+	
+	private OperationalSystemType(String prettyName, String nickname, String regex, boolean unixCompatible, OperationalSystem os)
 	{
 		this.prettyName = prettyName;
 		this.nickname = nickname;
 		this.pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
 		this.unixCompatible = unixCompatible;
+		this.os = os;
 	}
 }

@@ -42,52 +42,65 @@ public class OperationalSystemTypeDetectorTest
 	}
 	
 	@Test
+	public void testDetectOSfromFilenameWindows()
+	{
+		assertEquals(OperationalSystemType.Windows, detector.detectOSfromFilename("test\\Test123.txt"));
+	}
+
+	@Test
+	public void testDetectOSfromFilenameLinux()
+	{
+		assertEquals(OperationalSystemType.Linux, detector.detectOSfromFilename("test/Test123.txt"));
+	}
+
+	
+	@Test
 	public void testDetectWindows95()
 	{
-		assertEquals(OperationalSystemType.Windows, detector.detectOS("Windows 95"));
+		assertEquals(OperationalSystemType.Windows, detector.detectOSfromOSName("Windows 95"));
 	}
 	
 	@Test
 	public void testDetectWindowsNT()
 	{
-		assertEquals(OperationalSystemType.Windows, detector.detectOS("Windows NT"));
+		assertEquals(OperationalSystemType.Windows, detector.detectOSfromOSName("Windows NT"));
 	}
 
 	@Test
 	public void testDetectWindowsCE()
 	{
-		assertEquals(OperationalSystemType.Windows, detector.detectOS("Windows CE"));
+		assertEquals(OperationalSystemType.Windows, detector.detectOSfromOSName("Windows CE"));
 	}
 
 	@Test
 	public void testDetectMacOS()
 	{
-		assertEquals(OperationalSystemType.MacOS, detector.detectOS("Mac OS"));
+		assertEquals(OperationalSystemType.MacOS, detector.detectOSfromOSName("Mac OS"));
 	}
 
 	@Test
 	public void testDetectMacOSX()
 	{
-		assertEquals(OperationalSystemType.MacOS, detector.detectOS("Mac OS X"));
+		assertEquals(OperationalSystemType.MacOS, detector.detectOSfromOSName("Mac OS X"));
 	}
 
 	@Test
 	public void testDetectDarwin()
 	{
-		assertEquals(OperationalSystemType.MacOS, detector.detectOS("Darwin"));
+		assertEquals(OperationalSystemType.MacOS, detector.detectOSfromOSName("Darwin"));
 	}
 
 	
 	@Test
 	public void testDetectLinux()
 	{
-		assertEquals(OperationalSystemType.Linux, detector.detectOS("Linux"));
+		assertEquals(OperationalSystemType.Linux, detector.detectOSfromOSName("Linux"));
 	}
 
 	@Test
 	public void testDetectSolaris()
 	{
-		assertEquals(OperationalSystemType.Solaris, detector.detectOS("Solaris"));
+		assertEquals(OperationalSystemType.Solaris, detector.detectOSfromOSName("Solaris"));
 	}
 }
 

@@ -34,7 +34,7 @@ public class OperationalSystemDetector
 		return OperationalSystemType.Linux.pattern.matcher(os).find();
 	}
 	
-	public OperationalSystemType detectOS(final String osName)
+	public OperationalSystemType detectOSfromOSName(final String osName)
 	{
 		for (OperationalSystemType os : OperationalSystemType.values()) {
 			if (os.pattern.matcher(osName).find()) {
@@ -44,10 +44,22 @@ public class OperationalSystemDetector
 		
 		return null;
 	}
+
+	public OperationalSystemType detectOSfromFilename(final String filename)
+	{
+		for (OperationalSystemType osType : OperationalSystemType.values()) {
+			OperationalSystem os = osType.os;
+			if (os != null && filename.contains(os.getDirectorySeparator())) {
+				return osType;
+			}
+		}
+		
+		return null;
+	}
 	
 	public OperationalSystemType detectCurrentOS()
 	{
 		final String osName = System.getProperty("os.name").toLowerCase();
-		return detectOS(osName);
+		return detectOSfromOSName(osName);
 	}
 }
