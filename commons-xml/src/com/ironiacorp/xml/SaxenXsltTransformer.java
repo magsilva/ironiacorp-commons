@@ -62,7 +62,7 @@ public class SaxenXsltTransformer implements com.ironiacorp.xml.XsltTransformer
             XsltTransformer trans = exp.load();
 			
             OutputStream os = new ByteArrayOutputStream(); 
-			Serializer out = new Serializer();
+			Serializer out = proc.newSerializer();
             out.setOutputProperty(Serializer.Property.METHOD, "xml");
             out.setOutputProperty(Serializer.Property.INDENT, "yes");
             out.setOutputProperty(Serializer.Property.ESCAPE_URI_ATTRIBUTES, "no"); 
