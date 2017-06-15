@@ -17,20 +17,14 @@
 package com.ironiacorp.computer;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
-import java.net.URLDecoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
 
 import com.ironiacorp.computer.environment.PathEnvironmentVariable;
 import com.ironiacorp.computer.environment.PathSystemEnvironmentVariable;
