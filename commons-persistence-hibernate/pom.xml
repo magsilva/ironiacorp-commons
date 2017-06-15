@@ -9,18 +9,13 @@
 
 	<artifactId>commons-persistence-hibernate</artifactId>
 	<name>Persistence layer using Hibernate</name>
-	<url>http://www.ironiacorp.com/products/commons/persistence</url>
 	<inceptionYear>2013</inceptionYear>
 
-	<ciManagement>
-		<system>Hudson</system>
-		<url>http://www.ironiacorp.com/Apps/Hudson/job/IroniaCorp-Commons-Persistence-Hibernate/</url>
-	</ciManagement>
 	<dependencies>
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
-			<version>[4.2.3.Final,)</version>
+			<version>[4.3.10.Final,)</version>
 			<exclusions>
 				<exclusion>
 					<artifactId>hibernate-jpa-2.1-api</artifactId>
@@ -28,10 +23,30 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>[4.3.10.Final,)</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>hibernate-jpa-2.1-api</artifactId>
+					<groupId>org.hibernate.javax.persistence</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+
 		<dependency>
 			<groupId>ironiacorp</groupId>
 			<artifactId>commons-persistence</artifactId>
-			<version>5.0.0-SNAPSHOT</version>
+			<version>${ironiacorp.commons.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>ironiacorp</groupId>
+			<artifactId>commons-errorhandler</artifactId>
+			<version>${ironiacorp.commons.version}</version>
 		</dependency>
 	</dependencies>
 </project>

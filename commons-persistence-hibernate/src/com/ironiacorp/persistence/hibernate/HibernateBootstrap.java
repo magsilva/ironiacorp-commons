@@ -21,13 +21,13 @@ package com.ironiacorp.persistence.hibernate;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hibernate.cfg.Configuration;
+// import org.hibernate.cfg.Configuration;
 // import org.hibernate.connection.ConnectionProvider;
 // import org.hibernate.connection.ConnectionProviderFactory;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.hbm2ddl.SchemaUpdate;
-import org.hibernate.tool.hbm2ddl.DatabaseMetadata;
+// import org.hibernate.tool.hbm2ddl.DatabaseMetadata;
 
 import com.ironiacorp.datastructure.array.ArrayUtil;
 
