@@ -18,6 +18,7 @@ package com.ironiacorp.http.impl.httpcachej;
 
 import java.io.InputStream;
 import java.net.URI;
+import java.util.Optional;
 import java.util.concurrent.Callable;
 
 import org.codehaus.httpcache4j.HTTPRequest;
@@ -59,10 +60,10 @@ class GetRequest implements Callable<HttpJob>
 		HTTPResponse response = null; 
 		try {
 			response = cache.execute(request);
-		        Payload payload = response.getPayload();
+		        Optional<Payload> payload = response.getPayload();
 		        
-	        if (payload != null && payload.isAvailable()) {
-	        	InputStream inputStream = payload.getInputStream();
+	        if (payload.isPresent() && payload.get().isAvailable()) {
+	        	InputStream inputStream = payload.get().getInputStream();
 	        	if (inputStream != null) {
 	        		HttpMethodResult result = new HttpMethodResult();
         			result.setContent(inputStream);

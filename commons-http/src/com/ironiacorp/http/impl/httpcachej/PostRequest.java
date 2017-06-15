@@ -20,6 +20,7 @@ import java.io.InputStream;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.Callable;
 
 import org.codehaus.httpcache4j.HTTPRequest;
@@ -27,6 +28,7 @@ import org.codehaus.httpcache4j.HTTPResponse;
 import org.codehaus.httpcache4j.cache.HTTPCache;
 import org.codehaus.httpcache4j.payload.FormDataPayload;
 import org.codehaus.httpcache4j.payload.Payload;
+import org.codehaus.httpcache4j.uri.QueryParam;
 
 import com.ironiacorp.http.HttpJob;
 import com.ironiacorp.http.HttpMethodResult;
@@ -43,14 +45,14 @@ class PostRequest implements Callable<HttpJob>
 	
 	private HTTPCache cache;
 	
-	private List<FormDataPayload.FormParameter> parameters;
+	private List<QueryParam> parameters;
 
 	
 	public PostRequest(HTTPCache cache, HttpJob job)
 	{
 		this.cache = cache;
 		this.job = job;
-		this.parameters = new ArrayList<FormDataPayload.FormParameter>(5);
+		this.parameters = new ArrayList<QueryParam>(5);
 		setParameters();
 	}
 	
@@ -58,7 +60,7 @@ class PostRequest implements Callable<HttpJob>
 	{
 		for (String name : job.getParameters().keySet()) {
 			Object value = job.getParameter(name);
-			FormDataPayload.FormParameter pair = new FormDataPayload.FormParameter(name, value.toString());
+			QueryParam pair = new QueryParam(name, value.toString());
 			if (parameters.contains(pair)) {
 				parameters.remove(pair);
 			}
@@ -77,14 +79,14 @@ class PostRequest implements Callable<HttpJob>
 		HTTPRequest request = new HTTPRequest(uri);
 		HTTPResponse response = null;
 		FormDataPayload formPayload = new FormDataPayload(parameters);
-		request = request.payload(formPayload);
+		request = request.withPayload(formPayload);
 		
 		try {
 			response = cache.execute(request);
-		        Payload payload = response.getPayload();
+		        Optional<Payload> payload = response.getPayload();
 		        
-		        if (payload != null && payload.isAvailable()) {
-	        		InputStream inputStream = payload.getInputStream();
+		        if (payload.isPresent() && payload.get().isAvailable()) {
+	        		InputStream inputStream = payload.get().getInputStream();
 	        		if (inputStream != null) {
 		        		HttpMethodResult result = new HttpMethodResult();
        		 			result.setContent(inputStream);
