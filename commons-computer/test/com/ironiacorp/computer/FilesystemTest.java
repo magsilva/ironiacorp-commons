@@ -570,4 +570,24 @@ public class FilesystemTest
 		String filename = "teste";
 		assertEquals("teste", fs.replaceExtension(filename, null));
 	}
+	
+	@Test
+	public void testConvertFilenameWindowsToUnix()
+	{
+		OperationalSystem windowsOS = new Windows();
+		OperationalSystem unixOS = new Unix();
+		Filesystem fs = new Filesystem(unixOS);
+		String filename = "Test\\Test123.txt";
+		assertEquals("Test/Test123.txt", fs.convertFilename(filename, windowsOS));
+	}
+	
+	@Test
+	public void testConvertFilenameUnixToWindows()
+	{
+		OperationalSystem windowsOS = new Windows();
+		OperationalSystem unixOS = new Unix();
+		Filesystem fs = new Filesystem(windowsOS);
+		String filename = "Test/Test123.txt";
+		assertEquals("Test\\Test123.txt", fs.convertFilename(filename, unixOS));
+	}
 }

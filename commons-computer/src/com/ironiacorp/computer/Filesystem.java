@@ -23,6 +23,11 @@ public class Filesystem
 		this.os = os;
 	}
 	
+	public String convertFilename(String file, OperationalSystem originalOS){
+		String newFilename = file.replace(originalOS.getDirectorySeparator(), os.getDirectorySeparator());
+		return newFilename;
+	}
+	
 	/**
 	 * Get all the files within the directory.
 	 */
