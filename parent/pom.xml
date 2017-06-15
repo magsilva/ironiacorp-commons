@@ -8,7 +8,7 @@
 	<version>5.0.0-SNAPSHOT</version>
 	<name>IroniaCorp Commons</name>
 	<description>Generic utility classes, useful for many applications.</description>
-	<url>http://www.ironiacorp.com/products/commons</url>
+	<url>https://github.com/magsilva/ironiacorp-commons</url>
 
 	<properties>
 		<ironiacorp.commons.version>5.0.0-SNAPSHOT</ironiacorp.commons.version>
@@ -17,8 +17,8 @@
 	<inceptionYear>2007</inceptionYear>
 
 	<organization>
-		<name>Ironia Corporation</name>
-		<url>http://www.ironiacorp.com</url>
+		<name>Marco Aurélio Graciotto Silva</name>
+		<url>http://magsilva.pro.br</url>
 	</organization>
 
 	<licenses>
@@ -35,9 +35,9 @@
 			<id>magsilva</id>
 			<name>Marco Aurélio Graciotto Silva</name>
 			<email>magsilva@gmail.com</email>
-			<url>http://www.ironiacorp.com/</url>
-			<organization>Ironia Corporation</organization>
-			<organizationUrl>http://www.ironiacorp.com</organizationUrl>
+			<url>http://www.magsilva.pro.br/</url>
+			<organization>Marco Aurélio Graciotto Silva</organization>
+			<organizationUrl>http://magsilva.pro.br</organizationUrl>
 			<timezone>+3</timezone>
 			<roles>
 				<role>Manager</role>
@@ -48,8 +48,8 @@
 
 	<distributionManagement>
 		<repository>
-			<id>IroniaCorp</id>
-			<url>dav:http://www.ironiacorp.com/repo/maven2</url>
+			<id>magsilva</id>
+			<url>dav:http://magsilva.pro.br/repo/maven2</url>
 		</repository>
 	</distributionManagement>
 
@@ -63,8 +63,8 @@
                 </repository>
 
 		<repository>
-			<id>IroniaCorp</id>
-			<url>http://www.ironiacorp.com/repo/maven2</url>
+			<id>magsilva</id>
+			<url>http://magsilva.pro.br/repo/maven2</url>
 			<releases>
 				<updatePolicy>never</updatePolicy>
 			</releases>
@@ -204,7 +204,9 @@
 		<module>../commons-number</module>
 		<module>../commons-patterns</module>
 		<module>../commons-persistence</module>
+<!--
 		<module>../commons-persistence-hibernate</module>
+-->
 		<module>../commons-persistence-mysql</module>
 		<module>../commons-regexp</module>
 		<module>../commons-security</module>
