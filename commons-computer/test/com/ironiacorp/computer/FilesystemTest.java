@@ -391,7 +391,7 @@ public class FilesystemTest
 	@Test(expected=UnsupportedOperationException.class)
 	public void testCreateDir_Invalid_HasNoPermission()
 	{
-		fs.createDir("/etc/abc");
+		fs.createDir("/abc");
 	}
 	
 	@Test
