@@ -33,7 +33,7 @@ public class UrlUtilTest
 
 	public static final String BAD_URL = "http://www.rgagnon.com/pagenotfound.html"; 
 
-	public static final String INVALID_URL = "htp:/www.ironiacorp.com?/testabc";
+	public static final String INVALID_URL = "htp:/www.magsilva.pro.br?/testabc";
 	
 	@Test
 	public void testExistsString()

@@ -159,14 +159,14 @@ public abstract class HttpJobRunnerTest
 		long totalTime1;
 		long totalTime2;
 
-		runner.addJob(new HttpJob(HttpMethod.GET, new URI("http://www.freecode.net")));
+		runner.addJob(new HttpJob(HttpMethod.GET, new URI("http://www.google.com")));
 		beforeTime = System.currentTimeMillis();
 		runner.run();
 		afterTime = System.currentTimeMillis();
 		totalTime1 = afterTime - beforeTime;
 
 		for (int i = 0; i < 10; i++) {
-			runner.addJob(new HttpJob(HttpMethod.GET, new URI("http://www.freecode.net")));
+			runner.addJob(new HttpJob(HttpMethod.GET, new URI("www.google.com")));
 		}
 		beforeTime = System.currentTimeMillis();
 		runner.run();
@@ -181,7 +181,7 @@ public abstract class HttpJobRunnerTest
 	@Test
 	public void testPost() throws Exception
 	{
-		HttpJob job = new HttpJob(HttpMethod.POST, new URI("http://www.ironiacorp.com/Tests/form_post.php"));
+		HttpJob job = new HttpJob(HttpMethod.POST, new URI("http://magsilva.pro.br/tests/form_post.php"));
 		job.addParameter("city", "Cactusville");
 		runner.addJob(job);
 		runner.run();
