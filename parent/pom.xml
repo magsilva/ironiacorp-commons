@@ -214,7 +214,9 @@
 		<module>../commons-statistics</module>
 		<module>../commons-string</module>
 		<module>../commons-ui-gui</module>
-		<module>../commons-versionmanagement</module>
+<!--
+		<module>../commons-versionmanagement</module> 
+-->
 		<module>../commons-ws</module>
 		<module>../commons-xml</module>
 	</modules>

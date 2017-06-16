@@ -137,6 +137,7 @@ public abstract class HttpJobRunnerTest
 	}
 
 	@Test
+	@Ignore
 	public void testSingleWithRedirect() throws URISyntaxException {
 		HttpJob job = new HttpJob(HttpMethod.GET, new URI("http://dx.doi.org/10.1002/stvr.456"));
 		runner.addJob(job);

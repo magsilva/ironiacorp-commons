@@ -84,7 +84,6 @@ class PostRequest implements Callable<HttpJob>
 		try {
 			response = cache.execute(request);
 		        Optional<Payload> payload = response.getPayload();
-		        
 		        if (payload.isPresent() && payload.get().isAvailable()) {
 	        		InputStream inputStream = payload.get().getInputStream();
 	        		if (inputStream != null) {

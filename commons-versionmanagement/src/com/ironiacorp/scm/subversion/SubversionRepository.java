@@ -21,11 +21,7 @@ package com.ironiacorp.scm.subversion;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.tigris.subversion.javahl.ClientException;
-import org.tigris.subversion.javahl.InputInterface;
-import org.tigris.subversion.javahl.OutputInterface;
-import org.tigris.subversion.javahl.Revision;
-import org.tigris.subversion.javahl.SVNAdmin;
+import org.tmatesoft.svn.core.wc.admin.SVNAdminClient;
 
 import com.ironiacorp.credentials.Credential;
 import com.ironiacorp.scm.AbstractRepository;
@@ -268,7 +264,7 @@ public class SubversionRepository extends AbstractRepository
 		}
 
 		try {
-			SVNAdmin svnAdmin = new SVNAdmin();
+			SVNAdminClient svnAdmin = new SVNAdmin();
 
 			svnAdmin.create(getLocalPath(), false, false, null, SVNAdmin.FSFS);
 

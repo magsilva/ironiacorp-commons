@@ -61,16 +61,15 @@ class GetRequest implements Callable<HttpJob>
 		try {
 			response = cache.execute(request);
 		        Optional<Payload> payload = response.getPayload();
-		        
-	        if (payload.isPresent() && payload.get().isAvailable()) {
-	        	InputStream inputStream = payload.get().getInputStream();
-	        	if (inputStream != null) {
-	        		HttpMethodResult result = new HttpMethodResult();
-        			result.setContent(inputStream);
-	        		result.setStatusCode(response.getStatus().getCode());
-	        		job.setResult(result);
+		       	if (payload.isPresent() && payload.get().isAvailable()) {
+	        		InputStream inputStream = payload.get().getInputStream();
+		        	if (inputStream != null) {
+		        		HttpMethodResult result = new HttpMethodResult();
+        				result.setContent(inputStream);
+	        			result.setStatusCode(response.getStatus().getCode());
+	        			job.setResult(result);
 				}
-	        }
+		        }
 		} catch (Exception e) {
 		}
         return job;

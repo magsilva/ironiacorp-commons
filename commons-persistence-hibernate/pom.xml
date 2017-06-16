@@ -16,7 +16,7 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
-			<version>[4.3.10.Final,)</version>
+			<version>[5.2.9.Final,)</version>
 			<exclusions>
 				<exclusion>
 					<artifactId>hibernate-jpa-2.1-api</artifactId>
@@ -24,19 +24,6 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-entitymanager</artifactId>
-			<version>[4.3.10.Final,)</version>
-			<exclusions>
-				<exclusion>
-					<artifactId>hibernate-jpa-2.1-api</artifactId>
-					<groupId>org.hibernate.javax.persistence</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-
 
 		<dependency>
 			<groupId>ironiacorp</groupId>
