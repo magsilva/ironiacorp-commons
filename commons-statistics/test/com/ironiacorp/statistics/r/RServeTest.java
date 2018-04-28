@@ -48,7 +48,8 @@ public class RServeTest
 	public void testGetRServeExecutable_WithRHome()
 	{
 		OperationalSystem os = ComputerSystem.getCurrentOperationalSystem();
-		os.addExecutableSearchPath(new File("/usr/lib/R/site-library/Rserve"));
+		os.addExecutableSearchPath(new File("/usr/lib/R/site-library/Rserve/R")); // Debian
+		os.addExecutableSearchPath(new File("/usr/lib/R/site-library/Rserve")); // Fedora
 		os.addExecutableSearchPath(new File("/usr/lib64/R/library/Rserve"));
 		os.addExecutableSearchPath(new File("/usr/lib/R/site-library/Rserve"));
 		os.addExecutableSearchPath(new File("/usr/lib/R/bin"));
@@ -77,7 +78,8 @@ public class RServeTest
 	public void testStart_RServe() throws Exception
 	{
 		OperationalSystem os = ComputerSystem.getCurrentOperationalSystem();
-		os.addExecutableSearchPath(new File("/usr/lib/R/site-library/Rserve"));
+		os.addExecutableSearchPath(new File("/usr/lib/R/site-library/Rserve/R")); // Debian
+		os.addExecutableSearchPath(new File("/usr/lib/R/site-library/Rserve")); // Fedora
 		rserve.setHome("/usr/lib/R");
 		Process process = rserve.start();
 		int result = process.waitFor();
