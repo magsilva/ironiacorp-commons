@@ -5,3 +5,4 @@ addons:
     - graphviz
     - r-base
     - r-cran-rserve
+    - r-cran-rjava
