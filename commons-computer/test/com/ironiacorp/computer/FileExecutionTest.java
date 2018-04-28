@@ -53,18 +53,8 @@ public class FileExecutionTest
 
 	
 	@Test
-	public void testLoadFile_InvalidLibrary()
+	public void testFindExecutableThatDoesNotExist()
 	{
 		assertNull(os.findExecutable("abcdefgxyz"));
 	}
-	
-	@Test
-	public void testLoadFile_ValidLibrary_SpecificPath()
-	{
-		os.addExecutableSearchPath(new File("/lib"));
-		File file = os.findExecutable("ld-linux.so.2");
-		assertNotNull(file);
-		os.exec(file, null);
-	}
-
-}
+}	
