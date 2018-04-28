@@ -12,6 +12,7 @@
 
 	<properties>
 		<ironiacorp.commons.version>5.0.0-SNAPSHOT</ironiacorp.commons.version>
+		<project.buildroot>${project.basedir}/target</project.buildroot>
 	</properties>
 
 	<inceptionYear>2007</inceptionYear>
@@ -85,7 +86,7 @@
 	<build>
 		<finalName>${project.artifactId}-${project.version}</finalName>
 
-		<directory>${project.basedir}/target</directory>
+		<directory>${project.buildroot}</directory>
 
 		<sourceDirectory>${project.basedir}/src</sourceDirectory>
 		<testSourceDirectory>${project.basedir}/test</testSourceDirectory>
