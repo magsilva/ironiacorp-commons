@@ -6,3 +6,6 @@ addons:
     - r-base
     - r-cran-rserve
     - r-cran-rjava
+before_install:
+- rm -f /usr/lib/R/bin/Rserve
+- ln -s /usr/lib/R/site-library/Rserve/libs/Rserve /usr/lib/R/bin/Rserve
