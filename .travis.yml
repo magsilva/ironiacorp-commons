@@ -13,3 +13,4 @@ before_install:
 - sudo ln -s /usr/lib/R/site-library/Rserve/libs/Rserve /usr/lib/R/bin/Rserve
 after_sucess:
   - bash <(curl -s https://codecov.io/bash)
+  - mvn clean test jacoco:report coveralls:report
