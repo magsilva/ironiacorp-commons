@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/magsilva/ironiacorp-commons.svg?branch=master)](https://travis-ci.org/magsilva/ironiacorp-commons)
+
 [![](https://codescene.io/projects/2750/status.svg) Get more details at **codescene.io**.](https://codescene.io/projects/2750/jobs/latest-successful/results)
 
 Requirements:
