@@ -67,7 +67,7 @@ public class RClientFactory
         	// Try once again, now starting our own RServe
        		try {
        			OperationalSystem os = ComputerSystem.getCurrentOperationalSystem();
-			os.addExecutableSearchPath(new File("/usr/lib/R/site-library/Rserve/R/Rserve"); // Debian 
+			os.addExecutableSearchPath(new File("/usr/lib/R/site-library/Rserve/R/Rserve")); // Debian 
 			os.addExecutableSearchPath(new File("/usr/lib/R/site-library/Rserve")); // Fedora
        			os.addExecutableSearchPath(new File("/usr/lib64/R/library/Rserve"));
        			os.addExecutableSearchPath(new File("/usr/lib/R/site-library/Rserve"));
