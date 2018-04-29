@@ -1,4 +1,6 @@
 [![Build Status](https://travis-ci.org/magsilva/ironiacorp-commons.svg?branch=master)](https://travis-ci.org/magsilva/ironiacorp-commons)
+[![Coverage Status](https://coveralls.io/repos/github/magsilva/ironiacorp-commons/badge.svg?branch=master)](https://coveralls.io/github/magsilva/ironiacorp-commons?branch=master)
+[![codecov](https://codecov.io/gh/magsilva/ironiacorp-commons/branch/master/graph/badge.svg)](https://codecov.io/gh/magsilva/ironiacorp-commons)
 
 [![](https://codescene.io/projects/2750/status.svg) Get more details at **codescene.io**.](https://codescene.io/projects/2750/jobs/latest-successful/results)
 
