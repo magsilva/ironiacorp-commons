@@ -29,9 +29,9 @@ import com.ironiacorp.http.UrlUtil;
 // http://www.rgagnon.com/javadetails/java-0059.html
 public class UrlUtilTest
 {
-	public static final String GOOD_URL = "http://www.rgagnon.com/howto.html"; 
+	public static final String GOOD_URL = "http://www.example.com/index.html"; 
 
-	public static final String BAD_URL = "http://www.rgagnon.com/pagenotfound.html"; 
+	public static final String BAD_URL = "http:/fjslsjadflkasdjlfksajsd.com/asffdsaljaskl2852.html"; 
 
 	public static final String INVALID_URL = "htp:/www.magsilva.pro.br?/testabc";
 	
