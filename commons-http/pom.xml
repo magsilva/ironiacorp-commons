@@ -15,11 +15,18 @@
 	<description>HTTP related utilities</description>
 	<inceptionYear>2007</inceptionYear>
 
+	<repositories>
+		<repository>
+			<id>sonatype-snapshots</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</repository>
+	</repositories>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-server</artifactId>
-			<version>9.4.2.v20170220</version>
+			<version>9.4.11.v20180605</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -29,42 +36,6 @@
 			<artifactId>httpclient</artifactId>
 			<version>[4.5.3,)</version>
 		</dependency>
-
-		<!-- HttpCache4J -->
-		<dependency>
-			<groupId>org.codehaus.httpcache4j</groupId>
-			<artifactId>httpcache4j-core</artifactId>
-			<version>[5.1.0,)</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.codehaus.httpcache4j.resolvers</groupId>
-			<artifactId>resolvers-commons-httpclient</artifactId>
-			<version>[5.1.0,)</version>
-			<scope>runtime</scope>
-		</dependency>
-
-<!-- 
-		<dependency>
-			<groupId>org.codehaus.httpcache4j.resolvers</groupId>
-			<artifactId>resolvers-httpcomponents-httpclient</artifactId>
-			<version>[5.1.0,)</version>
-			<scope>runtime</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.codehaus.httpcache4j.resolvers</groupId>
-			<artifactId>resolvers-ning-async</artifactId>
-			<version>[5.1.0,)</version>
-			<scope>runtime</scope>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.codehaus.httpcache4j.storage</groupId>
-			<artifactId>storage-file</artifactId>
-			<version>5.1.0</version>
-		</dependency>
--->
 
 		<!-- IroniaCorp Commons -->
 		<dependency>
