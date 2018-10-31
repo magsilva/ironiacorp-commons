@@ -1,6 +1,12 @@
 package com.ironiacorp.math.matrix.solver.ujmp;
 
 import org.ujmp.core.enums.ValueType;
+import org.ujmp.core.DenseMatrix;
+import org.ujmp.core.SparseMatrix;
+import org.ujmp.core.intmatrix.impl.DefaultDenseIntMatrix2D;
+import org.ujmp.core.intmatrix.impl.DefaultSparseIntMatrix;
+import org.ujmp.core.doublematrix.impl.DefaultDenseDoubleMatrix2D;
+import org.ujmp.core.doublematrix.impl.DefaultSparseDoubleMatrix;
 
 import com.ironiacorp.math.matrix.solver.Matrix;
 import com.ironiacorp.math.matrix.solver.MatrixType;
@@ -30,20 +36,32 @@ public abstract class UjmpMatrix<T extends Number> implements Matrix<T>
 		}
 		
 		this.matrixType = matrixType;
-		throw new UnsupportedOperationException();
-		/*
+
 		switch (this.matrixType) {
 			case SPARSE:
-				ujmpMatrix = org.ujmp.core.MatrixFactory.sparse(this.matrixValueType, numRows, numColumns);
+				switch (matrixValueType) {
+        		                case INT:
+						ujmpMatrix = new DefaultSparseIntMatrix(numRows, numColumns);
+                        		        break;
+		                        case FLOAT:
+					default:
+						ujmpMatrix = new DefaultSparseDoubleMatrix(numRows, numColumns);
+                		                break;
+		                }
 				break;
 			case DENSE:
-				ujmpMatrix = org.ujmp.core.MatrixFactory.dense(this.matrixValueType, numRows, numColumns);
-				break;
 			default:
-				ujmpMatrix = org.ujmp.core.MatrixFactory.dense(this.matrixValueType, numRows, numColumns);
-
+				switch (matrixValueType) {
+        		                case INT:
+						ujmpMatrix = new DefaultDenseIntMatrix2D((int)numRows, (int)numColumns);
+                        		        break;
+		                        case FLOAT:
+					default:
+						ujmpMatrix = new DefaultDenseDoubleMatrix2D((int)numRows, (int)numColumns);
+                		                break;
+		                }
+				break;
 		}
-		*/
 	}
 	
 	protected UjmpMatrix(org.ujmp.core.Matrix matrix)
@@ -60,15 +78,12 @@ public abstract class UjmpMatrix<T extends Number> implements Matrix<T>
 				this.matrixValueType = MatrixValueType.FLOAT;
 		}
 
-		switch (matrix.getStorageType()) {
-			case DENSE:
-				this.matrixType = MatrixType.DENSE;
-				break;
-			case SPARSE:
-				this.matrixType = MatrixType.SPARSE;
-				break;
-			default:
-				throw new IllegalArgumentException("Unsupported matrix type: " + matrix.getStorageType().toString());
+		if (matrix instanceof DenseMatrix) {
+			this.matrixType = MatrixType.DENSE;
+		} else if (matrix instanceof SparseMatrix) {
+			this.matrixType = MatrixType.SPARSE;
+		} else {
+			throw new IllegalArgumentException("Unsupported matrix type");
 		}
 
 		ujmpMatrix = matrix;
