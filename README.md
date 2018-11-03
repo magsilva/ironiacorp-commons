@@ -8,5 +8,7 @@
 Requirements:
 - IroniaCorp-Commons-Statistics
   * Rserve, JRI
-      1. Run 'R' and enter the following command at the prompt: install.packages("Rserve", "rJava")
+      1. Run 'R' and enter the following command at the prompt: install.packages(c("Rserve", "rJava"))
       2. Check whether Rserve is executable: chmod +x /usr/lib64/R/library/Rserve/R/Rserve
+- IroniaCorp-Commons-Graph
+  * GraphViz
