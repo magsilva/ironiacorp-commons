@@ -3,8 +3,8 @@
 [![codecov](https://codecov.io/gh/magsilva/ironiacorp-commons/branch/master/graph/badge.svg)](https://codecov.io/gh/magsilva/ironiacorp-commons)
 [![BCH compliance](https://bettercodehub.com/edge/badge/magsilva/ironiacorp-commons?branch=master)](https://bettercodehub.com/)
 [![Coverity Scan](https://scan.coverity.com/projects/17530/badge.svg)](https://scan.coverity.com/projects/magsilva-ironiacorp-commons)
-
-[![](https://codescene.io/projects/2750/status.svg) Get more details at **codescene.io**.](https://codescene.io/projects/2750/jobs/latest-successful/results)
+[![BCH compliance](https://bettercodehub.com/edge/badge/magsilva/ironiacorp-commons?branch=master)](https://bettercodehub.com/results/magsilva/ironiacorp-commons)
+[![CodeScene](https://codescene.io/projects/2750/status.svg)](https://codescene.io/projects/2750/jobs/latest-successful/results)
 
 Requirements:
 - IroniaCorp-Commons-Statistics
