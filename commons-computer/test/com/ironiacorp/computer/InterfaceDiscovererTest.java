@@ -63,7 +63,7 @@ public class InterfaceDiscovererTest
 		Iterator<NetworkInterface> i = nics.iterator();
 		Pattern ethPattern = Pattern.compile("eth\\d+");
 		Pattern emPattern = Pattern.compile("em\\d+");
-		Pattern enpPattern = Pattern.compile("enp\\ds\\d++");
+		Pattern enpPattern = Pattern.compile("enp\\d+s\\d++");
 		Pattern wlanPattern = Pattern.compile("wlan\\d+");
 		Pattern wlan2Pattern = Pattern.compile("wlp\\d+s\\d+");
 		Pattern virtualNicPattern = Pattern.compile("virbr\\d+");
