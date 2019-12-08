@@ -20,10 +20,7 @@ package com.ironiacorp.persistence.dao.ideais;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.*;
-
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.ironiacorp.persistence.dao.ideais.DbMappings;
@@ -31,10 +28,10 @@ import com.ironiacorp.persistence.dao.ideais.Property;
 
 public class DbMappingTest
 {
-	private DbMappings dbmap;
+	protected DbMappings dbmap;
 	
-	private DummyBean bean;
-	private AnnotatedDummyBean annotatedBean;
+	protected DummyBean bean;
+	protected AnnotatedDummyBean annotatedBean;
 	
 	private Map<String, Object> goodBeanMapping;
 	private Map<String, Object> badBeanMapping;
