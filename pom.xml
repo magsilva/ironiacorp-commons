@@ -12,7 +12,7 @@
 
 	<properties>
 		<ironiacorp.commons.version>5.0.0-SNAPSHOT</ironiacorp.commons.version>
-		<project.buildroot>${project.basedir}/target</project.buildroot>
+		<project.buildroot>${java.io.tmpdir}/${project.artifactId}-${project.version}</project.buildroot>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 	</properties>
