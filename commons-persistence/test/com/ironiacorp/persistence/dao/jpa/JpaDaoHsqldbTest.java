@@ -141,9 +141,10 @@ public abstract class JpaDaoHsqldbTest
     public void testDAO() throws Exception
     {
         EntityTransaction tx = em.getTransaction();
-    	try {
-	    	DAO<Integer, Person> dao = new JPA_DAO<Integer, Person>(Integer.class, Person.class);
-	    	JPA_DAO<Integer, Person> jpaDao = (JPA_DAO<Integer, Person>) dao;
+    	try (
+    			DAO<Integer, Person> dao = new JPA_DAO<Integer, Person>(Integer.class, Person.class);
+    	    	JPA_DAO<Integer, Person> jpaDao = (JPA_DAO<Integer, Person>) dao
+    	) {
 	    	List<Person> people;
 	        Person p = new Person();
 	        Person p2;
@@ -172,27 +173,30 @@ public abstract class JpaDaoHsqldbTest
     @Test
     public void testDAO_AutoCommit() throws Exception
     {
-    	DAO<Integer, Person> dao = new JPA_DAO<Integer, Person>(Integer.class, Person.class);
-    	JPA_DAO<Integer, Person> jpaDao = (JPA_DAO<Integer, Person>) dao;
-    	List<Person> people;
-        Person p = new Person();
-        Person p2;
-        
-        em.getTransaction().begin();
-        p.setName("Marco Aurélio");
-        p.setBirthday(new Date(1980, 10, 30));
-        jpaDao.setEntityManager(em);
-        jpaDao.setAutoCommit(true);
-        dao.persist(p);
-        
-        // people = dao.findByProperty("name", "Marco Aurélio");
-        // assertEquals(1, people.size());
-        p2 = dao.findById(1);
-        assertNotNull(p2);
-        assertEquals(p, p2);
-        assertSame(p,  p2);
-        
-        people = dao.findAll();
-        assertEquals(1, people.size());
+    	try (
+    			DAO<Integer, Person> dao = new JPA_DAO<Integer, Person>(Integer.class, Person.class);
+    			JPA_DAO<Integer, Person> jpaDao = (JPA_DAO<Integer, Person>) dao
+    		) {
+	    	List<Person> people;
+	        Person p = new Person();
+	        Person p2;
+	        
+	        em.getTransaction().begin();
+	        p.setName("Marco Aurélio");
+	        p.setBirthday(new Date(1980, 10, 30));
+	        jpaDao.setEntityManager(em);
+	        jpaDao.setAutoCommit(true);
+	        dao.persist(p);
+	        
+	        // people = dao.findByProperty("name", "Marco Aurélio");
+	        // assertEquals(1, people.size());
+	        p2 = dao.findById(1);
+	        assertNotNull(p2);
+	        assertEquals(p, p2);
+	        assertSame(p,  p2);
+	        
+	        people = dao.findAll();
+	        assertEquals(1, people.size());
+    	}
     }
 }
