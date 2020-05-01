@@ -51,7 +51,7 @@
 
 	<distributionManagement>
 		<repository>
-			<id>magsilva</id>
+			<id>magsilva.pro.br</id>
 			<url>dav:http://magsilva.pro.br/repo/maven2</url>
 		</repository>
 	</distributionManagement>
@@ -63,7 +63,7 @@
                 </repository>
 
 		<repository>
-			<id>magsilva</id>
+			<id>magsilva.pro.br</id>
 			<url>http://magsilva.pro.br/repo/maven2</url>
 		</repository>
 	</repositories>
