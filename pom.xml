@@ -12,7 +12,10 @@
 
 	<properties>
 		<ironiacorp.commons.version>${project.version}</ironiacorp.commons.version>
-		<tmp.build.directory>${java.io.tmpdir}/${project.groupId}/${project.artifactId}-${project.version}</tmp.build.directory>
+		<!--
+			<tmp.build.directory>${java.io.tmpdir}/${project.groupId}/${project.artifactId}-${project.version}</tmp.build.directory>
+		-->
+		<tmp.build.directory>${project.basedir}/target</tmp.build.directory>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 	</properties>
@@ -86,8 +89,8 @@
 		<sourceDirectory>${project.basedir}/src</sourceDirectory>
 		<testSourceDirectory>${project.basedir}/test</testSourceDirectory>
 
-		<outputDirectory>${project.build.directory}/target/classes</outputDirectory>
-		<testOutputDirectory>${project.build.directory}/target/test-classes</testOutputDirectory>
+		<outputDirectory>${project.build.directory}/classes</outputDirectory>
+		<testOutputDirectory>${project.build.directory}/test-classes</testOutputDirectory>
 
 		<resources>
 			<resource>
