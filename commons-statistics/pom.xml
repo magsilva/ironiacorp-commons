@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>ironiacorp</groupId>
 		<artifactId>commons</artifactId>
-		<version>6.0.0</version>
+		<version>6.0.1</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<artifactId>commons-statistics</artifactId>
@@ -18,11 +18,18 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>org.rosuda</groupId>
-			<artifactId>rengine</artifactId>
-			<version>[1.7.0,)</version>
+			<groupId>org.rosuda.REngine</groupId>
+			<artifactId>Rserve</artifactId>
+			<version>1.8.1</version>
 		</dependency>
 
+			<!-- https://mvnrepository.com/artifact/org.renjin.cran/rJava -->
+<dependency>
+    <groupId>org.renjin.cran</groupId>
+    <artifactId>rJava</artifactId>
+    <version>0.9-8-b5</version>
+</dependency>
+<!--
 		<dependency>
 			<groupId>org.rosuda</groupId>
 			<artifactId>rserve-engine</artifactId>
@@ -40,7 +47,7 @@
 			<artifactId>jri-engine</artifactId>
 			<version>[0.9.4,)</version>
 		</dependency>
-	
+-->	
 		<dependency>
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>
