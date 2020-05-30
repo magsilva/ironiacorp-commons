@@ -250,24 +250,23 @@ public abstract class AbstractOperationalSystem implements OperationalSystem
 	{
 		String fullname = getFullLibraryName(libName);
 		Filesystem fs = getFilesystem();
-    	for (File dir : getLibrarySearchPath()) { // getLibraryPath
-    		List<File> files = fs.find(dir, 0, Pattern.compile(fullname + "(\\.(\\d+))?"));
-    		for (File file : files) {
-	    		if (isLoadable(file)) {
-	    			return file;
+		for (File dir : getLibrarySearchPath()) { // getLibraryPath
+    			List<File> files = fs.find(dir, 0, Pattern.compile(fullname + "(\\.(\\d+))?"));
+	    		for (File file : files) {
+		    		if (isLoadable(file)) {
+	    				return file;
 	   			}
-    		}
+    			}
     		
-    		// Also try with short name
-    		files = fs.find(dir, 0, Pattern.compile(libName + "(\\.(\\d+))?" + getDefaultLibrarySuffix()));
-    		for (File file : files) {
-	    		if (isLoadable(file)) {
-	    			return file;
+	    		// Also try with short name
+    			files = fs.find(dir, 0, Pattern.compile(libName + "(\\.(\\d+))?" + getDefaultLibrarySuffix()));
+    			for (File file : files) {
+	    			if (isLoadable(file)) {
+	    				return file;
 	   			}
+    			}
     		}
-    	}
-
-    	return null;
+	    	return null;
 	}
 	
 	public String getNickname()
