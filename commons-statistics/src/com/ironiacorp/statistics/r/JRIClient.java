@@ -22,12 +22,14 @@ package com.ironiacorp.statistics.r;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.rosuda.REngine.REXP;
+
 import org.rosuda.REngine.REXPMismatchException;
-import org.rosuda.REngine.REngine;
 import org.rosuda.REngine.REngineException;
-import org.rosuda.REngine.RList;
-import org.rosuda.REngine.JRI.JRIEngine;
+// import org.rosuda.REngine.REXP;
+
+import org.rosuda.JRI.REXP;
+import org.rosuda.JRI.Rengine;
+import org.rosuda.JRI.RList;
 
 import com.ironiacorp.statistics.r.type.DoubleMatrix;
 import com.ironiacorp.statistics.r.type.DoubleMatrixFactory;
@@ -43,17 +45,13 @@ import com.ironiacorp.statistics.r.type.DoubleMatrixFactory;
  */
 public class JRIClient extends AbstractRClient
 {
-    private static REngine connection = null;
+    private static Rengine connection = null;
 
     @Override
     public boolean connect()
     {
     	if (! isConnected()) {
-            try {
-                connection = new JRIEngine();
-            } catch ( REngineException e ) {
-                throw new RuntimeException( "JRI could not be initilized" );
-            }
+               connection = new Rengine();
         	return true;
     	}
 
@@ -70,71 +68,54 @@ public class JRIClient extends AbstractRClient
     @Override
     public void assign(String argName, double[] arg)
     {
-        try {
             connection.assign( argName, arg );
-        } catch ( REngineException e ) {
-            throw new RuntimeException( e );
-        }
     }
 
     @Override
     public void assign(String arg0, int[] arg1)
     {
-        try {
             connection.assign( arg0, arg1 );
-        } catch ( REngineException e ) {
-            throw new RuntimeException( e );
-        }
     }
 
     @Override
     public void assign(String sym, String ct)
     {
-        try {
             connection.assign( sym, ct );
-        } catch ( REngineException e ) {
-            throw new RuntimeException( e );
-        }
     }
 
     @Override
     public void assign(String argName, String[] array)
     {
-        try {
             connection.assign( argName, array );
-        } catch ( REngineException e ) {
-            throw new RuntimeException( e );
-        }
     }
 
-    @Override
     public String getLastError()
     {
         return "Sorry, no information";
     }
 
-    @Override
     public void voidEval(String command)
     {
         eval( command );
     }
 
-    @Override
-    public REXP eval(String command)
+    public org.rosuda.REngine.REXP eval(String command)
     {
         REXP result;
-        int key = connection.lock();
+        int key = connection.rniRJavaLock();
         try {
 
-            result = connection.parseAndEval( "try(" + command + ", silent=T)" );
+            result = connection.eval( "try(" + command + ", silent=T)" );
 
             if ( result == null ) {
                 throw new RuntimeException( "Error from R, could not sucessfully evaluate: " + command );
             }
 
+	    /*
             if ( !result.isString() ) {
                 return result;
             }
+	    */
             String a = result.asString();
 
             /*
@@ -144,19 +125,17 @@ public class JRIClient extends AbstractRClient
                 throw new RuntimeException( "Error from R when running " + command + ": " + a );
             }
 
-            return result;
-        } catch ( REngineException e ) {
-            throw new RuntimeException( e );
-        } catch ( REXPMismatchException e ) {
-            throw new RuntimeException( e );
+            // return result; // TODO: Create REXP from REngine using REXP from JRI
+	    return null;
         } finally {
-            connection.unlock( key );
+//            connection.rniRJavaUnlock( key );
+            connection.rniRJavaUnlock();
         }
     }
 
     @Override
     public DoubleMatrix<String, String> retrieveMatrix( String variableName ) {
-        REXP r = eval( variableName );
+        org.rosuda.REngine.REXP r = eval( variableName );
         if (r == null)
         	throw new IllegalArgumentException( variableName + " not found in R context" );
 
@@ -179,14 +158,16 @@ public class JRIClient extends AbstractRClient
 
     @Override
     protected void retrieveRowAndColumnNames( String variableName, DoubleMatrix<String, String> resultObject ) {
-        REXP r1 = eval( "dimnames(" + variableName + ")" );
-        RList asList;
-        try {
-            asList = r1.asList();
-        } catch ( REXPMismatchException e1 ) {
-            return;
-        }
+	Object rtemp = eval( "dimnames(" + variableName + ")" );
+	REXP r1;
+	if (rtemp instanceof REXP) {
+		r1 = (REXP) rtemp;
+	} else {
+		return;
+	}
 
+        RList asList;
+        asList = r1.asList();
         if ( asList == null ) {
             return;
         }
@@ -196,11 +177,7 @@ public class JRIClient extends AbstractRClient
 
         if ( rowNamesREXP != null ) {
             String[] rowNamesAr;
-            try {
-                rowNamesAr = rowNamesREXP.asStrings();
-            } catch ( REXPMismatchException e ) {
-                return;
-            }
+            rowNamesAr = rowNamesREXP.asStringArray();
             List<String> rowNames = new ArrayList<String>();
             for ( String rowName : rowNamesAr ) {
                 rowNames.add( rowName );
@@ -211,11 +188,7 @@ public class JRIClient extends AbstractRClient
         // Getting the column names.
         if ( colNamesREXP != null ) {
             String[] colNamesAr;
-            try {
-                colNamesAr = colNamesREXP.asStrings();
-            } catch ( REXPMismatchException e ) {
-                return;
-            }
+            colNamesAr = colNamesREXP.asStringArray();
             List<String> colNames = new ArrayList<String>();
             for ( String colName : colNamesAr ) {
                 colNames.add( colName );

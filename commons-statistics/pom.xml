@@ -18,36 +18,24 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>org.rosuda.REngine</groupId>
-			<artifactId>Rserve</artifactId>
-			<version>1.8.1</version>
-		</dependency>
-
-			<!-- https://mvnrepository.com/artifact/org.renjin.cran/rJava -->
-<dependency>
-    <groupId>org.renjin.cran</groupId>
-    <artifactId>rJava</artifactId>
-    <version>0.9-8-b5</version>
-</dependency>
-<!--
-		<dependency>
-			<groupId>org.rosuda</groupId>
-			<artifactId>rserve-engine</artifactId>
-			<version>[1.7.0,)</version>
+			<groupId>org.r</groupId>
+			<artifactId>rserve</artifactId>
+			<version>2.1.1</version>
 		</dependency>
 
 		<dependency>
-			<groupId>org.rosuda</groupId>
+			<groupId>org.r</groupId>
+			<artifactId>rengine</artifactId>
+			<version>2.1.1</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>org.r</groupId>
 			<artifactId>jri</artifactId>
-			<version>[0.9.4,)</version>
+			<version>0.9.13</version>
 		</dependency>
 		
-		<dependency>
-			<groupId>org.rosuda</groupId>
-			<artifactId>jri-engine</artifactId>
-			<version>[0.9.4,)</version>
-		</dependency>
--->	
 		<dependency>
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>
