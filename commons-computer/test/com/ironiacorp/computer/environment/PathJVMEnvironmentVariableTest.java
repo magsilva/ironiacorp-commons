@@ -46,7 +46,7 @@ public class PathJVMEnvironmentVariableTest
 	{
 		PathJVMEnvironmentVariable var = new PathJVMEnvironmentVariable("fsafsdjafsal");
 		String[] packages = var.getValue();
-		assertNull(packages);
+		assertTrue(packages.length == 0);
 	}
 
 }

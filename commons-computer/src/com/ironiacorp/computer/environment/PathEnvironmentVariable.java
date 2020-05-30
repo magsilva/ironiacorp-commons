@@ -33,10 +33,10 @@ public abstract class PathEnvironmentVariable extends EnvironmentVariable<String
 	
 	protected void parsePath(String value)
 	{
-         if (value == null) {
-        	 setValue(null);
-         } else {
-        	 setValue(splitPattern.split(value));
-         }
+		if (value == null) {
+        		setValue(new String[0]);
+		} else {
+        		setValue(splitPattern.split(value));
+		}
 	}
 }
