@@ -1,0 +1,23 @@
+plugins:
+  checkstyle:
+    enabled: true
+    config:
+      file: "checkstyle.xml"
+  duplication:
+    enabled: true
+    config:
+      languages:
+        java:
+          mass_theshold: 40
+  markdownlint:
+    enabled: true
+  git-legal:
+    enabled: true
+      allow_affero_copyleft: false
+      allow_strong_copyleft: false
+  fixme:
+    enabled: true
+  pmd:
+    enabled: true
+    config:
+      file: pmd-java.xml
