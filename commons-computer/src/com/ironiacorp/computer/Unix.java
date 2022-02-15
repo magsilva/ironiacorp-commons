@@ -18,6 +18,7 @@ package com.ironiacorp.computer;
 
 import java.io.File;
 import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.net.URI;
 import java.net.URL;
 import java.nio.file.Files;
@@ -229,4 +230,36 @@ public class Unix extends AbstractOperationalSystem
 	public String getDefaultLibrarySuffix() {
 		return DEFAULT_LIBRARY_EXTENSION;
 	}
+
+	@Override
+	public long getPid(Process process) {
+		try {
+			Field field = process.getClass().getDeclaredField("pid");
+			field.setAccessible(true);
+			long pid = field.getLong(process);
+			field.setAccessible(false);
+			return pid;
+		} catch (Exception e) {
+			throw new IllegalArgumentException(e);
+		}
+	}
+
+	/* Old code, for Java 8
+	@Override
+	public long getPid() {
+		byte[] bo = new byte[256];
+		try (InputStream is = new FileInputStream("/proc/self/stat")) {
+			is.read(bo);
+			for (int i = 0; i < bo.length; i++) {
+				if ((bo[i] < '0') || (bo[i] > '9')) {
+					return Integer.parseInt(new String(bo, 0, i));
+				}
+			}
+		} catch (IOException e) {
+			return -1;
+		}
+		
+		return 0;
+	}
+	*/
 }

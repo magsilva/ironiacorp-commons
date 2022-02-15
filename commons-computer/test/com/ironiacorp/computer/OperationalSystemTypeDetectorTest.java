@@ -21,9 +21,6 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.ironiacorp.computer.OperationalSystemType;
-import com.ironiacorp.computer.OperationalSystemDetector;
-
 // TODO: use the list at http://lopica.sourceforge.net/os.html
 public class OperationalSystemTypeDetectorTest
 {

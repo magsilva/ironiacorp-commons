@@ -326,7 +326,10 @@ public abstract class AbstractOperationalSystem implements OperationalSystem
 		return value;
 	}
 
+	public long getPid() {
+		return ProcessHandle.current().pid();
+	}
 	
-	
+	public abstract long getPid(Process process);
 }
 

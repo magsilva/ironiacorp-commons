@@ -18,6 +18,7 @@ package com.ironiacorp.computer;
 
 import java.io.File;
 import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.net.URI;
 import java.net.URL;
 import java.nio.file.Files;
@@ -27,6 +28,10 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.ironiacorp.computer.filesystem.JavaResourceFinder;
+
+import com.sun.jna.platform.win32.Kernel32;
+import com.sun.jna.platform.win32.WinNT;
+import com.sun.jna.Pointer;
 
 public class Windows extends AbstractOperationalSystem
 {
@@ -227,4 +232,20 @@ public class Windows extends AbstractOperationalSystem
 		return DEFAULT_LIBRARY_EXTENSION;
 	}
 
+	@Override
+	public long getPid(Process process) {
+		try {
+			Field field = process.getClass().getDeclaredField("handle");
+	        field.setAccessible(true);              
+	        long processIdHandle = field.getLong(process);
+	        Kernel32 kernel = Kernel32.INSTANCE;
+	        WinNT.HANDLE handle = new WinNT.HANDLE();
+	        handle.setPointer(Pointer.createConstant(processIdHandle));
+	        long pid = kernel.GetProcessId(handle);
+	        field.setAccessible(false);
+	        return pid;
+		} catch (Exception e) {
+			throw new IllegalArgumentException(e);
+		}
+	}
 }

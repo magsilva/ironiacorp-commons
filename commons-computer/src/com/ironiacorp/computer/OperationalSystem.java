@@ -40,6 +40,8 @@ public interface OperationalSystem
 	
 	ProcessBuilder exec(File execFile, List<String> parameters, Map<String, String> env);
 	
+	long getPid();
+	
 	void addLibrarySearchPath(File dir);
 	
 	void removeLibrarySearchPath(File dir);
